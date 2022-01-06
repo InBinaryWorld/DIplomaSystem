@@ -1,0 +1,11 @@
+<nav class="navbar navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand">DIPLOMA SYSTEM</a>
+    <div class="d-flex">
+      <select [formControl]="languageControl" class="d-flex form-select">
+        <option [value]="AppLanguage.POLISH">Polski</option>
+        <option [value]="AppLanguage.ENGLISH">English</option>
+      </select>
+    </div>
+  </div>
+</nav>
