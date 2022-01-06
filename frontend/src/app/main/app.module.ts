@@ -10,10 +10,12 @@ import { AppRoutingModule } from "./app-routing.module";
 import { LoginModule } from "../modules/login/login.module";
 import { CoreModule } from "../core/core.module";
 import { AppHeaderComponent } from "./components/header/app-header.component";
-import { ReactiveFormsModule } from "@angular/forms";
 import { NgxSpinnerModule } from "ngx-spinner";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { AppLanguage } from "../core/models/app-language.model";
+import { StoreModule } from "@ngrx/store";
+import { EffectsModule } from "@ngrx/effects";
+import { SharedModule } from "../shared.module";
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -38,10 +40,12 @@ const translateConfig: TranslateModuleConfig = {
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    ReactiveFormsModule,
     BrowserAnimationsModule,
     TranslateModule.forRoot(translateConfig),
+    EffectsModule.forRoot([]),
+    StoreModule.forRoot({}),
     NgxSpinnerModule,
+    SharedModule,
     CoreModule,
     LoginModule
   ],

@@ -1,3 +1,9 @@
 {
-  "Test.Text": "EN Translated"
+  "Login.Label": "Sign in",
+  "Login.Username": "Username",
+  "Login.Username.Error": "Username must be at least 6 characters long",
+  "Login.Password": "Password",
+  "Login.Password.Error": "Password must be at least 6 characters long",
+  "Login.RememberMe": "Remember Me",
+  "Login.Error": "Woops! Something went wrong..."
 }
