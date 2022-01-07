@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { NavItem } from "../../../shared/models/nav-item.model";
 
 @Component({
-  selector: 'app-import-system-data',
+  selector: 'app-topic-change-system-data',
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -10,7 +10,7 @@ import { NavItem } from "../../../shared/models/nav-item.model";
 export class AdminComponent {
 
   public navItems: NavItem[] = [
-    { path: '/admin/import', nameKey: 'Sidebar.Admin.Import' },
+    { path: '/admin/topic-change', nameKey: 'Sidebar.Admin.Import' },
     { path: '/admin/1', nameKey: 'Sidebar.Admin.' },
     { path: '/admin/2', nameKey: 'Sidebar.Admin.' },
     { path: '/admin/3', nameKey: 'Sidebar.Admin.' },

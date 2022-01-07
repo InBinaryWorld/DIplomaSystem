@@ -8,5 +8,10 @@
   "Login.RememberMe": "Remember Me<<PL>>",
   "Login.Error": "Woops! Something went wrong...<<PL>>",
   "Header.Role.Label.STUDENT": "Student ({{id}})",
-  "Header.Role.Label.ADMIN": "Administrator ({{id}})"
+  "Header.Role.Label.ADMIN": "Administrator ({{id}})",
+  "Header.Role.Label.LECTURER": "Prowadzący ({{id}})",
+  "Header.Role.Label.DEAN": "Dziekan ({{id}})",
+  "Header.Role.Label.COORDINATOR": "Koordynator ({{id}})",
+  "Header.Role.Label.PROGRAM_COMMITTEE_MEMBER": "Członek komitetu programowego ({{id}})",
+  "Header.Role.Label.DIPLOMA_SECTION_MEMBER": "Członek sekcji dyplomowania ({{id}})"
 }

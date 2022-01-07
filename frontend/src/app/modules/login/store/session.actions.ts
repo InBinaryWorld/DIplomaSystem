@@ -8,5 +8,5 @@ export const loginAction = createAction('[SESSION] Login', props<{ loginData: Lo
 export const loginSuccessAction = createAction('[SESSION] Login success', props<{ sessionData: SessionData }>());
 export const loginFailedAction = createAction('[SESSION] session failed', props<{ error: any }>());
 
-export const setContextRole = createAction('[SESSION] SET USER ROLE', props<{ contextRole: UserRole }>());
+export const setContextRole = createAction('[SESSION] SET USER ROLE', props<{ contextRole?: UserRole }>());
 export const logoutAction = createAction('[SESSION] Logout');

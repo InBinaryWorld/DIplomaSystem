@@ -34,6 +34,9 @@ export class AppHeaderComponent extends BaseComponent implements OnInit {
     return 'Header.Role.Label.' + role.role;
   }
 
+  roleToId(role?: UserRole): string {
+    return `${role?.role} ${role?.id}`
+  }
 
   ngOnInit(): void {
     this.initLanguage();
@@ -53,14 +56,16 @@ export class AppHeaderComponent extends BaseComponent implements OnInit {
 
   private initRoleContext() {
     this.addSubscription(
-      this.roleContextControl.valueChanges
-        .subscribe(role => this.sessionStoreService.setContextRole(role))
+      this.roleContextControl.valueChanges.subscribe(roleId => {
+        const role = this.sessionData?.roles.find(role => this.roleToId(role) === roleId);
+        this.sessionStoreService.setContextRole(role);
+      })
     );
 
     this.addSubscription(
       this.sessionStoreService.getContextRole().subscribe(role => {
-        this.roleContextControl.setValue(role, { emitEvent: false });
-        this.markForCheck();
+        this.roleContextControl.setValue(this.roleToId(role), { emitEvent: false });
+        this.detectChanges();
       })
     );
 

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ImportSystemDataComponent } from "./components/import/import-system-data.component";
-import { StudentComponent } from "./components/student/student.component";
+import { CoordinatorTopicsComponent } from "./components/topics/coordinator-topics.component";
+import { CoordinatorComponent } from "./components/coordinator/coordinator.component";
 import { AuthGuard } from "../../core/guards/auth.guard";
 import { RoleGuard } from "../../core/guards/role.guard";
 import { Role } from "../../core/models/role.model";
@@ -9,20 +9,20 @@ import { Role } from "../../core/models/role.model";
 
 const routes: Routes = [
   {
-    path: 'student',
+    path: 'coordinator',
     canActivate: [AuthGuard, RoleGuard],
     canActivateChild: [AuthGuard, RoleGuard],
-    data: { allowedRoles: [Role.STUDENT] },
-    component: StudentComponent,
+    data: { allowedRoles: [Role.COORDINATOR] },
+    component: CoordinatorComponent,
     children: [
       {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'change',
+        redirectTo: 'topic',
       },
       {
-        path: 'change',
-        component: ImportSystemDataComponent,
+        path: 'topic',
+        component: CoordinatorTopicsComponent,
       }
     ]
   },
@@ -32,5 +32,5 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class StudentRoutingModule {
+export class CoordinatorRoutingModule {
 }

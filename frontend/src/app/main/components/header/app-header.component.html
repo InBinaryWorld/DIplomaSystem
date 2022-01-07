@@ -4,7 +4,7 @@
 
     <div *ngIf="sessionData" class="ms-auto me-3">
       <select [formControl]="roleContextControl" class="d-flex form-select">
-        <option *ngFor="let role of sessionData.roles" [ngValue]="role">
+        <option *ngFor="let role of sessionData.roles" [ngValue]="roleToId(role)">
           {{ getRoleLabelKey(role) | translate: role }}
         </option>
       </select>

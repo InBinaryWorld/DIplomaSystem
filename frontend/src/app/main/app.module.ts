@@ -18,6 +18,11 @@ import { EffectsModule } from "@ngrx/effects";
 import { SharedModule } from "../modules/shared/shared.module";
 import { AdminModule } from "../modules/admin/admin.module";
 import { StudentModule } from "../modules/student/student.module";
+import { localStorageSync } from "ngrx-store-localstorage";
+import { SessionFeatureName } from "../modules/login/store/session.reducer";
+import { DeanModule } from "../modules/dean/dean.module";
+import { LecturerModule } from "../modules/lecturer/lecturer.module";
+import { CoordinatorModule } from "../modules/coordinator/coordinator.module";
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -33,6 +38,14 @@ const translateConfig: TranslateModuleConfig = {
   }
 }
 
+const localStorageSyncReducer = localStorageSync({
+  keys: [{ [SessionFeatureName]: ['sessionData', 'contextRole'] }],
+  rehydrate: true
+});
+
+const metaReducers = [localStorageSyncReducer];
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -45,13 +58,16 @@ const translateConfig: TranslateModuleConfig = {
     BrowserAnimationsModule,
     TranslateModule.forRoot(translateConfig),
     EffectsModule.forRoot([]),
-    StoreModule.forRoot({}),
+    StoreModule.forRoot({}, { metaReducers }),
     NgxSpinnerModule,
     SharedModule,
     CoreModule,
     LoginModule,
     AdminModule,
-    StudentModule
+    StudentModule,
+    DeanModule,
+    LecturerModule,
+    CoordinatorModule
   ],
   providers: [],
   bootstrap: [AppComponent]

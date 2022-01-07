@@ -30,7 +30,7 @@ export class SessionStoreService {
     this.store.dispatch(logoutAction());
   }
 
-  setContextRole(role: UserRole): void {
+  setContextRole(role?: UserRole): void {
     this.store.dispatch(setContextRole({ contextRole: role }));
   }
 
