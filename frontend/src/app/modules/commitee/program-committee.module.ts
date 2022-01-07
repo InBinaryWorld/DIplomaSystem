@@ -4,12 +4,16 @@ import { ProgramCommitteeRoutingModule } from "./program-committee-routing.modul
 import { SharedModule } from "../shared/shared.module";
 import { ProgramCommitteeTopicsComponent } from "./components/topics/program-committee-topics.component";
 import { ProgramCommitteeComponent } from "./components/program-committee/program-committee.component";
+import {
+  ProgramCommitteeTopicReviewComponent
+} from "./components/topic-review/program-committee-topic-review.component";
 
 
 @NgModule({
   declarations: [
     ProgramCommitteeComponent,
-    ProgramCommitteeTopicsComponent
+    ProgramCommitteeTopicsComponent,
+    ProgramCommitteeTopicReviewComponent
   ],
   imports: [
     SharedModule,

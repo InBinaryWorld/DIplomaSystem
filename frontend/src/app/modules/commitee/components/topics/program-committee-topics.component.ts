@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ThesisTopic } from "../../../shared/dto/thesis-topic.model";
 import { TopicStatus } from "../../../shared/dto/topic-status.model";
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-lecturer-topics',
@@ -9,6 +10,9 @@ import { TopicStatus } from "../../../shared/dto/topic-status.model";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProgramCommitteeTopicsComponent {
+
+  constructor(private readonly router: Router) {
+  }
 
   public topicsApprovedByCoordinator: ThesisTopic[] = [
     {
@@ -34,4 +38,7 @@ export class ProgramCommitteeTopicsComponent {
     }
   ];
 
+  public reviewTopic(topic: ThesisTopic): void {
+    this.router.navigate(['/program-committee/topic', topic.id]).then();
+  }
 }

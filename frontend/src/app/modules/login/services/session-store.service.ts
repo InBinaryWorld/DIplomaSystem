@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
+import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { distinctUntilChanged, Observable } from 'rxjs';
 import { SessionData } from '../models/session-data.model';
 import {
   selectContextRole,
@@ -13,13 +13,25 @@ import { LoginData } from '../models/login-data.model';
 import { loginAction, logoutAction, setContextRole } from '../store/session.actions';
 import { AppState } from "../../../core/store/app-state.model";
 import { UserRole } from "../models/user-role.model";
+import { SpinnerService } from "../../../core/services/spinner.service";
+import { CleanableService } from "../../../core/services/cleanable.service";
+import { Cleanable } from "../../../core/directives/cleanable.directive";
 
 @Injectable({
   providedIn: 'root'
 })
-export class SessionStoreService {
+export class SessionStoreService extends CleanableService {
 
-  constructor(private readonly store: Store<AppState>) {
+  constructor(private readonly store: Store<AppState>,
+              private readonly spinnerService: SpinnerService) {
+    super();
+  }
+
+  public init(cleanable: Cleanable, changeDetector: ChangeDetectorRef) {
+    cleanable.addSubscription(
+      this.getSessionActionProgress().pipe(distinctUntilChanged())
+        .subscribe(inProgress => this.spinnerService.act(inProgress, changeDetector))
+    )
   }
 
   login(loginData: LoginData): void {

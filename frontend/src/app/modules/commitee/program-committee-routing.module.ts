@@ -5,6 +5,9 @@ import { RoleGuard } from "../../core/guards/role.guard";
 import { Role } from "../../core/models/role.model";
 import { ProgramCommitteeTopicsComponent } from "./components/topics/program-committee-topics.component";
 import { ProgramCommitteeComponent } from "./components/program-committee/program-committee.component";
+import {
+  ProgramCommitteeTopicReviewComponent
+} from "./components/topic-review/program-committee-topic-review.component";
 
 
 const routes: Routes = [
@@ -22,8 +25,18 @@ const routes: Routes = [
       },
       {
         path: 'topic',
-        component: ProgramCommitteeTopicsComponent,
-      }
+        children: [
+          {
+            path: '',
+            pathMatch: 'full',
+            component: ProgramCommitteeTopicsComponent,
+          },
+          {
+            path: ':id',
+            component: ProgramCommitteeTopicReviewComponent,
+          }
+        ],
+      },
     ]
   },
 ];

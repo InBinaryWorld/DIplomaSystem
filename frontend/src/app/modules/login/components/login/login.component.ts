@@ -4,7 +4,6 @@ import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms"
 import { Optional } from "../../../../core/base/optional";
 import { SessionStoreService } from "../../services/session-store.service";
 import { LoginData } from "../../models/login-data.model";
-import { distinctUntilChanged } from "rxjs";
 import { SpinnerService } from "../../../../core/services/spinner.service";
 import { Store } from "@ngrx/store";
 import { ContextRoutingService } from "../../../../core/services/context-routing.service";
@@ -31,6 +30,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
     super(changeDetector);
   }
 
+
   login(): void {
     const data: LoginData = this.loginFormGroup!.getRawValue();
     this.sessionStoreService.login(data);
@@ -41,7 +41,6 @@ export class LoginComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.initSpinner();
     this.initForm();
     this.followProcessStatus();
   }
@@ -64,11 +63,5 @@ export class LoginComponent extends BaseComponent implements OnInit {
     });
   }
 
-  private initSpinner() {
-    this.addSubscription(
-      this.sessionStoreService.getSessionActionProgress()
-        .pipe(distinctUntilChanged())
-        .subscribe(inProgress => this.spinnerService.act(inProgress, this.changeDetector))
-    )
-  }
+
 }

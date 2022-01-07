@@ -20,7 +20,7 @@
         <td>{{ topic.name }}</td>
         <td>TBD</td>
         <td>
-          <button type="button" class="float-end btn btn-primary">
+          <button (click)="reviewTopic(topic)" type="button" class="float-end btn btn-primary">
             {{ 'Committee.Topics.Table.Review' | translate }}
           </button>
         </td>
@@ -46,7 +46,7 @@
         <td>{{ topic.name }}</td>
         <td>TBD</td>
         <td>
-          <button type="button" class="float-end btn btn-primary">
+          <button (click)="reviewTopic(topic)" type="button" class="float-end btn btn-primary">
             {{ 'Committee.Topics.Table.Modify' | translate }}
           </button>
         </td>

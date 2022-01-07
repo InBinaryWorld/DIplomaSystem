@@ -44,5 +44,13 @@
   "Committee.Topics.Table.Supervisor": "Opiekun",
   "Committee.Topics.Table.Actions": "Akcje",
   "Committee.Topics.Table.Review": "Zrecenzuj",
-  "Committee.Topics.Table.Modify": "Modyfikuj"
+  "Committee.Topics.Table.Modify": "Modyfikuj",
+  "Committee.TopicReview.Header": "Recenzowanie",
+  "Committee.TopicReview.ThesisTopic": "Temat pracy",
+  "Committee.TopicReview.Supervisor": "Opiekun",
+  "Committee.TopicReview.PersonCount": "Liczba osób",
+  "Committee.TopicReview.Description": "Opis",
+  "Button.Reject": "Odrzuć",
+  "Button.Cancel": "Anuluj",
+  "Button.Approve": "Zatwierdź"
 }

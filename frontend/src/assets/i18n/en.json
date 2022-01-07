@@ -44,5 +44,13 @@
   "Committee.Topics.Table.Supervisor": "Supervisor",
   "Committee.Topics.Table.Actions": "Actions",
   "Committee.Topics.Table.Review": "Review",
-  "Committee.Topics.Table.Modify": "Modify"
+  "Committee.Topics.Table.Modify": "Modify",
+  "Committee.TopicReview.Header": "Review",
+  "Committee.TopicReview.ThesisTopic": "Thesis topic",
+  "Committee.TopicReview.Supervisor": "Supervisor",
+  "Committee.TopicReview.PersonCount": "Person count",
+  "Committee.TopicReview.Description": "Description",
+  "Button.Reject": "Reject",
+  "Button.Cancel": "Cancel",
+  "Button.Approve": "Approve"
 }
