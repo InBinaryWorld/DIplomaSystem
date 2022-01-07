@@ -20,8 +20,8 @@ export class ContextRoutingService {
     [Role.STUDENT]: '/student',
     [Role.LECTURER]: '/lecturer',
     [Role.COORDINATOR]: '/coordinator',
-    [Role.DIPLOMA_SECTION_MEMBER]: '/section',
-    [Role.PROGRAM_COMMITTEE_MEMBER]: '/committee'
+    [Role.DIPLOMA_SECTION_MEMBER]: '/diploma-section',
+    [Role.PROGRAM_COMMITTEE_MEMBER]: '/program-committee'
   }
 
   constructor(private readonly sessionStoreService: SessionStoreService,

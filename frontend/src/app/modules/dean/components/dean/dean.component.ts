@@ -3,7 +3,7 @@ import { NavItem } from "../../../shared/models/nav-item.model";
 
 @Component({
   selector: 'app-dean',
-  templateUrl: './dean.component.html',
+  templateUrl: '../../../shared/components/body-framework/body-framework.component.html',
   styleUrls: ['./dean.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })

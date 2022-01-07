@@ -1,28 +1,28 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ImportSystemDataComponent } from "./components/import/import-system-data.component";
-import { AdminComponent } from "./components/admin/admin.component";
 import { AuthGuard } from "../../core/guards/auth.guard";
 import { RoleGuard } from "../../core/guards/role.guard";
 import { Role } from "../../core/models/role.model";
+import { DiplomaSectionComponent } from "./components/diploma-section/diploma-section.component";
+import { TimetableComponent } from "./components/timetable/timetable.component";
 
 
 const routes: Routes = [
   {
-    path: 'admin',
+    path: 'diploma-section',
     canActivate: [AuthGuard, RoleGuard],
     canActivateChild: [AuthGuard, RoleGuard],
-    data: { allowedRoles: [Role.ADMIN] },
-    component: AdminComponent,
+    data: { allowedRoles: [Role.DIPLOMA_SECTION_MEMBER] },
+    component: DiplomaSectionComponent,
     children: [
       {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'topic-change',
+        redirectTo: 'timetable',
       },
       {
-        path: 'topic-change',
-        component: ImportSystemDataComponent,
+        path: 'timetable',
+        component: TimetableComponent,
       }
     ]
   },
@@ -32,5 +32,5 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class AdminRoutingModule {
+export class DiplomaSectionRoutingModule {
 }

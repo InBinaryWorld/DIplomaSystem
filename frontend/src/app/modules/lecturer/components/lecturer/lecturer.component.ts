@@ -2,8 +2,8 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { NavItem } from "../../../shared/models/nav-item.model";
 
 @Component({
-  selector: 'app-dean',
-  templateUrl: './lecturer.component.html',
+  selector: 'app-lecturer',
+  templateUrl: '../../../shared/components/body-framework/body-framework.component.html',
   styleUrls: ['./lecturer.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })

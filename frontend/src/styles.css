@@ -1,1 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
+.header-height {
+  min-height: 8vh;
+}
+
+.content-height {
+  min-height: 92vh;
+}

@@ -1,28 +1,28 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ImportSystemDataComponent } from "./components/import/import-system-data.component";
-import { AdminComponent } from "./components/admin/admin.component";
 import { AuthGuard } from "../../core/guards/auth.guard";
 import { RoleGuard } from "../../core/guards/role.guard";
 import { Role } from "../../core/models/role.model";
+import { ProgramCommitteeTopicsComponent } from "./components/topics/program-committee-topics.component";
+import { ProgramCommitteeComponent } from "./components/program-committee/program-committee.component";
 
 
 const routes: Routes = [
   {
-    path: 'admin',
+    path: 'program-committee',
     canActivate: [AuthGuard, RoleGuard],
     canActivateChild: [AuthGuard, RoleGuard],
-    data: { allowedRoles: [Role.ADMIN] },
-    component: AdminComponent,
+    data: { allowedRoles: [Role.PROGRAM_COMMITTEE_MEMBER] },
+    component: ProgramCommitteeComponent,
     children: [
       {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'topic-change',
+        redirectTo: 'topic',
       },
       {
-        path: 'topic-change',
-        component: ImportSystemDataComponent,
+        path: 'topic',
+        component: ProgramCommitteeTopicsComponent,
       }
     ]
   },
@@ -32,5 +32,5 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class AdminRoutingModule {
+export class ProgramCommitteeRoutingModule {
 }

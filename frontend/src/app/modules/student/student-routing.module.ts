@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ImportSystemDataComponent } from "./components/import/import-system-data.component";
 import { StudentComponent } from "./components/student/student.component";
 import { AuthGuard } from "../../core/guards/auth.guard";
 import { RoleGuard } from "../../core/guards/role.guard";
 import { Role } from "../../core/models/role.model";
+import { StudentTopicChangeComponent } from "./components/topic-change/student-topic-change.component";
 
 
 const routes: Routes = [
@@ -18,11 +18,11 @@ const routes: Routes = [
       {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'change',
+        redirectTo: 'topic-change',
       },
       {
-        path: 'change',
-        component: ImportSystemDataComponent,
+        path: 'topic-change',
+        component: StudentTopicChangeComponent,
       }
     ]
   },
