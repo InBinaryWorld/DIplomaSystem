@@ -10,7 +10,7 @@ import { NavItem } from "../../../shared/models/nav-item.model";
 export class CoordinatorComponent {
 
   public navItems: NavItem[] = [
-    { path: '/coordinator/topic', nameKey: 'Sidebar.Coordinator.Topics' },
+    { path: '/coordinator/topic', nameKey: 'Sidebar.Coordinator.ThesisTopics' },
   ];
 
 }

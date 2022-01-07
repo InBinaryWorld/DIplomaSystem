@@ -10,7 +10,7 @@ import { NavItem } from "../../../shared/models/nav-item.model";
 export class ProgramCommitteeComponent {
 
   public navItems: NavItem[] = [
-    { path: '/program-committee/topic', nameKey: 'Sidebar.ProgramCommittee.ThesisTopics' },
+    { path: '/program-committee/topic', nameKey: 'Sidebar.ProgramCommittee.ProposedTopics' },
   ];
 
 }

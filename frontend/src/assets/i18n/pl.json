@@ -23,8 +23,8 @@
   "Sidebar.Admin.Lecturers": "Prowadzący",
   "Sidebar.Admin.ProgramCommittee": "Komitet Programowy",
   "Sidebar.Admin.Students": "Studenci",
-  "Sidebar.ProgramCommittee.ThesisTopics": "Tematy Prac",
-  "Sidebar.Coordinator.Topics": "Tematy Prac",
+  "Sidebar.ProgramCommittee.ProposedTopics": "Popoonowane Tematy",
+  "Sidebar.Coordinator.ThesisTopics": "Tematy Prac",
   "Sidebar.Dean.TopicChangeRequests": "Wnioski o Zmianę Tematu",
   "Sidebar.Dean.ClarificationRequests": "Wnioski o Doprecyzowanie Tematu",
   "Sidebar.Lecturer.ThesisTopics": "Tematy Prac",
@@ -36,5 +36,13 @@
   "Sidebar.Student.ClarificationRequest": "Wzniosek o Doprezyzowanie Tematu",
   "Sidebar.Student.TopicChangeRequest": "Wzniosek o Zmianę Tematu",
   "Sidebar.SingOut": "Wyloguj",
-  "Sidebar.Menu": "Menu"
+  "Sidebar.Menu": "Menu",
+  "Committee.Topics.Header": "Proponowane Tematy Prac Dyplomowych",
+  "Committee.Topics.Label.ForVerification": "Do weryfikacji",
+  "Committee.Topics.Label.Verified": "Zweryfikowane",
+  "Committee.Topics.Table.Topic": "Tematy",
+  "Committee.Topics.Table.Supervisor": "Opiekun",
+  "Committee.Topics.Table.Actions": "Akcje",
+  "Committee.Topics.Table.Review": "Zrecenzuj",
+  "Committee.Topics.Table.Modify": "Modyfikuj"
 }

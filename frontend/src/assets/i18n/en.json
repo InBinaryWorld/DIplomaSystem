@@ -23,8 +23,8 @@
   "Sidebar.Admin.Lecturers": "Lecturers",
   "Sidebar.Admin.ProgramCommittee": "Program Committee",
   "Sidebar.Admin.Students": "Students",
-  "Sidebar.ProgramCommittee.ThesisTopics": "Thesis Topics",
-  "Sidebar.Coordinator.Topics": "Thesis Topics",
+  "Sidebar.ProgramCommittee.ProposedTopics": "Proposed Topics",
+  "Sidebar.Coordinator.ThesisTopics": "Thesis Topics",
   "Sidebar.Dean.TopicChangeRequests": "Topic Change Requests",
   "Sidebar.Dean.ClarificationRequests": "Clarification Requests",
   "Sidebar.Lecturer.ThesisTopics": "Thesis Topics",
@@ -36,5 +36,13 @@
   "Sidebar.Student.ClarificationRequest": "Clarification Request",
   "Sidebar.Student.TopicChangeRequest": "Topic Change Requests",
   "Sidebar.SingOut": "Sing out",
-  "Sidebar.Menu": "Menu"
+  "Sidebar.Menu": "Menu",
+  "Committee.Topics.Header": "Proposed Topics of Diploma Theses",
+  "Committee.Topics.Label.ForVerification": "For verification",
+  "Committee.Topics.Label.Verified": "Verified",
+  "Committee.Topics.Table.Topic": "Topic",
+  "Committee.Topics.Table.Supervisor": "Supervisor",
+  "Committee.Topics.Table.Actions": "Actions",
+  "Committee.Topics.Table.Review": "Review",
+  "Committee.Topics.Table.Modify": "Modify"
 }
