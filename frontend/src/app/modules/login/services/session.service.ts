@@ -19,12 +19,8 @@ export class SessionService {
   login(loginData: LoginData): Observable<SessionData> {
     const urlTemplate = this.settingsService.getServerApi(ApiName.LOGIN);
     // TODO:
-    return of(FakeSessionData.studentSession).pipe(delay(1500))
+    return of(FakeSessionData.studentAdminSession).pipe(delay(1500))
     // return this.proxyService.postWithoutAuth(urlTemplate, loginData);
-  }
-
-  logout(): Observable<void> {
-    return of(undefined);
   }
 
 }

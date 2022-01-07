@@ -3,14 +3,16 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { SessionData } from '../models/session-data.model';
 import {
+  selectContextRole,
   selectIsLoggedIn,
   selectSession,
   selectSessionActionInProgress,
   selectSessionError
 } from '../store/session.selectors';
 import { LoginData } from '../models/login-data.model';
-import { loginAction, logoutAction } from '../store/session.actions';
+import { loginAction, logoutAction, setContextRole } from '../store/session.actions';
 import { AppState } from "../../../core/store/app-state.model";
+import { UserRole } from "../models/user-role.model";
 
 @Injectable({
   providedIn: 'root'
@@ -28,12 +30,20 @@ export class SessionStoreService {
     this.store.dispatch(logoutAction());
   }
 
+  setContextRole(role: UserRole): void {
+    this.store.dispatch(setContextRole({ contextRole: role }));
+  }
+
   isUserLoggedIn(): Observable<boolean> {
     return this.store.select(selectIsLoggedIn);
   }
 
   getSessionData(): Observable<SessionData | undefined> {
     return this.store.select(selectSession);
+  }
+
+  getContextRole(): Observable<UserRole | undefined> {
+    return this.store.select(selectContextRole);
   }
 
   getSessionActionProgress(): Observable<boolean> {

@@ -1,7 +1,16 @@
 <nav class="navbar navbar-light bg-light">
   <div class="container-fluid">
-    <a class="navbar-brand">DIPLOMA SYSTEM</a>
-    <div class="d-flex">
+    <a class="navbar-brand me-auto">{{ 'App.Name' | translate | uppercase }}</a>
+
+    <div *ngIf="sessionData" class="ms-auto me-3">
+      <select [formControl]="roleContextControl" class="d-flex form-select">
+        <option *ngFor="let role of sessionData.roles" [ngValue]="role">
+          {{ getRoleLabelKey(role) | translate: role }}
+        </option>
+      </select>
+    </div>
+
+    <div class="">
       <select [formControl]="languageControl" class="d-flex form-select">
         <option [value]="AppLanguage.POLISH">Polski</option>
         <option [value]="AppLanguage.ENGLISH">English</option>

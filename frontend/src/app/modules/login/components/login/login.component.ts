@@ -3,11 +3,11 @@ import { BaseComponent } from "../../../../core/components/base/base-component.d
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { Optional } from "../../../../core/base/optional";
 import { SessionStoreService } from "../../services/session-store.service";
-import { Router } from "@angular/router";
 import { LoginData } from "../../models/login-data.model";
-import { distinctUntilChanged, filter } from "rxjs";
+import { distinctUntilChanged } from "rxjs";
 import { SpinnerService } from "../../../../core/services/spinner.service";
 import { Store } from "@ngrx/store";
+import { ContextRoutingService } from "../../../../core/services/context-routing.service";
 
 @Component({
   selector: 'app-login',
@@ -22,11 +22,11 @@ export class LoginComponent extends BaseComponent implements OnInit {
   passwordControl: Optional<FormControl>;
   loginFormGroup: Optional<FormGroup>;
 
-  constructor(private readonly router: Router,
-              private readonly store: Store,
+  constructor(private readonly store: Store,
               private readonly formBuilder: FormBuilder,
               private readonly spinnerService: SpinnerService,
-              public readonly sessionStoreService: SessionStoreService,
+              private readonly contextRoutingService: ContextRoutingService,
+              private readonly sessionStoreService: SessionStoreService,
               changeDetector: ChangeDetectorRef) {
     super(changeDetector);
   }
@@ -43,13 +43,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
   ngOnInit(): void {
     this.initSpinner();
     this.initForm();
-    this.followLoginSucceed();
     this.followProcessStatus();
-
-    this.addSubscription(
-      this.store
-        .subscribe(data => console.log(data))
-    );
   }
 
   private followProcessStatus(): void {
@@ -58,18 +52,6 @@ export class LoginComponent extends BaseComponent implements OnInit {
         this.error = error;
         this.changeDetector.markForCheck();
       });
-  }
-
-  private followLoginSucceed(): void {
-    this.addSubscription(
-      this.sessionStoreService.isUserLoggedIn()
-        .pipe(filter(isLoggedIn => isLoggedIn))
-        .subscribe(() => this.handleLoginSucceed())
-    );
-  }
-
-  private handleLoginSucceed(): void {
-    this.router.navigate(['/top']).then();
   }
 
   private initForm() {
@@ -81,7 +63,6 @@ export class LoginComponent extends BaseComponent implements OnInit {
       password: this.passwordControl
     });
   }
-
 
   private initSpinner() {
     this.addSubscription(

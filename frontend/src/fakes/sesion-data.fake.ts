@@ -8,10 +8,7 @@ const studentSession: SessionData = {
   lastName: 'Daniels',
   token: 'XyZ',
   roles: [
-    {
-      id: '1',
-      role: Role.STUDENT
-    }
+    { id: '244001', role: Role.STUDENT }
   ]
 };
 
@@ -22,8 +19,8 @@ const studentAdminSession: SessionData = {
   lastName: 'Daniels',
   token: 'XyZ',
   roles: [
-    { id: '1', role: Role.STUDENT },
-    { id: '1', role: Role.ADMIN }
+    { id: '244001', role: Role.STUDENT },
+    { id: '3221', role: Role.ADMIN }
   ]
 };
 

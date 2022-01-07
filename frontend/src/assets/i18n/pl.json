@@ -1,9 +1,12 @@
 {
+  "App.Name": "System Dyplomowania",
   "Login.Label": "Zaloguj się",
   "Login.Username": "Nazwa użytkownika",
   "Login.Username.Error": "Username must be at least 6 characters long<<PL>>",
   "Login.Password": "Hasło",
   "Login.Password.Error": "Password must be at least 6 characters long<<PL>>",
   "Login.RememberMe": "Remember Me<<PL>>",
-  "Login.Error": "Woops! Something went wrong...<<PL>>"
+  "Login.Error": "Woops! Something went wrong...<<PL>>",
+  "Header.Role.Label.STUDENT": "Student ({{id}})",
+  "Header.Role.Label.ADMIN": "Administrator ({{id}})"
 }

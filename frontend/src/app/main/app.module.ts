@@ -15,7 +15,9 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { AppLanguage } from "../core/models/app-language.model";
 import { StoreModule } from "@ngrx/store";
 import { EffectsModule } from "@ngrx/effects";
-import { SharedModule } from "../shared.module";
+import { SharedModule } from "../modules/shared/shared.module";
+import { AdminModule } from "../modules/admin/admin.module";
+import { StudentModule } from "../modules/student/student.module";
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -47,7 +49,9 @@ const translateConfig: TranslateModuleConfig = {
     NgxSpinnerModule,
     SharedModule,
     CoreModule,
-    LoginModule
+    LoginModule,
+    AdminModule,
+    StudentModule
   ],
   providers: [],
   bootstrap: [AppComponent]
