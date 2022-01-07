@@ -3,9 +3,9 @@ import { SessionStoreService } from "../../modules/login/services/session-store.
 import { first } from "rxjs/operators";
 import { UserRole } from "../../modules/login/models/user-role.model";
 import { Router } from "@angular/router";
-import { isNotNil } from "../base/isNotNil";
 import { Role } from "../models/role.model";
 import { Dictionary } from "../models/dictionary.model";
+import { isNotNil } from "../base/isNotNil";
 
 
 @Injectable({
@@ -35,7 +35,13 @@ export class ContextRoutingService {
   }
 
   private handleRole(role?: UserRole): void {
-    const route = (isNotNil(role) && this.routeByRole[role!.role]) ?? this.loginRoute;
-    this.router.navigate([route]).then();
+    if (isNotNil(role)) {
+      const routeByRole = this.routeByRole[role!.role];
+      if (isNotNil(routeByRole)) {
+        this.router.navigate([routeByRole]).then();
+        return;
+      }
+    }
+    this.router.navigate([this.loginRoute]).then();
   }
 }

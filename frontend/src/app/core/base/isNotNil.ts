@@ -1,5 +1,5 @@
-import {isNil} from "lodash-es";
+import { isNil } from "lodash-es";
 
-export function isNotNil(value: any) {
+export function isNotNil(value: any): boolean {
   return !isNil(value);
 }
