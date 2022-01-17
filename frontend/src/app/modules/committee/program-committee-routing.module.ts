@@ -7,7 +7,7 @@ import { ProgramCommitteeTopicsComponent } from "./components/topics/program-com
 import { ProgramCommitteeComponent } from "./components/program-committee/program-committee.component";
 import {
   ProgramCommitteeTopicReviewComponent
-} from "./components/topic-review/program-committee-topic-review.component";
+} from "./components/topics/review/program-committee-topic-review.component";
 
 
 const routes: Routes = [

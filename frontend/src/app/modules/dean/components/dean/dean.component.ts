@@ -10,8 +10,7 @@ import { NavItem } from "../../../shared/models/nav-item.model";
 export class DeanComponent {
 
   public navItems: NavItem[] = [
-    { path: '/dean/topic-change', nameKey: 'Sidebar.Dean.TopicChangeRequests' },
-    { path: '/dean/clarification-request', nameKey: 'Sidebar.Dean.ClarificationRequests' }
+    { path: '/dean/clarification', nameKey: 'Sidebar.Dean.ClarificationRequests' }
   ];
 
 }

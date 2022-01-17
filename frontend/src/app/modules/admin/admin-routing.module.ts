@@ -18,10 +18,10 @@ const routes: Routes = [
       {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'topic-change',
+        redirectTo: 'import',
       },
       {
-        path: 'topic-change',
+        path: 'import',
         component: ImportSystemDataComponent,
       }
     ]

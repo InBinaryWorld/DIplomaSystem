@@ -5,6 +5,7 @@ import { CoordinatorComponent } from "./components/coordinator/coordinator.compo
 import { AuthGuard } from "../../core/guards/auth.guard";
 import { RoleGuard } from "../../core/guards/role.guard";
 import { Role } from "../../core/models/role.model";
+import { CoordinatorTopicReviewComponent } from "./components/topics/review/coordinator-topic-review.component";
 
 
 const routes: Routes = [
@@ -22,7 +23,18 @@ const routes: Routes = [
       },
       {
         path: 'topic',
-        component: CoordinatorTopicsComponent,
+        children: [
+          {
+            path: '',
+            pathMatch: 'full',
+            component: CoordinatorTopicsComponent,
+          },
+          {
+            path: ':id',
+            pathMatch: 'full',
+            component: CoordinatorTopicReviewComponent,
+          }
+        ]
       }
     ]
   },

@@ -6,3 +6,30 @@
 .content-height {
   min-height: 92vh;
 }
+
+div.table-body {
+  overflow-y: scroll;
+  max-height: 30vh;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 0.3rem;
+}
+
+div.table-body table {
+  width: 100%;
+}
+
+div.table-header {
+  padding-left: 16px;
+  padding-right: 32px;
+}
+
+div.table-header table {
+  margin-bottom: 0;
+  width: 100%;
+}
+
+div.table-header tr:first-child th:last-child {
+  padding-right: 16px;
+  text-align: end;
+}

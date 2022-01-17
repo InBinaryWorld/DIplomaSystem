@@ -24,7 +24,7 @@ import { DeanModule } from "../modules/dean/dean.module";
 import { LecturerModule } from "../modules/lecturer/lecturer.module";
 import { CoordinatorModule } from "../modules/coordinator/coordinator.module";
 import { DiplomaSectionModule } from "../modules/section/diploma-section.module";
-import { ProgramCommitteeModule } from "../modules/commitee/program-committee.module";
+import { ProgramCommitteeModule } from "../modules/committee/program-committee.module";
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {

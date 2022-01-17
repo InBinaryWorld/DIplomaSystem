@@ -1,10 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { TopicChangeRequestsComponent } from "./components/topic-change/topic-change-requests.component";
 import { DeanComponent } from "./components/dean/dean.component";
 import { AuthGuard } from "../../core/guards/auth.guard";
 import { RoleGuard } from "../../core/guards/role.guard";
 import { Role } from "../../core/models/role.model";
+import {
+  DeanTopicClarificationRequestsComponent
+} from "./components/clarification/dean-topic-clarification-requests.component";
 
 
 const routes: Routes = [
@@ -18,11 +20,21 @@ const routes: Routes = [
       {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'topic-change',
+        redirectTo: 'clarification',
       },
       {
-        path: 'topic-change',
-        component: TopicChangeRequestsComponent,
+        path: 'clarification',
+        children: [
+          {
+            path: '',
+            pathMatch: 'full',
+            component: DeanTopicClarificationRequestsComponent,
+          },
+          {
+            path: ':id',
+            component: DeanTopicClarificationRequestsComponent,
+          }
+        ]
       }
     ]
   },

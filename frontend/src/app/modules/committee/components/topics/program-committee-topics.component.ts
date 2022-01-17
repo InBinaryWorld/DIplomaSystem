@@ -4,12 +4,13 @@ import { TopicStatus } from "../../../shared/dto/topic-status.model";
 import { Router } from "@angular/router";
 
 @Component({
-  selector: 'app-topic-change-requests',
-  templateUrl: './coordinator-topics.component.html',
-  styleUrls: ['./coordinator-topics.component.css'],
+  selector: 'app-lecturer-topics',
+  templateUrl: './program-committee-topics.component.html',
+  styleUrls: ['./program-committee-topics.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CoordinatorTopicsComponent {
+export class ProgramCommitteeTopicsComponent {
+
   private topic: ThesisTopic = {
     id: '12',
     name: 'Predykcja zachowań ludzi podczas lockdownu',
@@ -20,7 +21,7 @@ export class CoordinatorTopicsComponent {
     fillingDate: new Date()
   };
 
-  public topics: ThesisTopic[] = [
+  public topicsApprovedByCoordinator: ThesisTopic[] = [
     this.topic,
     this.topic,
     this.topic,
@@ -36,6 +37,6 @@ export class CoordinatorTopicsComponent {
   }
 
   public reviewTopic(topic: ThesisTopic): void {
-    this.router.navigate(['/coordinator/topic', topic.id]).then();
+    this.router.navigate(['/program-committee/topic', topic.id]).then();
   }
 }

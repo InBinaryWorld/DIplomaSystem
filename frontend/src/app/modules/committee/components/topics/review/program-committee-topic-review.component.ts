@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { ThesisTopic } from "../../../shared/dto/thesis-topic.model";
-import { TopicStatus } from "../../../shared/dto/topic-status.model";
+import { ThesisTopic } from "../../../../shared/dto/thesis-topic.model";
+import { TopicStatus } from "../../../../shared/dto/topic-status.model";
 import { FormBuilder, FormGroup } from "@angular/forms";
 import { Router } from "@angular/router";
 
