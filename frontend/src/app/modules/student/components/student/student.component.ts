@@ -10,8 +10,8 @@ import { NavItem } from "../../../shared/models/nav-item.model";
 export class StudentComponent {
 
   public navItems: NavItem[] = [
-    { path: '/student/topic-proposition', nameKey: 'Sidebar.Student.TopicPropositions' },
     { path: '/student/reservations', nameKey: 'Sidebar.Student.TopicReservations' },
+    { path: '/student/topic-propositions', nameKey: 'Sidebar.Student.TopicPropositions' },
     { path: '/student/topic-change', nameKey: 'Sidebar.Student.TopicChangeRequest' },
     { path: '/student/clarification-request', nameKey: 'Sidebar.Student.ClarificationRequest' }
   ];

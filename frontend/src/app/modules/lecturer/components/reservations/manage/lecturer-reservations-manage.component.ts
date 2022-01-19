@@ -6,6 +6,7 @@ import { Router } from "@angular/router";
 import { Reservation } from "../../../../shared/dto/reservation.model";
 import { ReservationStatus } from "../../../../shared/dto/reservation-status.model";
 import { isNotNil } from "../../../../../core/base/isNotNil";
+import { TranslationKeys } from "../../../../../core/utils/translation-keys.utils";
 
 @Component({
   selector: 'app-lecturer-reservations-manage',
@@ -59,7 +60,7 @@ export class LecturerReservationsManageComponent implements OnInit {
     {
       id: '1',
       creationDate: new Date(),
-      status: ReservationStatus.CONFIRMED,
+      status: ReservationStatus.ACCEPTED,
       topicId: '12'
     },
     {
@@ -118,7 +119,7 @@ export class LecturerReservationsManageComponent implements OnInit {
   }
 
   getStatusTranslationKey(item: Reservation): string {
-    return "ReservationsStatus." + item.status;
+    return TranslationKeys.forReservationStatus(item.status);
   }
 
   approveReservation(item: Reservation): void {

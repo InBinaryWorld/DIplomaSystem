@@ -45,4 +45,5 @@ div.table-body table {
 div.table-body td.action-col button {
   float: right;
   margin-left: 4px;
+  margin-bottom: 1px;
 }

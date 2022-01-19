@@ -34,8 +34,8 @@
           <thead class="table-dark">
           <tr>
             <th style="width: 5%" scope="col">#</th>
-            <th style="width: 55%" scope="col">{{ 'Lecturer.ManageReservation.Table.Students' | translate }}</th>
-            <th style="width: 20%" scope="col">{{ 'Lecturer.ManageReservation.Table.Status' | translate }}</th>
+            <th style="width: 55%" scope="col">{{ 'Table.Students' | translate }}</th>
+            <th style="width: 20%" scope="col">{{ 'Table.Status' | translate }}</th>
             <th style="width: auto" class="action-col" scope="col">{{ 'Table.Actions' | translate }}</th>
           </tr>
           </thead>
@@ -49,10 +49,16 @@
             <td style="width: 55%">Jacek Wernikowski, Janina Janinowska, Adam Adamski</td>
             <td style="width: 20%">{{ getStatusTranslationKey(item) | translate }}</td>
             <td style="width: auto" class="action-col">
-              <button type="button" class="btn btn-primary" (click)="approveReservation(item)">
+              <button type="button"
+                      class="btn btn-primary"
+                      [disabled]="!isApproveActionAvailable(item)"
+                      (click)="approveReservation(item)">
                 {{ 'Button.Approve' | translate }}
               </button>
-              <button type="button" class="btn btn-primary" (click)="rejectReservation(item)">
+              <button type="button"
+                      class="btn btn-primary"
+                      [disabled]="!isRejectActionAvailable(item)"
+                      (click)="rejectReservation(item)">
                 {{ 'Button.Reject' | translate }}
               </button>
             </td>
