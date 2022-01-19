@@ -32,7 +32,7 @@ export class ShowTimetableComponent implements OnInit {
     this.form!.setValue({
       // thesisTopic: this.topic.name,
       // supervisor: "Jan kowalski",
-      // personCount: this.topic.personCount,
+      // numberOfStudents: this.topic.numberOfStudents,
       // description: this.topic.description
     })
   }
@@ -41,7 +41,7 @@ export class ShowTimetableComponent implements OnInit {
     this.form = this.formBuilder.group({
       // thesisTopic: [],
       // supervisor: [],
-      // personCount: [],
+      // numberOfStudents: [],
       // description: [],
     })
   }

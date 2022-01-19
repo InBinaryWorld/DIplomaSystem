@@ -4,9 +4,9 @@ export interface ThesisTopic {
   id: string;
   name: string;
   description?: string;
-  personCount: number;
+  numberOfStudents: number;
   status: TopicStatus;
   coordinatorComment?: string;
-  fillingDate: Date;
+  submissionDate: Date;
   reportedByStudent: boolean;
 }

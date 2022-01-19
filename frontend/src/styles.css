@@ -7,18 +7,6 @@
   min-height: 92vh;
 }
 
-div.table-body {
-  overflow-y: auto;
-  max-height: 30vh;
-  padding-left: 1rem;
-  padding-right: 1rem;
-  padding-top: 0.3rem;
-}
-
-div.table-body table {
-  width: 100%;
-}
-
 div.table-header {
   padding-left: 16px;
   padding-right: 32px;
@@ -29,7 +17,32 @@ div.table-header table {
   width: 100%;
 }
 
-div.table-header tr:first-child th:last-child {
+div.table-header tr {
+  vertical-align: middle;
+}
+
+div.table-header th.action-col {
   padding-right: 16px;
   text-align: end;
+}
+
+div.table-body {
+  overflow-y: auto;
+  max-height: 30vh;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 0.3rem;
+}
+
+div.table-body.table-tall {
+  max-height: 60vh;
+}
+
+div.table-body table {
+  width: 100%;
+}
+
+div.table-body td.action-col button {
+  float: right;
+  margin-left: 4px;
 }

@@ -1,0 +1,47 @@
+<div class="container">
+  <div class="row my-4 mb-2">
+    <div class="col-12">
+      <h1 class="display-6">{{ 'Lecturer.Reservations.Header' | translate }}</h1>
+    </div>
+  </div>
+
+  <div class="row mt-5 mb-3">
+
+    <div class="col-12">
+      <div class="table-header bg-dark">
+        <table class="table">
+          <thead class="table-dark">
+          <tr>
+            <th style="width: 5%" scope="col"></th>
+            <th style="width: 50%" scope="col">{{ 'Lecturer.Reservations.Table.Topic' | translate }}</th>
+            <th style="width: 15%" scope="col">{{ 'Lecturer.Reservations.Table.NumberOfStudents' | translate }}</th>
+            <th style="width: 15%" scope="col">{{ 'Lecturer.Reservations.Table.RequireDecision' | translate }}</th>
+            <th style="width: auto" class="action-col" scope="col">{{ 'Table.Actions' | translate }}</th>
+          </tr>
+          </thead>
+        </table>
+      </div>
+      <div class="table-body table-tall">
+        <table class="table">
+          <tbody>
+          <tr *ngFor="let item of data">
+            <th style="width: 5%" scope="row">{{ item.topic.id }}</th>
+            <td style="width: 50%">{{ item.topic.name }}</td>
+            <td style="width: 15%">{{ item.topic.numberOfStudents }}</td>
+            <td style="width: 15%">{{ item.notReviewedReservations }}</td>
+            <td style="width: auto" class="action-col">
+              <button (click)="manageTopicReservations(item.topic)" type="button" class="btn btn-primary">
+                {{ 'Button.Manage' | translate }}
+              </button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+        <div *ngIf="!data.length" class="d-flex justify-content-center">
+          {{ 'Table.NoData' | translate }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

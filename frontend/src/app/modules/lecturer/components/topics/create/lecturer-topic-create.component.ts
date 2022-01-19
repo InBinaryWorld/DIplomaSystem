@@ -5,12 +5,12 @@ import { FormBuilder, FormGroup } from "@angular/forms";
 import { Router } from "@angular/router";
 
 @Component({
-  selector: 'app-coordinator-topic-review',
-  templateUrl: './coordinator-topic-review.component.html',
-  styleUrls: ['./coordinator-topic-review.component.css'],
+  selector: 'app-lecturer-topic-create',
+  templateUrl: './lecturer-topic-create.component.html',
+  styleUrls: ['./lecturer-topic-create.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CoordinatorTopicReviewComponent implements OnInit {
+export class LecturerTopicCreateComponent implements OnInit {
 
   form?: FormGroup;
 
@@ -29,11 +29,11 @@ export class CoordinatorTopicReviewComponent implements OnInit {
   }
 
   approve() {
-    this.router.navigate(['/coordinator/topic'])
+    this.router.navigate(['/lecturer/topic'])
   }
 
   reject() {
-    this.router.navigate(['/coordinator/topic'])
+    this.router.navigate(['/lecturer/topic'])
   }
 
   ngOnInit(): void {

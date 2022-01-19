@@ -20,10 +20,10 @@ export class SectionTopicChangeDetailsComponent implements OnInit {
     id: '12',
     name: 'Predykcja zachowań ludzi podczas lockdownu',
     description: "Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu",
-    personCount: 1,
+    numberOfStudents: 1,
     status: TopicStatus.APPROVED_BY_COORDINATOR,
     reportedByStudent: false,
-    fillingDate: new Date()
+    submissionDate: new Date()
   };
 
   application: ChangeRequest = {
@@ -51,7 +51,7 @@ export class SectionTopicChangeDetailsComponent implements OnInit {
     this.form!.setValue({
       // thesisTopic: this.topic.name,
       // supervisor: "Jan kowalski",
-      // personCount: this.topic.personCount,
+      // numberOfStudents: this.topic.numberOfStudents,
       // description: this.topic.description
     })
   }
@@ -60,7 +60,7 @@ export class SectionTopicChangeDetailsComponent implements OnInit {
     this.form = this.formBuilder.group({
       // thesisTopic: [],
       // supervisor: [],
-      // personCount: [],
+      // numberOfStudents: [],
       // description: [],
     })
   }

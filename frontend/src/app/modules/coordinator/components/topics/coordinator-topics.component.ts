@@ -14,10 +14,10 @@ export class CoordinatorTopicsComponent {
     id: '12',
     name: 'Predykcja zachowań ludzi podczas lockdownu',
     description: "Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu",
-    personCount: 1,
+    numberOfStudents: 1,
     status: TopicStatus.APPROVED_BY_COORDINATOR,
     reportedByStudent: false,
-    fillingDate: new Date()
+    submissionDate: new Date()
   };
 
   public topics: ThesisTopic[] = [
