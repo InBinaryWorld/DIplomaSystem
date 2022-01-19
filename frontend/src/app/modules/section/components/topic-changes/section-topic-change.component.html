@@ -30,7 +30,7 @@
           <tr *ngFor="let application of applications">
             <th style="width: 5%" scope="row">{{ application.id }}</th>
             <td style="width: 40%">Janusz Kowalski</td>
-            <td style="width: 40%">{{ application.submissionDate | date }}</td>
+            <td style="width: 40%">{{ application.submissionDate | localDate }}</td>
             <td style="width: auto">
               <button type="button" class="float-end btn btn-primary" (click)="showDetails(application)">
                 {{ 'Button.Details' | translate }}
@@ -69,7 +69,7 @@
           <tr *ngFor="let application of applications">
             <th style="width: 5%" scope="row">{{ application.id }}</th>
             <td style="width: 30%">Janusz Kowalski</td>
-            <td style="width: 30%">{{ application.submissionDate | date }}</td>
+            <td style="width: 30%">{{ application.submissionDate | localDate }}</td>
             <td style="width: 20%">Zaakceptowany</td>
             <td style="width: auto">
               <button type="button" class="float-end btn btn-primary" (click)="showDetails(application)">

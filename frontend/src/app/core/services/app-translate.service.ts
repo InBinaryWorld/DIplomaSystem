@@ -3,11 +3,18 @@ import { TranslateService } from "@ngx-translate/core";
 import { Observable } from "rxjs";
 import { AppLanguage } from "../models/app-language.model";
 import { CleanableService } from "./cleanable.service";
+import { Dictionary } from "../models/dictionary.model";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AppTranslateService extends CleanableService {
+
+  private localesByLang: Dictionary<string> = {
+    [AppLanguage.POLISH]: 'pl',
+    [AppLanguage.ENGLISH]: 'en-US',
+  }
+
 
   constructor(private readonly translateService: TranslateService) {
     super();
@@ -24,6 +31,10 @@ export class AppTranslateService extends CleanableService {
 
   public getCurrentLanguage(): AppLanguage {
     return this.translateService.currentLang as AppLanguage;
+  }
+
+  public getLocale(): string {
+    return this.localesByLang[this.translateService.currentLang];
   }
 
 }

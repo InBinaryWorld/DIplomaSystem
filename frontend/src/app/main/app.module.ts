@@ -25,6 +25,8 @@ import { LecturerModule } from "../modules/lecturer/lecturer.module";
 import { CoordinatorModule } from "../modules/coordinator/coordinator.module";
 import { DiplomaSectionModule } from "../modules/section/diploma-section.module";
 import { ProgramCommitteeModule } from "../modules/committee/program-committee.module";
+import { registerLocaleData } from "@angular/common";
+import localePl from '@angular/common/locales/pl';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -46,6 +48,8 @@ const localStorageSyncReducer = localStorageSync({
 });
 
 const metaReducers = [localStorageSyncReducer];
+
+registerLocaleData(localePl)
 
 
 @NgModule({

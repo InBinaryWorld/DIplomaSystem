@@ -4,10 +4,12 @@ import { CommonModule } from "@angular/common";
 import { ReactiveFormsModule } from "@angular/forms";
 import { SidebarComponent } from "./components/sidebar/sidebar.component";
 import { RouterModule } from "@angular/router";
+import { LocalDatePipe } from "./pipes/local-date.pipe";
 
 @NgModule({
   declarations: [
-    SidebarComponent
+    SidebarComponent,
+    LocalDatePipe
   ],
   imports: [
     CommonModule,
@@ -20,7 +22,8 @@ import { RouterModule } from "@angular/router";
     RouterModule,
     TranslateModule,
     ReactiveFormsModule,
-    SidebarComponent
+    SidebarComponent,
+    LocalDatePipe
   ]
 })
 export class SharedModule {

@@ -8,7 +8,7 @@
 }
 
 div.table-body {
-  overflow-y: scroll;
+  overflow-y: auto;
   max-height: 30vh;
   padding-left: 1rem;
   padding-right: 1rem;
