@@ -1,9 +1,12 @@
-import { TopicStatus } from "./topic-status.model";
+import { TopicStatus } from './topic-status.model';
 
 export interface ThesisTopic {
   id: string;
+  supervisorId: string;
+  diplomaSessionId: string;
+  authorStudentId: string;
   name: string;
-  description?: string;
+  description: string;
   numberOfStudents: number;
   status: TopicStatus;
   coordinatorComment?: string;

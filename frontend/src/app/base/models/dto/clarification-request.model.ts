@@ -1,8 +1,7 @@
-import { ThesisTopic } from "./thesis-topic.model";
-import { BaseRequest } from "./base-request.model";
+import { BaseRequest } from './base-request.model';
 
 export interface ClarificationRequest extends BaseRequest {
-  topic: ThesisTopic;
-  newName?: string;
-  newDescription?: string;
+  topicId: string;
+  newName: string;
+  newDescription: string;
 }

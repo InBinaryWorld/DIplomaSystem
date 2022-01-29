@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ThesisTopic } from '../../../../base/models/dto/thesis-topic.model';
 import { TopicStatus } from '../../../../base/models/dto/topic-status.model';
-import { ApplicationState } from '../../../../base/models/dto/application-state.model';
+import { RequestState } from '../../../../base/models/dto/request-state.model';
 import { Router } from '@angular/router';
 import { ClarificationRequest } from '../../../../base/models/dto/clarification-request.model';
 
@@ -26,7 +26,7 @@ export class DeanTopicClarificationRequestsComponent {
   application: ClarificationRequest = {
     id: '13',
     submissionDate: new Date(),
-    state: ApplicationState.Waiting,
+    state: RequestState.Waiting,
     topic: this.topic,
     newDescription: 'lorem ipsum dior',
     newName: 'lorem ipsum dior'

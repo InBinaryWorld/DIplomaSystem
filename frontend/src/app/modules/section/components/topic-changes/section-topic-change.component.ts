@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ThesisTopic } from '../../../../base/models/dto/thesis-topic.model';
 import { TopicStatus } from '../../../../base/models/dto/topic-status.model';
 import { ChangeRequest } from '../../../../base/models/dto/change-request.model';
-import { ApplicationState } from '../../../../base/models/dto/application-state.model';
+import { RequestState } from '../../../../base/models/dto/request-state.model';
 import { Router } from '@angular/router';
 
 @Component({
@@ -28,7 +28,7 @@ export class SectionTopicChangeComponent {
     oldTopic: this.topic,
     newTopic: this.topic,
     submissionDate: new Date(),
-    state: ApplicationState.Waiting
+    state: RequestState.Waiting
   };
 
   applications: ChangeRequest[] = [

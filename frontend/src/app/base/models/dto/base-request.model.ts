@@ -1,7 +1,9 @@
-import { ApplicationState } from "./application-state.model";
+import { RequestState } from './request-state.model';
 
 export interface BaseRequest {
   id: string;
   submissionDate: Date;
-  state: ApplicationState;
+  state: RequestState;
+  studentId: string;
+  employeeId: string;
 }
