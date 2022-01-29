@@ -2,10 +2,9 @@ import { Injectable } from '@angular/core';
 import { ServerHttpService } from '../../core/services/server-http.service';
 import { SettingsService } from '../../core/services/settings.service';
 import { LoginData } from '../models/login-data.model';
-import { delay, Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { AuthData } from '../models/auth-data.model';
 import { ApiLabel } from '../../core/models/api-route.model';
-import { FakeSessionData } from '../../../fakes/sesion-data.fake';
 
 @Injectable({
   providedIn: 'root'
@@ -17,21 +16,11 @@ export class AuthService {
   }
 
   login(loginData: LoginData): Observable<AuthData> {
-    const urlTemplate = this.settingsService.getServerApi(ApiLabel.LOGIN);
-    if (this.settingsService.isFakeApiEnabled()) {
-      return of(FakeSessionData.generateAuthData())
-        .pipe(delay(this.settingsService.fakeApiDelay()));
-    }
-    return this.http.post(urlTemplate, loginData);
+    return this.http.postWithLabel(ApiLabel.LOGIN, loginData);
   }
 
   refreshToken(refreshToken: string): Observable<AuthData> {
-    const urlTemplate = this.settingsService.getServerApi(ApiLabel.REFRESH);
-    if (this.settingsService.isFakeApiEnabled()) {
-      return of(FakeSessionData.generateAuthData())
-        .pipe(delay(this.settingsService.fakeApiDelay()));
-    }
-    return this.http.post(urlTemplate, { refreshToken });
+    return this.http.postWithLabel(ApiLabel.REFRESH, { refreshToken });
   }
 
 }

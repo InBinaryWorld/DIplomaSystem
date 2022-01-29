@@ -30,6 +30,7 @@ import { clearStoreMetaReducer } from '../core/store/clear-store.reducer';
 import { AuthInterceptor } from '../base/interceptors/auth.interceptor';
 import { SessionFeatureName } from '../base/store/session/session.reducer';
 import { BaseModule } from '../base/base.module';
+import { SpinnerInterceptor } from '../base/interceptors/spinner.interceptor';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -84,11 +85,18 @@ registerLocaleData(localePl);
     DiplomaSectionModule,
     ProgramCommitteeModule
   ],
-  providers: [{
-    provide: HTTP_INTERCEPTORS,
-    useClass: AuthInterceptor,
-    multi: true
-  }],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: SpinnerInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

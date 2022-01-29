@@ -1,0 +1,52 @@
+<div class="container">
+  <div class="row mt-4 mb-2">
+    <h1 class="display-6">{{ 'Student.TopicClarification.Header' | translate }}</h1>
+  </div>
+
+  <div class="row py-3">
+    <form *ngIf="currentTopicForm" [formGroup]="currentTopicForm">
+      <fieldset disabled>
+        <div class="mb-3">
+          <label for="currentThesisTopic"
+                 class="form-label">{{ 'Student.TopicClarification.CurrentThesisTopic' | translate }}</label>
+          <input type="text" formControlName="currentThesisTopic" id="currentThesisTopic" class="form-control">
+        </div>
+        <div class="mb-4">
+          <label for="currentDescription"
+                 class="form-label">{{ 'Student.TopicClarification.CurrentDescription' | translate }}</label>
+          <textarea formControlName="currentDescription" id="currentDescription" class="form-control"></textarea>
+        </div>
+      </fieldset>
+    </form>
+    <form *ngIf="newTopicForm" [formGroup]="newTopicForm">
+      <div class="mb-3">
+        <label for="newThesisTopic"
+               class="form-label">{{ 'Student.TopicClarification.NewThesisTopic' | translate }}</label>
+        <input type="text" formControlName="newThesisTopic" id="newThesisTopic" class="form-control">
+      </div>
+      <div class="mb-4">
+        <label for="newDescription"
+               class="form-label">{{ 'Student.TopicClarification.NewDescription' | translate }}</label>
+        <textarea formControlName="newDescription" id="newDescription" class="form-control"></textarea>
+      </div>
+      <div class="gap-2 d-flex">
+        <div class="my-auto">
+          <label>Status: </label>
+          <label>Zaakceptowany</label>
+        </div>
+        <button routerLink="../" type="submit" class="btn btn-primary ms-auto">
+          {{ 'Button.Cancel' | translate }}
+        </button>
+      </div>
+      <div class="gap-2 d-flex">
+        <button (click)="cancel()" type="submit" class="btn btn-primary ms-auto ">
+          {{ 'Button.Reject' | translate }}
+        </button>
+        <button (click)="confirm()" type="submit" class="btn btn-success">
+          {{ 'Button.Approve' | translate }}
+        </button>
+      </div>
+    </form>
+  </div>
+
+</div>

@@ -12,7 +12,9 @@ export const baseEnvironment = {
     api: {
       [ApiLabel.LOGIN]: 'TODO',
       [ApiLabel.REFRESH]: 'TODO',
-      [ApiLabel.USER]: 'TODO'
+      [ApiLabel.USER]: 'TODO',
+      [ApiLabel.CHANGE_REQUESTS]: 'TODO',
+      [ApiLabel.CLARIFICATION_REQUESTS]: 'TODO'
     }
   }
 };

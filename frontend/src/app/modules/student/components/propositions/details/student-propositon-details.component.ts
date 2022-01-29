@@ -45,6 +45,7 @@ export class StudentPropositonDetailsComponent implements OnInit {
     this.router.navigate(['/student/reservations']);
   }
 
+
   ngOnInit(): void {
     this.initForm();
     this.form!.setValue({

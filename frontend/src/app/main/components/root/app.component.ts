@@ -10,6 +10,7 @@ import { CleanableStoreService } from '../../../core/services/cleanable-store.se
 import { ContextRoutingService } from '../../../core/services/context-routing.service';
 import { SessionStoreService } from '../../../base/services/session-store.service';
 import { UserStoreService } from '../../../base/services/user-store.service';
+import { RequestsStoreService } from '../../../base/services/requests-store.service';
 
 @Component({
   selector: 'app-root',
@@ -21,6 +22,7 @@ export class AppComponent extends BaseComponent implements OnInit {
   spinnerName = spinnerName;
 
   constructor(private readonly contextRoutingService: ContextRoutingService,
+              private readonly requestsStoreService: RequestsStoreService,
               private readonly translationsService: AppTranslateService,
               private readonly sessionStoreService: SessionStoreService,
               private readonly authStoreService: AuthStoreService,
@@ -46,6 +48,7 @@ export class AppComponent extends BaseComponent implements OnInit {
 
   private initStoreSpinners(): void {
     const services: CleanableStoreService[] = [
+      this.requestsStoreService,
       this.sessionStoreService,
       this.authStoreService,
       this.userStoreService

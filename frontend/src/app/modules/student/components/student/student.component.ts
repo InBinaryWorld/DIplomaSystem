@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { NavItem } from "../../../shared/models/nav-item.model";
+import { NavItem } from '../../../shared/models/nav-item.model';
 
 @Component({
   selector: 'app-student',
@@ -13,7 +13,7 @@ export class StudentComponent {
     { path: '/student/reservations', nameKey: 'Sidebar.Student.TopicReservations' },
     { path: '/student/topic-propositions', nameKey: 'Sidebar.Student.TopicPropositions' },
     { path: '/student/topic-change', nameKey: 'Sidebar.Student.TopicChangeRequest' },
-    { path: '/student/clarification-request', nameKey: 'Sidebar.Student.ClarificationRequest' }
+    { path: '/student/clarification-requests', nameKey: 'Sidebar.Student.ClarificationRequest' }
   ];
 
 }

@@ -35,11 +35,14 @@ function generateAuthData(): AuthData {
 }
 
 
-function getByLabel(label: ApiLabel): any {
-  return responseByApiKey[label];
-}
-
 export const FakeSessionData = {
-  generateAuthData,
-  getByLabel
+  handleApiLabel(apiLabel: ApiLabel) {
+    switch (apiLabel) {
+      case ApiLabel.LOGIN:
+      case ApiLabel.REFRESH:
+        return generateAuthData();
+      default:
+        return responseByApiKey[apiLabel];
+    }
+  }
 };

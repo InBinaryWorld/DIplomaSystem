@@ -6,8 +6,8 @@ import { RoleGuard } from '../../core/guards/role.guard';
 import { Role } from '../../base/models/dto/role.model';
 import { StudentTopicChangeComponent } from './components/topic-change/student-topic-change.component';
 import {
-  StudentTopicClarificationComponent
-} from './components/topic-clarification/student-topic-clarification.component';
+  StudentTopicClarificationsComponent
+} from './components/topic-clarification/student-topic-clarifications.component';
 import { StudentReservationsComponent } from './components/reservations/student-reservations.component';
 import {
   StudentReservationDetailsComponent
@@ -23,6 +23,12 @@ import {
 import {
   StudentPropositonDetailsComponent
 } from './components/propositions/details/student-propositon-details.component';
+import {
+  StudentTopicCreateClarificationComponent
+} from './components/topic-clarification/create/student-topic-create-clarification.component';
+import {
+  StudentTopicClarificationDetailsComponent
+} from './components/topic-clarification/details/student-topic-clarification-details.component';
 
 
 const routes: Routes = [
@@ -83,8 +89,22 @@ const routes: Routes = [
         component: StudentTopicChangeComponent
       },
       {
-        path: 'clarification-request',
-        component: StudentTopicClarificationComponent
+        path: 'clarification-requests',
+        children: [
+          {
+            path: '',
+            pathMatch: 'full',
+            component: StudentTopicClarificationsComponent
+          },
+          {
+            path: 'details/:id',
+            component: StudentTopicClarificationDetailsComponent
+          },
+          {
+            path: 'create',
+            component: StudentTopicCreateClarificationComponent
+          }
+        ]
       }
     ]
   }
@@ -96,3 +116,29 @@ const routes: Routes = [
 })
 export class StudentRoutingModule {
 }
+
+
+const user = {
+  id: 2,
+  firstName: 'aa',
+  lastNAme: 'bbb'
+};
+
+const pracownik1 = {
+  id: 1,
+  userId: 2,
+  role: 'Prowadzacy'
+};
+const pracownik2 = {
+  id: 1,
+  userId: 2,
+  role: 'Dziekan'
+};
+const student1 = {
+  id: 1,
+  userId: 2
+};
+const student2 = {
+  id: 2,
+  userId: 2
+};
