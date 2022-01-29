@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CoordinatorTopicsComponent } from "./components/topics/coordinator-topics.component";
-import { CoordinatorComponent } from "./components/coordinator/coordinator.component";
-import { AuthGuard } from "../../core/guards/auth.guard";
-import { RoleGuard } from "../../core/guards/role.guard";
-import { Role } from "../../core/models/role.model";
-import { CoordinatorTopicReviewComponent } from "./components/topics/review/coordinator-topic-review.component";
+import { CoordinatorTopicsComponent } from './components/topics/coordinator-topics.component';
+import { CoordinatorComponent } from './components/coordinator/coordinator.component';
+import { AuthGuard } from '../../core/guards/auth.guard';
+import { RoleGuard } from '../../core/guards/role.guard';
+import { Role } from '../../base/models/dto/role.model';
+import { CoordinatorTopicReviewComponent } from './components/topics/review/coordinator-topic-review.component';
 
 
 const routes: Routes = [
@@ -19,7 +19,7 @@ const routes: Routes = [
       {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'topic',
+        redirectTo: 'topic'
       },
       {
         path: 'topic',
@@ -27,17 +27,17 @@ const routes: Routes = [
           {
             path: '',
             pathMatch: 'full',
-            component: CoordinatorTopicsComponent,
+            component: CoordinatorTopicsComponent
           },
           {
             path: ':id',
             pathMatch: 'full',
-            component: CoordinatorTopicReviewComponent,
+            component: CoordinatorTopicReviewComponent
           }
         ]
       }
     ]
-  },
+  }
 ];
 
 @NgModule({

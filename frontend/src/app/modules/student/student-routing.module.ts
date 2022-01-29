@@ -1,28 +1,28 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { StudentComponent } from "./components/student/student.component";
-import { AuthGuard } from "../../core/guards/auth.guard";
-import { RoleGuard } from "../../core/guards/role.guard";
-import { Role } from "../../core/models/role.model";
-import { StudentTopicChangeComponent } from "./components/topic-change/student-topic-change.component";
+import { StudentComponent } from './components/student/student.component';
+import { AuthGuard } from '../../core/guards/auth.guard';
+import { RoleGuard } from '../../core/guards/role.guard';
+import { Role } from '../../base/models/dto/role.model';
+import { StudentTopicChangeComponent } from './components/topic-change/student-topic-change.component';
 import {
   StudentTopicClarificationComponent
-} from "./components/topic-clarification/student-topic-clarification.component";
-import { StudentReservationsComponent } from "./components/reservations/student-reservations.component";
+} from './components/topic-clarification/student-topic-clarification.component';
+import { StudentReservationsComponent } from './components/reservations/student-reservations.component';
 import {
   StudentReservationDetailsComponent
-} from "./components/reservations/details/student-reservation-details.component";
-import { StudentTopicDetailsComponent } from "./components/reservations/topic/student-topic-details.component";
+} from './components/reservations/details/student-reservation-details.component';
+import { StudentTopicDetailsComponent } from './components/reservations/topic/student-topic-details.component';
 import {
   StudentCreateReservationComponent
-} from "./components/reservations/create/student-create-reservation.component";
-import { StudentTopicPropositionsComponent } from "./components/propositions/student-topic-propositions.component";
+} from './components/reservations/create/student-create-reservation.component';
+import { StudentTopicPropositionsComponent } from './components/propositions/student-topic-propositions.component';
 import {
   StudentCreatePropositionComponent
-} from "./components/propositions/create/student-create-proposition.component";
+} from './components/propositions/create/student-create-proposition.component';
 import {
   StudentPropositonDetailsComponent
-} from "./components/propositions/details/student-propositon-details.component";
+} from './components/propositions/details/student-propositon-details.component';
 
 
 const routes: Routes = [
@@ -36,7 +36,7 @@ const routes: Routes = [
       {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'reservations',
+        redirectTo: 'reservations'
       },
       {
         path: 'reservations',
@@ -44,7 +44,7 @@ const routes: Routes = [
           {
             path: '',
             pathMatch: 'full',
-            component: StudentReservationsComponent,
+            component: StudentReservationsComponent
           },
           {
             path: 'details/:id',
@@ -80,14 +80,14 @@ const routes: Routes = [
       },
       {
         path: 'topic-change',
-        component: StudentTopicChangeComponent,
+        component: StudentTopicChangeComponent
       },
       {
         path: 'clarification-request',
-        component: StudentTopicClarificationComponent,
+        component: StudentTopicClarificationComponent
       }
     ]
-  },
+  }
 ];
 
 @NgModule({

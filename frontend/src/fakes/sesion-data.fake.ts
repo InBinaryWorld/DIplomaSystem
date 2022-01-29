@@ -1,23 +1,15 @@
-import { Role } from "../app/core/models/role.model";
-import { SessionData } from "../app/modules/login/models/session-data.model";
+import { Role } from '../app/base/models/dto/role.model';
+import { AuthData } from '../app/base/models/auth-data.model';
+import { User } from '../app/base/models/dto/user.model';
+import { ApiLabel } from '../app/core/models/api-route.model';
+import { Dictionary } from '../app/core/models/dictionary.model';
 
-const studentSession: SessionData = {
+
+const userAllRoles: User = {
   id: '1',
   username: 'johnny',
   firstName: 'Jack',
   lastName: 'Daniels',
-  token: 'XyZ',
-  roles: [
-    { id: '244001', role: Role.STUDENT }
-  ]
-};
-
-const allRolesUserSession: SessionData = {
-  id: '1',
-  username: 'johnny',
-  firstName: 'Jack',
-  lastName: 'Daniels',
-  token: 'XyZ',
   roles: [
     { id: '244001', role: Role.STUDENT },
     { id: '244901', role: Role.STUDENT },
@@ -30,7 +22,24 @@ const allRolesUserSession: SessionData = {
   ]
 };
 
+const responseByApiKey: Dictionary<any> = {
+  [ApiLabel.USER]: userAllRoles
+};
+
+function generateAuthData(): AuthData {
+  return {
+    accessToken: 'accessToken',
+    refreshToken: 'refreshToken',
+    expireIn: new Date().getTime() + 5 * 1000 // 5 min
+  };
+}
+
+
+function getByLabel(label: ApiLabel): any {
+  return responseByApiKey[label];
+}
+
 export const FakeSessionData = {
-  studentSession,
-  studentAdminSession: allRolesUserSession
+  generateAuthData,
+  getByLabel
 };

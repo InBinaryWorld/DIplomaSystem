@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Timetable } from "../../../../shared/dto/timetable.model";
-import { Router } from "@angular/router";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { Timetable } from '../../../../../base/models/dto/timetable.model';
+import { Router } from '@angular/router';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-section-show-timetable',
@@ -34,7 +34,7 @@ export class ShowTimetableComponent implements OnInit {
       // supervisor: "Jan kowalski",
       // numberOfStudents: this.topic.numberOfStudents,
       // description: this.topic.description
-    })
+    });
   }
 
   private initForm(): void {
@@ -43,6 +43,6 @@ export class ShowTimetableComponent implements OnInit {
       // supervisor: [],
       // numberOfStudents: [],
       // description: [],
-    })
+    });
   }
 }

@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { DeanComponent } from "./components/dean/dean.component";
-import { AuthGuard } from "../../core/guards/auth.guard";
-import { RoleGuard } from "../../core/guards/role.guard";
-import { Role } from "../../core/models/role.model";
+import { DeanComponent } from './components/dean/dean.component';
+import { AuthGuard } from '../../core/guards/auth.guard';
+import { RoleGuard } from '../../core/guards/role.guard';
+import { Role } from '../../base/models/dto/role.model';
 import {
   DeanTopicClarificationRequestsComponent
-} from "./components/clarification/dean-topic-clarification-requests.component";
+} from './components/clarification/dean-topic-clarification-requests.component';
 
 
 const routes: Routes = [
@@ -20,7 +20,7 @@ const routes: Routes = [
       {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'clarification',
+        redirectTo: 'clarification'
       },
       {
         path: 'clarification',
@@ -28,16 +28,16 @@ const routes: Routes = [
           {
             path: '',
             pathMatch: 'full',
-            component: DeanTopicClarificationRequestsComponent,
+            component: DeanTopicClarificationRequestsComponent
           },
           {
             path: ':id',
-            component: DeanTopicClarificationRequestsComponent,
+            component: DeanTopicClarificationRequestsComponent
           }
         ]
       }
     ]
-  },
+  }
 ];
 
 @NgModule({

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { Timetable } from "../../../shared/dto/timetable.model";
-import { Router } from "@angular/router";
+import { Timetable } from '../../../../base/models/dto/timetable.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-section-timetables',
@@ -65,7 +65,7 @@ export class TimetablesComponent {
       certificatingTopics: new Date(),
       approvingTopicsByCommittee: new Date(),
       approvingTopicsByCoordinator: new Date()
-    },
+    }
   ];
 
   constructor(private readonly router: Router) {

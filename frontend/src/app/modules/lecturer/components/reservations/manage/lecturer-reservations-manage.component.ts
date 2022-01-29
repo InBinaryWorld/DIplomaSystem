@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { ThesisTopic } from "../../../../shared/dto/thesis-topic.model";
-import { TopicStatus } from "../../../../shared/dto/topic-status.model";
-import { FormBuilder, FormGroup } from "@angular/forms";
-import { Router } from "@angular/router";
-import { Reservation } from "../../../../shared/dto/reservation.model";
-import { ReservationStatus } from "../../../../shared/dto/reservation-status.model";
-import { isNotNil } from "../../../../../core/base/isNotNil";
-import { TranslationKeys } from "../../../../../core/utils/translation-keys.utils";
+import { ThesisTopic } from '../../../../../base/models/dto/thesis-topic.model';
+import { TopicStatus } from '../../../../../base/models/dto/topic-status.model';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
+import { Reservation } from '../../../../../base/models/dto/reservation.model';
+import { ReservationStatus } from '../../../../../base/models/dto/reservation-status.model';
+import { TranslationKeys } from '../../../../../core/utils/translation-keys.utils';
+import { isNotNil } from '../../../../../core/tools/is-not-nil';
 
 @Component({
   selector: 'app-lecturer-reservations-manage',
@@ -26,12 +26,12 @@ export class LecturerReservationsManageComponent implements OnInit {
   private allowedStatusesForRejectAction: ReservationStatus[] = [
     ReservationStatus.SUBMITTED,
     ReservationStatus.ACCEPTED
-  ]
+  ];
 
   private topic: ThesisTopic = {
     id: '12',
     name: 'Predykcja zachowań ludzi podczas lockdownu',
-    description: "Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu",
+    description: 'Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu',
     numberOfStudents: 1,
     status: TopicStatus.APPROVED_BY_COORDINATOR,
     reportedByStudent: false,
@@ -82,11 +82,11 @@ export class LecturerReservationsManageComponent implements OnInit {
   }
 
   approve() {
-    this.router.navigate(['/lecturer/reservations'])
+    this.router.navigate(['/lecturer/reservations']);
   }
 
   reject() {
-    this.router.navigate(['/lecturer/reservations'])
+    this.router.navigate(['/lecturer/reservations']);
   }
 
   ngOnInit(): void {
@@ -95,15 +95,15 @@ export class LecturerReservationsManageComponent implements OnInit {
       thesisTopic: this.topic.name,
       numberOfStudents: this.topic.numberOfStudents,
       description: this.topic.description
-    })
+    });
   }
 
   private initForm(): void {
     this.form = this.formBuilder.group({
       thesisTopic: [],
       numberOfStudents: [],
-      description: [],
-    })
+      description: []
+    });
   }
 
   public isTopicReserved(): boolean {

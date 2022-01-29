@@ -1,18 +1,18 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from "../../core/guards/auth.guard";
-import { RoleGuard } from "../../core/guards/role.guard";
-import { Role } from "../../core/models/role.model";
-import { LecturerTopicsComponent } from "./components/topics/lecturer-topics.component";
-import { LecturerComponent } from "./components/lecturer/lecturer.component";
-import { LecturerTopicReviewComponent } from "./components/topics/review/lecturer-topic-review.component";
-import { LecturerTopicManageComponent } from "./components/topics/manage/lecturer-topic-manage.component";
-import { LecturerTopicCreateComponent } from "./components/topics/create/lecturer-topic-create.component";
-import { LecturerTopicCorrectComponent } from "./components/topics/correct/lecturer-topic-correct.component";
-import { LecturerReservationsComponent } from "./components/reservations/lecturer-reservations.component";
+import { AuthGuard } from '../../core/guards/auth.guard';
+import { RoleGuard } from '../../core/guards/role.guard';
+import { Role } from '../../base/models/dto/role.model';
+import { LecturerTopicsComponent } from './components/topics/lecturer-topics.component';
+import { LecturerComponent } from './components/lecturer/lecturer.component';
+import { LecturerTopicReviewComponent } from './components/topics/review/lecturer-topic-review.component';
+import { LecturerTopicManageComponent } from './components/topics/manage/lecturer-topic-manage.component';
+import { LecturerTopicCreateComponent } from './components/topics/create/lecturer-topic-create.component';
+import { LecturerTopicCorrectComponent } from './components/topics/correct/lecturer-topic-correct.component';
+import { LecturerReservationsComponent } from './components/reservations/lecturer-reservations.component';
 import {
   LecturerReservationsManageComponent
-} from "./components/reservations/manage/lecturer-reservations-manage.component";
+} from './components/reservations/manage/lecturer-reservations-manage.component';
 
 
 const routes: Routes = [
@@ -26,7 +26,7 @@ const routes: Routes = [
       {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'topic',
+        redirectTo: 'topic'
       },
       {
         path: 'topic',
@@ -34,23 +34,23 @@ const routes: Routes = [
           {
             path: '',
             pathMatch: 'full',
-            component: LecturerTopicsComponent,
+            component: LecturerTopicsComponent
           },
           {
             path: 'create',
-            component: LecturerTopicCreateComponent,
+            component: LecturerTopicCreateComponent
           },
           {
             path: 'manage/:id',
-            component: LecturerTopicManageComponent,
+            component: LecturerTopicManageComponent
           },
           {
             path: 'review/:id',
-            component: LecturerTopicReviewComponent,
+            component: LecturerTopicReviewComponent
           },
           {
             path: 'correct/:id',
-            component: LecturerTopicCorrectComponent,
+            component: LecturerTopicCorrectComponent
           }
         ]
       },
@@ -60,16 +60,16 @@ const routes: Routes = [
           {
             path: '',
             pathMatch: 'full',
-            component: LecturerReservationsComponent,
+            component: LecturerReservationsComponent
           },
           {
             path: ':id',
-            component: LecturerReservationsManageComponent,
+            component: LecturerReservationsManageComponent
           }
         ]
       }
     ]
-  },
+  }
 ];
 
 @NgModule({

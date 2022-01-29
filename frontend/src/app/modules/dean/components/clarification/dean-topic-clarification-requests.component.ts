@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { ThesisTopic } from "../../../shared/dto/thesis-topic.model";
-import { TopicStatus } from "../../../shared/dto/topic-status.model";
-import { ApplicationState } from "../../../shared/dto/application-state.model";
-import { Router } from "@angular/router";
-import { ClarificationRequest } from "../../../shared/dto/clarification-request.model";
+import { ThesisTopic } from '../../../../base/models/dto/thesis-topic.model';
+import { TopicStatus } from '../../../../base/models/dto/topic-status.model';
+import { ApplicationState } from '../../../../base/models/dto/application-state.model';
+import { Router } from '@angular/router';
+import { ClarificationRequest } from '../../../../base/models/dto/clarification-request.model';
 
 @Component({
   selector: 'app-topic-change-requests',
@@ -16,7 +16,7 @@ export class DeanTopicClarificationRequestsComponent {
   topic: ThesisTopic = {
     id: '12',
     name: 'Predykcja zachowań ludzi podczas lockdownu',
-    description: "Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu",
+    description: 'Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu',
     numberOfStudents: 1,
     status: TopicStatus.APPROVED_BY_COORDINATOR,
     reportedByStudent: false,
@@ -28,8 +28,8 @@ export class DeanTopicClarificationRequestsComponent {
     submissionDate: new Date(),
     state: ApplicationState.Waiting,
     topic: this.topic,
-    newDescription: "lorem ipsum dior",
-    newName: "lorem ipsum dior",
+    newDescription: 'lorem ipsum dior',
+    newName: 'lorem ipsum dior'
   };
 
   applications: ClarificationRequest[] = [
@@ -39,13 +39,13 @@ export class DeanTopicClarificationRequestsComponent {
     this.application,
     this.application,
     this.application,
-    this.application,
-  ]
+    this.application
+  ];
 
   constructor(private readonly router: Router) {
   }
 
   showDetails(application: ClarificationRequest): void {
-    this.router.navigate(['/dean/clarification/', application.id])
+    this.router.navigate(['/dean/clarification/', application.id]);
   }
 }

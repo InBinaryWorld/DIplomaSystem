@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { ThesisTopic } from "../../../../shared/dto/thesis-topic.model";
-import { TopicStatus } from "../../../../shared/dto/topic-status.model";
-import { FormBuilder, FormGroup } from "@angular/forms";
-import { Router } from "@angular/router";
+import { ThesisTopic } from '../../../../../base/models/dto/thesis-topic.model';
+import { TopicStatus } from '../../../../../base/models/dto/topic-status.model';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-student-create-reservation',
@@ -17,7 +17,7 @@ export class StudentCreateReservationComponent implements OnInit {
   topic: ThesisTopic = {
     id: '12',
     name: 'Predykcja zachowań ludzi podczas lockdownu',
-    description: "Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu",
+    description: 'Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu',
     numberOfStudents: 1,
     status: TopicStatus.APPROVED_BY_COORDINATOR,
     reportedByStudent: false,
@@ -29,7 +29,7 @@ export class StudentCreateReservationComponent implements OnInit {
   }
 
   confirm() {
-    this.router.navigate(['/student/reservations'])
+    this.router.navigate(['/student/reservations']);
   }
 
 
@@ -37,10 +37,10 @@ export class StudentCreateReservationComponent implements OnInit {
     this.initForm();
     this.form!.setValue({
       thesisTopic: this.topic.name,
-      supervisor: "Jan kowalski",
+      supervisor: 'Jan kowalski',
       numberOfStudents: this.topic.numberOfStudents,
       description: this.topic.description
-    })
+    });
   }
 
   private initForm(): void {
@@ -48,8 +48,8 @@ export class StudentCreateReservationComponent implements OnInit {
       thesisTopic: [],
       supervisor: [],
       numberOfStudents: [],
-      description: [],
-    })
+      description: []
+    });
   }
 
 }

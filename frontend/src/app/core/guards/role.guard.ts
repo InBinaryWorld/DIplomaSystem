@@ -9,12 +9,13 @@ import {
 } from '@angular/router';
 import { Observable } from 'rxjs';
 import { first, map } from 'rxjs/operators';
-import { SessionStoreService } from "../../modules/login/services/session-store.service";
-import { Role } from "../models/role.model";
-import { Injectable } from "@angular/core";
-import { isNotNil } from "../base/isNotNil";
-import { UserRole } from "../../modules/login/models/user-role.model";
-import { isEmpty, isNil } from "lodash-es";
+import { Role } from '../../base/models/dto/role.model';
+import { Injectable } from '@angular/core';
+import { UserRole } from '../../base/models/dto/user-role.model';
+import { isEmpty, isNil } from 'lodash-es';
+import { SessionStoreService } from '../../base/services/session-store.service';
+import { isNotNil } from '../tools/is-not-nil';
+import { ContextRoutingService } from '../services/context-routing.service';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +24,8 @@ export class RoleGuard implements CanActivateChild, CanActivate {
 
   protected constructor(private readonly router: Router,
                         private readonly activatedRoute: ActivatedRoute,
-                        private readonly sessionStoreService: SessionStoreService) {
+                        private readonly sessionStoreService: SessionStoreService,
+                        private readonly contextRoutingService: ContextRoutingService) {
   }
 
   get requiredRole(): Role {
@@ -48,7 +50,7 @@ export class RoleGuard implements CanActivateChild, CanActivate {
         roles.push(stateAllowedRoles);
       }
       return roles;
-    }, [])
+    }, []);
     return this.check(allowedRolesPath);
   }
 
@@ -70,7 +72,7 @@ export class RoleGuard implements CanActivateChild, CanActivate {
   }
 
   private redirectToGuardPage(): boolean {
-    this.router.navigate(['/login']).then();
+    this.contextRoutingService.navigateToPageByContext();
     return false;
   }
 

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { finalEnvironment } from '../../../environments/final-enviroment';
-import { ApiName } from "../models/api-route.model";
+import { ApiLabel } from '../models/api-route.model';
+import { AppLanguage } from '../models/app-language.model';
 
 
 @Injectable({
@@ -20,8 +21,16 @@ export class SettingsService {
     return this.serverConfig.baseUrl;
   }
 
-  getServerApi(apiName: ApiName): string {
-    return this.serverConfig.api[apiName];
+  getServerApi(apiLabel: ApiLabel): string {
+    return this.serverConfig.api[apiLabel];
+  }
+
+  getDefaultLanguage(): AppLanguage {
+    return this.environments.defaultLanguage;
+  }
+
+  isFakeApiModeOn(): boolean {
+    return this.environments.fakeApi;
   }
 
   isProduction(): boolean {

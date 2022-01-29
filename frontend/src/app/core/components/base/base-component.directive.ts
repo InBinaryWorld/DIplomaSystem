@@ -1,5 +1,5 @@
-import {ChangeDetectorRef, Directive} from "@angular/core";
-import {Cleanable} from "../../directives/cleanable.directive";
+import { ChangeDetectorRef, Directive } from '@angular/core';
+import { Cleanable } from './cleanable.directive';
 
 @Directive()
 export abstract class BaseComponent extends Cleanable {

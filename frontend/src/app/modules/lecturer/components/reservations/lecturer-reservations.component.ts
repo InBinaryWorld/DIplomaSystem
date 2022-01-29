@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { ThesisTopic } from "../../../shared/dto/thesis-topic.model";
-import { TopicStatus } from "../../../shared/dto/topic-status.model";
-import { Router } from "@angular/router";
-import { Reservation } from "../../../shared/dto/reservation.model";
-import { ReservationStatus } from "../../../shared/dto/reservation-status.model";
-import { groupBy } from "lodash-es";
+import { ThesisTopic } from '../../../../base/models/dto/thesis-topic.model';
+import { TopicStatus } from '../../../../base/models/dto/topic-status.model';
+import { Router } from '@angular/router';
+import { Reservation } from '../../../../base/models/dto/reservation.model';
+import { ReservationStatus } from '../../../../base/models/dto/reservation-status.model';
+import { groupBy } from 'lodash-es';
 
 @Component({
   selector: 'app-lecturer-reservations',
@@ -18,7 +18,7 @@ export class LecturerReservationsComponent {
     {
       id: '10',
       name: 'Predykcja zachowań ludzi podczas lockdownu',
-      description: "Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu",
+      description: 'Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu',
       numberOfStudents: 1,
       status: TopicStatus.APPROVED_BY_COORDINATOR,
       reportedByStudent: false,
@@ -26,7 +26,7 @@ export class LecturerReservationsComponent {
     }, {
       id: '12',
       name: 'Predykcja zachowań ludzi podczas lockdownu',
-      description: "Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu",
+      description: 'Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu',
       numberOfStudents: 1,
       status: TopicStatus.APPROVED_BY_COORDINATOR,
       reportedByStudent: false,
@@ -58,16 +58,16 @@ export class LecturerReservationsComponent {
     this.reservation12,
     this.reservation12,
     this.reservation12,
-    this.reservation12,
-  ]
+    this.reservation12
+  ];
 
   data = Object.entries(groupBy(this.reservations, res => res.topicId))
     .map(([topicId, reservations]) => {
       return {
         topic: this.topics.find(t => t.id === topicId)!,
         notReviewedReservations: reservations.filter(r => r.status === ReservationStatus.SUBMITTED).length
-      }
-    })
+      };
+    });
 
   constructor(private readonly router: Router) {
   }

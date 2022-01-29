@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { NavItem } from "../../models/nav-item.model";
-import { SessionStoreService } from "../../../login/services/session-store.service";
+import { NavItem } from '../../models/nav-item.model';
+import { AuthStoreService } from '../../../../base/services/auth-store.service';
 
 
 @Component({
@@ -11,9 +11,9 @@ import { SessionStoreService } from "../../../login/services/session-store.servi
 export class SidebarComponent {
 
   @Input()
-  public navItems: NavItem[] = []
+  public navItems: NavItem[] = [];
 
-  constructor(private readonly sessionStoreService: SessionStoreService) {
+  constructor(private readonly sessionStoreService: AuthStoreService) {
   }
 
   public logout(): void {

@@ -9,7 +9,7 @@ import {
 } from '@angular/router';
 import { Observable } from 'rxjs';
 import { first, map } from 'rxjs/operators';
-import { SessionStoreService } from "../../modules/login/services/session-store.service";
+import { AuthStoreService } from '../../base/services/auth-store.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +17,7 @@ import { SessionStoreService } from "../../modules/login/services/session-store.
 export class AuthGuard implements CanActivateChild, CanActivate {
 
   constructor(private readonly router: Router,
-              private readonly sessionStoreService: SessionStoreService) {
+              private readonly sessionStoreService: AuthStoreService) {
   }
 
   canActivate(

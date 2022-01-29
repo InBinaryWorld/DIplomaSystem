@@ -1,3 +1,5 @@
-export enum ApiName {
-  LOGIN = 'LOGIN'
+export enum ApiLabel {
+  LOGIN = 'LOGIN',
+  REFRESH = 'REFRESH',
+  USER = 'USER'
 }

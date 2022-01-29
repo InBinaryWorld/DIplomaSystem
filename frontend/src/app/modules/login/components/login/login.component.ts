@@ -1,12 +1,11 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { BaseComponent } from "../../../../core/components/base/base-component.directive";
-import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
-import { Optional } from "../../../../core/base/optional";
-import { SessionStoreService } from "../../services/session-store.service";
-import { LoginData } from "../../models/login-data.model";
-import { SpinnerService } from "../../../../core/services/spinner.service";
-import { Store } from "@ngrx/store";
-import { ContextRoutingService } from "../../../../core/services/context-routing.service";
+import { BaseComponent } from '../../../../core/components/base/base-component.directive';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AuthStoreService } from '../../../../base/services/auth-store.service';
+import { LoginData } from '../../../../base/models/login-data.model';
+import { SpinnerService } from '../../../../core/services/spinner.service';
+import { Store } from '@ngrx/store';
+import { ContextRoutingService } from '../../../../core/services/context-routing.service';
 
 @Component({
   selector: 'app-login',
@@ -17,15 +16,15 @@ import { ContextRoutingService } from "../../../../core/services/context-routing
 export class LoginComponent extends BaseComponent implements OnInit {
 
   error: any;
-  usernameControl: Optional<FormControl>;
-  passwordControl: Optional<FormControl>;
-  loginFormGroup: Optional<FormGroup>;
+  usernameControl?: FormControl;
+  passwordControl?: FormControl;
+  loginFormGroup?: FormGroup;
 
   constructor(private readonly store: Store,
               private readonly formBuilder: FormBuilder,
               private readonly spinnerService: SpinnerService,
               private readonly contextRoutingService: ContextRoutingService,
-              private readonly sessionStoreService: SessionStoreService,
+              private readonly sessionStoreService: AuthStoreService,
               changeDetector: ChangeDetectorRef) {
     super(changeDetector);
   }
@@ -46,7 +45,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
   }
 
   private followProcessStatus(): void {
-    this.sessionStoreService.getSessionError()
+    this.sessionStoreService.getAuthError()
       .subscribe(error => {
         this.error = error;
         this.changeDetector.markForCheck();

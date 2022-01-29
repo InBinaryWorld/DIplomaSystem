@@ -1,11 +1,11 @@
 import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import { first, map } from 'rxjs/operators';
-import { SessionStoreService } from "../../modules/login/services/session-store.service";
-import { Role } from "../models/role.model";
-import { Injectable } from "@angular/core";
-import { isNil } from "lodash-es";
-import { ContextRoutingService } from "../services/context-routing.service";
+import { Role } from '../../base/models/dto/role.model';
+import { Injectable } from '@angular/core';
+import { isNil } from 'lodash-es';
+import { ContextRoutingService } from '../services/context-routing.service';
+import { SessionStoreService } from '../../base/services/session-store.service';
 
 @Injectable({
   providedIn: 'root'

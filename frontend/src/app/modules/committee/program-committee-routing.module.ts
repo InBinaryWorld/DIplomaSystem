@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from "../../core/guards/auth.guard";
-import { RoleGuard } from "../../core/guards/role.guard";
-import { Role } from "../../core/models/role.model";
-import { ProgramCommitteeTopicsComponent } from "./components/topics/program-committee-topics.component";
-import { ProgramCommitteeComponent } from "./components/program-committee/program-committee.component";
+import { AuthGuard } from '../../core/guards/auth.guard';
+import { RoleGuard } from '../../core/guards/role.guard';
+import { Role } from '../../base/models/dto/role.model';
+import { ProgramCommitteeTopicsComponent } from './components/topics/program-committee-topics.component';
+import { ProgramCommitteeComponent } from './components/program-committee/program-committee.component';
 import {
   ProgramCommitteeTopicReviewComponent
-} from "./components/topics/review/program-committee-topic-review.component";
+} from './components/topics/review/program-committee-topic-review.component';
 
 
 const routes: Routes = [
@@ -21,7 +21,7 @@ const routes: Routes = [
       {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'topic',
+        redirectTo: 'topic'
       },
       {
         path: 'topic',
@@ -29,16 +29,16 @@ const routes: Routes = [
           {
             path: '',
             pathMatch: 'full',
-            component: ProgramCommitteeTopicsComponent,
+            component: ProgramCommitteeTopicsComponent
           },
           {
             path: ':id',
-            component: ProgramCommitteeTopicReviewComponent,
+            component: ProgramCommitteeTopicReviewComponent
           }
-        ],
-      },
+        ]
+      }
     ]
-  },
+  }
 ];
 
 @NgModule({

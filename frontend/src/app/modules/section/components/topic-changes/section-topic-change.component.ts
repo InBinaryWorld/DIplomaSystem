@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { ThesisTopic } from "../../../shared/dto/thesis-topic.model";
-import { TopicStatus } from "../../../shared/dto/topic-status.model";
-import { ChangeRequest } from "../../../shared/dto/change-request.model";
-import { ApplicationState } from "../../../shared/dto/application-state.model";
-import { Router } from "@angular/router";
+import { ThesisTopic } from '../../../../base/models/dto/thesis-topic.model';
+import { TopicStatus } from '../../../../base/models/dto/topic-status.model';
+import { ChangeRequest } from '../../../../base/models/dto/change-request.model';
+import { ApplicationState } from '../../../../base/models/dto/application-state.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-topic-change',
@@ -16,7 +16,7 @@ export class SectionTopicChangeComponent {
   topic: ThesisTopic = {
     id: '12',
     name: 'Predykcja zachowań ludzi podczas lockdownu',
-    description: "Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu",
+    description: 'Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu',
     numberOfStudents: 1,
     status: TopicStatus.APPROVED_BY_COORDINATOR,
     reportedByStudent: false,
@@ -38,13 +38,13 @@ export class SectionTopicChangeComponent {
     this.application,
     this.application,
     this.application,
-    this.application,
-  ]
+    this.application
+  ];
 
   constructor(private readonly router: Router) {
   }
 
   showDetails(application: ChangeRequest): void {
-    this.router.navigate(['/diploma-section/topic-change/', application.id])
+    this.router.navigate(['/diploma-section/topic-change/', application.id]);
   }
 }

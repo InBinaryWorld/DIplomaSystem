@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { ThesisTopic } from "../../../../shared/dto/thesis-topic.model";
-import { TopicStatus } from "../../../../shared/dto/topic-status.model";
-import { FormBuilder, FormGroup } from "@angular/forms";
-import { Router } from "@angular/router";
-import { ChangeRequest } from "../../../../shared/dto/change-request.model";
-import { ApplicationState } from "../../../../shared/dto/application-state.model";
+import { ThesisTopic } from '../../../../../base/models/dto/thesis-topic.model';
+import { TopicStatus } from '../../../../../base/models/dto/topic-status.model';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
+import { ChangeRequest } from '../../../../../base/models/dto/change-request.model';
+import { ApplicationState } from '../../../../../base/models/dto/application-state.model';
 
 @Component({
   selector: 'app-section-topic-change-details',
@@ -19,7 +19,7 @@ export class SectionTopicChangeDetailsComponent implements OnInit {
   topic: ThesisTopic = {
     id: '12',
     name: 'Predykcja zachowań ludzi podczas lockdownu',
-    description: "Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu",
+    description: 'Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu',
     numberOfStudents: 1,
     status: TopicStatus.APPROVED_BY_COORDINATOR,
     reportedByStudent: false,
@@ -32,18 +32,18 @@ export class SectionTopicChangeDetailsComponent implements OnInit {
     newTopic: this.topic,
     submissionDate: new Date(),
     state: ApplicationState.Waiting
-  }
+  };
 
   constructor(private readonly formBuilder: FormBuilder,
               private readonly router: Router) {
   }
 
   approve() {
-    this.router.navigate(['/diploma-section/topic-change'])
+    this.router.navigate(['/diploma-section/topic-change']);
   }
 
   reject() {
-    this.router.navigate(['/diploma-section/topic-change'])
+    this.router.navigate(['/diploma-section/topic-change']);
   }
 
   ngOnInit(): void {
@@ -53,7 +53,7 @@ export class SectionTopicChangeDetailsComponent implements OnInit {
       // supervisor: "Jan kowalski",
       // numberOfStudents: this.topic.numberOfStudents,
       // description: this.topic.description
-    })
+    });
   }
 
   private initForm(): void {
@@ -62,7 +62,7 @@ export class SectionTopicChangeDetailsComponent implements OnInit {
       // supervisor: [],
       // numberOfStudents: [],
       // description: [],
-    })
+    });
   }
 
 }

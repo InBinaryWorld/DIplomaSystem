@@ -1,9 +1,12 @@
-import { Injectable } from "@angular/core";
-import { TranslateService } from "@ngx-translate/core";
-import { Observable } from "rxjs";
-import { AppLanguage } from "../models/app-language.model";
-import { CleanableService } from "./cleanable.service";
-import { Dictionary } from "../models/dictionary.model";
+import { ChangeDetectorRef, Injectable } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+import { AppLanguage } from '../models/app-language.model';
+import { CleanableService } from './cleanable.service';
+import { Dictionary } from '../models/dictionary.model';
+import { Cleanable } from '../components/base/cleanable.directive';
+import { SessionStoreService } from '../../base/services/session-store.service';
+import { SettingsService } from './settings.service';
+import { isNotNil } from '../tools/is-not-nil';
 
 @Injectable({
   providedIn: 'root'
@@ -12,21 +15,28 @@ export class AppTranslateService extends CleanableService {
 
   private localesByLang: Dictionary<string> = {
     [AppLanguage.POLISH]: 'pl',
-    [AppLanguage.ENGLISH]: 'en-US',
-  }
+    [AppLanguage.ENGLISH]: 'en-US'
+  };
 
-
-  constructor(private readonly translateService: TranslateService) {
+  constructor(private readonly settingsService: SettingsService,
+              private readonly translateService: TranslateService,
+              private readonly sessionStoreService: SessionStoreService) {
     super();
   }
 
-  public init(): void {
-    this.translateService.setDefaultLang(AppLanguage.POLISH);
-    this.translateService.use(AppLanguage.POLISH); //--> I didn't had this line before
+  get defaultLanguage(): AppLanguage {
+    return this.settingsService.getDefaultLanguage();
   }
 
-  public useLanguage(lang: AppLanguage): Observable<any> {
-    return this.translateService.use(lang);
+  public init(cleanable: Cleanable, changeDetector: ChangeDetectorRef): void {
+    this.translateService.setDefaultLang(this.defaultLanguage);
+    cleanable.addSubscription(
+      this.sessionStoreService.getLanguage().subscribe(language => {
+        const lang = isNotNil(language) ? language : this.defaultLanguage;
+        this.translateService.use(lang as AppLanguage);
+        changeDetector.markForCheck();
+      })
+    );
   }
 
   public getCurrentLanguage(): AppLanguage {

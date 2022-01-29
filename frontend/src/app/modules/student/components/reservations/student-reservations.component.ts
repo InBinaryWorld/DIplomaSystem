@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { ThesisTopic } from "../../../shared/dto/thesis-topic.model";
-import { TopicStatus } from "../../../shared/dto/topic-status.model";
-import { Router } from "@angular/router";
-import { Reservation } from "../../../shared/dto/reservation.model";
-import { ReservationStatus } from "../../../shared/dto/reservation-status.model";
-import { TranslationKeys } from "../../../../core/utils/translation-keys.utils";
+import { ThesisTopic } from '../../../../base/models/dto/thesis-topic.model';
+import { TopicStatus } from '../../../../base/models/dto/topic-status.model';
+import { Router } from '@angular/router';
+import { Reservation } from '../../../../base/models/dto/reservation.model';
+import { ReservationStatus } from '../../../../base/models/dto/reservation-status.model';
+import { TranslationKeys } from '../../../../core/utils/translation-keys.utils';
 
 @Component({
   selector: 'app-student-reservations',
@@ -17,7 +17,7 @@ export class StudentReservationsComponent {
   private topic = {
     id: '10',
     name: 'Predykcja zachowań ludzi podczas lockdownu',
-    description: "Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu",
+    description: 'Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu',
     numberOfStudents: 1,
     status: TopicStatus.APPROVED_BY_COORDINATOR,
     reportedByStudent: false,
@@ -30,7 +30,7 @@ export class StudentReservationsComponent {
     this.topic,
     this.topic,
     this.topic,
-    this.topic,
+    this.topic
   ];
 
   confirmedReservation: Reservation = {
@@ -52,7 +52,7 @@ export class StudentReservationsComponent {
     this.reservation,
     this.reservation,
     this.reservation,
-    this.reservation,
+    this.reservation
   ];
 
 

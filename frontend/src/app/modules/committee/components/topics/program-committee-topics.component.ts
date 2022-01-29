@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { ThesisTopic } from "../../../shared/dto/thesis-topic.model";
-import { TopicStatus } from "../../../shared/dto/topic-status.model";
-import { Router } from "@angular/router";
+import { ThesisTopic } from '../../../../base/models/dto/thesis-topic.model';
+import { TopicStatus } from '../../../../base/models/dto/topic-status.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-lecturer-topics',
@@ -14,7 +14,7 @@ export class ProgramCommitteeTopicsComponent {
   private topic: ThesisTopic = {
     id: '12',
     name: 'Predykcja zachowań ludzi podczas lockdownu',
-    description: "Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu",
+    description: 'Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu',
     numberOfStudents: 1,
     status: TopicStatus.APPROVED_BY_COORDINATOR,
     reportedByStudent: false,

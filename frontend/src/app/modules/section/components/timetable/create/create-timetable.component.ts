@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Timetable } from "../../../../shared/dto/timetable.model";
-import { Router } from "@angular/router";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { Timetable } from '../../../../../base/models/dto/timetable.model';
+import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-section-create-timetable',
@@ -38,7 +38,7 @@ export class CreateTimetableComponent implements OnInit {
       submittingTopics: [new Date(), Validators.required],
       certificatingTopics: [new Date(), Validators.required],
       approvingTopicsByCommittee: [new Date(), Validators.required],
-      approvingTopicsByCoordinator: [new Date(), Validators.required],
-    })
+      approvingTopicsByCoordinator: [new Date(), Validators.required]
+    });
   }
 }
