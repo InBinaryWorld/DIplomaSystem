@@ -27,7 +27,7 @@
       <div class="table-body">
         <table class="table">
           <tbody>
-          <tr *ngFor="let application of applications">
+          <tr *ngFor="let application of requests">
             <th style="width: 5%" scope="row">{{ application.id }}</th>
             <td style="width: 40%">Janusz Kowalski</td>
             <td style="width: 40%">{{ application.submissionDate | localDate }}</td>
@@ -39,7 +39,7 @@
           </tr>
           </tbody>
         </table>
-        <div *ngIf="!applications.length" class="d-flex justify-content-center">
+        <div *ngIf="!requests.length" class="d-flex justify-content-center">
           {{ 'Table.NoData' | translate }}
         </div>
       </div>
@@ -69,7 +69,7 @@
       <div class="table-body">
         <table class="table">
           <tbody>
-          <tr *ngFor="let application of applications">
+          <tr *ngFor="let application of requests">
             <th style="width: 5%" scope="row">{{ application.id }}</th>
             <td style="width: 30%">Janusz Kowalski</td>
             <td style="width: 30%">{{ application.submissionDate | localDate }}</td>
@@ -82,7 +82,7 @@
           </tr>
           </tbody>
         </table>
-        <div *ngIf="!applications.length" class="d-flex justify-content-center">
+        <div *ngIf="!requests.length" class="d-flex justify-content-center">
           {{ 'Table.NoData' | translate }}
         </div>
       </div>

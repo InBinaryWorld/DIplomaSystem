@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ThesisTopic } from '../../../../../base/models/dto/thesis-topic.model';
-import { TopicStatus } from '../../../../../base/models/dto/topic-status.model';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Reservation } from '../../../../../base/models/dto/reservation.model';
 import { ReservationStatus } from '../../../../../base/models/dto/reservation-status.model';
 import { TranslationKeys } from '../../../../../core/utils/translation-keys.utils';
 import { isNotNil } from '../../../../../core/tools/is-not-nil';
+import { FakeSessionData } from '../../../../../../fakes/fake.data';
 
 @Component({
   selector: 'app-lecturer-reservations-manage',
@@ -28,53 +28,16 @@ export class LecturerReservationsManageComponent implements OnInit {
     ReservationStatus.ACCEPTED
   ];
 
-  private topic: ThesisTopic = {
-    id: '12',
-    name: 'Predykcja zachowań ludzi podczas lockdownu',
-    description: 'Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu',
-    numberOfStudents: 1,
-    status: TopicStatus.APPROVED_BY_COORDINATOR,
-    reportedByStudent: false,
-    submissionDate: new Date()
-  };
+  private topic: ThesisTopic = FakeSessionData.topic;
 
   reservations: Reservation[] = [
-    {
-      id: '1',
-      creationDate: new Date(),
-      status: ReservationStatus.WAITING,
-      topicId: '12'
-    },
-    {
-      id: '1',
-      creationDate: new Date(),
-      status: ReservationStatus.SUBMITTED,
-      topicId: '12'
-    },
-    {
-      id: '1',
-      creationDate: new Date(),
-      status: ReservationStatus.ACCEPTED,
-      topicId: '12'
-    },
-    {
-      id: '1',
-      creationDate: new Date(),
-      status: ReservationStatus.ACCEPTED,
-      topicId: '12'
-    },
-    {
-      id: '1',
-      creationDate: new Date(),
-      status: ReservationStatus.REJECTED_BY_LECTURER,
-      topicId: '12'
-    },
-    {
-      id: '1',
-      creationDate: new Date(),
-      status: ReservationStatus.REJECTED_BY_STUDENT,
-      topicId: '12'
-    }
+    FakeSessionData.reservation,
+    FakeSessionData.reservation,
+    FakeSessionData.reservation,
+    FakeSessionData.reservation,
+    FakeSessionData.reservation,
+    FakeSessionData.reservation,
+    FakeSessionData.reservation
   ];
 
   constructor(private readonly formBuilder: FormBuilder,

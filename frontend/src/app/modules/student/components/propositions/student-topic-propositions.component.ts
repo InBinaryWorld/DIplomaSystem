@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ThesisTopic } from '../../../../base/models/dto/thesis-topic.model';
-import { TopicStatus } from '../../../../base/models/dto/topic-status.model';
 import { Router } from '@angular/router';
 import { Reservation } from '../../../../base/models/dto/reservation.model';
 import { ReservationStatus } from '../../../../base/models/dto/reservation-status.model';
 import { TranslationKeys } from '../../../../core/utils/translation-keys.utils';
+import { FakeSessionData } from '../../../../../fakes/fake.data';
 
 @Component({
   selector: 'app-student-topic-propositions',
@@ -14,15 +14,7 @@ import { TranslationKeys } from '../../../../core/utils/translation-keys.utils';
 })
 export class StudentTopicPropositionsComponent {
 
-  private topic = {
-    id: '10',
-    name: 'Predykcja zachowań ludzi podczas lockdownu',
-    description: 'Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu',
-    numberOfStudents: 1,
-    status: TopicStatus.APPROVED_BY_COORDINATOR,
-    reportedByStudent: false,
-    submissionDate: new Date()
-  };
+  private topic = FakeSessionData.topic;
 
   private reservation: Reservation = {
     id: '1',

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ThesisTopic } from '../../../../base/models/dto/thesis-topic.model';
-import { TopicStatus } from '../../../../base/models/dto/topic-status.model';
 import { Router } from '@angular/router';
+import { FakeSessionData } from '../../../../../fakes/fake.data';
 
 @Component({
   selector: 'app-topic-change-requests',
@@ -10,15 +10,7 @@ import { Router } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CoordinatorTopicsComponent {
-  private topic: ThesisTopic = {
-    id: '12',
-    name: 'Predykcja zachowań ludzi podczas lockdownu',
-    description: 'Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu',
-    numberOfStudents: 1,
-    status: TopicStatus.APPROVED_BY_COORDINATOR,
-    reportedByStudent: false,
-    submissionDate: new Date()
-  };
+  private topic: ThesisTopic = FakeSessionData.topic;
 
   public topics: ThesisTopic[] = [
     this.topic,

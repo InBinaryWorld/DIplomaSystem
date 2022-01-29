@@ -72,6 +72,8 @@
   "Student.Reservations.Label.SubmittedReservations": "Złożone rezerwacje",
   "Student.Propositions.Header": "Propozycje Tematów Prac Dyplomowych",
   "Student.Propositions.Label.YourPropositions": "Twoje propozycje",
+  "Student.TopicClarification.Header": "Wnoiski o Doprecyzowanie Tematu Pracy",
+  "Student.TopicClarification.Label.YourClarificationRequests": "Twoje wnioski",
   "Button.Add": "Dodaj",
   "Button.Approve": "Zatwierdź",
   "Button.Cancel": "Anuluj",
@@ -101,5 +103,8 @@
   "ReservationsStatus.ACCEPTED": "Zaakceptowana",
   "ReservationsStatus.CONFIRMED": "Potwierdzona",
   "ReservationsStatus.REJECTED_BY_LECTURER": "Odrzucona przez prowadzącego",
-  "ReservationsStatus.REJECTED_BY_STUDENT": "Odrzucona przez studenta"
+  "ReservationsStatus.REJECTED_BY_STUDENT": "Odrzucona przez studenta",
+  "RequestStatus.APPROVED": "Zatwierdzona",
+  "RequestStatus.DISMISSED": "Odrzucona",
+  "RequestStatus.WAITING": "Oczekująca"
 }

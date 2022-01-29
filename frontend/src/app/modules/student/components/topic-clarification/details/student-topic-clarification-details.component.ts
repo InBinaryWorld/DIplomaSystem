@@ -3,13 +3,13 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { BaseComponent } from '../../../../../core/components/base/base-component.directive';
 import { ThesisTopic } from '../../../../../base/models/dto/thesis-topic.model';
 import { Observable } from 'rxjs';
-import { TopicStatus } from '../../../../../base/models/dto/topic-status.model';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { extractRoleId } from '../../../../../core/tools/filter-role';
 import { Role } from '../../../../../base/models/dto/role.model';
 import { RequestsStoreService } from '../../../../../base/services/requests-store.service';
 import { ClarificationRequest } from '../../../../../base/models/dto/clarification-request.model';
 import { SessionStoreService } from '../../../../../base/services/session-store.service';
+import { FakeSessionData } from '../../../../../../fakes/fake.data';
 
 @Component({
   selector: 'app-student-topic-clarification-details',
@@ -25,15 +25,7 @@ export class StudentTopicClarificationDetailsComponent extends BaseComponent imp
   newTopicForm?: FormGroup;
 
 
-  private topic = {
-    id: '10',
-    name: 'Predykcja zachowań ludzi podczas lockdownu',
-    description: 'Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu',
-    numberOfStudents: 1,
-    status: TopicStatus.APPROVED_BY_COORDINATOR,
-    reportedByStudent: false,
-    submissionDate: new Date()
-  };
+  private topic = FakeSessionData.topic;
 
   constructor(private readonly formBuilder: FormBuilder,
               private readonly activatedRoute: ActivatedRoute,

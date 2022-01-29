@@ -1,9 +1,9 @@
-import { RequestState } from './request-state.model';
+import { RequestStatus } from './request-state.model';
 
 export interface BaseRequest {
   id: string;
   submissionDate: Date;
-  state: RequestState;
+  status: RequestStatus;
   studentId: string;
   employeeId: string;
 }

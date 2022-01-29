@@ -1,10 +1,9 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ThesisTopic } from '../../../../../base/models/dto/thesis-topic.model';
-import { TopicStatus } from '../../../../../base/models/dto/topic-status.model';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ChangeRequest } from '../../../../../base/models/dto/change-request.model';
-import { RequestState } from '../../../../../base/models/dto/request-state.model';
+import { FakeSessionData } from '../../../../../../fakes/fake.data';
 
 @Component({
   selector: 'app-section-topic-change-details',
@@ -16,23 +15,9 @@ export class SectionTopicChangeDetailsComponent implements OnInit {
 
   form?: FormGroup;
 
-  topic: ThesisTopic = {
-    id: '12',
-    name: 'Predykcja zachowań ludzi podczas lockdownu',
-    description: 'Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu',
-    numberOfStudents: 1,
-    status: TopicStatus.APPROVED_BY_COORDINATOR,
-    reportedByStudent: false,
-    submissionDate: new Date()
-  };
+  topic: ThesisTopic = FakeSessionData.topic;
 
-  application: ChangeRequest = {
-    id: '13',
-    oldTopic: this.topic,
-    newTopic: this.topic,
-    submissionDate: new Date(),
-    state: RequestState.Waiting
-  };
+  request: ChangeRequest = FakeSessionData.changeRequest;
 
   constructor(private readonly formBuilder: FormBuilder,
               private readonly router: Router) {

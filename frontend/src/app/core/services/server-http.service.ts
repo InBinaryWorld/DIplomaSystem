@@ -5,7 +5,7 @@ import { isEmpty } from 'lodash-es';
 import { SettingsService } from './settings.service';
 import { RequestParams } from '../models/request-param.model';
 import { ApiLabel } from '../models/api-route.model';
-import { FakeSessionData } from '../../../fakes/sesion-data.fake';
+import { FakeSessionData } from '../../../fakes/fake.data';
 import { tap } from 'rxjs/operators';
 import { SpinnerService } from './spinner.service';
 

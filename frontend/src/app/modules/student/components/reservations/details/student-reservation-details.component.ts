@@ -1,10 +1,9 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ThesisTopic } from '../../../../../base/models/dto/thesis-topic.model';
-import { TopicStatus } from '../../../../../base/models/dto/topic-status.model';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Reservation } from '../../../../../base/models/dto/reservation.model';
-import { ReservationStatus } from '../../../../../base/models/dto/reservation-status.model';
+import { FakeSessionData } from '../../../../../../fakes/fake.data';
 
 @Component({
   selector: 'app-student-reservation-details',
@@ -16,22 +15,9 @@ export class StudentReservationDetailsComponent implements OnInit {
 
   form?: FormGroup;
 
-  topic: ThesisTopic = {
-    id: '12',
-    name: 'Predykcja zachowań ludzi podczas lockdownu',
-    description: 'Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu',
-    numberOfStudents: 1,
-    status: TopicStatus.APPROVED_BY_COORDINATOR,
-    reportedByStudent: false,
-    submissionDate: new Date()
-  };
+  topic: ThesisTopic = FakeSessionData.topic;
 
-  reservation: Reservation = {
-    id: '1',
-    creationDate: new Date(),
-    status: ReservationStatus.CONFIRMED,
-    topicId: '12'
-  };
+  reservation: Reservation = FakeSessionData.reservation;
 
   constructor(private readonly formBuilder: FormBuilder,
               private readonly router: Router) {

@@ -71,6 +71,8 @@
   "Student.Reservations.Label.SubmittedReservations": "Submitted reservations",
   "Student.Propositions.Header": "Thesis Topics Suggestions",
   "Student.Propositions.Label.YourPropositions": "Your suggestions",
+  "Student.TopicClarification.Header": "Topic Clarification Requests",
+  "Student.TopicClarification.Label.YourClarificationRequests": "Your requests",
   "Button.Add": "Add",
   "Button.Approve": "Approve",
   "Button.Cancel": "Cancel",
@@ -86,6 +88,7 @@
   "Table.Actions": "Actions",
   "Table.Applicant": "Applicant",
   "Table.FieldOfStudy": "Field of study",
+  "Table.NewTopic": "New thesis topic",
   "Table.NoData": "No data to display",
   "Table.NumberOfStudents": "Number of students",
   "Table.Status": "Status",
@@ -100,5 +103,8 @@
   "ReservationsStatus.APPROVED": "Accepted",
   "ReservationsStatus.CONFIRMED": "Confirmed",
   "ReservationsStatus.REJECTED_BY_LECTURER": "Rejected by lecturer",
-  "ReservationsStatus.REJECTED_BY_STUDENT": "Rejected by student"
+  "ReservationsStatus.REJECTED_BY_STUDENT": "Rejected by student",
+  "RequestStatus.APPROVED": "Approved",
+  "RequestStatus.DISMISSED": "Dismissed",
+  "RequestStatus.WAITING": "Waiting"
 }

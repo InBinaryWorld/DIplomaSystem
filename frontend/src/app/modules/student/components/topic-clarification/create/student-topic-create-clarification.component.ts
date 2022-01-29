@@ -7,9 +7,9 @@ import { ThesisTopic } from '../../../../../base/models/dto/thesis-topic.model';
 import { RequestsStoreService } from '../../../../../base/services/requests-store.service';
 import { Observable } from 'rxjs';
 import { ClarificationRequest } from '../../../../../base/models/dto/clarification-request.model';
-import { TopicStatus } from '../../../../../base/models/dto/topic-status.model';
 import { SessionStoreService } from '../../../../../base/services/session-store.service';
 import { extractRoleId } from '../../../../../core/tools/filter-role';
+import { FakeSessionData } from '../../../../../../fakes/fake.data';
 
 @Component({
   selector: 'app-student-topic-create-clarification',
@@ -25,15 +25,7 @@ export class StudentTopicCreateClarificationComponent extends BaseComponent impl
   newTopicForm?: FormGroup;
 
 
-  private topic = {
-    id: '10',
-    name: 'Predykcja zachowań ludzi podczas lockdownu',
-    description: 'Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu',
-    numberOfStudents: 1,
-    status: TopicStatus.APPROVED_BY_COORDINATOR,
-    reportedByStudent: false,
-    submissionDate: new Date()
-  };
+  private topic = FakeSessionData.topic;
 
   constructor(private readonly formBuilder: FormBuilder,
               private readonly activatedRoute: ActivatedRoute,

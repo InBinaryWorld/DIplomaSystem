@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Timetable } from '../../../../base/models/dto/timetable.model';
 import { Router } from '@angular/router';
+import { FakeSessionData } from '../../../../../fakes/fake.data';
 
 @Component({
   selector: 'app-section-timetables',
@@ -12,60 +13,12 @@ export class TimetablesComponent {
 
 
   public activeTimetable: Timetable[] = [
-    {
-      id: '1',
-      changingTopics: new Date(),
-      selectingTopics: new Date(),
-      submittingTopics: new Date(),
-      certificatingTopics: new Date(),
-      approvingTopicsByCommittee: new Date(),
-      approvingTopicsByCoordinator: new Date()
-    },
-    {
-      id: '1',
-      changingTopics: new Date(),
-      selectingTopics: new Date(),
-      submittingTopics: new Date(),
-      certificatingTopics: new Date(),
-      approvingTopicsByCommittee: new Date(),
-      approvingTopicsByCoordinator: new Date()
-    },
-    {
-      id: '1',
-      changingTopics: new Date(),
-      selectingTopics: new Date(),
-      submittingTopics: new Date(),
-      certificatingTopics: new Date(),
-      approvingTopicsByCommittee: new Date(),
-      approvingTopicsByCoordinator: new Date()
-    },
-    {
-      id: '1',
-      changingTopics: new Date(),
-      selectingTopics: new Date(),
-      submittingTopics: new Date(),
-      certificatingTopics: new Date(),
-      approvingTopicsByCommittee: new Date(),
-      approvingTopicsByCoordinator: new Date()
-    },
-    {
-      id: '1',
-      changingTopics: new Date(),
-      selectingTopics: new Date(),
-      submittingTopics: new Date(),
-      certificatingTopics: new Date(),
-      approvingTopicsByCommittee: new Date(),
-      approvingTopicsByCoordinator: new Date()
-    },
-    {
-      id: '1',
-      changingTopics: new Date(),
-      selectingTopics: new Date(),
-      submittingTopics: new Date(),
-      certificatingTopics: new Date(),
-      approvingTopicsByCommittee: new Date(),
-      approvingTopicsByCoordinator: new Date()
-    }
+    FakeSessionData.timetable,
+    FakeSessionData.timetable,
+    FakeSessionData.timetable,
+    FakeSessionData.timetable,
+    FakeSessionData.timetable,
+    FakeSessionData.timetable
   ];
 
   constructor(private readonly router: Router) {

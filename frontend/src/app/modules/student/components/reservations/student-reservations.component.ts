@@ -1,10 +1,9 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ThesisTopic } from '../../../../base/models/dto/thesis-topic.model';
-import { TopicStatus } from '../../../../base/models/dto/topic-status.model';
 import { Router } from '@angular/router';
 import { Reservation } from '../../../../base/models/dto/reservation.model';
-import { ReservationStatus } from '../../../../base/models/dto/reservation-status.model';
 import { TranslationKeys } from '../../../../core/utils/translation-keys.utils';
+import { FakeSessionData } from '../../../../../fakes/fake.data';
 
 @Component({
   selector: 'app-student-reservations',
@@ -14,15 +13,7 @@ import { TranslationKeys } from '../../../../core/utils/translation-keys.utils';
 })
 export class StudentReservationsComponent {
 
-  private topic = {
-    id: '10',
-    name: 'Predykcja zachowań ludzi podczas lockdownu',
-    description: 'Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu',
-    numberOfStudents: 1,
-    status: TopicStatus.APPROVED_BY_COORDINATOR,
-    reportedByStudent: false,
-    submissionDate: new Date()
-  };
+  private topic: ThesisTopic = FakeSessionData.topic;
 
   topics: ThesisTopic[] = [
     this.topic,
@@ -33,26 +24,16 @@ export class StudentReservationsComponent {
     this.topic
   ];
 
-  confirmedReservation: Reservation = {
-    id: '1',
-    creationDate: new Date(),
-    status: ReservationStatus.CONFIRMED,
-    topicId: '10'
-  };
-
-  private reservation: Reservation = {
-    id: '1',
-    creationDate: new Date(),
-    status: ReservationStatus.SUBMITTED,
-    topicId: '12'
-  };
+  confirmedReservation: Reservation = FakeSessionData.reservation;
 
   reservations: Reservation[] = [
-    this.confirmedReservation,
-    this.reservation,
-    this.reservation,
-    this.reservation,
-    this.reservation
+    FakeSessionData.reservation,
+    FakeSessionData.reservation,
+    FakeSessionData.reservation,
+    FakeSessionData.reservation,
+    FakeSessionData.reservation,
+    FakeSessionData.reservation,
+    FakeSessionData.reservation
   ];
 
 

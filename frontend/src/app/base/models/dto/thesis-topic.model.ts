@@ -4,7 +4,7 @@ export interface ThesisTopic {
   id: string;
   supervisorId: string;
   diplomaSessionId: string;
-  authorStudentId: string;
+  authorStudentId?: string;
   name: string;
   description: string;
   numberOfStudents: number;
