@@ -1,5 +1,4 @@
 import {
-  ActivatedRoute,
   ActivatedRouteSnapshot,
   CanActivate,
   CanActivateChild,
@@ -7,15 +6,15 @@ import {
   RouterStateSnapshot,
   UrlTree
 } from '@angular/router';
-import { Observable } from 'rxjs';
-import { first, map } from 'rxjs/operators';
+import { Observable, of, switchMap } from 'rxjs';
+import { first, map, tap } from 'rxjs/operators';
 import { Role } from '../../base/models/dto/role.model';
 import { Injectable } from '@angular/core';
 import { UserRole } from '../../base/models/dto/user-role.model';
 import { isEmpty, isNil } from 'lodash-es';
 import { SessionStoreService } from '../../base/services/session-store.service';
 import { isNotNil } from '../tools/is-not-nil';
-import { ContextRoutingService } from '../services/context-routing.service';
+import { UserStoreService } from '../../base/services/user-store.service';
 
 @Injectable({
   providedIn: 'root'
@@ -23,9 +22,8 @@ import { ContextRoutingService } from '../services/context-routing.service';
 export class RoleGuard implements CanActivateChild, CanActivate {
 
   protected constructor(private readonly router: Router,
-                        private readonly activatedRoute: ActivatedRoute,
-                        private readonly sessionStoreService: SessionStoreService,
-                        private readonly contextRoutingService: ContextRoutingService) {
+                        private readonly userStoreService: UserStoreService,
+                        private readonly sessionStoreService: SessionStoreService) {
   }
 
   get requiredRole(): Role {
@@ -56,8 +54,21 @@ export class RoleGuard implements CanActivateChild, CanActivate {
 
   private check(pathAllowedRoles: Role[][]): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     return this.sessionStoreService.getContextRole().pipe(
-      first(), map(userRole => this.testRoles(userRole, pathAllowedRoles) ? true : this.redirectToGuardPage()
-      )
+      first(), switchMap(userRole => {
+        if (this.testRoles(userRole, pathAllowedRoles)) {
+          return of(true);
+        }
+        return this.checkIfOtherRolesMatch(pathAllowedRoles);
+      })
+    );
+  }
+
+  private checkIfOtherRolesMatch(pathAllowedRoles: Role[][]): Observable<boolean> {
+    return this.userStoreService.getUserRoles().pipe(
+      first(),
+      map((roles?) => roles?.find(role => this.testRoles(role, pathAllowedRoles))),
+      tap(role => isNotNil(role) && this.sessionStoreService.setContextRole(role)),
+      map(role => isNotNil(role))
     );
   }
 
@@ -69,11 +80,6 @@ export class RoleGuard implements CanActivateChild, CanActivate {
       return false;
     }
     return pathAllowedRoles!.every(allowedRoles => allowedRoles.includes(userRole.role));
-  }
-
-  private redirectToGuardPage(): boolean {
-    this.contextRoutingService.navigateToPageByContext();
-    return false;
   }
 
 }

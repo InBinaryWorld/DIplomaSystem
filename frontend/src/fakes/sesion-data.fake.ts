@@ -12,7 +12,7 @@ const userAllRoles: User = {
   lastName: 'Daniels',
   roles: [
     { id: '244001', role: Role.STUDENT },
-    { id: '244901', role: Role.STUDENT },
+    { id: '244902', role: Role.STUDENT },
     { id: '2', role: Role.ADMIN },
     { id: '14', role: Role.DEAN },
     { id: '162', role: Role.COORDINATOR },

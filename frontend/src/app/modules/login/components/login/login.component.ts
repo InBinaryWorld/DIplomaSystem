@@ -6,6 +6,9 @@ import { LoginData } from '../../../../base/models/login-data.model';
 import { SpinnerService } from '../../../../core/services/spinner.service';
 import { Store } from '@ngrx/store';
 import { ContextRoutingService } from '../../../../core/services/context-routing.service';
+import { filter, switchMap } from 'rxjs';
+import { UserStoreService } from '../../../../base/services/user-store.service';
+import { SessionStoreService } from '../../../../base/services/session-store.service';
 
 @Component({
   selector: 'app-login',
@@ -24,7 +27,9 @@ export class LoginComponent extends BaseComponent implements OnInit {
               private readonly formBuilder: FormBuilder,
               private readonly spinnerService: SpinnerService,
               private readonly contextRoutingService: ContextRoutingService,
-              private readonly sessionStoreService: AuthStoreService,
+              private readonly userStoreService: UserStoreService,
+              private readonly authStoreService: AuthStoreService,
+              private readonly sessionStoreService: SessionStoreService,
               changeDetector: ChangeDetectorRef) {
     super(changeDetector);
   }
@@ -32,24 +37,33 @@ export class LoginComponent extends BaseComponent implements OnInit {
 
   login(): void {
     const data: LoginData = this.loginFormGroup!.getRawValue();
-    this.sessionStoreService.login(data);
-  }
-
-  logout(): void {
-    this.sessionStoreService.logout();
+    this.authStoreService.login(data);
   }
 
   ngOnInit(): void {
     this.initForm();
-    this.followProcessStatus();
+    this.handleLoginFailure();
+    this.handleSuccessfulLogin();
   }
 
-  private followProcessStatus(): void {
-    this.sessionStoreService.getAuthError()
-      .subscribe(error => {
-        this.error = error;
-        this.changeDetector.markForCheck();
-      });
+  private handleLoginFailure(): void {
+    this.addSubscription(
+      this.authStoreService.getAuthError()
+        .subscribe(error => {
+          this.error = error;
+          this.changeDetector.markForCheck();
+        })
+    );
+
+  }
+
+  private handleSuccessfulLogin(): void {
+    this.addSubscription(
+      this.authStoreService.isUserLoggedIn().pipe(
+        filter(isLogged => isLogged),
+        switchMap(() => this.contextRoutingService.calculateNewUserRole())
+      ).subscribe(role => this.sessionStoreService.setContextRole(role))
+    );
   }
 
   private initForm() {

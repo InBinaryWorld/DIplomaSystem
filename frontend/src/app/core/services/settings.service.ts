@@ -17,6 +17,10 @@ export class SettingsService {
     return this.environments.serverConfig;
   }
 
+  get fakeApiConfig(): typeof finalEnvironment.fakeApi {
+    return this.environments.fakeApi;
+  }
+
   get serverBaseUrl(): string {
     return this.serverConfig.baseUrl;
   }
@@ -29,8 +33,12 @@ export class SettingsService {
     return this.environments.defaultLanguage;
   }
 
-  isFakeApiModeOn(): boolean {
-    return this.environments.fakeApi;
+  isFakeApiEnabled(): boolean {
+    return this.fakeApiConfig.enabled;
+  }
+
+  fakeApiDelay(): number {
+    return this.fakeApiConfig.delayTime;
   }
 
   isProduction(): boolean {

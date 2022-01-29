@@ -17,8 +17,9 @@ export class UserService {
 
   getCurrentUser(): Observable<User> {
     const urlTemplate = this.settingsService.getServerApi(ApiLabel.USER);
-    if (this.settingsService.isFakeApiModeOn()) {
-      return of(FakeSessionData.getByLabel(ApiLabel.USER)).pipe(delay(2000));
+    if (this.settingsService.isFakeApiEnabled()) {
+      return of(FakeSessionData.getByLabel(ApiLabel.USER))
+        .pipe(delay(this.settingsService.fakeApiDelay()));
     }
     return this.http.get(urlTemplate);
   }

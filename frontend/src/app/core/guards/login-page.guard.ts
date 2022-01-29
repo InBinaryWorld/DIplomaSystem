@@ -1,9 +1,9 @@
 import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { Observable } from 'rxjs';
-import { first, map } from 'rxjs/operators';
+import { Observable, of, switchMap } from 'rxjs';
+import { first, map, tap } from 'rxjs/operators';
 import { Role } from '../../base/models/dto/role.model';
 import { Injectable } from '@angular/core';
-import { isNil } from 'lodash-es';
+import { AuthStoreService } from '../../base/services/auth-store.service';
 import { ContextRoutingService } from '../services/context-routing.service';
 import { SessionStoreService } from '../../base/services/session-store.service';
 
@@ -12,7 +12,8 @@ import { SessionStoreService } from '../../base/services/session-store.service';
 })
 export class LoginPageGuard implements CanActivate {
 
-  protected constructor(private readonly sessionStoreService: SessionStoreService,
+  protected constructor(private readonly authStoreService: AuthStoreService,
+                        private readonly sessionStoreService: SessionStoreService,
                         private readonly contextRoutingService: ContextRoutingService) {
   }
 
@@ -24,15 +25,14 @@ export class LoginPageGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return this.sessionStoreService.getContextRole().pipe(
-      first(), map(userRole => isNil(userRole) ? true : this.redirectWithContext()
-      )
+    return this.authStoreService.isUserLoggedIn().pipe(
+      first(), switchMap(isLogged => isLogged ? this.redirectWithContext() : of(true))
     );
   }
 
-  private redirectWithContext(): boolean {
-    this.contextRoutingService.navigateToPageByContext();
-    return false;
+  private redirectWithContext(): Observable<boolean> {
+    return this.contextRoutingService.calculateNewUserRole()
+      .pipe(tap(role => this.sessionStoreService.setContextRole(role)), map(() => false));
   }
 
 }

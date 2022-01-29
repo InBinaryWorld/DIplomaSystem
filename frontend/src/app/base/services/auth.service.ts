@@ -18,16 +18,18 @@ export class AuthService {
 
   login(loginData: LoginData): Observable<AuthData> {
     const urlTemplate = this.settingsService.getServerApi(ApiLabel.LOGIN);
-    if (this.settingsService.isFakeApiModeOn()) {
-      return of(FakeSessionData.generateAuthData()).pipe(delay(1500));
+    if (this.settingsService.isFakeApiEnabled()) {
+      return of(FakeSessionData.generateAuthData())
+        .pipe(delay(this.settingsService.fakeApiDelay()));
     }
     return this.http.post(urlTemplate, loginData);
   }
 
   refreshToken(refreshToken: string): Observable<AuthData> {
     const urlTemplate = this.settingsService.getServerApi(ApiLabel.REFRESH);
-    if (this.settingsService.isFakeApiModeOn()) {
-      return of(FakeSessionData.generateAuthData()).pipe(delay(1500));
+    if (this.settingsService.isFakeApiEnabled()) {
+      return of(FakeSessionData.generateAuthData())
+        .pipe(delay(this.settingsService.fakeApiDelay()));
     }
     return this.http.post(urlTemplate, { refreshToken });
   }
