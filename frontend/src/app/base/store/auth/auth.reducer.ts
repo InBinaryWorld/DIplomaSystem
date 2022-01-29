@@ -12,7 +12,7 @@ export const authReducer = createReducer(
   initialState,
   on(loginAction, startProgressReducer()),
   on(refreshTokenAction, startProgressReducer()),
-  on(loginFailedAction, failedReducer()),
+  on(loginFailedAction, failedReducer<AuthState>({ authData: undefined })),
   on(loginSuccessAction, (state, { authData }) => successReducerFn(state, { authData })),
   on(clearStoreAction, () => initialState)
 );

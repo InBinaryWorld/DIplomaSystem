@@ -13,11 +13,11 @@ export class SidebarComponent {
   @Input()
   public navItems: NavItem[] = [];
 
-  constructor(private readonly sessionStoreService: AuthStoreService) {
+  constructor(private readonly authStoreService: AuthStoreService) {
   }
 
   public logout(): void {
-    this.sessionStoreService.logout();
+    this.authStoreService.logout();
   }
 
 }

@@ -11,7 +11,7 @@ export function clearStoreMetaReducer(reducer: ActionReducer<any>): ActionReduce
   return (state, action) => {
     if (clearingActionTypes.includes(action.type)) {
       // not setting undefined instead store because we want to preserve in ex. language
-      reducer(state, clearStoreAction());
+      return reducer(state, clearStoreAction());
     }
     return reducer(state, action);
   };

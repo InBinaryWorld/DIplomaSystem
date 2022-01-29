@@ -9,6 +9,7 @@ import { Store } from '@ngrx/store';
 import { CleanableStoreService } from '../../../core/services/cleanable-store.service';
 import { ContextRoutingService } from '../../../core/services/context-routing.service';
 import { SessionStoreService } from '../../../base/services/session-store.service';
+import { UserStoreService } from '../../../base/services/user-store.service';
 
 @Component({
   selector: 'app-root',
@@ -23,6 +24,7 @@ export class AppComponent extends BaseComponent implements OnInit {
               private readonly translationsService: AppTranslateService,
               private readonly sessionStoreService: SessionStoreService,
               private readonly authStoreService: AuthStoreService,
+              private readonly userStoreService: UserStoreService,
               private readonly spinnerService: SpinnerService,
               private readonly store: Store<AppState>,
               changeDetector: ChangeDetectorRef) {
@@ -45,7 +47,8 @@ export class AppComponent extends BaseComponent implements OnInit {
   private initStoreSpinners(): void {
     const services: CleanableStoreService[] = [
       this.sessionStoreService,
-      this.authStoreService
+      this.authStoreService,
+      this.userStoreService
     ];
     services.forEach(service => this.initStoreSpinner(service));
   }
@@ -53,8 +56,9 @@ export class AppComponent extends BaseComponent implements OnInit {
 
   private initStoreSpinner(service: CleanableStoreService): void {
     this.addSubscription(
-      service.getStoreProgress()
-        .subscribe(inProgress => this.spinnerService.act(inProgress, this.changeDetector))
+      service.getStoreProgress().subscribe(
+        inProgress => this.spinnerService.act(inProgress, this.changeDetector)
+      )
     );
   }
 }

@@ -1,29 +1,40 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, mergeMap, switchMap } from 'rxjs/operators';
+import { catchError, first, map, switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { AppState } from '../app-state.model';
 import { UserService } from '../../services/user.service';
-import { loadCurrentUserAction, loadCurrentUserFailedAction, loadCurrentUserSuccessAction } from './user.actions';
+import {
+  loadCurrentUserAction,
+  loadCurrentUserFailedAction,
+  loadCurrentUserIfNeededAction,
+  loadCurrentUserSuccessAction
+} from './user.actions';
 import { selectCurrentUser } from './user.selectors';
-import { ifNeededSwitchNotNil } from '../../../core/tools/If-needed-only-functions';
-import { setContextRole } from '../session/session.actions';
-import { firstItem } from '../../../core/tools/first-item';
+import { switchIfNotNil } from '../../../core/tools/If-needed-only-functions';
+import { selectIsLoggedIn } from '../auth/auth.selectors';
 
 
 @Injectable()
 export class userEffects {
 
+  loadCurrentUserIfNeeded = createEffect(() => this.actions.pipe(
+    ofType(loadCurrentUserIfNeededAction),
+    switchIfNotNil(() => this.store.select(selectCurrentUser)),
+    map(() => loadCurrentUserAction())
+  ));
+
   loadCurrentUser = createEffect(() => this.actions.pipe(
     ofType(loadCurrentUserAction),
-    ifNeededSwitchNotNil(() => this.store.select(selectCurrentUser)),
-    switchMap(action => this.userService.getCurrentUser().pipe(
-      mergeMap(user => [
-        setContextRole({ contextRole: firstItem(user.roles) }),
-        loadCurrentUserSuccessAction({ user })
-      ]),
-      catchError(error => of(loadCurrentUserFailedAction(error)))
+    switchMap(action => this.store.select(selectIsLoggedIn).pipe(
+      first(),
+      switchMap(isLoggedIn => !isLoggedIn
+        ? [loadCurrentUserFailedAction({ error: new Error('User is not logged in') })]
+        : this.userService.getCurrentUser().pipe(
+          map(user => loadCurrentUserSuccessAction({ user })),
+          catchError(error => of(loadCurrentUserFailedAction(error)))
+        ))
     ))
   ));
 
