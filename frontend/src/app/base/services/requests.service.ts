@@ -1,36 +1,37 @@
 import { Injectable } from '@angular/core';
 import { ServerHttpService } from '../../core/services/server-http.service';
-import { SettingsService } from '../../core/services/settings.service';
 import { Observable } from 'rxjs';
 import { ApiLabel } from '../../core/models/api-route.model';
 import { ClarificationRequest } from '../models/dto/clarification-request.model';
 import { ChangeRequest } from '../models/dto/change-request.model';
-import { Role } from '../models/dto/role.model';
+import { UserRole } from '../models/dto/user-role.model';
+import { RequestParams } from '../../core/models/request-param.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RequestsService {
 
-  constructor(private readonly http: ServerHttpService,
-              private readonly settingsService: SettingsService) {
+  constructor(private readonly http: ServerHttpService) {
   }
 
-  getClarificationRequestsForRole(role: Role, roleId: string): Observable<ClarificationRequest[]> {
-    switch (role) {
-      case Role.STUDENT:
-        return this.getClarificationRequestsForStudentId(roleId);
-      default:
-        throw new Error('Cannot get requests for role:' + role);
-    }
+  rejectClarificationRequestForRole(userRole: UserRole, requestId: string): Observable<void> {
+    const rejectPayload = { requestId, role: userRole.role, roleId: userRole.id };
+    return this.http.postWithLabel(ApiLabel.REJECT_CLARIFICATION_REQUESTS, rejectPayload);
   }
 
-  getClarificationRequestsForStudentId(studentId: string): Observable<ClarificationRequest[]> {
-    return this.http.getWithLabel(ApiLabel.CLARIFICATION_REQUESTS);
+  getClarificationRequestsForRole(userRole: UserRole): Observable<ClarificationRequest[]> {
+    const queryParams = new RequestParams();
+    queryParams.addIfValueExists('role', userRole.role);
+    queryParams.addIfValueExists('roleId', userRole.id);
+    return this.http.getWithLabel(ApiLabel.CLARIFICATION_REQUESTS, undefined, queryParams);
   }
 
-  getChangeRequestsForStudentId(studentId: string): Observable<ChangeRequest> {
-    return this.http.getWithLabel(ApiLabel.CHANGE_REQUESTS);
+  getChangeRequestsForRole(userRole: UserRole): Observable<ChangeRequest[]> {
+    const queryParams = new RequestParams();
+    queryParams.addIfValueExists('role', userRole.role);
+    queryParams.addIfValueExists('roleId', userRole.id);
+    return this.http.getWithLabel(ApiLabel.CHANGE_REQUESTS, undefined, queryParams);
   }
 
 }

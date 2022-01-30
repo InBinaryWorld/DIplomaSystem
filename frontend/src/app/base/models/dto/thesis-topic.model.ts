@@ -1,11 +1,11 @@
 import { TopicStatus } from './topic-status.model';
 
-export interface ThesisTopic {
+export interface Thesis {
   id: string;
   supervisorId: string;
   diplomaSessionId: string;
   authorStudentId?: string;
-  name: string;
+  topic: string;
   description: string;
   numberOfStudents: number;
   status: TopicStatus;

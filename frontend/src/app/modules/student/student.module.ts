@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { StudentRoutingModule } from './student-routing.module';
 import { SharedModule } from '../shared/shared.module';
 import { StudentComponent } from './components/student/student.component';
-import { StudentTopicChangeComponent } from './components/topic-change/student-topic-change.component';
+import { StudentTopicChangesComponent } from './components/topic-change/student-topic-changes.component';
 import {
   StudentTopicClarificationsComponent
 } from './components/topic-clarification/student-topic-clarifications.component';
@@ -20,8 +20,8 @@ import {
   StudentCreatePropositionComponent
 } from './components/propositions/create/student-create-proposition.component';
 import {
-  StudentPropositonDetailsComponent
-} from './components/propositions/details/student-propositon-details.component';
+  StudentPropositionDetailsComponent
+} from './components/propositions/details/student-proposition-details.component';
 import {
   StudentTopicClarificationDetailsComponent
 } from './components/topic-clarification/details/student-topic-clarification-details.component';
@@ -32,14 +32,14 @@ import {
 @NgModule({
   declarations: [
     StudentComponent,
-    StudentTopicChangeComponent,
+    StudentTopicChangesComponent,
     StudentReservationsComponent,
     StudentTopicDetailsComponent,
     StudentReservationDetailsComponent,
     StudentCreateReservationComponent,
     StudentTopicPropositionsComponent,
     StudentCreatePropositionComponent,
-    StudentPropositonDetailsComponent,
+    StudentPropositionDetailsComponent,
     StudentTopicClarificationsComponent,
     StudentTopicCreateClarificationComponent,
     StudentTopicClarificationDetailsComponent

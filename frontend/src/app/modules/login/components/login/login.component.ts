@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { BaseComponent } from '../../../../core/components/base/base-component.directive';
+import { BaseComponent } from '../../../../core/components/base-component.directive';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthStoreService } from '../../../../base/services/auth-store.service';
 import { LoginData } from '../../../../base/models/login-data.model';

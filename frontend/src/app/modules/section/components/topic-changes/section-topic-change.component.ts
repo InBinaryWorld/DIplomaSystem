@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { ThesisTopic } from '../../../../base/models/dto/thesis-topic.model';
+import { Thesis } from '../../../../base/models/dto/thesis-topic.model';
 import { ChangeRequest } from '../../../../base/models/dto/change-request.model';
 import { Router } from '@angular/router';
 import { FakeSessionData } from '../../../../../fakes/fake.data';
@@ -12,7 +12,7 @@ import { FakeSessionData } from '../../../../../fakes/fake.data';
 })
 export class SectionTopicChangeComponent {
 
-  topic: ThesisTopic = FakeSessionData.topic;
+  topic: Thesis = FakeSessionData.topic;
 
   application: ChangeRequest = FakeSessionData.changeRequest;
 

@@ -1,9 +1,9 @@
-import { Role } from '../../base/models/dto/role.model';
+import { UserRole } from '../../base/models/dto/user-role.model';
 
 export class StoreKeys {
 
-  public static forUserRole(role: Role, roleId: string): string {
-    return role + '_' + roleId;
+  public static forUserRole(userRole: UserRole): string {
+    return userRole.role + '_' + userRole.id;
   }
 
 }

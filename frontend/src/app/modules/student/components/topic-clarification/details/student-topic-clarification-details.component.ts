@@ -1,15 +1,16 @@
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { BaseComponent } from '../../../../../core/components/base/base-component.directive';
-import { ThesisTopic } from '../../../../../base/models/dto/thesis-topic.model';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, combineLatest, distinctUntilChanged, map, Observable, switchMap } from 'rxjs';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { extractRoleId } from '../../../../../core/tools/filter-role';
 import { Role } from '../../../../../base/models/dto/role.model';
 import { RequestsStoreService } from '../../../../../base/services/requests-store.service';
 import { ClarificationRequest } from '../../../../../base/models/dto/clarification-request.model';
 import { SessionStoreService } from '../../../../../base/services/session-store.service';
-import { FakeSessionData } from '../../../../../../fakes/fake.data';
+import { filterExists } from '../../../../../core/tools/filter-exists';
+import { RoleComponent } from '../../../../../base/components/role-component.directive';
+import { UserRole } from '../../../../../base/models/dto/user-role.model';
+import { BaseRequest } from '../../../../../base/models/dto/base-request.model';
+import { TranslationKeys } from '../../../../../core/utils/translation-keys.utils';
 
 @Component({
   selector: 'app-student-topic-clarification-details',
@@ -17,65 +18,91 @@ import { FakeSessionData } from '../../../../../../fakes/fake.data';
   styleUrls: ['./student-topic-clarification-details.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class StudentTopicClarificationDetailsComponent extends BaseComponent implements OnInit {
+export class StudentTopicClarificationDetailsComponent extends RoleComponent implements OnInit {
 
+  form?: FormGroup;
   request?: ClarificationRequest;
 
-  currentTopicForm?: FormGroup;
-  newTopicForm?: FormGroup;
-
-
-  private topic = FakeSessionData.topic;
+  reloadTrigger = new BehaviorSubject<boolean>(true);
 
   constructor(private readonly formBuilder: FormBuilder,
               private readonly activatedRoute: ActivatedRoute,
-              private readonly sessionStoreService: SessionStoreService,
               private readonly requestsStoreService: RequestsStoreService,
-              private readonly changeDetectorRef: ChangeDetectorRef) {
-    super(changeDetectorRef);
+              sessionStoreService: SessionStoreService,
+              changeDetector: ChangeDetectorRef) {
+    super(sessionStoreService, changeDetector);
   }
 
-  confirm() {
-    // this.router.navigate(['/topic-propositions/details',])
+  get role(): Role {
+    return Role.STUDENT;
   }
 
-  cancel() {
-    // this.router.navigate(['/topic-propositions'])
+  get requestId(): Observable<string> {
+    return this.activatedRoute.paramMap.pipe(
+      map(params => params.get('requestId')),
+      filterExists(),
+      distinctUntilChanged()
+    );
   }
-
-  get studentId(): Observable<string> {
-    return this.sessionStoreService.getContextRole()
-      .pipe(extractRoleId(Role.STUDENT));
-  }
-
-  // const imageIdSource = this.route.paramMap.pipe(
-  //   map(params => params.get('imageId')),
-  //   filter(id => !!id),
-  //   distinctUntilChanged(),
-  //   tap(() => this.clearViewData()),
-  //   shareReplay(1)
-  // );
 
   ngOnInit(): void {
-    // this.addSubscription(
-    //   this.studentId.pipe(
-    //     switchMap(studentId => this.requestsStoreService.getStudentClarificationRequestsForRole(Role.STUDENT, studentId)),
-    //     first(),
-    //     map(requests => this.find)
-    //   )
-    // );
+    this.initForm();
+    this.loadRequest();
+  }
 
-    // this.initForm();
-    this.currentTopicForm!.setValue({
-      currentThesisTopic: this.topic.name,
-      newDescription: this.topic.description
+  private initForm(): void {
+    this.form = this.formBuilder.group({
+      currentThesisTopic: [],
+      currentDescription: [],
+      newThesisTopic: [],
+      newDescription: []
     });
   }
 
-  private setupForms(currentTopic: Partial<ThesisTopic>, newTopic: Partial<ThesisTopic>): void {
-    this.currentTopicForm = this.formBuilder.group({
-      thesisTopic: [],
-      description: []
-    });
+  private loadRequest(): void {
+    this.addSubscription(
+      combineLatest([this.userRole, this.requestId, this.reloadTrigger])
+        .pipe(switchMap(([userRole, id]) => this.getRequest(userRole, id)))
+        .subscribe(request => {
+          this.request = request!;
+          this.setFormData(request);
+        })
+    );
   }
+
+  private setFormData(request: ClarificationRequest): void {
+    this.form!.setValue({
+      currentThesisTopic: 'TODO: Current topic',
+      currentDescription: 'TODO: Current description',
+      newThesisTopic: request.newTopic,
+      newDescription: request.newDescription
+    });
+    this.markForCheck();
+  }
+
+  private getRequest(userRole: UserRole, requestId: string): Observable<ClarificationRequest> {
+    return this.requestsStoreService.getClarificationRequestsForRoleById(userRole, requestId)
+      .pipe(filterExists());
+  }
+
+  public getStatusTranslationKey(item: BaseRequest): string {
+    return TranslationKeys.forRequestStatus(item.status);
+  }
+
+  // private reload(): void {
+  //   this.reloadTrigger.next(true);
+  // }
+  //
+  // rejectRequest(request: ClarificationRequest) {
+  //   this.addSubscription(
+  //     this.userRole.pipe(first(), switchMap(userRole =>
+  //       this.requestsStoreService.rejectClarificationRequest(userRole, request.id)
+  //     )).subscribe(() => this.reload())
+  //   );
+  // }
+  //
+  // isRejectPossible(request: ClarificationRequest): any {
+  //   return request.status == RequestStatus.WAITING;
+  // }
+
 }

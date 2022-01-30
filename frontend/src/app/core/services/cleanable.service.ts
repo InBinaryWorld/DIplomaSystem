@@ -1,4 +1,4 @@
-import { Cleanable } from '../components/base/cleanable.directive';
+import { Cleanable } from '../components/cleanable.directive';
 import { ChangeDetectorRef } from '@angular/core';
 
 export abstract class CleanableService {

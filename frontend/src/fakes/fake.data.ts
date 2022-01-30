@@ -3,7 +3,7 @@ import { AuthData } from '../app/base/models/auth-data.model';
 import { User } from '../app/base/models/dto/user.model';
 import { ApiLabel } from '../app/core/models/api-route.model';
 import { Dictionary } from '../app/core/models/dictionary.model';
-import { ThesisTopic } from '../app/base/models/dto/thesis-topic.model';
+import { Thesis } from '../app/base/models/dto/thesis-topic.model';
 import { TopicStatus } from '../app/base/models/dto/topic-status.model';
 import { Reservation } from '../app/base/models/dto/reservation.model';
 import { ReservationStatus } from '../app/base/models/dto/reservation-status.model';
@@ -28,11 +28,11 @@ const user: User = {
   ]
 };
 
-const topic: ThesisTopic = {
+const topic: Thesis = {
   id: '10',
   supervisorId: '1',
   diplomaSessionId: '12',
-  name: 'Predykcja zachowań ludzi podczas lockdownu',
+  topic: 'Predykcja zachowań ludzi podczas lockdownu',
   description: 'Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu',
   numberOfStudents: 1,
   status: TopicStatus.APPROVED_BY_COORDINATOR,
@@ -50,10 +50,10 @@ const reservation: Reservation = {
 const clarificationRequest: ClarificationRequest = {
   id: '1',
   studentId: '2',
-  topicId: '3',
+  thesisId: '3',
   employeeId: '4',
   submissionDate: new Date(),
-  newName: 'nowy temat pracy',
+  newTopic: 'nowy temat pracy',
   newDescription: 'nowy opis pracy',
   status: RequestStatus.WAITING
 };
@@ -64,8 +64,8 @@ const changeRequest: ChangeRequest = {
   employeeId: '4',
   submissionDate: new Date(),
   status: RequestStatus.WAITING,
-  newTopicId: '5',
-  oldTopicId: '2'
+  newThesisId: '5',
+  oldThesisId: '2'
 };
 
 const timetable: Timetable = {
@@ -79,9 +79,29 @@ const timetable: Timetable = {
   approvingTopicsByCoordinator: new Date()
 };
 
+const clarificationRequestApi = [
+  clarificationRequest,
+  clarificationRequest,
+  clarificationRequest,
+  clarificationRequest,
+  clarificationRequest
+];
+
+const changeRequestApi = [
+  changeRequest,
+  changeRequest,
+  changeRequest,
+  changeRequest,
+  changeRequest,
+  changeRequest,
+  changeRequest
+];
+
 
 const responseByApiKey: Dictionary<any> = {
-  [ApiLabel.USER]: user
+  [ApiLabel.USER]: user,
+  [ApiLabel.CHANGE_REQUESTS]: changeRequestApi,
+  [ApiLabel.CLARIFICATION_REQUESTS]: clarificationRequestApi
 };
 
 function generateAuthData(): AuthData {

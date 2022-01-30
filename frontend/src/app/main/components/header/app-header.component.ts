@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@
 import { AppTranslateService } from '../../../core/services/app-translate.service';
 import { AppLanguage } from '../../../core/models/app-language.model';
 import { FormControl } from '@angular/forms';
-import { BaseComponent } from '../../../core/components/base/base-component.directive';
+import { BaseComponent } from '../../../core/components/base-component.directive';
 import { SpinnerService } from '../../../core/services/spinner.service';
 import { UserRole } from '../../../base/models/dto/user-role.model';
 import { SessionStoreService } from '../../../base/services/session-store.service';

@@ -1,7 +1,7 @@
 import { Directive, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { UUID } from 'angular2-uuid';
-import { Dictionary } from '../../models/dictionary.model';
+import { Dictionary } from '../models/dictionary.model';
 
 @Directive()
 export abstract class Cleanable implements OnDestroy {

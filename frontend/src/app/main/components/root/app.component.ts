@@ -3,7 +3,7 @@ import { AppTranslateService } from '../../../core/services/app-translate.servic
 import { spinnerName, SpinnerService } from '../../../core/services/spinner.service';
 import { CleanableService } from '../../../core/services/cleanable.service';
 import { AuthStoreService } from '../../../base/services/auth-store.service';
-import { BaseComponent } from '../../../core/components/base/base-component.directive';
+import { BaseComponent } from '../../../core/components/base-component.directive';
 import { AppState } from '../../../base/store/app-state.model';
 import { Store } from '@ngrx/store';
 import { CleanableStoreService } from '../../../core/services/cleanable-store.service';

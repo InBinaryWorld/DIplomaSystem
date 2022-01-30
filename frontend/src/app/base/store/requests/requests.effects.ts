@@ -11,7 +11,7 @@ import {
   loadClarificationRequestsSuccessAction
 } from './requests.actions';
 import { selectClarificationRequests } from './requests.selectors';
-import { switchIfNotNil } from '../../../core/tools/If-needed-only-functions';
+import { switchIfNil } from '../../../core/tools/If-needed-only-functions';
 import { RequestsService } from '../../services/requests.service';
 
 
@@ -20,13 +20,13 @@ export class requestsEffects {
 
   loadClarificationRequestsIfNeeded = createEffect(() => this.actions.pipe(
     ofType(loadClarificationRequestsIfNeededAction),
-    switchIfNotNil(({ key }) => this.store.select(selectClarificationRequests, key)),
-    map(({ role, roleId, key }) => loadClarificationRequestsAction({ role, roleId, key }))
+    switchIfNil(({ key }) => this.store.select(selectClarificationRequests, key)),
+    map(({ userRole, key }) => loadClarificationRequestsAction({ userRole, key }))
   ));
 
   loadClarificationRequests = createEffect(() => this.actions.pipe(
     ofType(loadClarificationRequestsAction),
-    switchMap(({ role, roleId, key }) => this.requestsService.getClarificationRequestsForRole(role, roleId).pipe(
+    switchMap(({ userRole, key }) => this.requestsService.getClarificationRequestsForRole(userRole).pipe(
       map(clarificationRequests => loadClarificationRequestsSuccessAction({ requests: clarificationRequests, key })),
       catchError(error => of(loadClarificationRequestsFailedAction({ error, key })))
     ))

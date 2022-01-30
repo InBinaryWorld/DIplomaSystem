@@ -8,6 +8,9 @@ export const selectRequestsState = createFeatureSelector<RequestsState>(Requests
 export const selectRequestsStateInProgress = createSelector(selectRequestsState, state => state.isInProgress);
 export const selectRequestsStateError = createSelector(selectRequestsState, state => state.error);
 export const selectClarificationRequestsMap = createSelector(selectRequestsState, state => state.stateByKey);
-export const selectClarificationRequests = createSelector<AppState, string, Dictionary<RequestsStateByKey>, RequestsStateByKey>(
+export const selectRequestsStateByKey = createSelector<AppState, string, Dictionary<RequestsStateByKey>, RequestsStateByKey>(
   selectClarificationRequestsMap, (reqById, key) => reqById[key]
+);
+export const selectClarificationRequests = createSelector(
+  selectRequestsStateByKey, (state?) => state?.clarificationRequests
 );

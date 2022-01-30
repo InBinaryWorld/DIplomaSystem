@@ -4,7 +4,7 @@ import { StudentComponent } from './components/student/student.component';
 import { AuthGuard } from '../../core/guards/auth.guard';
 import { RoleGuard } from '../../core/guards/role.guard';
 import { Role } from '../../base/models/dto/role.model';
-import { StudentTopicChangeComponent } from './components/topic-change/student-topic-change.component';
+import { StudentTopicChangesComponent } from './components/topic-change/student-topic-changes.component';
 import {
   StudentTopicClarificationsComponent
 } from './components/topic-clarification/student-topic-clarifications.component';
@@ -21,8 +21,8 @@ import {
   StudentCreatePropositionComponent
 } from './components/propositions/create/student-create-proposition.component';
 import {
-  StudentPropositonDetailsComponent
-} from './components/propositions/details/student-propositon-details.component';
+  StudentPropositionDetailsComponent
+} from './components/propositions/details/student-proposition-details.component';
 import {
   StudentTopicCreateClarificationComponent
 } from './components/topic-clarification/create/student-topic-create-clarification.component';
@@ -75,8 +75,8 @@ const routes: Routes = [
             component: StudentTopicPropositionsComponent
           },
           {
-            path: 'details/:id',
-            component: StudentPropositonDetailsComponent
+            path: 'details/:topicId',
+            component: StudentPropositionDetailsComponent
           },
           {
             path: 'create',
@@ -85,8 +85,22 @@ const routes: Routes = [
         ]
       },
       {
-        path: 'topic-change',
-        component: StudentTopicChangeComponent
+        path: 'topic-changes',
+        children: [
+          {
+            path: '',
+            pathMatch: 'full',
+            component: StudentTopicChangesComponent
+          },
+          {
+            path: 'details/:requestId',
+            component: StudentTopicChangesComponent
+          },
+          {
+            path: 'create',
+            component: StudentTopicChangesComponent
+          }
+        ]
       },
       {
         path: 'clarification-requests',
@@ -97,7 +111,7 @@ const routes: Routes = [
             component: StudentTopicClarificationsComponent
           },
           {
-            path: 'details/:id',
+            path: 'details/:requestId',
             component: StudentTopicClarificationDetailsComponent
           },
           {
@@ -116,29 +130,3 @@ const routes: Routes = [
 })
 export class StudentRoutingModule {
 }
-
-
-const user = {
-  id: 2,
-  firstName: 'aa',
-  lastNAme: 'bbb'
-};
-
-const pracownik1 = {
-  id: 1,
-  userId: 2,
-  role: 'Prowadzacy'
-};
-const pracownik2 = {
-  id: 1,
-  userId: 2,
-  role: 'Dziekan'
-};
-const student1 = {
-  id: 1,
-  userId: 2
-};
-const student2 = {
-  id: 2,
-  userId: 2
-};

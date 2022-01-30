@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { ThesisTopic } from '../../../../../base/models/dto/thesis-topic.model';
+import { Thesis } from '../../../../../base/models/dto/thesis-topic.model';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Reservation } from '../../../../../base/models/dto/reservation.model';
@@ -7,15 +7,15 @@ import { FakeSessionData } from '../../../../../../fakes/fake.data';
 
 @Component({
   selector: 'app-student-proposition-details',
-  templateUrl: './student-propositon-details.component.html',
-  styleUrls: ['./student-propositon-details.component.css'],
+  templateUrl: './student-proposition-details.component.html',
+  styleUrls: ['./student-proposition-details.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class StudentPropositonDetailsComponent implements OnInit {
+export class StudentPropositionDetailsComponent implements OnInit {
 
   form?: FormGroup;
 
-  topic: ThesisTopic = FakeSessionData.topic;
+  topic: Thesis = FakeSessionData.topic;
 
   reservation: Reservation = FakeSessionData.reservation;
 
@@ -35,7 +35,7 @@ export class StudentPropositonDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.initForm();
     this.form!.setValue({
-      thesisTopic: this.topic.name,
+      thesisTopic: this.topic.topic,
       supervisor: 'Jan kowalski',
       numberOfStudents: this.topic.numberOfStudents,
       description: this.topic.description

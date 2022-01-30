@@ -3,7 +3,7 @@ import { Router, RouterEvent } from '@angular/router';
 import { Role } from '../../base/models/dto/role.model';
 import { Dictionary } from '../models/dictionary.model';
 import { CleanableService } from './cleanable.service';
-import { Cleanable } from '../components/base/cleanable.directive';
+import { Cleanable } from '../components/cleanable.directive';
 import { SessionStoreService } from '../../base/services/session-store.service';
 import { combineLatest, distinctUntilChanged, filter, Observable, skip } from 'rxjs';
 import { isNil } from 'lodash-es';
@@ -45,7 +45,7 @@ export class ContextRoutingService implements CleanableService {
       combineLatest([contextRole, this.getRouterEvents()])
         .pipe(distinctUntilChanged(([role1], [role2]) => role1?.role === role2?.role))
         .subscribe(([role, event]) => {
-          const contextPath = (role && this.routeByRole[role.role]) ?? this.loginRoute;
+          const contextPath = (role && this.routeByRole[role.role]) || this.loginRoute;
           if (isNil(event) || !event!.url.startsWith(contextPath)) {
             this.router.navigate([contextPath]).then();
           }

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { ThesisTopic } from '../../../../../base/models/dto/thesis-topic.model';
+import { Thesis } from '../../../../../base/models/dto/thesis-topic.model';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ChangeRequest } from '../../../../../base/models/dto/change-request.model';
@@ -15,7 +15,7 @@ export class SectionTopicChangeDetailsComponent implements OnInit {
 
   form?: FormGroup;
 
-  topic: ThesisTopic = FakeSessionData.topic;
+  topic: Thesis = FakeSessionData.topic;
 
   request: ChangeRequest = FakeSessionData.changeRequest;
 

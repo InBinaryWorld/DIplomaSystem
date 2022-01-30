@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { ThesisTopic } from '../../../../base/models/dto/thesis-topic.model';
+import { Thesis } from '../../../../base/models/dto/thesis-topic.model';
 import { Router } from '@angular/router';
 import { Reservation } from '../../../../base/models/dto/reservation.model';
 import { ReservationStatus } from '../../../../base/models/dto/reservation-status.model';
@@ -30,7 +30,7 @@ export class StudentTopicPropositionsComponent {
     this.reservation
   ];
 
-  topics: ThesisTopic[] = [
+  topics: Thesis[] = [
     this.topic,
     this.topic,
     this.topic,

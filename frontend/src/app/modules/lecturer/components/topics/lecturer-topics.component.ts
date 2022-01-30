@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { ThesisTopic } from '../../../../base/models/dto/thesis-topic.model';
+import { Thesis } from '../../../../base/models/dto/thesis-topic.model';
 import { Router } from '@angular/router';
 import { FakeSessionData } from '../../../../../fakes/fake.data';
 
@@ -11,9 +11,9 @@ import { FakeSessionData } from '../../../../../fakes/fake.data';
 })
 export class LecturerTopicsComponent {
 
-  private topic: ThesisTopic = FakeSessionData.topic;
+  private topic: Thesis = FakeSessionData.topic;
 
-  public submittedTopics: ThesisTopic[] = [
+  public submittedTopics: Thesis[] = [
     this.topic,
     this.topic,
     this.topic,
@@ -28,15 +28,15 @@ export class LecturerTopicsComponent {
   constructor(private readonly router: Router) {
   }
 
-  public manageTopic(topic: ThesisTopic): void {
+  public manageTopic(topic: Thesis): void {
     this.router.navigate(['/lecturer/topic/manage', topic.id]).then();
   }
 
-  public reviewTopic(topic: ThesisTopic): void {
+  public reviewTopic(topic: Thesis): void {
     this.router.navigate(['/lecturer/topic/review', topic.id]).then();
   }
 
-  public correctTopic(topic: ThesisTopic): void {
+  public correctTopic(topic: Thesis): void {
     this.router.navigate(['/lecturer/topic/correct', topic.id]).then();
   }
 

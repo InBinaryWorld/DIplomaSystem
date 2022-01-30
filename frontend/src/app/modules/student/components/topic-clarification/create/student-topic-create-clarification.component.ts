@@ -1,14 +1,11 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Role } from '../../../../../base/models/dto/role.model';
-import { BaseComponent } from '../../../../../core/components/base/base-component.directive';
-import { ThesisTopic } from '../../../../../base/models/dto/thesis-topic.model';
+import { BaseComponent } from '../../../../../core/components/base-component.directive';
+import { Thesis } from '../../../../../base/models/dto/thesis-topic.model';
 import { RequestsStoreService } from '../../../../../base/services/requests-store.service';
-import { Observable } from 'rxjs';
 import { ClarificationRequest } from '../../../../../base/models/dto/clarification-request.model';
 import { SessionStoreService } from '../../../../../base/services/session-store.service';
-import { extractRoleId } from '../../../../../core/tools/filter-role';
 import { FakeSessionData } from '../../../../../../fakes/fake.data';
 
 @Component({
@@ -43,12 +40,6 @@ export class StudentTopicCreateClarificationComponent extends BaseComponent impl
     // this.router.navigate(['/topic-propositions'])
   }
 
-  get studentId(): Observable<string> {
-    return this.sessionStoreService.getContextRole()
-      .pipe(extractRoleId(Role.STUDENT));
-  }
-
-
   ngOnInit(): void {
     // this.addSubscription(
     //   this.studentId.pipe(
@@ -60,12 +51,12 @@ export class StudentTopicCreateClarificationComponent extends BaseComponent impl
 
     // this.initForm();
     this.currentTopicForm!.setValue({
-      currentThesisTopic: this.topic.name,
+      currentThesisTopic: this.topic.topic,
       newDescription: this.topic.description
     });
   }
 
-  private setupForms(currentTopic: Partial<ThesisTopic>, newTopic: Partial<ThesisTopic>): void {
+  private setupForms(currentTopic: Partial<Thesis>, newTopic: Partial<Thesis>): void {
     this.currentTopicForm = this.formBuilder.group({
       thesisTopic: [],
       description: []

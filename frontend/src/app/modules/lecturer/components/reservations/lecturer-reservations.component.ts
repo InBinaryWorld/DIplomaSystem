@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { ThesisTopic } from '../../../../base/models/dto/thesis-topic.model';
+import { Thesis } from '../../../../base/models/dto/thesis-topic.model';
 import { Router } from '@angular/router';
 import { Reservation } from '../../../../base/models/dto/reservation.model';
 import { ReservationStatus } from '../../../../base/models/dto/reservation-status.model';
@@ -14,7 +14,7 @@ import { FakeSessionData } from '../../../../../fakes/fake.data';
 })
 export class LecturerReservationsComponent {
 
-  private topics: ThesisTopic[] = [
+  private topics: Thesis[] = [
     FakeSessionData.topic,
     FakeSessionData.topic,
     FakeSessionData.topic
@@ -37,7 +37,7 @@ export class LecturerReservationsComponent {
   constructor(private readonly router: Router) {
   }
 
-  public manageTopicReservations(topic: ThesisTopic): void {
+  public manageTopicReservations(topic: Thesis): void {
     this.router.navigate(['/lecturer/reservations', topic.id]).then();
   }
 

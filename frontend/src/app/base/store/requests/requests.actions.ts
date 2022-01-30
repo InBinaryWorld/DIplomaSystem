@@ -1,14 +1,14 @@
 import { createAction, props } from '@ngrx/store';
 import { ClarificationRequest } from '../../models/dto/clarification-request.model';
-import { Role } from '../../models/dto/role.model';
+import { UserRole } from '../../models/dto/user-role.model';
 
 export const loadClarificationRequestsAction = createAction(
   '[REQUESTS] Clarification requests',
-  props<{ roleId: string, role: Role, key: string }>()
+  props<{ userRole: UserRole, key: string }>()
 );
 export const loadClarificationRequestsIfNeededAction = createAction(
   '[REQUESTS] Clarification requests if needed',
-  props<{ roleId: string, role: Role, key: string }>()
+  props<{ userRole: UserRole, key: string }>()
 );
 export const invalidateRequestsDataAction = createAction(
   '[REQUESTS] Invalidate requests data',

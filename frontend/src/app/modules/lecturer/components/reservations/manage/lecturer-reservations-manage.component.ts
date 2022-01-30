@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { ThesisTopic } from '../../../../../base/models/dto/thesis-topic.model';
+import { Thesis } from '../../../../../base/models/dto/thesis-topic.model';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Reservation } from '../../../../../base/models/dto/reservation.model';
@@ -28,7 +28,7 @@ export class LecturerReservationsManageComponent implements OnInit {
     ReservationStatus.ACCEPTED
   ];
 
-  private topic: ThesisTopic = FakeSessionData.topic;
+  private topic: Thesis = FakeSessionData.topic;
 
   reservations: Reservation[] = [
     FakeSessionData.reservation,
@@ -55,7 +55,7 @@ export class LecturerReservationsManageComponent implements OnInit {
   ngOnInit(): void {
     this.initForm();
     this.form!.setValue({
-      thesisTopic: this.topic.name,
+      thesisTopic: this.topic.topic,
       numberOfStudents: this.topic.numberOfStudents,
       description: this.topic.description
     });

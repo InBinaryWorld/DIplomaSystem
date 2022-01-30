@@ -9,6 +9,7 @@ import {
   loadClarificationRequestsSuccessAction
 } from './requests.actions';
 import { ClarificationRequest } from '../../models/dto/clarification-request.model';
+import { isNotNil } from '../../../core/tools/is-not-nil';
 
 export const RequestsFeatureName = 'requests';
 
@@ -28,13 +29,14 @@ export const requestsReducer = createReducer(
 
 
 function setClValue(state: RequestsState, key: string, requests?: ClarificationRequest[]): Partial<RequestsState> {
-  const newStateForKey = state.stateByKey[key] ?? new RequestsStateByKey();
+  const currentState = state.stateByKey[key];
+  const newStateForKey = (isNotNil(currentState) && { ...currentState }) || new RequestsStateByKey();
   newStateForKey.clarificationRequests = requests;
   return setStateByKey(state, key, newStateForKey);
 }
 
 function setStateByKey(state: RequestsState, key: string, newStateForKey?: RequestsStateByKey): Partial<RequestsState> {
-  const stateByKey = state.stateByKey;
+  const stateByKey = { ...state.stateByKey };
   stateByKey[key] = newStateForKey ?? new RequestsStateByKey();
   return { stateByKey };
 }

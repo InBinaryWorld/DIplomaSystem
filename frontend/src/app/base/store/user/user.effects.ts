@@ -12,7 +12,7 @@ import {
   loadCurrentUserSuccessAction
 } from './user.actions';
 import { selectCurrentUser } from './user.selectors';
-import { switchIfNotNil } from '../../../core/tools/If-needed-only-functions';
+import { switchIfNil } from '../../../core/tools/If-needed-only-functions';
 import { selectIsLoggedIn } from '../auth/auth.selectors';
 
 
@@ -21,13 +21,13 @@ export class userEffects {
 
   loadCurrentUserIfNeeded = createEffect(() => this.actions.pipe(
     ofType(loadCurrentUserIfNeededAction),
-    switchIfNotNil(() => this.store.select(selectCurrentUser)),
+    switchIfNil(() => this.store.select(selectCurrentUser)),
     map(() => loadCurrentUserAction())
   ));
 
   loadCurrentUser = createEffect(() => this.actions.pipe(
     ofType(loadCurrentUserAction),
-    switchMap(action => this.store.select(selectIsLoggedIn).pipe(
+    switchMap(() => this.store.select(selectIsLoggedIn).pipe(
       first(),
       switchMap(isLoggedIn => !isLoggedIn
         ? [loadCurrentUserFailedAction({ error: new Error('User is not logged in') })]

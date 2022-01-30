@@ -14,7 +14,8 @@ export const baseEnvironment = {
       [ApiLabel.REFRESH]: 'TODO',
       [ApiLabel.USER]: 'TODO',
       [ApiLabel.CHANGE_REQUESTS]: 'TODO',
-      [ApiLabel.CLARIFICATION_REQUESTS]: 'TODO'
+      [ApiLabel.CLARIFICATION_REQUESTS]: 'TODO',
+      [ApiLabel.REJECT_CLARIFICATION_REQUESTS]: 'TODO'
     }
   }
 };
