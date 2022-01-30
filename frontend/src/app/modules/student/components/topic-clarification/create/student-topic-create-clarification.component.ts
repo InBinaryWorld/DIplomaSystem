@@ -3,9 +3,9 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { BaseComponent } from '../../../../../core/components/base-component.directive';
 import { Thesis } from '../../../../../base/models/dto/thesis-topic.model';
-import { RequestsStoreService } from '../../../../../base/services/requests-store.service';
+import { RequestsStoreService } from '../../../../../base/services/store/requests-store.service';
 import { ClarificationRequest } from '../../../../../base/models/dto/clarification-request.model';
-import { SessionStoreService } from '../../../../../base/services/session-store.service';
+import { SessionStoreService } from '../../../../../base/services/store/session-store.service';
 import { FakeSessionData } from '../../../../../../fakes/fake.data';
 
 @Component({

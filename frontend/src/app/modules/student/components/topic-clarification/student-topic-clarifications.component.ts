@@ -3,9 +3,9 @@ import { Router } from '@angular/router';
 import { TranslationKeys } from '../../../../core/utils/translation-keys.utils';
 import { ClarificationRequest } from '../../../../base/models/dto/clarification-request.model';
 import { BaseRequest } from '../../../../base/models/dto/base-request.model';
-import { RequestsStoreService } from '../../../../base/services/requests-store.service';
+import { RequestsStoreService } from '../../../../base/services/store/requests-store.service';
 import { switchMap } from 'rxjs';
-import { SessionStoreService } from '../../../../base/services/session-store.service';
+import { SessionStoreService } from '../../../../base/services/store/session-store.service';
 import { filterExists } from '../../../../core/tools/filter-exists';
 import { RoleComponent } from '../../../../base/components/role-component.directive';
 import { Role } from '../../../../base/models/dto/role.model';
@@ -55,4 +55,10 @@ export class StudentTopicClarificationsComponent extends RoleComponent implement
     return TranslationKeys.forRequestStatus(item.status);
   }
 
+  isCreatePossible(): boolean {
+    // TODO:
+    const hasReservedTopic = true;
+    const timeIsCorrect = true;
+    return hasReservedTopic && timeIsCorrect;
+  }
 }

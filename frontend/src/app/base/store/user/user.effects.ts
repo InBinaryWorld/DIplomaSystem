@@ -4,7 +4,7 @@ import { catchError, first, map, switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { AppState } from '../app-state.model';
-import { UserService } from '../../services/user.service';
+import { UserApiService } from '../../services/api/user-api.service';
 import {
   loadCurrentUserAction,
   loadCurrentUserFailedAction,
@@ -40,7 +40,7 @@ export class userEffects {
 
   constructor(private readonly actions: Actions,
               private readonly store: Store<AppState>,
-              private readonly userService: UserService) {
+              private readonly userService: UserApiService) {
   }
 
 }

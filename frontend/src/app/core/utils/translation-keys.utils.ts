@@ -1,6 +1,6 @@
 import { ReservationStatus } from '../../base/models/dto/reservation-status.model';
 import { Role } from '../../base/models/dto/role.model';
-import { RequestStatus } from '../../base/models/dto/request-state.model';
+import { RequestStatus } from '../../base/models/dto/request-status.model';
 
 export class TranslationKeys {
 

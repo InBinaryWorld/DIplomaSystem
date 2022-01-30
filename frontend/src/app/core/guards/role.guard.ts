@@ -12,9 +12,9 @@ import { Role } from '../../base/models/dto/role.model';
 import { Injectable } from '@angular/core';
 import { UserRole } from '../../base/models/dto/user-role.model';
 import { isEmpty, isNil } from 'lodash-es';
-import { SessionStoreService } from '../../base/services/session-store.service';
+import { SessionStoreService } from '../../base/services/store/session-store.service';
 import { isNotNil } from '../tools/is-not-nil';
-import { UserStoreService } from '../../base/services/user-store.service';
+import { UserStoreService } from '../../base/services/store/user-store.service';
 
 @Injectable({
   providedIn: 'root'

@@ -2,15 +2,15 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@
 import { AppTranslateService } from '../../../core/services/app-translate.service';
 import { spinnerName, SpinnerService } from '../../../core/services/spinner.service';
 import { CleanableService } from '../../../core/services/cleanable.service';
-import { AuthStoreService } from '../../../base/services/auth-store.service';
+import { AuthStoreService } from '../../../base/services/store/auth-store.service';
 import { BaseComponent } from '../../../core/components/base-component.directive';
 import { AppState } from '../../../base/store/app-state.model';
 import { Store } from '@ngrx/store';
 import { CleanableStoreService } from '../../../core/services/cleanable-store.service';
 import { ContextRoutingService } from '../../../core/services/context-routing.service';
-import { SessionStoreService } from '../../../base/services/session-store.service';
-import { UserStoreService } from '../../../base/services/user-store.service';
-import { RequestsStoreService } from '../../../base/services/requests-store.service';
+import { SessionStoreService } from '../../../base/services/store/session-store.service';
+import { UserStoreService } from '../../../base/services/store/user-store.service';
+import { RequestsStoreService } from '../../../base/services/store/requests-store.service';
 
 @Component({
   selector: 'app-root',

@@ -1,19 +1,19 @@
 import { Injectable } from '@angular/core';
 import { Selector, Store } from '@ngrx/store';
 import { filter, Observable } from 'rxjs';
-import { AuthData } from '../models/auth-data.model';
+import { AuthData } from '../../models/auth-data.model';
 import {
   selectAuthData,
   selectAuthError,
   selectAuthState,
   selectAuthStoreInProgress,
   selectIsLoggedIn
-} from '../store/auth/auth.selectors';
-import { LoginData } from '../models/login-data.model';
-import { loginAction, logoutAction, refreshTokenAction } from '../store/auth/auth.actions';
-import { AppState } from '../store/app-state.model';
-import { CleanableStoreService } from '../../core/services/cleanable-store.service';
-import { AuthState } from '../store/auth/auth.state';
+} from '../../store/auth/auth.selectors';
+import { LoginData } from '../../models/login-data.model';
+import { loginAction, logoutAction, refreshTokenAction } from '../../store/auth/auth.actions';
+import { AppState } from '../../store/app-state.model';
+import { CleanableStoreService } from '../../../core/services/cleanable-store.service';
+import { AuthState } from '../../store/auth/auth.state';
 import { isNil } from 'lodash-es';
 import { map } from 'rxjs/operators';
 
@@ -61,7 +61,7 @@ export class AuthStoreService extends CleanableStoreService {
     );
   }
 
-  getAuthError(): Observable<any> {
+  getError(): Observable<any> {
     return this.store.select(selectAuthError);
   }
 

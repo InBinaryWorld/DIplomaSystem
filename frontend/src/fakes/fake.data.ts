@@ -8,7 +8,7 @@ import { TopicStatus } from '../app/base/models/dto/topic-status.model';
 import { Reservation } from '../app/base/models/dto/reservation.model';
 import { ReservationStatus } from '../app/base/models/dto/reservation-status.model';
 import { ClarificationRequest } from '../app/base/models/dto/clarification-request.model';
-import { RequestStatus } from '../app/base/models/dto/request-state.model';
+import { RequestStatus } from '../app/base/models/dto/request-status.model';
 import { ChangeRequest } from '../app/base/models/dto/change-request.model';
 import { Timetable } from '../app/base/models/dto/timetable.model';
 
@@ -74,7 +74,7 @@ const timetable: Timetable = {
   changingTopics: new Date(),
   selectingTopics: new Date(),
   submittingTopics: new Date(),
-  certificatingTopics: new Date(),
+  clarificationTopics: new Date(),
   approvingTopicsByCommittee: new Date(),
   approvingTopicsByCoordinator: new Date()
 };
@@ -99,9 +99,9 @@ const changeRequestApi = [
 
 
 const responseByApiKey: Dictionary<any> = {
-  [ApiLabel.USER]: user,
-  [ApiLabel.CHANGE_REQUESTS]: changeRequestApi,
-  [ApiLabel.CLARIFICATION_REQUESTS]: clarificationRequestApi
+  [ApiLabel.GET_USER]: user,
+  [ApiLabel.GET_CHANGE_REQUESTS]: changeRequestApi,
+  [ApiLabel.GET_CLARIFICATION_REQUESTS]: clarificationRequestApi
 };
 
 function generateAuthData(): AuthData {

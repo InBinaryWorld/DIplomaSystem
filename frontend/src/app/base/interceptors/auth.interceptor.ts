@@ -1,7 +1,7 @@
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, switchMap, throwError } from 'rxjs';
-import { AuthStoreService } from '../services/auth-store.service';
+import { AuthStoreService } from '../services/store/auth-store.service';
 import { filterNotInProgress } from '../../core/tools/filter-not-in-progress';
 import { catchError, first, map, tap } from 'rxjs/operators';
 import { isNil } from 'lodash-es';

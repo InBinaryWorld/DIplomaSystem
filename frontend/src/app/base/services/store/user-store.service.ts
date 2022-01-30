@@ -1,24 +1,24 @@
 import { Injectable } from '@angular/core';
 import { Selector, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { AppState } from '../store/app-state.model';
-import { CleanableStoreService } from '../../core/services/cleanable-store.service';
+import { AppState } from '../../store/app-state.model';
+import { CleanableStoreService } from '../../../core/services/cleanable-store.service';
 import {
   selectCurrentUser,
   selectUserState,
   selectUserStateError,
   selectUserStateInProgress
-} from '../store/user/user.selectors';
-import { User } from '../models/dto/user.model';
+} from '../../store/user/user.selectors';
+import { User } from '../../models/dto/user.model';
 import {
   invalidateCurrentUserAction,
   loadCurrentUserAction,
   loadCurrentUserIfNeededAction
-} from '../store/user/user.actions';
+} from '../../store/user/user.actions';
 import { map } from 'rxjs/operators';
-import { UserRole } from '../models/dto/user-role.model';
-import { UserState } from '../store/user/user.state';
-import { filterNotInProgress } from '../../core/tools/filter-not-in-progress';
+import { UserRole } from '../../models/dto/user-role.model';
+import { UserState } from '../../store/user/user.state';
+import { filterNotInProgress } from '../../../core/tools/filter-not-in-progress';
 
 @Injectable({
   providedIn: 'root'
@@ -57,12 +57,11 @@ export class UserStoreService extends CleanableStoreService {
     );
   }
 
-
   public getProgressSelector(): Selector<AppState, boolean> {
     return selectUserStateInProgress;
   }
 
-  getUserError(): Observable<any> {
+  public getError(): Observable<any> {
     return this.store.select(selectUserStateError);
   }
 

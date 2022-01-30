@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { NavItem } from '../../models/nav-item.model';
-import { AuthStoreService } from '../../../../base/services/auth-store.service';
+import { AuthStoreService } from '../../../../base/services/store/auth-store.service';
 
 
 @Component({

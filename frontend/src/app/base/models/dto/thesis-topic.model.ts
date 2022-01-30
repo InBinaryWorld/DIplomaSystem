@@ -1,7 +1,7 @@
 import { TopicStatus } from './topic-status.model';
+import { WithId } from './id.model';
 
-export interface Thesis {
-  id: string;
+export interface Thesis extends WithId {
   supervisorId: string;
   diplomaSessionId: string;
   authorStudentId?: string;

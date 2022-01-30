@@ -4,13 +4,13 @@ import { Role } from '../../base/models/dto/role.model';
 import { Dictionary } from '../models/dictionary.model';
 import { CleanableService } from './cleanable.service';
 import { Cleanable } from '../components/cleanable.directive';
-import { SessionStoreService } from '../../base/services/session-store.service';
+import { SessionStoreService } from '../../base/services/store/session-store.service';
 import { combineLatest, distinctUntilChanged, filter, Observable, skip } from 'rxjs';
 import { isNil } from 'lodash-es';
 import { filterExists } from '../tools/filter-exists';
 import { first, map } from 'rxjs/operators';
 import { firstItem } from '../tools/first-item';
-import { UserStoreService } from '../../base/services/user-store.service';
+import { UserStoreService } from '../../base/services/store/user-store.service';
 import { UserRole } from '../../base/models/dto/user-role.model';
 
 

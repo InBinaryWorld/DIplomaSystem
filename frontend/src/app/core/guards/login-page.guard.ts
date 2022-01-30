@@ -3,9 +3,9 @@ import { Observable, of, switchMap } from 'rxjs';
 import { first, map, tap } from 'rxjs/operators';
 import { Role } from '../../base/models/dto/role.model';
 import { Injectable } from '@angular/core';
-import { AuthStoreService } from '../../base/services/auth-store.service';
+import { AuthStoreService } from '../../base/services/store/auth-store.service';
 import { ContextRoutingService } from '../services/context-routing.service';
-import { SessionStoreService } from '../../base/services/session-store.service';
+import { SessionStoreService } from '../../base/services/store/session-store.service';
 
 @Injectable({
   providedIn: 'root'

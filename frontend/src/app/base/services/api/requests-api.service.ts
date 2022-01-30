@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
-import { ServerHttpService } from '../../core/services/server-http.service';
+import { ServerHttpService } from '../../../core/services/server-http.service';
 import { Observable } from 'rxjs';
-import { ApiLabel } from '../../core/models/api-route.model';
-import { ClarificationRequest } from '../models/dto/clarification-request.model';
-import { ChangeRequest } from '../models/dto/change-request.model';
-import { UserRole } from '../models/dto/user-role.model';
-import { RequestParams } from '../../core/models/request-param.model';
+import { ApiLabel } from '../../../core/models/api-route.model';
+import { ClarificationRequest } from '../../models/dto/clarification-request.model';
+import { ChangeRequest } from '../../models/dto/change-request.model';
+import { UserRole } from '../../models/dto/user-role.model';
+import { RequestParams } from '../../../core/models/request-param.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class RequestsService {
+export class RequestsApiService {
 
   constructor(private readonly http: ServerHttpService) {
   }
@@ -24,14 +24,14 @@ export class RequestsService {
     const queryParams = new RequestParams();
     queryParams.addIfValueExists('role', userRole.role);
     queryParams.addIfValueExists('roleId', userRole.id);
-    return this.http.getWithLabel(ApiLabel.CLARIFICATION_REQUESTS, undefined, queryParams);
+    return this.http.getWithLabel(ApiLabel.GET_CLARIFICATION_REQUESTS, undefined, queryParams);
   }
 
   getChangeRequestsForRole(userRole: UserRole): Observable<ChangeRequest[]> {
     const queryParams = new RequestParams();
     queryParams.addIfValueExists('role', userRole.role);
     queryParams.addIfValueExists('roleId', userRole.id);
-    return this.http.getWithLabel(ApiLabel.CHANGE_REQUESTS, undefined, queryParams);
+    return this.http.getWithLabel(ApiLabel.GET_CHANGE_REQUESTS, undefined, queryParams);
   }
 
 }

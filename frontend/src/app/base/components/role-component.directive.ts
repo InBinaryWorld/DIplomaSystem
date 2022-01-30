@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Directive } from '@angular/core';
-import { SessionStoreService } from '../services/session-store.service';
+import { SessionStoreService } from '../services/store/session-store.service';
 import { BaseComponent } from '../../core/components/base-component.directive';
 import { Role } from '../models/dto/role.model';
 import { distinctUntilChanged, Observable } from 'rxjs';

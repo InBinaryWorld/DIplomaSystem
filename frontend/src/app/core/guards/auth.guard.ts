@@ -9,7 +9,7 @@ import {
 } from '@angular/router';
 import { Observable } from 'rxjs';
 import { first, map } from 'rxjs/operators';
-import { AuthStoreService } from '../../base/services/auth-store.service';
+import { AuthStoreService } from '../../base/services/store/auth-store.service';
 
 @Injectable({
   providedIn: 'root'

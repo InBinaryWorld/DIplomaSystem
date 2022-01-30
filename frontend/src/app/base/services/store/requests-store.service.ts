@@ -1,34 +1,34 @@
 import { Injectable } from '@angular/core';
 import { Selector, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { AppState } from '../store/app-state.model';
-import { CleanableStoreService } from '../../core/services/cleanable-store.service';
+import { AppState } from '../../store/app-state.model';
+import { CleanableStoreService } from '../../../core/services/cleanable-store.service';
 import {
   invalidateRequestsDataAction,
   loadClarificationRequestsAction,
   loadClarificationRequestsIfNeededAction
-} from '../store/requests/requests.actions';
+} from '../../store/requests/requests.actions';
 import {
   selectClarificationRequests,
   selectClarificationRequestsMap,
   selectRequestsState,
   selectRequestsStateError,
   selectRequestsStateInProgress
-} from '../store/requests/requests.selectors';
-import { RequestsState, RequestsStateByKey } from '../store/requests/requests.state';
-import { Dictionary } from '../../core/models/dictionary.model';
-import { StoreKeys } from '../../core/utils/store-keys.utils';
-import { ClarificationRequest } from '../models/dto/clarification-request.model';
+} from '../../store/requests/requests.selectors';
+import { RequestsState, RequestsStateByKey } from '../../store/requests/requests.state';
+import { Dictionary } from '../../../core/models/dictionary.model';
+import { StoreKeys } from '../../../core/utils/store-keys.utils';
+import { ClarificationRequest } from '../../models/dto/clarification-request.model';
 import { map, tap } from 'rxjs/operators';
-import { UserRole } from '../models/dto/user-role.model';
-import { RequestsService } from './requests.service';
+import { UserRole } from '../../models/dto/user-role.model';
+import { RequestsApiService } from '../api/requests-api.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RequestsStoreService extends CleanableStoreService {
 
-  constructor(private readonly requestsService: RequestsService,
+  constructor(private readonly requestsService: RequestsApiService,
               store: Store<AppState>) {
     super(store);
   }
@@ -67,7 +67,7 @@ export class RequestsStoreService extends CleanableStoreService {
     return this.store.select(selectClarificationRequestsMap);
   }
 
-  rejectClarificationRequest(userRole: UserRole, id: string): Observable<void> {
+  public rejectClarificationRequest(userRole: UserRole, id: string): Observable<void> {
     const invalidatePayload = { key: StoreKeys.forUserRole(userRole) };
     return this.requestsService.rejectClarificationRequestForRole(userRole, id)
       .pipe(tap(() => this.store.dispatch(invalidateRequestsDataAction(invalidatePayload))));
@@ -77,7 +77,7 @@ export class RequestsStoreService extends CleanableStoreService {
     return selectRequestsStateInProgress;
   }
 
-  getUserError(): Observable<any> {
+  public getError(): Observable<any> {
     return this.store.select(selectRequestsStateError);
   }
 

@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { loginAction, loginFailedAction, loginSuccessAction, logoutAction, refreshTokenAction } from './auth.actions';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
-import { AuthService } from '../../services/auth.service';
+import { AuthApiService } from '../../services/api/auth-api.service';
 import { Store } from '@ngrx/store';
 import { AppState } from '../app-state.model';
 import { selectAuthData } from './auth.selectors';
@@ -33,7 +33,7 @@ export class AuthEffects {
 
   constructor(private readonly actions: Actions,
               private readonly store: Store<AppState>,
-              private readonly authService: AuthService) {
+              private readonly authService: AuthApiService) {
   }
 
 }

@@ -12,9 +12,13 @@ export const baseEnvironment = {
     api: {
       [ApiLabel.LOGIN]: 'TODO',
       [ApiLabel.REFRESH]: 'TODO',
-      [ApiLabel.USER]: 'TODO',
-      [ApiLabel.CHANGE_REQUESTS]: 'TODO',
-      [ApiLabel.CLARIFICATION_REQUESTS]: 'TODO',
+      [ApiLabel.GET_CHANGE_REQUESTS]: 'TODO',
+      [ApiLabel.GET_CLARIFICATION_REQUESTS]: 'TODO',
+      [ApiLabel.GET_DEPARTMENTS]: 'TODO',
+      [ApiLabel.GET_DIPLOMA_SESSIONS]: 'TODO',
+      [ApiLabel.GET_FIELDS_OF_STUDY]: 'TODO',
+      [ApiLabel.GET_TIMETABLES]: 'TODO',
+      [ApiLabel.GET_USER]: 'TODO',
       [ApiLabel.REJECT_CLARIFICATION_REQUESTS]: 'TODO'
     }
   }

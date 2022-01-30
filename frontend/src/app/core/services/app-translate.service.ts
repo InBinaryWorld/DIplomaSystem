@@ -4,7 +4,7 @@ import { AppLanguage } from '../models/app-language.model';
 import { CleanableService } from './cleanable.service';
 import { Dictionary } from '../models/dictionary.model';
 import { Cleanable } from '../components/cleanable.directive';
-import { SessionStoreService } from '../../base/services/session-store.service';
+import { SessionStoreService } from '../../base/services/store/session-store.service';
 import { SettingsService } from './settings.service';
 import { isNotNil } from '../tools/is-not-nil';
 

@@ -1,14 +1,14 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { BaseComponent } from '../../../../core/components/base-component.directive';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { AuthStoreService } from '../../../../base/services/auth-store.service';
+import { AuthStoreService } from '../../../../base/services/store/auth-store.service';
 import { LoginData } from '../../../../base/models/login-data.model';
 import { SpinnerService } from '../../../../core/services/spinner.service';
 import { Store } from '@ngrx/store';
 import { ContextRoutingService } from '../../../../core/services/context-routing.service';
 import { filter, switchMap } from 'rxjs';
-import { UserStoreService } from '../../../../base/services/user-store.service';
-import { SessionStoreService } from '../../../../base/services/session-store.service';
+import { UserStoreService } from '../../../../base/services/store/user-store.service';
+import { SessionStoreService } from '../../../../base/services/store/session-store.service';
 
 @Component({
   selector: 'app-login',
@@ -48,7 +48,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
 
   private handleLoginFailure(): void {
     this.addSubscription(
-      this.authStoreService.getAuthError()
+      this.authStoreService.getError()
         .subscribe(error => {
           this.error = error;
           this.changeDetector.markForCheck();
