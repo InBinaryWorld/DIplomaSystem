@@ -11,14 +11,13 @@ import {
   loadGeneralResourcesAction,
   loadGeneralResourcesIfNeededAction
 } from '../../store/general/general.actions';
-import { GeneralResourceType } from '../../models/general-store-key.model';
 import {
   selectGeneralState,
   selectGeneralStateError,
   selectGeneralStateInProgress,
   selectResourcesById
 } from '../../store/general/general.selectors';
-import { GeneralState } from '../../store/general/general.state';
+import { GeneralState, GeneralStoreType } from '../../store/general/general.state';
 
 @Injectable({
   providedIn: 'root'
@@ -34,26 +33,26 @@ export class GeneralResourcesStoreService extends CleanableStoreService {
     this.store.dispatch(invalidateGeneralResourcesAction());
   }
 
-  public loadResources(resourceType: GeneralResourceType, ifNeededOnly = true): void {
+  public loadResources(resourceType: GeneralStoreType, ifNeededOnly = true): void {
     const action = ifNeededOnly
       ? loadGeneralResourcesIfNeededAction({ resourceType })
       : loadGeneralResourcesAction({ resourceType });
     this.store.dispatch(action);
   }
 
-  public getResourcesByIdForType<T>(resourceType: GeneralResourceType, ifNeededOnly = true)
+  public getResourcesByIdForType<T>(resourceType: GeneralStoreType, ifNeededOnly = true)
     : Observable<Dictionary<T>> {
     this.loadResources(resourceType, ifNeededOnly);
     return this.store.select(selectResourcesById, resourceType);
   }
 
-  public getResourcesForType<T>(resourceType: GeneralResourceType, ifNeededOnly = true)
+  public getResourcesForType<T>(resourceType: GeneralStoreType, ifNeededOnly = true)
     : Observable<T[]> {
     return this.getResourcesByIdForType<T>(resourceType, ifNeededOnly)
       .pipe(map(resourcesById => Object.values(resourcesById)));
   }
 
-  public getResourcesForTypeAndId<T>(resourceType: GeneralResourceType, id: string, ifNeededOnly = true)
+  public getResourcesForTypeAndId<T>(resourceType: GeneralStoreType, id: string, ifNeededOnly = true)
     : Observable<T | undefined> {
     return this.getResourcesByIdForType<T>(resourceType, ifNeededOnly)
       .pipe(map(resources => resources[id]));

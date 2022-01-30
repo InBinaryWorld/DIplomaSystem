@@ -27,10 +27,22 @@ export class RequestsApiService {
     return this.http.getWithLabel(ApiLabel.GET_CLARIFICATION_REQUESTS, undefined, queryParams);
   }
 
+  getClarificationRequestForId(id: string): Observable<ClarificationRequest> {
+    const queryParams = new RequestParams();
+    queryParams.addIfValueExists('id', id);
+    return this.http.getWithLabel(ApiLabel.GET_CLARIFICATION_REQUESTS, undefined, queryParams);
+  }
+
   getChangeRequestsForRole(userRole: UserRole): Observable<ChangeRequest[]> {
     const queryParams = new RequestParams();
     queryParams.addIfValueExists('role', userRole.role);
     queryParams.addIfValueExists('roleId', userRole.id);
+    return this.http.getWithLabel(ApiLabel.GET_CHANGE_REQUESTS, undefined, queryParams);
+  }
+
+  getChangeRequestForId(id: string): Observable<ChangeRequest> {
+    const queryParams = new RequestParams();
+    queryParams.addIfValueExists('id', id);
     return this.http.getWithLabel(ApiLabel.GET_CHANGE_REQUESTS, undefined, queryParams);
   }
 

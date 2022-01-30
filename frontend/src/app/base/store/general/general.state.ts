@@ -4,9 +4,15 @@ import { DiplomaSession } from '../../models/dto/diploma-session.model';
 import { FieldOfStudy } from '../../models/dto/field-of-study.model';
 import { Department } from '../../models/dto/department.model';
 import { Dictionary } from '../../../core/models/dictionary.model';
-import { GeneralResourceType } from '../../models/general-store-key.model';
 import { keyBy } from 'lodash-es';
 import { WithId } from '../../models/dto/id.model';
+
+export enum GeneralStoreType {
+  TIMETABLES = 'TIMETABLES',
+  DIPLOMA_SESSIONS = 'DIPLOMA_SESSIONS',
+  FIELDS_OF_STUDY = 'FIELDS_OF_STUDY',
+  DEPARTMENTS = 'DEPARTMENTS',
+}
 
 export class GeneralResource<T extends WithId> {
   allFetched = false;
@@ -21,8 +27,8 @@ export class GeneralResource<T extends WithId> {
 }
 
 export class GeneralState extends BaseStoreState {
-  [GeneralResourceType.TIMETABLES] = new GeneralResource<Timetable>();
-  [GeneralResourceType.DIPLOMA_SESSIONS] = new GeneralResource<DiplomaSession>();
-  [GeneralResourceType.FIELDS_OF_STUDY] = new GeneralResource<FieldOfStudy>();
-  [GeneralResourceType.DEPARTMENTS] = new GeneralResource<Department>();
+  [GeneralStoreType.TIMETABLES] = new GeneralResource<Timetable>();
+  [GeneralStoreType.DIPLOMA_SESSIONS] = new GeneralResource<DiplomaSession>();
+  [GeneralStoreType.FIELDS_OF_STUDY] = new GeneralResource<FieldOfStudy>();
+  [GeneralStoreType.DEPARTMENTS] = new GeneralResource<Department>();
 }

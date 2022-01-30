@@ -17,9 +17,12 @@ export const baseEnvironment = {
       [ApiLabel.GET_DEPARTMENTS]: 'TODO',
       [ApiLabel.GET_DIPLOMA_SESSIONS]: 'TODO',
       [ApiLabel.GET_FIELDS_OF_STUDY]: 'TODO',
+      [ApiLabel.GET_RESERVATIONS]: 'TODO',
+      [ApiLabel.GET_RESERVATIONS_MEMBERS]: 'TODO',
       [ApiLabel.GET_TIMETABLES]: 'TODO',
       [ApiLabel.GET_USER]: 'TODO',
-      [ApiLabel.REJECT_CLARIFICATION_REQUESTS]: 'TODO'
+      [ApiLabel.REJECT_CLARIFICATION_REQUESTS]: 'TODO',
+
     }
   }
 };

@@ -1,7 +1,7 @@
 import { createReducer, on } from '@ngrx/store';
 import { failedReducerFn, startProgressReducer, successReducerFn } from '../../../core/store/base-store-state.model';
 import { clearStoreAction } from '../../../core/store/clear-store.reducer';
-import { GeneralResource, GeneralState } from './general.state';
+import { GeneralResource, GeneralState, GeneralStoreType } from './general.state';
 import {
   invalidateGeneralResourcesAction,
   loadGeneralResourceForIdAction,
@@ -11,7 +11,6 @@ import {
   loadGeneralResourceSuccessAction
 } from './general.actions';
 import { isNotNil } from '../../../core/tools/is-not-nil';
-import { GeneralResourceType } from '../../models/general-store-key.model';
 import { WithId } from '../../models/dto/id.model';
 
 export const GeneralFeatureName = 'general';
@@ -33,12 +32,14 @@ export const generalResourcesReducer = createReducer(
 );
 
 
-function setResources(resourceType: GeneralResourceType, resources?: WithId[]): Partial<GeneralState> {
-  const genResource = isNotNil(resources) ? GeneralResource.forAll(resources!) : new GeneralResource();
+function setResources(resourceType: GeneralStoreType, resources?: WithId[]): Partial<GeneralState> {
+  const genResource = isNotNil(resources)
+    ? GeneralResource.forAll(resources!)
+    : new GeneralResource();
   return { [resourceType]: genResource };
 }
 
-function setResource(state: GeneralState, resourceType: GeneralResourceType, resource: WithId): Partial<GeneralState> {
+function setResource(state: GeneralState, resourceType: GeneralStoreType, resource: WithId): Partial<GeneralState> {
   const currentGenResource = state[resourceType];
   const newGenResource = new GeneralResource();
   newGenResource.allFetched = currentGenResource.allFetched;

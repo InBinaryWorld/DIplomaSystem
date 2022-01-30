@@ -2,26 +2,26 @@ import { Injectable } from '@angular/core';
 import { ServerHttpService } from '../../../core/services/server-http.service';
 import { Observable } from 'rxjs';
 import { ApiLabel } from '../../../core/models/api-route.model';
-import { GeneralResourceType } from '../../models/general-store-key.model';
 import { RequestParams } from '../../../core/models/request-param.model';
 import { Dictionary } from '../../../core/models/dictionary.model';
 import { isNil } from 'lodash-es';
+import { GeneralStoreType } from '../../store/general/general.state';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GeneralResourcesApiService {
   private apiLabelMap: Dictionary<ApiLabel> = {
-    [GeneralResourceType.TIMETABLES]: ApiLabel.GET_TIMETABLES,
-    [GeneralResourceType.DEPARTMENTS]: ApiLabel.GET_DEPARTMENTS,
-    [GeneralResourceType.FIELDS_OF_STUDY]: ApiLabel.GET_FIELDS_OF_STUDY,
-    [GeneralResourceType.DIPLOMA_SESSIONS]: ApiLabel.GET_DIPLOMA_SESSIONS
+    [GeneralStoreType.TIMETABLES]: ApiLabel.GET_TIMETABLES,
+    [GeneralStoreType.DEPARTMENTS]: ApiLabel.GET_DEPARTMENTS,
+    [GeneralStoreType.FIELDS_OF_STUDY]: ApiLabel.GET_FIELDS_OF_STUDY,
+    [GeneralStoreType.DIPLOMA_SESSIONS]: ApiLabel.GET_DIPLOMA_SESSIONS
   };
 
   constructor(private readonly http: ServerHttpService) {
   }
 
-  getAllResourcesForType(resourceType: GeneralResourceType): Observable<any> {
+  getAllResourcesForType(resourceType: GeneralStoreType): Observable<any> {
     const apiLabel = this.apiLabelMap[resourceType];
     if (isNil(apiLabel)) {
       throw new Error('Unhandled resource type: ' + resourceType);
@@ -29,7 +29,7 @@ export class GeneralResourcesApiService {
     return this.getAllResources(apiLabel);
   }
 
-  getResourceForTypeAndId(resourceType: GeneralResourceType, id: string): Observable<any> {
+  getResourceForTypeAndId(resourceType: GeneralStoreType, id: string): Observable<any> {
     const apiLabel = this.apiLabelMap[resourceType];
     if (isNil(apiLabel)) {
       throw new Error('Unhandled resource type: ' + resourceType);

@@ -81,7 +81,7 @@ export class StudentTopicClarificationDetailsComponent extends RoleComponent imp
   }
 
   private getRequest(userRole: UserRole, requestId: string): Observable<ClarificationRequest> {
-    return this.requestsStoreService.getClarificationRequestsForRoleById(userRole, requestId)
+    return this.requestsStoreService.getClarificationRequestsForId(userRole, requestId)
       .pipe(filterExists());
   }
 

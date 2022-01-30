@@ -6,20 +6,21 @@ import { CleanableStoreService } from '../../../core/services/cleanable-store.se
 import {
   invalidateRequestsDataAction,
   loadClarificationRequestsAction,
+  loadClarificationRequestsForIdAction,
+  loadClarificationRequestsForIdIfNeededAction,
   loadClarificationRequestsIfNeededAction
 } from '../../store/requests/requests.actions';
 import {
-  selectClarificationRequests,
-  selectClarificationRequestsMap,
+  selectClarificationRequestForId,
+  selectClarificationRequestsForKey,
   selectRequestsState,
   selectRequestsStateError,
   selectRequestsStateInProgress
 } from '../../store/requests/requests.selectors';
-import { RequestsState, RequestsStateByKey } from '../../store/requests/requests.state';
-import { Dictionary } from '../../../core/models/dictionary.model';
+import { RequestsState, RequestsStoreType } from '../../store/requests/requests.state';
 import { StoreKeys } from '../../../core/utils/store-keys.utils';
 import { ClarificationRequest } from '../../models/dto/clarification-request.model';
-import { map, tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 import { UserRole } from '../../models/dto/user-role.model';
 import { RequestsApiService } from '../api/requests-api.service';
 
@@ -33,44 +34,44 @@ export class RequestsStoreService extends CleanableStoreService {
     super(store);
   }
 
-  public invalidateRequestsForRole(userRole: UserRole): void {
-    const key = StoreKeys.forUserRole(userRole);
-    this.store.dispatch(invalidateRequestsDataAction({ key }));
+  public invalidateRequestsForType(resourceType: RequestsStoreType): void {
+    this.store.dispatch(invalidateRequestsDataAction({ resourceType }));
   }
 
-  public loadClarificationRequestsForRole(userRole: UserRole, ifNeededOnly = true): void {
-    const key = StoreKeys.forUserRole(userRole);
+  private loadClarificationRequestsForRole(userRole: UserRole, key = StoreKeys.forUserRole(userRole), ifNeededOnly = true): void {
     const action = ifNeededOnly
       ? loadClarificationRequestsIfNeededAction({ userRole, key })
       : loadClarificationRequestsAction({ userRole, key });
     this.store.dispatch(action);
   }
 
+  private loadClarificationRequestForId(userRole: UserRole, id: string, ifNeededOnly = true): void {
+    const action = ifNeededOnly
+      ? loadClarificationRequestsForIdIfNeededAction({ userRole, id })
+      : loadClarificationRequestsForIdAction({ userRole, id });
+    this.store.dispatch(action);
+  }
+
   public getClarificationRequestsForRole(userRole: UserRole, ifNeededOnly = true)
     : Observable<ClarificationRequest[] | undefined> {
     const key = StoreKeys.forUserRole(userRole);
-    this.loadClarificationRequestsForRole(userRole, ifNeededOnly);
-    return this.store.select(selectClarificationRequests, key);
+    this.loadClarificationRequestsForRole(userRole, key, ifNeededOnly);
+    return this.store.select(selectClarificationRequestsForKey, key);
   }
 
-  public getClarificationRequestsForRoleById(userRole: UserRole, requestId: string, ifNeededOnly = true)
+  public getClarificationRequestsForId(userRole: UserRole, requestId: string, ifNeededOnly = true)
     : Observable<ClarificationRequest | undefined> {
-    return this.getClarificationRequestsForRole(userRole, ifNeededOnly)
-      .pipe(map(requests => requests?.find(r => r.id === requestId)));
+    this.loadClarificationRequestForId(userRole, requestId);
+    return this.store.select(selectClarificationRequestForId, requestId);
   }
 
   public getUserState(): Observable<RequestsState | undefined> {
     return this.store.select(selectRequestsState);
   }
 
-  public getClarificationRequestsMap(): Observable<Dictionary<RequestsStateByKey>> {
-    return this.store.select(selectClarificationRequestsMap);
-  }
-
   public rejectClarificationRequest(userRole: UserRole, id: string): Observable<void> {
-    const invalidatePayload = { key: StoreKeys.forUserRole(userRole) };
     return this.requestsService.rejectClarificationRequestForRole(userRole, id)
-      .pipe(tap(() => this.store.dispatch(invalidateRequestsDataAction(invalidatePayload))));
+      .pipe(tap(() => this.invalidateRequestsForType(RequestsStoreType.CLARIFICATION)));
   }
 
   public getProgressSelector(): Selector<AppState, boolean> {
