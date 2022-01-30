@@ -50,8 +50,8 @@ export function startProgressReducerFn<T extends BaseStoreState>(state: T, overr
 }
 
 
-export function failedReducer<T extends BaseStoreState>(override: Partial<T> = {}): OnReducer<T, ActionType<any>> {
-  return (state: T, { error }: ActionType<any>) => failedReducerFn(state, error, override);
+export function failedReducer<T extends BaseStoreState>(override: Partial<T> = {}): OnReducer<T, ActionType<{ error: any }>> {
+  return (state: T, { error }) => failedReducerFn(state, error, override);
 }
 
 export function startProgressReducer<T extends BaseStoreState>(override: Partial<T> = {}): OnReducer<T, ActionType<any>> {

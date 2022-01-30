@@ -5,23 +5,23 @@ import { ApiLabel } from '../../../core/models/api-route.model';
 import { RequestParams } from '../../../core/models/request-param.model';
 import { Dictionary } from '../../../core/models/dictionary.model';
 import { isNil } from 'lodash-es';
-import { GeneralStoreType } from '../../store/general/general.state';
+import { GeneralResourcesStateKey } from '../../store/general/general.state';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GeneralResourcesApiService {
   private apiLabelMap: Dictionary<ApiLabel> = {
-    [GeneralStoreType.TIMETABLES]: ApiLabel.GET_TIMETABLES,
-    [GeneralStoreType.DEPARTMENTS]: ApiLabel.GET_DEPARTMENTS,
-    [GeneralStoreType.FIELDS_OF_STUDY]: ApiLabel.GET_FIELDS_OF_STUDY,
-    [GeneralStoreType.DIPLOMA_SESSIONS]: ApiLabel.GET_DIPLOMA_SESSIONS
+    [GeneralResourcesStateKey.TIMETABLES]: ApiLabel.GET_TIMETABLES,
+    [GeneralResourcesStateKey.DEPARTMENTS]: ApiLabel.GET_DEPARTMENTS,
+    [GeneralResourcesStateKey.FIELDS_OF_STUDY]: ApiLabel.GET_FIELDS_OF_STUDY,
+    [GeneralResourcesStateKey.DIPLOMA_SESSIONS]: ApiLabel.GET_DIPLOMA_SESSIONS
   };
 
   constructor(private readonly http: ServerHttpService) {
   }
 
-  getAllResourcesForType(resourceType: GeneralStoreType): Observable<any> {
+  getResourcesForType(resourceType: GeneralResourcesStateKey): Observable<any> {
     const apiLabel = this.apiLabelMap[resourceType];
     if (isNil(apiLabel)) {
       throw new Error('Unhandled resource type: ' + resourceType);
@@ -29,19 +29,19 @@ export class GeneralResourcesApiService {
     return this.getAllResources(apiLabel);
   }
 
-  getResourceForTypeAndId(resourceType: GeneralStoreType, id: string): Observable<any> {
+  getResourceForId(resourceType: GeneralResourcesStateKey, id: string): Observable<any> {
     const apiLabel = this.apiLabelMap[resourceType];
     if (isNil(apiLabel)) {
       throw new Error('Unhandled resource type: ' + resourceType);
     }
-    return this.getResourceForId(apiLabel, id);
+    return this.getResource(apiLabel, id);
   }
 
   private getAllResources<T>(apiLabel: ApiLabel): Observable<T[]> {
     return this.http.getWithLabel(apiLabel);
   }
 
-  private getResourceForId<T>(apiLabel: ApiLabel, id: string): Observable<T> {
+  private getResource<T>(apiLabel: ApiLabel, id: string): Observable<T> {
     const query = new RequestParams();
     query.addIfValueExists('id', id);
     return this.http.getWithLabel(apiLabel, undefined, query);

@@ -3,12 +3,12 @@ import { Router } from '@angular/router';
 import { TranslationKeys } from '../../../../core/utils/translation-keys.utils';
 import { ClarificationRequest } from '../../../../base/models/dto/clarification-request.model';
 import { BaseRequest } from '../../../../base/models/dto/base-request.model';
-import { RequestsStoreService } from '../../../../base/services/store/requests-store.service';
 import { switchMap } from 'rxjs';
 import { SessionStoreService } from '../../../../base/services/store/session-store.service';
 import { filterExists } from '../../../../core/tools/filter-exists';
 import { RoleComponent } from '../../../../base/components/role-component.directive';
 import { Role } from '../../../../base/models/dto/role.model';
+import { RequestsService } from '../../../../base/services/requests.service';
 
 @Component({
   selector: 'app-student-topic-clarifications',
@@ -21,7 +21,7 @@ export class StudentTopicClarificationsComponent extends RoleComponent implement
   clarificationRequests?: ClarificationRequest[];
 
   constructor(private readonly router: Router,
-              private readonly requestsStoreService: RequestsStoreService,
+              private readonly requestsService: RequestsService,
               sessionStoreService: SessionStoreService,
               changeDetector: ChangeDetectorRef) {
     super(sessionStoreService, changeDetector);
@@ -34,7 +34,7 @@ export class StudentTopicClarificationsComponent extends RoleComponent implement
   ngOnInit(): void {
     this.addSubscription(
       this.userRole.pipe(
-        switchMap(userRole => this.requestsStoreService.getClarificationRequestsForRole(userRole)),
+        switchMap(userRole => this.requestsService.getClarificationRequestsForRole(userRole)),
         filterExists()
       ).subscribe(requests => {
         this.clarificationRequests = requests!;

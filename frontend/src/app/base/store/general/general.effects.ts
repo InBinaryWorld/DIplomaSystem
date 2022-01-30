@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { catchError, map, mergeMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { AppState } from '../app-state.model';
-import { selectAreAllResourcesLoaded, selectResourcesById } from './general.selectors';
-import { mergeIf } from '../../../core/tools/If-needed-only-functions';
+import { selectGeneralResourceIdsForTypeAndKey, selectGeneralResourcesForTypeAndId } from './general.selectors';
+import { mergeIfNil } from '../../../core/tools/If-needed-only-functions';
 import {
   loadGeneralResourceForIdAction,
   loadGeneralResourceForIdIfNeededAction,
@@ -15,39 +15,40 @@ import {
   loadGeneralResourcesSuccessAction,
   loadGeneralResourceSuccessAction
 } from './general.actions';
-import { GeneralResourcesApiService } from '../../services/api/general-resources-api.service';
-import { isNil } from 'lodash-es';
+import { GeneralResourcesApiService } from '../../services/api/general-api.service';
 
 
 @Injectable()
 export class GeneralResourcesEffects {
 
+
   loadGeneralResourcesIfNeededAction = createEffect(() => this.actions.pipe(
     ofType(loadGeneralResourcesIfNeededAction),
-    mergeIf(({ resourceType }) => this.store.select(selectAreAllResourcesLoaded, resourceType), v => !v),
-    map(({ resourceType }) => loadGeneralResourcesAction({ resourceType }))
+    mergeIfNil(({ resourceType, key }) =>
+      this.store.select(selectGeneralResourceIdsForTypeAndKey, { resourceType, key })),
+    map(({ resourceType, key }) => loadGeneralResourcesAction({ resourceType, key }))
   ));
 
   loadGeneralResourcesAction = createEffect(() => this.actions.pipe(
     ofType(loadGeneralResourcesAction),
-    switchMap(({ resourceType }) => this.generalResourcesService.getAllResourcesForType(resourceType).pipe(
-      map(resources => loadGeneralResourcesSuccessAction({ resources, resourceType })),
-      catchError(error => of(loadGeneralResourcesFailedAction({ error, resourceType })))
-    ))
+    mergeMap(({ resourceType, key }) =>
+      this.generalResourcesService.getResourcesForType(resourceType).pipe(
+        map(collection => loadGeneralResourcesSuccessAction({ resourceType, collection, key })),
+        catchError(error => of(loadGeneralResourcesFailedAction({ error })))
+      ))
   ));
 
   loadGeneralResourceForIdIfNeededAction = createEffect(() => this.actions.pipe(
     ofType(loadGeneralResourceForIdIfNeededAction),
-    mergeIf(({ resourceType, id }) =>
-      this.store.select(selectResourcesById, resourceType), (dict, { id }) => isNil(dict[id])),
+    mergeIfNil(({ resourceType, id }) => this.store.select(selectGeneralResourcesForTypeAndId, { resourceType, id })),
     map(({ resourceType, id }) => loadGeneralResourceForIdAction({ resourceType, id }))
   ));
 
   loadGeneralResourceForIdAction = createEffect(() => this.actions.pipe(
     ofType(loadGeneralResourceForIdAction),
-    switchMap(({ resourceType, id }) => this.generalResourcesService.getResourceForTypeAndId(resourceType, id).pipe(
-      map(resource => loadGeneralResourceSuccessAction({ resource, resourceType })),
-      catchError(error => of(loadGeneralResourcesFailedAction({ error, resourceType })))
+    mergeMap(({ resourceType, id }) => this.generalResourcesService.getResourceForId(resourceType, id).pipe(
+      map(instance => loadGeneralResourceSuccessAction({ resourceType, instance })),
+      catchError(error => of(loadGeneralResourcesFailedAction({ error })))
     ))
   ));
 

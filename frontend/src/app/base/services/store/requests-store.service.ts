@@ -5,24 +5,24 @@ import { AppState } from '../../store/app-state.model';
 import { CleanableStoreService } from '../../../core/services/cleanable-store.service';
 import {
   invalidateRequestsDataAction,
-  loadClarificationRequestsAction,
-  loadClarificationRequestsForIdAction,
-  loadClarificationRequestsForIdIfNeededAction,
-  loadClarificationRequestsIfNeededAction
+  loadRequestsAction,
+  loadRequestsForIdAction,
+  loadRequestsForIdIfNeededAction,
+  loadRequestsIfNeededAction
 } from '../../store/requests/requests.actions';
 import {
+  selectChangeRequestForId,
+  selectChangeRequestsForKey,
   selectClarificationRequestForId,
   selectClarificationRequestsForKey,
-  selectRequestsState,
   selectRequestsStateError,
   selectRequestsStateInProgress
 } from '../../store/requests/requests.selectors';
-import { RequestsState, RequestsStoreType } from '../../store/requests/requests.state';
-import { StoreKeys } from '../../../core/utils/store-keys.utils';
+import { RequestsStateKey } from '../../store/requests/requests.state';
 import { ClarificationRequest } from '../../models/dto/clarification-request.model';
-import { tap } from 'rxjs/operators';
 import { UserRole } from '../../models/dto/user-role.model';
 import { RequestsApiService } from '../api/requests-api.service';
+import { ChangeRequest } from '../../models/dto/change-request.model';
 
 @Injectable({
   providedIn: 'root'
@@ -34,45 +34,40 @@ export class RequestsStoreService extends CleanableStoreService {
     super(store);
   }
 
-  public invalidateRequestsForType(resourceType: RequestsStoreType): void {
+  public loadRequests(resourceType: RequestsStateKey, userRole: UserRole, key: string, ifNeededOnly = true): void {
+    const action = ifNeededOnly
+      ? loadRequestsIfNeededAction({ resourceType, userRole, key })
+      : loadRequestsAction({ resourceType, userRole, key });
+    this.store.dispatch(action);
+  }
+
+  public loadRequestForId(resourceType: RequestsStateKey, userRole: UserRole, id: string, ifNeededOnly = true): void {
+    const action = ifNeededOnly
+      ? loadRequestsForIdIfNeededAction({ resourceType, userRole, id })
+      : loadRequestsForIdAction({ resourceType, userRole, id });
+    this.store.dispatch(action);
+  }
+
+  public invalidateRequestsForType(resourceType: RequestsStateKey): void {
     this.store.dispatch(invalidateRequestsDataAction({ resourceType }));
   }
 
-  private loadClarificationRequestsForRole(userRole: UserRole, key = StoreKeys.forUserRole(userRole), ifNeededOnly = true): void {
-    const action = ifNeededOnly
-      ? loadClarificationRequestsIfNeededAction({ userRole, key })
-      : loadClarificationRequestsAction({ userRole, key });
-    this.store.dispatch(action);
-  }
-
-  private loadClarificationRequestForId(userRole: UserRole, id: string, ifNeededOnly = true): void {
-    const action = ifNeededOnly
-      ? loadClarificationRequestsForIdIfNeededAction({ userRole, id })
-      : loadClarificationRequestsForIdAction({ userRole, id });
-    this.store.dispatch(action);
-  }
-
-  public getClarificationRequestsForRole(userRole: UserRole, ifNeededOnly = true)
-    : Observable<ClarificationRequest[] | undefined> {
-    const key = StoreKeys.forUserRole(userRole);
-    this.loadClarificationRequestsForRole(userRole, key, ifNeededOnly);
+  public selectClarificationRequestsForKey(key: string): Observable<ClarificationRequest[] | undefined> {
     return this.store.select(selectClarificationRequestsForKey, key);
   }
 
-  public getClarificationRequestsForId(userRole: UserRole, requestId: string, ifNeededOnly = true)
-    : Observable<ClarificationRequest | undefined> {
-    this.loadClarificationRequestForId(userRole, requestId);
-    return this.store.select(selectClarificationRequestForId, requestId);
+  public selectClarificationRequestForId(id: string): Observable<ClarificationRequest | undefined> {
+    return this.store.select(selectClarificationRequestForId, id);
   }
 
-  public getUserState(): Observable<RequestsState | undefined> {
-    return this.store.select(selectRequestsState);
+  public selectChangeRequestsForKey(key: string): Observable<ChangeRequest[] | undefined> {
+    return this.store.select(selectChangeRequestsForKey, key);
   }
 
-  public rejectClarificationRequest(userRole: UserRole, id: string): Observable<void> {
-    return this.requestsService.rejectClarificationRequestForRole(userRole, id)
-      .pipe(tap(() => this.invalidateRequestsForType(RequestsStoreType.CLARIFICATION)));
+  public selectChangeRequestForId(id: string): Observable<ChangeRequest | undefined> {
+    return this.store.select(selectChangeRequestForId, id);
   }
+
 
   public getProgressSelector(): Selector<AppState, boolean> {
     return selectRequestsStateInProgress;

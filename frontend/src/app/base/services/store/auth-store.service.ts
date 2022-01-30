@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Selector, Store } from '@ngrx/store';
-import { filter, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { AuthData } from '../../models/auth-data.model';
 import {
   selectAuthData,
@@ -14,8 +14,6 @@ import { loginAction, logoutAction, refreshTokenAction } from '../../store/auth/
 import { AppState } from '../../store/app-state.model';
 import { CleanableStoreService } from '../../../core/services/cleanable-store.service';
 import { AuthState } from '../../store/auth/auth.state';
-import { isNil } from 'lodash-es';
-import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -52,13 +50,6 @@ export class AuthStoreService extends CleanableStoreService {
 
   getAuthData(): Observable<AuthData | undefined> {
     return this.store.select(selectAuthData);
-  }
-
-  getAuthDataWhenValid(): Observable<AuthData | undefined> {
-    return this.store.select(selectAuthState).pipe(
-      filter(state => !state.isInProgress && isNil(state.error)),
-      map(state => state.authData)
-    );
   }
 
   getError(): Observable<any> {

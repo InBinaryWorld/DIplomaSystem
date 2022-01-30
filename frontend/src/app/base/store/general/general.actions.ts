@@ -1,35 +1,39 @@
 import { createAction, props } from '@ngrx/store';
-import { WithId } from '../../models/dto/id.model';
-import { GeneralStoreType } from './general.state';
+import { GeneralResourcesStateKey, GeneralResourceType } from './general.state';
 
 export const loadGeneralResourcesAction = createAction(
   '[GENERAL] Load general resources',
-  props<{ resourceType: GeneralStoreType }>()
+  props<{ resourceType: GeneralResourcesStateKey, key: string }>()
 );
 export const loadGeneralResourcesIfNeededAction = createAction(
   '[GENERAL] Load general resources if needed',
-  props<{ resourceType: GeneralStoreType }>()
+  props<{ resourceType: GeneralResourcesStateKey, key: string }>()
 );
 export const loadGeneralResourceForIdAction = createAction(
   '[GENERAL] Load general resource for id',
-  props<{ resourceType: GeneralStoreType, id: string }>()
+  props<{ resourceType: GeneralResourcesStateKey, id: string }>()
 );
 export const loadGeneralResourceForIdIfNeededAction = createAction(
   '[GENERAL] Load general resource for id if needed',
-  props<{ resourceType: GeneralStoreType, id: string }>()
+  props<{ resourceType: GeneralResourcesStateKey, id: string }>()
 );
+
 export const invalidateGeneralResourcesAction = createAction(
-  '[GENERAL] Invalidate general resources'
+  '[GENERAL] Invalidate general resources',
+  props<{ resourceType: GeneralResourcesStateKey }>()
 );
+
+
 export const loadGeneralResourcesSuccessAction = createAction(
-  '[GENERAL]  Load general resources successful',
-  props<{ resources: WithId[], resourceType: GeneralStoreType }>()
+  '[GENERAL]  Load collection successful',
+  props<{ resourceType: GeneralResourcesStateKey, collection: GeneralResourceType[], key: string }>()
 );
 export const loadGeneralResourceSuccessAction = createAction(
-  '[GENERAL]  Load general resource successful',
-  props<{ resource: WithId, resourceType: GeneralStoreType }>()
+  '[GENERAL]  Load instance successful',
+  props<{ resourceType: GeneralResourcesStateKey, instance: GeneralResourceType }>()
 );
+
 export const loadGeneralResourcesFailedAction = createAction(
-  '[GENERAL] Load general resources failed',
-  props<{ error: any, resourceType: GeneralStoreType }>()
+  '[GENERAL] Load failed',
+  props<{ error: any }>()
 );
