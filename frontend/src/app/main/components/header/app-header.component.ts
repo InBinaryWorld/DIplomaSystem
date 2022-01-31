@@ -6,12 +6,12 @@ import { BaseComponent } from '../../../core/components/base-component.directive
 import { SpinnerService } from '../../../core/services/spinner.service';
 import { UserRole } from '../../../base/models/dto/user-role.model';
 import { SessionStoreService } from '../../../base/services/store/session-store.service';
-import { UserStoreService } from '../../../base/services/store/user-store.service';
 import { AuthStoreService } from '../../../base/services/store/auth-store.service';
 import { distinctUntilChanged, switchMap } from 'rxjs';
 import { filterExists } from '../../../core/tools/filter-exists';
 import { User } from '../../../base/models/dto/user.model';
 import { TranslationKeys } from '../../../core/utils/translation-keys.utils';
+import { UserService } from '../../../base/services/user.service';
 
 @Component({
   selector: 'app-header',
@@ -30,8 +30,8 @@ export class AppHeaderComponent extends BaseComponent implements OnInit {
   constructor(private readonly translateService: AppTranslateService,
               private readonly sessionStoreService: SessionStoreService,
               private readonly authStoreService: AuthStoreService,
-              private readonly userStoreService: UserStoreService,
               private readonly spinnerService: SpinnerService,
+              private readonly userService: UserService,
               changeDetector: ChangeDetectorRef) {
     super(changeDetector);
   }
@@ -83,7 +83,7 @@ export class AppHeaderComponent extends BaseComponent implements OnInit {
       this.authStoreService.getAuthData().pipe(
         filterExists(),
         distinctUntilChanged(),
-        switchMap(() => this.userStoreService.getCurrentUser(false))
+        switchMap(() => this.userService.getCurrentUser(false))
       ).subscribe(user => {
         this.user = user;
         this.markForCheck();

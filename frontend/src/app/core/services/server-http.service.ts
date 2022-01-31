@@ -25,10 +25,10 @@ export class ServerHttpService {
   }
 
   doFakeRequest<T>(apiLabel: ApiLabel): Observable<T> {
+    const time = this.settingsService.fakeApiDelay();
     return of(FakeSessionData.handleApiLabel(apiLabel)).pipe(
-      tap(() => this.spinnerService.show()),
-      delay(this.settingsService.fakeApiDelay()),
-      tap(() => this.spinnerService.hide())
+      tap(() => this.spinnerService.showFor(time)),
+      delay(time)
     );
   }
 

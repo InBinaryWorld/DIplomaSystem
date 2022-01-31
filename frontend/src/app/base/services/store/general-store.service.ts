@@ -3,7 +3,6 @@ import { Selector, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { AppState } from '../../store/app-state.model';
 import { CleanableStoreService } from '../../../core/services/cleanable-store.service';
-import { RequestsApiService } from '../api/requests-api.service';
 import {
   invalidateGeneralResourcesAction,
   loadGeneralResourceForIdAction,
@@ -36,12 +35,11 @@ export class GeneralResourcesStoreService extends CleanableStoreService {
 
   private publicKey = 'PUBLIC';
 
-  constructor(private readonly requestsService: RequestsApiService,
-              store: Store<AppState>) {
+  constructor(store: Store<AppState>) {
     super(store);
   }
 
-  public invalidateGeneralResourcesForKey(resourceType: GeneralResourcesStateKey): void {
+  public invalidateStoreForKey(resourceType: GeneralResourcesStateKey): void {
     this.store.dispatch(invalidateGeneralResourcesAction({ resourceType }));
   }
 
@@ -91,12 +89,12 @@ export class GeneralResourcesStoreService extends CleanableStoreService {
     return this.store.select(selectTimetableForId, id);
   }
 
-  public getProgressSelector(): Selector<AppState, boolean> {
-    return selectGeneralStateInProgress;
+  public selectStateError(): Observable<any> {
+    return this.store.select(selectGeneralStateError);
   }
 
-  public getError(): Observable<any> {
-    return this.store.select(selectGeneralStateError);
+  public getProgressSelector(): Selector<AppState, boolean> {
+    return selectGeneralStateInProgress;
   }
 
 }

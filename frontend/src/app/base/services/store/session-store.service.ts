@@ -10,7 +10,7 @@ import {
   selectSessionStateError,
   selectSessionStateInProgress
 } from '../../store/session/session.selectors';
-import { setContextRole, setLanguageAction } from '../../store/session/session.actions';
+import { setContextRoleAction, setLanguageAction } from '../../store/session/session.actions';
 import { AppLanguage } from '../../../core/models/app-language.model';
 
 @Injectable({
@@ -27,7 +27,7 @@ export class SessionStoreService extends CleanableStoreService {
   }
 
   setContextRole(role?: UserRole): void {
-    this.store.dispatch(setContextRole({ contextRole: role }));
+    this.store.dispatch(setContextRoleAction({ contextRole: role }));
   }
 
   setLanguage(language: AppLanguage): void {

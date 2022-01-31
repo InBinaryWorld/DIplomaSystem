@@ -14,9 +14,15 @@ export class ReservationApiService {
   constructor(private readonly http: ServerHttpService) {
   }
 
-  getReservationsForStudentId(studentId: string): Observable<Reservation[]> {
+  getStudentReservations(studentId: string): Observable<Reservation[]> {
     const query = new RequestParams();
     query.addIfValueExists('studentId', studentId);
+    return this.http.getWithLabel(ApiLabel.GET_RESERVATIONS);
+  }
+
+  getReservationForId(reservationId: string): Observable<Reservation> {
+    const query = new RequestParams();
+    query.addIfValueExists('id', reservationId);
     return this.http.getWithLabel(ApiLabel.GET_RESERVATIONS);
   }
 

@@ -14,7 +14,7 @@ import { UserRole } from '../../base/models/dto/user-role.model';
 import { isEmpty, isNil } from 'lodash-es';
 import { SessionStoreService } from '../../base/services/store/session-store.service';
 import { isNotNil } from '../tools/is-not-nil';
-import { UserStoreService } from '../../base/services/store/user-store.service';
+import { UserService } from '../../base/services/user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +22,7 @@ import { UserStoreService } from '../../base/services/store/user-store.service';
 export class RoleGuard implements CanActivateChild, CanActivate {
 
   protected constructor(private readonly router: Router,
-                        private readonly userStoreService: UserStoreService,
+                        private readonly userService: UserService,
                         private readonly sessionStoreService: SessionStoreService) {
   }
 
@@ -64,7 +64,7 @@ export class RoleGuard implements CanActivateChild, CanActivate {
   }
 
   private checkIfOtherRolesMatch(pathAllowedRoles: Role[][]): Observable<boolean> {
-    return this.userStoreService.getUserRoles().pipe(
+    return this.userService.getUserRolesWaitIfInProgress().pipe(
       first(),
       map((roles?) => roles?.find(role => this.testRoles(role, pathAllowedRoles))),
       tap(role => isNotNil(role) && this.sessionStoreService.setContextRole(role)),

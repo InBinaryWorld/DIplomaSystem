@@ -13,10 +13,10 @@ export class GeneralResourcesService {
   }
 
   public invalidateAllGeneralResources(): void {
-    this.generalResourcesStoreService.invalidateGeneralResourcesForKey(GeneralResourcesStateKey.FIELDS_OF_STUDY);
-    this.generalResourcesStoreService.invalidateGeneralResourcesForKey(GeneralResourcesStateKey.DEPARTMENTS);
-    this.generalResourcesStoreService.invalidateGeneralResourcesForKey(GeneralResourcesStateKey.DIPLOMA_SESSIONS);
-    this.generalResourcesStoreService.invalidateGeneralResourcesForKey(GeneralResourcesStateKey.TIMETABLES);
+    this.generalResourcesStoreService.invalidateStoreForKey(GeneralResourcesStateKey.FIELDS_OF_STUDY);
+    this.generalResourcesStoreService.invalidateStoreForKey(GeneralResourcesStateKey.DEPARTMENTS);
+    this.generalResourcesStoreService.invalidateStoreForKey(GeneralResourcesStateKey.DIPLOMA_SESSIONS);
+    this.generalResourcesStoreService.invalidateStoreForKey(GeneralResourcesStateKey.TIMETABLES);
   }
 
   public getTimetables(ifNeededOnly = true): Observable<Timetable[] | undefined> {

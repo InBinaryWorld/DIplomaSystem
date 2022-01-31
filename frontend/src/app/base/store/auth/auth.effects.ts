@@ -26,8 +26,8 @@ export class AuthEffects {
       ? of(logoutAction())
       : this.authService.refreshToken(authData!.refreshToken).pipe(
         map(sessionData => loginSuccessAction({ authData: sessionData })),
-        catchError(() => of(logoutAction())
-        ))
+        catchError(() => of(logoutAction()))
+      )
     )
   ));
 

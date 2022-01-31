@@ -5,10 +5,10 @@ import { of } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { AppState } from '../app-state.model';
 import {
+  loadRequestForIdAction,
+  loadRequestForIdIfNeededAction,
   loadRequestsAction,
   loadRequestsFailedAction,
-  loadRequestsForIdAction,
-  loadRequestsForIdIfNeededAction,
   loadRequestsIfNeededAction,
   loadRequestsSuccessAction,
   loadRequestSuccessAction
@@ -37,13 +37,13 @@ export class RequestsEffects {
   ));
 
   loadRequestsForIdIfNeededAction = createEffect(() => this.actions.pipe(
-    ofType(loadRequestsForIdIfNeededAction),
+    ofType(loadRequestForIdIfNeededAction),
     mergeIfNil(({ resourceType, id }) => this.store.select(selectRequestForTypeAndId, { resourceType, id })),
-    map(({ resourceType, userRole, id }) => loadRequestsForIdAction({ resourceType, userRole, id }))
+    map(({ resourceType, userRole, id }) => loadRequestForIdAction({ resourceType, userRole, id }))
   ));
 
   loadRequestsForIdAction = createEffect(() => this.actions.pipe(
-    ofType(loadRequestsForIdAction),
+    ofType(loadRequestForIdAction),
     mergeMap(({ resourceType, userRole, id }) => this.requestsService.getRequestForId(resourceType, id).pipe(
       map(instance => loadRequestSuccessAction({ resourceType, instance })),
       catchError(error => of(loadRequestsFailedAction({ error })))

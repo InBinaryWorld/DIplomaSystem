@@ -16,7 +16,7 @@ export const initialState = new UserState();
 export const userReducer = createReducer(
   initialState,
   on(loadCurrentUserAction, startProgressReducer()),
-  on(loadCurrentUserFailedAction, failedReducer<UserState>({ currentUser: undefined })),
+  on(loadCurrentUserFailedAction, failedReducer()),
   on(loadCurrentUserSuccessAction, (state, { user }) => successReducerFn(state, { currentUser: user })),
   on(invalidateCurrentUserAction, (state) => successReducerFn(state, { currentUser: undefined })),
   on(clearStoreAction, () => initialState)

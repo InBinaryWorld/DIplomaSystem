@@ -36,7 +36,7 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   private handle401Error(error: HttpErrorResponse, request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    return this.authStoreService.getStoreProgress().pipe(
+    return this.authStoreService.selectStoreProgress().pipe(
       first(),
       tap(inProgress => !inProgress && this.authStoreService.refresh()),
       switchMap(() => this.getAccessToken()),

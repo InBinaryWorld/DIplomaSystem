@@ -10,7 +10,7 @@ export abstract class CleanableStoreService {
 
   public abstract getProgressSelector(): Selector<AppState, boolean>;
 
-  public getStoreProgress(): Observable<boolean> {
+  public selectStoreProgress(): Observable<boolean> {
     return this.store.select(this.getProgressSelector()).pipe(
       map(inProgress => inProgress ?? false),
       distinctUntilChanged());

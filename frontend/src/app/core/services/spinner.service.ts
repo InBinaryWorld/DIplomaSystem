@@ -23,6 +23,11 @@ export class SpinnerService {
     }
   }
 
+  public showFor(time: number, changeDetector?: ChangeDetectorRef): void {
+    this.show(changeDetector);
+    setTimeout(() => this.hide(changeDetector), time);
+  }
+
   public show(changeDetector?: ChangeDetectorRef): void {
     if (this.openedSpinners === 0) {
       this.spinnerService.show(spinnerName).then(() => this.markForCheck(changeDetector));

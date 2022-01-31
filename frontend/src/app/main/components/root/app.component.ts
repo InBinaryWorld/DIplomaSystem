@@ -11,6 +11,8 @@ import { ContextRoutingService } from '../../../core/services/context-routing.se
 import { SessionStoreService } from '../../../base/services/store/session-store.service';
 import { UserStoreService } from '../../../base/services/store/user-store.service';
 import { RequestsStoreService } from '../../../base/services/store/requests-store.service';
+import { ReservationsStoreService } from '../../../base/services/store/reservations-store.service';
+import { skip } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -21,7 +23,8 @@ import { RequestsStoreService } from '../../../base/services/store/requests-stor
 export class AppComponent extends BaseComponent implements OnInit {
   spinnerName = spinnerName;
 
-  constructor(private readonly contextRoutingService: ContextRoutingService,
+  constructor(private readonly reservationsStoreService: ReservationsStoreService,
+              private readonly contextRoutingService: ContextRoutingService,
               private readonly requestsStoreService: RequestsStoreService,
               private readonly translationsService: AppTranslateService,
               private readonly sessionStoreService: SessionStoreService,
@@ -48,6 +51,7 @@ export class AppComponent extends BaseComponent implements OnInit {
 
   private initStoreSpinners(): void {
     const services: CleanableStoreService[] = [
+      this.reservationsStoreService,
       this.requestsStoreService,
       this.sessionStoreService,
       this.authStoreService,
@@ -59,7 +63,7 @@ export class AppComponent extends BaseComponent implements OnInit {
 
   private initStoreSpinner(service: CleanableStoreService): void {
     this.addSubscription(
-      service.getStoreProgress().subscribe(
+      service.selectStoreProgress().pipe(skip(1)).subscribe(
         inProgress => this.spinnerService.act(inProgress, this.changeDetector)
       )
     );

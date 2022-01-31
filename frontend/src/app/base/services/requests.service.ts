@@ -17,7 +17,7 @@ export class RequestsService {
   }
 
   public invalidateClarificationRequests(): void {
-    this.requestsStoreService.invalidateRequestsForType(RequestsStateKey.CLARIFICATION);
+    this.requestsStoreService.invalidateStoreForType(RequestsStateKey.CLARIFICATION);
   }
 
   public rejectClarificationRequest(userRole: UserRole, id: string): Observable<void> {

@@ -15,10 +15,7 @@ import {
   loadCurrentUserAction,
   loadCurrentUserIfNeededAction
 } from '../../store/user/user.actions';
-import { map } from 'rxjs/operators';
-import { UserRole } from '../../models/dto/user-role.model';
 import { UserState } from '../../store/user/user.state';
-import { filterNotInProgress } from '../../../core/tools/filter-not-in-progress';
 
 @Injectable({
   providedIn: 'root'
@@ -28,7 +25,7 @@ export class UserStoreService extends CleanableStoreService {
   constructor(store: Store<AppState>) {
     super(store);
   }
-
+  
   public invalidateCurrentUser(): void {
     this.store.dispatch(invalidateCurrentUserAction());
   }
@@ -40,29 +37,20 @@ export class UserStoreService extends CleanableStoreService {
     this.store.dispatch(action);
   }
 
-  public getCurrentUser(ifNeededOnly = true): Observable<User | undefined> {
-    this.loadCurrentUser(ifNeededOnly);
+  public selectCurrentUser(): Observable<User | undefined> {
     return this.store.select(selectCurrentUser);
   }
 
-  public getUserState(): Observable<UserState | undefined> {
+  public selectUserState(): Observable<UserState | undefined> {
     return this.store.select(selectUserState);
   }
 
-  public getUserRoles(ifNeededOnly = true): Observable<UserRole[] | undefined> {
-    this.loadCurrentUser(ifNeededOnly);
-    return this.getUserState().pipe(
-      filterNotInProgress(),
-      map(state => state?.currentUser?.roles)
-    );
+  public selectStateError(): Observable<any> {
+    return this.store.select(selectUserStateError);
   }
 
   public getProgressSelector(): Selector<AppState, boolean> {
     return selectUserStateInProgress;
-  }
-
-  public getError(): Observable<any> {
-    return this.store.select(selectUserStateError);
   }
 
 }

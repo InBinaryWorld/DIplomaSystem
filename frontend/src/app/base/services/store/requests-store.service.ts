@@ -5,9 +5,9 @@ import { AppState } from '../../store/app-state.model';
 import { CleanableStoreService } from '../../../core/services/cleanable-store.service';
 import {
   invalidateRequestsDataAction,
+  loadRequestForIdAction,
+  loadRequestForIdIfNeededAction,
   loadRequestsAction,
-  loadRequestsForIdAction,
-  loadRequestsForIdIfNeededAction,
   loadRequestsIfNeededAction
 } from '../../store/requests/requests.actions';
 import {
@@ -21,7 +21,6 @@ import {
 import { RequestsStateKey } from '../../store/requests/requests.state';
 import { ClarificationRequest } from '../../models/dto/clarification-request.model';
 import { UserRole } from '../../models/dto/user-role.model';
-import { RequestsApiService } from '../api/requests-api.service';
 import { ChangeRequest } from '../../models/dto/change-request.model';
 
 @Injectable({
@@ -29,8 +28,7 @@ import { ChangeRequest } from '../../models/dto/change-request.model';
 })
 export class RequestsStoreService extends CleanableStoreService {
 
-  constructor(private readonly requestsService: RequestsApiService,
-              store: Store<AppState>) {
+  constructor(store: Store<AppState>) {
     super(store);
   }
 
@@ -43,12 +41,12 @@ export class RequestsStoreService extends CleanableStoreService {
 
   public loadRequestForId(resourceType: RequestsStateKey, userRole: UserRole, id: string, ifNeededOnly = true): void {
     const action = ifNeededOnly
-      ? loadRequestsForIdIfNeededAction({ resourceType, userRole, id })
-      : loadRequestsForIdAction({ resourceType, userRole, id });
+      ? loadRequestForIdIfNeededAction({ resourceType, userRole, id })
+      : loadRequestForIdAction({ resourceType, userRole, id });
     this.store.dispatch(action);
   }
 
-  public invalidateRequestsForType(resourceType: RequestsStateKey): void {
+  public invalidateStoreForType(resourceType: RequestsStateKey): void {
     this.store.dispatch(invalidateRequestsDataAction({ resourceType }));
   }
 
@@ -69,12 +67,12 @@ export class RequestsStoreService extends CleanableStoreService {
   }
 
 
-  public getProgressSelector(): Selector<AppState, boolean> {
-    return selectRequestsStateInProgress;
+  public selectStateError(): Observable<any> {
+    return this.store.select(selectRequestsStateError);
   }
 
-  public getError(): Observable<any> {
-    return this.store.select(selectRequestsStateError);
+  public getProgressSelector(): Selector<AppState, boolean> {
+    return selectRequestsStateInProgress;
   }
 
 }

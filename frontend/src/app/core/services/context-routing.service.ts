@@ -10,8 +10,8 @@ import { isNil } from 'lodash-es';
 import { filterExists } from '../tools/filter-exists';
 import { first, map } from 'rxjs/operators';
 import { firstItem } from '../tools/first-item';
-import { UserStoreService } from '../../base/services/store/user-store.service';
 import { UserRole } from '../../base/models/dto/user-role.model';
+import { UserService } from '../../base/services/user.service';
 
 
 @Injectable({
@@ -31,7 +31,7 @@ export class ContextRoutingService implements CleanableService {
   };
 
   constructor(private readonly sessionStoreService: SessionStoreService,
-              private readonly userStoreService: UserStoreService,
+              private readonly userService: UserService,
               private readonly router: Router) {
   }
 
@@ -54,7 +54,7 @@ export class ContextRoutingService implements CleanableService {
   }
 
   calculateNewUserRole(): Observable<UserRole | undefined> {
-    return this.userStoreService.getUserRoles()
+    return this.userService.getUserRolesWaitIfInProgress()
       .pipe(filterExists(), first(), map(roles => firstItem(roles)));
   }
 
