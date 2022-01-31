@@ -14,11 +14,11 @@ import { SessionService } from '../../../../../base/services/session.service';
 
 @Component({
   selector: 'app-student-topic-clarification-details',
-  templateUrl: './student-topic-clarification-details.component.html',
-  styleUrls: ['./student-topic-clarification-details.component.css'],
+  templateUrl: './student-clarification-request-details.component.html',
+  styleUrls: ['./student-clarification-request-details.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class StudentTopicClarificationDetailsComponent extends RoleComponent implements OnInit {
+export class StudentClarificationRequestDetailsComponent extends RoleComponent implements OnInit {
 
   form?: FormGroup;
   request?: ClarificationRequest;
@@ -61,7 +61,7 @@ export class StudentTopicClarificationDetailsComponent extends RoleComponent imp
 
   private loadRequest(): void {
     this.addSubscription(
-      combineLatest([this.userRole, this.requestId, this.reloadTrigger])
+      combineLatest([this.userRoleSource, this.requestId, this.reloadTrigger])
         .pipe(switchMap(([userRole, id]) => this.getRequest(userRole, id)))
         .subscribe(request => {
           this.request = request!;

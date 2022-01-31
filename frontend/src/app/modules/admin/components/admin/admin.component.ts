@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { NavItem } from "../../../shared/models/nav-item.model";
+import { NavItem } from '../../../shared/models/nav-item.model';
 
 @Component({
   selector: 'app-admin',
@@ -10,7 +10,7 @@ import { NavItem } from "../../../shared/models/nav-item.model";
 export class AdminComponent {
 
   public navItems: NavItem[] = [
-    { path: '/admin/topic-change', nameKey: 'Sidebar.Admin.Import' },
+    { path: '/admin/import', nameKey: 'Sidebar.Admin.Import' },
     { path: '/admin/deans', nameKey: 'Sidebar.Admin.Deans' },
     { path: '/admin/students', nameKey: 'Sidebar.Admin.Students' },
     { path: '/admin/lecturers', nameKey: 'Sidebar.Admin.Lecturers' },
@@ -18,7 +18,7 @@ export class AdminComponent {
     { path: '/admin/departments', nameKey: 'Sidebar.Admin.Departments' },
     { path: '/admin/study-fields', nameKey: 'Sidebar.Admin.StudyFields' },
     { path: '/admin/diploma-section', nameKey: 'Sidebar.Admin.DiplomaSection' },
-    { path: '/admin/program-committee', nameKey: 'Sidebar.Admin.ProgramCommittee' },
+    { path: '/admin/program-committee', nameKey: 'Sidebar.Admin.ProgramCommittee' }
   ];
 
 }

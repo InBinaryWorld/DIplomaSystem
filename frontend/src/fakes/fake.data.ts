@@ -14,6 +14,12 @@ import { Timetable } from '../app/base/models/dto/timetable.model';
 import { isNil } from 'lodash-es';
 import { DiplomaSession } from '../app/base/models/dto/diploma-session.model';
 
+// Available supervisors
+const supervisor: any = {
+  id: '1',
+  name: 'Prof. Jack Daniels'
+};
+
 const user: User = {
   id: '1',
   firstName: 'Jack',
@@ -73,9 +79,9 @@ const changeRequest: ChangeRequest = {
 const timetable: Timetable = {
   id: '10',
   diplomaSessionId: '10',
-  changingThesis: new Date(),
   selectingThesis: new Date(),
   submittingThesis: new Date(),
+  changingThesis: new Date(2023, 1),
   clarificationThesis: new Date(2023, 1),
   approvingThesisByCommittee: new Date(),
   approvingThesisByCoordinator: new Date()
@@ -87,6 +93,14 @@ const diplomaSession: DiplomaSession = {
   fieldOfStudyId: '6',
   year: '2022/2023'
 };
+
+const supervisors = [
+  supervisor,
+  supervisor,
+  supervisor,
+  supervisor,
+  supervisor
+];
 
 const reservations = [
   reservation,
@@ -117,6 +131,7 @@ const changeRequests = [
 
 const responseByApiKey: Dictionary<any> = {
   [ApiLabel.CREATE_CLARIFICATION_REQUEST]: clarificationRequest,
+  [ApiLabel.CREATE_CHANGE_REQUEST]: changeRequest,
   [ApiLabel.GET_USER]: user,
   [ApiLabel.GET_CHANGE_REQUEST]: changeRequest,
   [ApiLabel.GET_CHANGE_REQUESTS]: changeRequests,
@@ -146,7 +161,7 @@ function handleLabel(apiLabel: ApiLabel): NonNullable<any> {
   }
 }
 
-export const FakeSessionData = {
+export const FakeData = {
   handleApiLabel(apiLabel: ApiLabel): NonNullable<any> {
     const response = handleLabel(apiLabel);
     if (isNil(response)) {
@@ -158,6 +173,7 @@ export const FakeSessionData = {
   reservation,
   changeRequest,
   clarificationRequest,
-  timetable
-
+  timetable,
+  supervisor,
+  supervisors
 };

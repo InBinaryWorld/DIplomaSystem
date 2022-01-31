@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Thesis } from '../../../../base/models/dto/thesis.model';
 import { ChangeRequest } from '../../../../base/models/dto/change-request.model';
 import { Router } from '@angular/router';
-import { FakeSessionData } from '../../../../../fakes/fake.data';
+import { FakeData } from '../../../../../fakes/fake.data';
 
 @Component({
   selector: 'app-topic-change',
@@ -12,9 +12,9 @@ import { FakeSessionData } from '../../../../../fakes/fake.data';
 })
 export class SectionTopicChangeComponent {
 
-  topic: Thesis = FakeSessionData.thesis;
+  topic: Thesis = FakeData.thesis;
 
-  application: ChangeRequest = FakeSessionData.changeRequest;
+  application: ChangeRequest = FakeData.changeRequest;
 
   applications: ChangeRequest[] = [
     this.application,
@@ -30,6 +30,6 @@ export class SectionTopicChangeComponent {
   }
 
   showDetails(application: ChangeRequest): void {
-    this.router.navigate(['/diploma-section/topic-change/', application.id]);
+    this.router.navigate(['/diploma-section/change-requests/', application.id]);
   }
 }

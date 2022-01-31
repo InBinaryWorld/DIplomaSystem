@@ -3,7 +3,7 @@ import { Thesis } from '../../../../base/models/dto/thesis.model';
 import { Router } from '@angular/router';
 import { Reservation } from '../../../../base/models/dto/reservation.model';
 import { TranslationKeys } from '../../../../core/utils/translation-keys.utils';
-import { FakeSessionData } from '../../../../../fakes/fake.data';
+import { FakeData } from '../../../../../fakes/fake.data';
 
 @Component({
   selector: 'app-student-reservations',
@@ -13,7 +13,7 @@ import { FakeSessionData } from '../../../../../fakes/fake.data';
 })
 export class StudentReservationsComponent {
 
-  private topic: Thesis = FakeSessionData.thesis;
+  private topic: Thesis = FakeData.thesis;
 
   topics: Thesis[] = [
     this.topic,
@@ -24,16 +24,16 @@ export class StudentReservationsComponent {
     this.topic
   ];
 
-  confirmedReservation: Reservation = FakeSessionData.reservation;
+  confirmedReservation: Reservation = FakeData.reservation;
 
   reservations: Reservation[] = [
-    FakeSessionData.reservation,
-    FakeSessionData.reservation,
-    FakeSessionData.reservation,
-    FakeSessionData.reservation,
-    FakeSessionData.reservation,
-    FakeSessionData.reservation,
-    FakeSessionData.reservation
+    FakeData.reservation,
+    FakeData.reservation,
+    FakeData.reservation,
+    FakeData.reservation,
+    FakeData.reservation,
+    FakeData.reservation,
+    FakeData.reservation
   ];
 
 

@@ -7,18 +7,21 @@ import { ThesesService } from '../../../../../base/services/theses.service';
 import { RequestsService } from '../../../../../base/services/requests.service';
 import { RoleComponent } from '../../../../../base/components/role-component.directive';
 import { SessionService } from '../../../../../base/services/session.service';
-import { switchMap } from 'rxjs';
+import { map, Observable, switchMap } from 'rxjs';
 import { Thesis } from '../../../../../base/models/dto/thesis.model';
 import { Role } from '../../../../../base/models/dto/role.model';
 import { isNil } from 'lodash-es';
+import { UserRole } from '../../../../../base/models/dto/user-role.model';
+import { filterExists } from '../../../../../core/tools/filter-exists';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-student-topic-create-clarification',
-  templateUrl: './student-topic-create-clarification.component.html',
-  styleUrls: ['./student-topic-create-clarification.component.css'],
+  templateUrl: './student-create-clarification-request.component.html',
+  styleUrls: ['./student-create-clarification-request.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class StudentTopicCreateClarificationComponent extends RoleComponent implements OnInit {
+export class StudentCreateClarificationRequestComponent extends RoleComponent implements OnInit {
 
   request?: ClarificationRequest;
 
@@ -26,8 +29,9 @@ export class StudentTopicCreateClarificationComponent extends RoleComponent impl
   newTopicForm?: FormGroup;
 
   thesis?: Thesis;
-  errorVisible = false;
+  studentId?: string;
 
+  errorVisible = false;
 
   constructor(private readonly router: Router,
               private readonly formBuilder: FormBuilder,
@@ -39,11 +43,10 @@ export class StudentTopicCreateClarificationComponent extends RoleComponent impl
   }
 
   confirm() {
-    const thesis = this.thesis;
     const formData = this.newTopicForm?.value;
-    const request = this.prepareRequestForFormData(thesis!, formData);
-    this.requestsService.createClarificationRequest(thesis!.id, request).subscribe({
-      next: (request) => this.router.navigate(['/student/clarification-requests/details/', request.id]),
+    const request = this.prepareRequestForFormData(this.studentId!, this.thesis!, formData);
+    this.requestsService.createClarificationRequest(this.thesis!.id, request).subscribe({
+      next: (request) => this.router.navigate(['/student/change-requests/details/', request.id]),
       error: () => this.errorVisible = true
     });
   }
@@ -70,15 +73,28 @@ export class StudentTopicCreateClarificationComponent extends RoleComponent impl
   }
 
   private initData(): void {
-    this.addSubscription(
-      this.userRole.pipe(switchMap(userRole =>
-        this.thesesService.getActiveReservedThesisForStudentId(userRole.id))
-      ).subscribe(thesis => {
+    this.addSubscription(this.getDataSource()
+      .subscribe(([userRole, thesis]) => {
         this.thesis = thesis;
+        this.studentId = userRole.id;
         this.setCurrentFormData(thesis);
       })
     );
   }
+
+  private getDataSource(): Observable<[UserRole, Thesis]> {
+    return this.userRoleSource.pipe(
+      switchMap(userRole => this.getBaseThesis(userRole).pipe(
+        map(thesis => ([userRole, thesis] as [UserRole, Thesis])))
+      )
+    );
+  }
+
+  private getBaseThesis(userRole: UserRole): Observable<Thesis> {
+    return this.thesesService.getActiveReservedThesisForStudentId(userRole.id)
+      .pipe(filterExists(), first());
+  }
+
 
   private setCurrentFormData(thesis?: Thesis): void {
     if (isNil(thesis)) {
@@ -96,8 +112,9 @@ export class StudentTopicCreateClarificationComponent extends RoleComponent impl
     return Role.STUDENT;
   }
 
-  private prepareRequestForFormData(thesis: Thesis, formData: any): Partial<ClarificationRequest> {
+  private prepareRequestForFormData(studentId: string, thesis: Thesis, formData: any): Partial<ClarificationRequest> {
     return {
+      studentId: studentId,
       newTopic: formData.newThesisTopic,
       newDescription: formData.newDescription,
       thesisId: thesis.id

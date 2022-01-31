@@ -13,6 +13,7 @@ export const baseEnvironment = {
       [ApiLabel.LOGIN]: 'TODO',
       [ApiLabel.REFRESH]: 'TODO',
       [ApiLabel.CREATE_CLARIFICATION_REQUEST]: 'TODO',
+      [ApiLabel.CREATE_CHANGE_REQUEST]: 'TODO',
       [ApiLabel.GET_CHANGE_REQUEST]: 'TODO',
       [ApiLabel.GET_CHANGE_REQUESTS]: 'TODO',
       [ApiLabel.GET_CLARIFICATION_REQUEST]: 'TODO',

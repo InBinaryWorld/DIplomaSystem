@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Reservation } from '../../../../base/models/dto/reservation.model';
 import { ReservationStatus } from '../../../../base/models/dto/reservation-status.model';
 import { groupBy } from 'lodash-es';
-import { FakeSessionData } from '../../../../../fakes/fake.data';
+import { FakeData } from '../../../../../fakes/fake.data';
 
 @Component({
   selector: 'app-lecturer-reservations',
@@ -15,15 +15,15 @@ import { FakeSessionData } from '../../../../../fakes/fake.data';
 export class LecturerReservationsComponent {
 
   private topics: Thesis[] = [
-    FakeSessionData.thesis,
-    FakeSessionData.thesis,
-    FakeSessionData.thesis
+    FakeData.thesis,
+    FakeData.thesis,
+    FakeData.thesis
   ];
 
   private reservations: Reservation[] = [
-    FakeSessionData.reservation,
-    FakeSessionData.reservation,
-    FakeSessionData.reservation
+    FakeData.reservation,
+    FakeData.reservation,
+    FakeData.reservation
   ];
 
   data = Object.entries(groupBy(this.reservations, res => res.thesisId))

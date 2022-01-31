@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Timetable } from '../../../../../base/models/dto/timetable.model';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { FakeSessionData } from '../../../../../../fakes/fake.data';
+import { FakeData } from '../../../../../../fakes/fake.data';
 
 @Component({
   selector: 'app-section-edit-timetable',
@@ -14,7 +14,7 @@ export class EditTimetableComponent implements OnInit {
 
   form?: FormGroup;
 
-  public timetable: Timetable = FakeSessionData.timetable;
+  public timetable: Timetable = FakeData.timetable;
 
   constructor(private readonly formBuilder: FormBuilder,
               private readonly router: Router) {

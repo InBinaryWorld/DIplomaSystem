@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ClarificationRequest } from '../../../../base/models/dto/clarification-request.model';
-import { FakeSessionData } from '../../../../../fakes/fake.data';
+import { FakeData } from '../../../../../fakes/fake.data';
 
 @Component({
   selector: 'app-topic-change-requests',
@@ -13,13 +13,13 @@ export class DeanTopicClarificationRequestsComponent {
 
 
   requests: ClarificationRequest[] = [
-    FakeSessionData.clarificationRequest,
-    FakeSessionData.clarificationRequest,
-    FakeSessionData.clarificationRequest,
-    FakeSessionData.clarificationRequest,
-    FakeSessionData.clarificationRequest,
-    FakeSessionData.clarificationRequest,
-    FakeSessionData.clarificationRequest
+    FakeData.clarificationRequest,
+    FakeData.clarificationRequest,
+    FakeData.clarificationRequest,
+    FakeData.clarificationRequest,
+    FakeData.clarificationRequest,
+    FakeData.clarificationRequest,
+    FakeData.clarificationRequest
   ];
 
   constructor(private readonly router: Router) {

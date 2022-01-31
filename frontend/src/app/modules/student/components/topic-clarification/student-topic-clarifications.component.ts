@@ -41,7 +41,7 @@ export class StudentTopicClarificationsComponent extends RoleComponent implement
 
   private initClarificationRequests(): void {
     this.addSubscription(
-      this.userRole.pipe(
+      this.userRoleSource.pipe(
         switchMap(userRole => this.requestsService.getClarificationRequestsForRole(userRole)),
         filterExists()
       ).subscribe(requests => {
@@ -53,7 +53,7 @@ export class StudentTopicClarificationsComponent extends RoleComponent implement
 
   initButtonsAvailability(): void {
     this.addSubscription(
-      this.userRole.pipe(switchMap(userRole =>
+      this.userRoleSource.pipe(switchMap(userRole =>
         this.deadlinesService.canCreateClarificationRequest(userRole.id)
       )).subscribe(canCreateClarification => {
         this.canCreateNew = canCreateClarification;

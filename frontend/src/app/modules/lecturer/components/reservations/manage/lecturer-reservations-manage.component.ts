@@ -6,7 +6,7 @@ import { Reservation } from '../../../../../base/models/dto/reservation.model';
 import { ReservationStatus } from '../../../../../base/models/dto/reservation-status.model';
 import { TranslationKeys } from '../../../../../core/utils/translation-keys.utils';
 import { isNotNil } from '../../../../../core/tools/is-not-nil';
-import { FakeSessionData } from '../../../../../../fakes/fake.data';
+import { FakeData } from '../../../../../../fakes/fake.data';
 
 @Component({
   selector: 'app-lecturer-reservations-manage',
@@ -28,16 +28,16 @@ export class LecturerReservationsManageComponent implements OnInit {
     ReservationStatus.ACCEPTED
   ];
 
-  private topic: Thesis = FakeSessionData.thesis;
+  private topic: Thesis = FakeData.thesis;
 
   reservations: Reservation[] = [
-    FakeSessionData.reservation,
-    FakeSessionData.reservation,
-    FakeSessionData.reservation,
-    FakeSessionData.reservation,
-    FakeSessionData.reservation,
-    FakeSessionData.reservation,
-    FakeSessionData.reservation
+    FakeData.reservation,
+    FakeData.reservation,
+    FakeData.reservation,
+    FakeData.reservation,
+    FakeData.reservation,
+    FakeData.reservation,
+    FakeData.reservation
   ];
 
   constructor(private readonly formBuilder: FormBuilder,

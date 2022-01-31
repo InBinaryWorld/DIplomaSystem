@@ -12,7 +12,7 @@ export class StudentComponent {
   public navItems: NavItem[] = [
     { path: '/student/reservations', nameKey: 'Sidebar.Student.TopicReservations' },
     { path: '/student/topic-propositions', nameKey: 'Sidebar.Student.TopicPropositions' },
-    { path: '/student/topic-changes', nameKey: 'Sidebar.Student.TopicChangeRequest' },
+    { path: '/student/change-requests', nameKey: 'Sidebar.Student.TopicChangeRequest' },
     { path: '/student/clarification-requests', nameKey: 'Sidebar.Student.ClarificationRequest' }
   ];
 

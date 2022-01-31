@@ -38,6 +38,10 @@ export class RequestsService {
     this.requestsStoreService.invalidateStoreForType(RequestsStateKey.CLARIFICATION);
   }
 
+  public invalidateChangeRequests(): void {
+    this.requestsStoreService.invalidateStoreForType(RequestsStateKey.CHANGE);
+  }
+
   public rejectClarificationRequest(userRole: UserRole, id: string): Observable<void> {
     return this.requestsApiService.rejectClarificationRequestForRole(userRole, id)
       .pipe(tap(() => this.invalidateClarificationRequests()));
@@ -46,6 +50,11 @@ export class RequestsService {
   public createClarificationRequest(thesisId: string, request: Partial<ClarificationRequest>): Observable<ClarificationRequest> {
     return this.requestsApiService.createClarificationRequest(thesisId, request)
       .pipe(tap(() => this.invalidateClarificationRequests()));
+  }
+
+  public createChangeRequest(thesisId: string, request: any): Observable<ChangeRequest> {
+    return this.requestsApiService.createChangeRequest(thesisId, request)
+      .pipe(tap(() => this.invalidateChangeRequests()));
   }
 
   // public getExtClarificationRequests(userRole: UserRole, studentId: string): Observable<ClarificationRequestExt[]> {

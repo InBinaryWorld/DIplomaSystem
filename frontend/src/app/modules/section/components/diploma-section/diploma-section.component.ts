@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { NavItem } from "../../../shared/models/nav-item.model";
+import { NavItem } from '../../../shared/models/nav-item.model';
 
 @Component({
   selector: 'app-diploma-section',
@@ -11,7 +11,7 @@ export class DiplomaSectionComponent {
 
   public navItems: NavItem[] = [
     { path: '/diploma-section/timetable', nameKey: 'Sidebar.DiplomaSection.Timetables' },
-    { path: '/diploma-section/topic-change', nameKey: 'Sidebar.DiplomaSection.TopicChangeRequests' }
+    { path: '/diploma-section/change-requests', nameKey: 'Sidebar.DiplomaSection.TopicChangeRequests' }
   ];
 
 }

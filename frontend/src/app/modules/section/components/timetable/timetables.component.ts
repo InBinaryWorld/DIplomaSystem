@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Timetable } from '../../../../base/models/dto/timetable.model';
 import { Router } from '@angular/router';
-import { FakeSessionData } from '../../../../../fakes/fake.data';
+import { FakeData } from '../../../../../fakes/fake.data';
 
 @Component({
   selector: 'app-section-timetables',
@@ -13,12 +13,12 @@ export class TimetablesComponent {
 
 
   public activeTimetable: Timetable[] = [
-    FakeSessionData.timetable,
-    FakeSessionData.timetable,
-    FakeSessionData.timetable,
-    FakeSessionData.timetable,
-    FakeSessionData.timetable,
-    FakeSessionData.timetable
+    FakeData.timetable,
+    FakeData.timetable,
+    FakeData.timetable,
+    FakeData.timetable,
+    FakeData.timetable,
+    FakeData.timetable
   ];
 
   constructor(private readonly router: Router) {

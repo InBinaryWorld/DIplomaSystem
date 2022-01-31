@@ -3,7 +3,7 @@ import { Thesis } from '../../../../../base/models/dto/thesis.model';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ChangeRequest } from '../../../../../base/models/dto/change-request.model';
-import { FakeSessionData } from '../../../../../../fakes/fake.data';
+import { FakeData } from '../../../../../../fakes/fake.data';
 
 @Component({
   selector: 'app-section-topic-change-details',
@@ -15,20 +15,20 @@ export class SectionTopicChangeDetailsComponent implements OnInit {
 
   form?: FormGroup;
 
-  topic: Thesis = FakeSessionData.thesis;
+  topic: Thesis = FakeData.thesis;
 
-  request: ChangeRequest = FakeSessionData.changeRequest;
+  request: ChangeRequest = FakeData.changeRequest;
 
   constructor(private readonly formBuilder: FormBuilder,
               private readonly router: Router) {
   }
 
   approve() {
-    this.router.navigate(['/diploma-section/topic-change']);
+    this.router.navigate(['/diploma-section/change-requests']);
   }
 
   reject() {
-    this.router.navigate(['/diploma-section/topic-change']);
+    this.router.navigate(['/diploma-section/change-requests']);
   }
 
   ngOnInit(): void {

@@ -5,7 +5,7 @@ import { isEmpty } from 'lodash-es';
 import { SettingsService } from './settings.service';
 import { RequestParams } from '../models/request-param.model';
 import { ApiLabel } from '../models/api-route.model';
-import { FakeSessionData } from '../../../fakes/fake.data';
+import { FakeData } from '../../../fakes/fake.data';
 import { tap } from 'rxjs/operators';
 import { SpinnerService } from './spinner.service';
 
@@ -26,7 +26,7 @@ export class ServerHttpService {
 
   doFakeRequest<T>(apiLabel: ApiLabel): Observable<T> {
     const time = this.settingsService.fakeApiDelay();
-    return of(FakeSessionData.handleApiLabel(apiLabel)).pipe(
+    return of(FakeData.handleApiLabel(apiLabel)).pipe(
       tap(() => this.spinnerService.showFor(time)),
       delay(time)
     );

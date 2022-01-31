@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Thesis } from '../../../../../base/models/dto/thesis.model';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
-import { FakeSessionData } from '../../../../../../fakes/fake.data';
+import { FakeData } from '../../../../../../fakes/fake.data';
 
 @Component({
   selector: 'app-student-create-reservation',
@@ -14,7 +14,7 @@ export class StudentCreateReservationComponent implements OnInit {
 
   form?: FormGroup;
 
-  topic: Thesis = FakeSessionData.thesis;
+  topic: Thesis = FakeData.thesis;
 
   constructor(private readonly formBuilder: FormBuilder,
               private readonly router: Router) {

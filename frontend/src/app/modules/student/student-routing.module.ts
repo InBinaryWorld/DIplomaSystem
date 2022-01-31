@@ -24,11 +24,17 @@ import {
   StudentPropositionDetailsComponent
 } from './components/propositions/details/student-proposition-details.component';
 import {
-  StudentTopicCreateClarificationComponent
-} from './components/topic-clarification/create/student-topic-create-clarification.component';
+  StudentCreateClarificationRequestComponent
+} from './components/topic-clarification/create/student-create-clarification-request.component';
 import {
-  StudentTopicClarificationDetailsComponent
-} from './components/topic-clarification/details/student-topic-clarification-details.component';
+  StudentClarificationRequestDetailsComponent
+} from './components/topic-clarification/details/student-clarification-request-details.component';
+import {
+  StudentChangeRequestDetailsComponent
+} from './components/topic-change/details/student-change-request-details.component';
+import {
+  StudentCreateChangeRequestComponent
+} from './components/topic-change/create/student-create-change-request.component';
 
 
 const routes: Routes = [
@@ -85,7 +91,7 @@ const routes: Routes = [
         ]
       },
       {
-        path: 'topic-changes',
+        path: 'change-requests',
         children: [
           {
             path: '',
@@ -94,11 +100,11 @@ const routes: Routes = [
           },
           {
             path: 'details/:requestId',
-            component: StudentTopicChangesComponent
+            component: StudentChangeRequestDetailsComponent
           },
           {
             path: 'create',
-            component: StudentTopicChangesComponent
+            component: StudentCreateChangeRequestComponent
           }
         ]
       },
@@ -112,11 +118,11 @@ const routes: Routes = [
           },
           {
             path: 'details/:requestId',
-            component: StudentTopicClarificationDetailsComponent
+            component: StudentClarificationRequestDetailsComponent
           },
           {
             path: 'create',
-            component: StudentTopicCreateClarificationComponent
+            component: StudentCreateClarificationRequestComponent
           }
         ]
       }

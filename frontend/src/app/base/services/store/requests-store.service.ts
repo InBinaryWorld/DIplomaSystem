@@ -43,7 +43,7 @@ export class RequestsStoreService extends CleanableStoreService {
 
   public getChangeRequestForId(userRole: UserRole, requestId: string, ifNeededOnly = true)
     : Observable<ChangeRequest | undefined> {
-    this.loadRequestForId(RequestsStateKey.CLARIFICATION, userRole, requestId, ifNeededOnly);
+    this.loadRequestForId(RequestsStateKey.CHANGE, userRole, requestId, ifNeededOnly);
     return this.selectChangeRequestForId(requestId);
   }
 

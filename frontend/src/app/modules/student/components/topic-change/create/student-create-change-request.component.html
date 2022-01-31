@@ -1,0 +1,34 @@
+<div class="container">
+  <div class="row mt-4 mb-2">
+    <h1 class="display-6">{{ 'Student.TopicChangeCreate.Header' | translate }}</h1>
+  </div>
+
+  <div *ngIf="baseThesis" class="row py-3">
+    <app-error-alert *ngIf="errorVisible"></app-error-alert>
+    <form *ngIf="form" [formGroup]="form">
+      <div class="mb-3">
+        <label for="topic" class="form-label">{{ 'Form.Label.ThesisTopic' | translate }}</label>
+        <input type="text" formControlName="topic" id="topic" class="form-control">
+      </div>
+      <div class="mb-3">
+        <label for="description" class="form-label">{{ 'Form.Label.Description' | translate }}</label>
+        <textarea formControlName="description" id="description" class="form-control"></textarea>
+      </div>
+      <div class="mb-4">
+        <label for="supervisorId" class="form-label">{{ 'Form.Label.Supervisor' | translate }}</label>
+        <select formControlName="supervisorId" id="supervisorId" class="form-control">
+          <option *ngFor="let item of supervisors" [value]="item.id">{{ item.name }}</option>
+        </select>
+      </div>
+      <div class="gap-2 d-flex justify-content-end">
+        <button
+          type="submit" class="btn btn-success"
+          [disabled]="!form!.valid"
+          (click)="confirm()">
+          {{ 'Button.Create' | translate }}
+        </button>
+      </div>
+    </form>
+  </div>
+
+</div>

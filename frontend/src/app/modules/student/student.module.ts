@@ -23,11 +23,17 @@ import {
   StudentPropositionDetailsComponent
 } from './components/propositions/details/student-proposition-details.component';
 import {
-  StudentTopicClarificationDetailsComponent
-} from './components/topic-clarification/details/student-topic-clarification-details.component';
+  StudentClarificationRequestDetailsComponent
+} from './components/topic-clarification/details/student-clarification-request-details.component';
 import {
-  StudentTopicCreateClarificationComponent
-} from './components/topic-clarification/create/student-topic-create-clarification.component';
+  StudentCreateClarificationRequestComponent
+} from './components/topic-clarification/create/student-create-clarification-request.component';
+import {
+  StudentChangeRequestDetailsComponent
+} from './components/topic-change/details/student-change-request-details.component';
+import {
+  StudentCreateChangeRequestComponent
+} from './components/topic-change/create/student-create-change-request.component';
 
 @NgModule({
   declarations: [
@@ -41,8 +47,10 @@ import {
     StudentCreatePropositionComponent,
     StudentPropositionDetailsComponent,
     StudentTopicClarificationsComponent,
-    StudentTopicCreateClarificationComponent,
-    StudentTopicClarificationDetailsComponent
+    StudentCreateChangeRequestComponent,
+    StudentChangeRequestDetailsComponent,
+    StudentCreateClarificationRequestComponent,
+    StudentClarificationRequestDetailsComponent
   ],
   imports: [
     SharedModule,

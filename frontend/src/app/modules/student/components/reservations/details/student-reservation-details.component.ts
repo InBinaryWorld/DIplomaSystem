@@ -3,7 +3,7 @@ import { Thesis } from '../../../../../base/models/dto/thesis.model';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Reservation } from '../../../../../base/models/dto/reservation.model';
-import { FakeSessionData } from '../../../../../../fakes/fake.data';
+import { FakeData } from '../../../../../../fakes/fake.data';
 
 @Component({
   selector: 'app-student-reservation-details',
@@ -15,9 +15,9 @@ export class StudentReservationDetailsComponent implements OnInit {
 
   form?: FormGroup;
 
-  topic: Thesis = FakeSessionData.thesis;
+  topic: Thesis = FakeData.thesis;
 
-  reservation: Reservation = FakeSessionData.reservation;
+  reservation: Reservation = FakeData.reservation;
 
   constructor(private readonly formBuilder: FormBuilder,
               private readonly router: Router) {

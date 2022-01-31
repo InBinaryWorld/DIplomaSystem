@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Reservation } from '../../../../base/models/dto/reservation.model';
 import { ReservationStatus } from '../../../../base/models/dto/reservation-status.model';
 import { TranslationKeys } from '../../../../core/utils/translation-keys.utils';
-import { FakeSessionData } from '../../../../../fakes/fake.data';
+import { FakeData } from '../../../../../fakes/fake.data';
 
 @Component({
   selector: 'app-student-topic-propositions',
@@ -14,7 +14,7 @@ import { FakeSessionData } from '../../../../../fakes/fake.data';
 })
 export class StudentTopicPropositionsComponent {
 
-  private topic = FakeSessionData.thesis;
+  private topic = FakeData.thesis;
 
   private reservation: Reservation = {
     id: '1',

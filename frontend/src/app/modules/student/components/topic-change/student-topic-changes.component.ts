@@ -21,7 +21,6 @@ export class StudentTopicChangesComponent extends RoleComponent implements OnIni
   changeRequests?: ChangeRequest[];
   canCreateNew = false;
 
-
   constructor(private readonly deadlinesService: DeadlinesService,
               private readonly requestsService: RequestsService,
               private readonly router: Router,
@@ -29,7 +28,6 @@ export class StudentTopicChangesComponent extends RoleComponent implements OnIni
               changeDetector: ChangeDetectorRef) {
     super(sessionService, changeDetector);
   }
-
 
   get role(): Role {
     return Role.STUDENT;
@@ -41,7 +39,7 @@ export class StudentTopicChangesComponent extends RoleComponent implements OnIni
   }
 
   private initChangeRequests(): void {
-    this.addSubscription(this.userRole.pipe(
+    this.addSubscription(this.userRoleSource.pipe(
         switchMap(userRole => this.requestsService.getChangeRequestsForRole(userRole))
       ).subscribe(requests => {
         this.changeRequests = requests!;
@@ -52,8 +50,8 @@ export class StudentTopicChangesComponent extends RoleComponent implements OnIni
 
   initButtonsAvailability(): void {
     this.addSubscription(
-      this.userRole.pipe(switchMap(userRole =>
-        this.deadlinesService.canCreateClarificationRequest(userRole.id)
+      this.userRoleSource.pipe(switchMap(userRole =>
+        this.deadlinesService.canCreateChangeRequest(userRole.id)
       )).subscribe(canCreateClarification => {
         this.canCreateNew = canCreateClarification;
         this.markForCheck();
@@ -62,11 +60,11 @@ export class StudentTopicChangesComponent extends RoleComponent implements OnIni
   }
 
   public requestDetails(request: ChangeRequest): void {
-    this.router.navigate(['/student/topic-changes/details', request.id]).then();
+    this.router.navigate(['/student/change-requests/details', request.id]).then();
   }
 
   public createRequest() {
-    this.router.navigate(['/student/topic-changes/create']).then();
+    this.router.navigate(['/student/change-requests/create']).then();
   }
 
   public getStatusTranslationKey(item: BaseRequest): string {

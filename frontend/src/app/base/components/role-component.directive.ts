@@ -15,7 +15,7 @@ export abstract class RoleComponent extends BaseComponent {
 
   abstract get role(): Role;
 
-  get userRole(): Observable<UserRole> {
+  get userRoleSource(): Observable<UserRole> {
     return this.sessionService.getContextRole()
       .pipe(filterRole(this.role), distinctUntilChanged());
   }

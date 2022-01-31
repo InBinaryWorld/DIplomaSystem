@@ -8,6 +8,7 @@ import { Dictionary } from '../../../core/models/dictionary.model';
 import { RequestsStateKey, RequestType } from '../../store/requests/requests.state';
 import { BaseApiService } from './base-api.service';
 import { ClarificationRequest } from '../../models/dto/clarification-request.model';
+import { ChangeRequest } from '../../models/dto/change-request.model';
 
 @Injectable({
   providedIn: 'root'
@@ -50,6 +51,10 @@ export class RequestsApiService extends BaseApiService {
 
   createClarificationRequest(thesisId: string, payload: Partial<ClarificationRequest>): Observable<ClarificationRequest> {
     return this.http.postWithLabel(ApiLabel.CREATE_CLARIFICATION_REQUEST, payload);
+  }
+
+  createChangeRequest(thesisId: string, payload: any): Observable<ChangeRequest> {
+    return this.http.postWithLabel(ApiLabel.CREATE_CHANGE_REQUEST, payload);
   }
 
 }

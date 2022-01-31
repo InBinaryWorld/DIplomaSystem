@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Thesis } from '../../../../base/models/dto/thesis.model';
 import { Router } from '@angular/router';
-import { FakeSessionData } from '../../../../../fakes/fake.data';
+import { FakeData } from '../../../../../fakes/fake.data';
 
 @Component({
   selector: 'app-lecturer-topics',
@@ -11,7 +11,7 @@ import { FakeSessionData } from '../../../../../fakes/fake.data';
 })
 export class ProgramCommitteeTopicsComponent {
 
-  private topic: Thesis = FakeSessionData.thesis;
+  private topic: Thesis = FakeData.thesis;
 
   public topicsApprovedByCoordinator: Thesis[] = [
     this.topic,
