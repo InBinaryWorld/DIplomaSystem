@@ -19,7 +19,7 @@ export const loadGeneralResourceForIdIfNeededAction = createAction(
 );
 
 export const invalidateGeneralResourcesAction = createAction(
-  '[GENERAL] Invalidate general resources',
+  '[GENERAL] Invalidate store resource',
   props<{ resourceType: GeneralResourcesStateKey }>()
 );
 

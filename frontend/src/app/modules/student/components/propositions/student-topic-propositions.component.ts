@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { Thesis } from '../../../../base/models/dto/thesis-topic.model';
+import { Thesis } from '../../../../base/models/dto/thesis.model';
 import { Router } from '@angular/router';
 import { Reservation } from '../../../../base/models/dto/reservation.model';
 import { ReservationStatus } from '../../../../base/models/dto/reservation-status.model';
@@ -14,13 +14,13 @@ import { FakeSessionData } from '../../../../../fakes/fake.data';
 })
 export class StudentTopicPropositionsComponent {
 
-  private topic = FakeSessionData.topic;
+  private topic = FakeSessionData.thesis;
 
   private reservation: Reservation = {
     id: '1',
     creationDate: new Date(),
     status: ReservationStatus.CONFIRMED,
-    topicId: '12'
+    thesisId: '12'
   };
 
   reservations: Reservation[] = [

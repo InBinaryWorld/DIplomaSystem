@@ -1,4 +1,4 @@
-import { TopicStatus } from './topic-status.model';
+import { ThesisStatus } from './topic-status.model';
 import { WithId } from './id.model';
 
 export interface Thesis extends WithId {
@@ -8,7 +8,7 @@ export interface Thesis extends WithId {
   topic: string;
   description: string;
   numberOfStudents: number;
-  status: TopicStatus;
+  status: ThesisStatus;
   coordinatorComment?: string;
   submissionDate: Date;
   reportedByStudent: boolean;

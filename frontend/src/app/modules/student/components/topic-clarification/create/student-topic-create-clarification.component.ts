@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { BaseComponent } from '../../../../../core/components/base-component.directive';
-import { Thesis } from '../../../../../base/models/dto/thesis-topic.model';
+import { Thesis } from '../../../../../base/models/dto/thesis.model';
 import { RequestsStoreService } from '../../../../../base/services/store/requests-store.service';
 import { ClarificationRequest } from '../../../../../base/models/dto/clarification-request.model';
 import { SessionStoreService } from '../../../../../base/services/store/session-store.service';
@@ -22,7 +22,7 @@ export class StudentTopicCreateClarificationComponent extends BaseComponent impl
   newTopicForm?: FormGroup;
 
 
-  private topic = FakeSessionData.topic;
+  private topic = FakeSessionData.thesis;
 
   constructor(private readonly formBuilder: FormBuilder,
               private readonly activatedRoute: ActivatedRoute,

@@ -1,12 +1,12 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { RequestsFeatureName } from './requests.reducer';
+import { requestsFeatureName } from './requests.reducer';
 import { RequestsState, RequestsStateKey, RequestType } from './requests.state';
 import { AppState } from '../app-state.model';
 import { forIdSelector, forKeySelector, StoreResource } from '../../../core/store/base-store-state.model';
 import { ClarificationRequest } from '../../models/dto/clarification-request.model';
 import { ChangeRequest } from '../../models/dto/change-request.model';
 
-export const selectRequestsState = createFeatureSelector<RequestsState>(RequestsFeatureName);
+export const selectRequestsState = createFeatureSelector<RequestsState>(requestsFeatureName);
 export const selectRequestsStateInProgress = createSelector(selectRequestsState, state => state.isInProgress);
 export const selectRequestsStateError = createSelector(selectRequestsState, state => state.error);
 

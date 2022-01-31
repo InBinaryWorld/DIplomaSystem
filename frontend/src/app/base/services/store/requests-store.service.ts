@@ -22,6 +22,8 @@ import { RequestsStateKey } from '../../store/requests/requests.state';
 import { ClarificationRequest } from '../../models/dto/clarification-request.model';
 import { UserRole } from '../../models/dto/user-role.model';
 import { ChangeRequest } from '../../models/dto/change-request.model';
+import { StoreKeys } from '../../../core/utils/store-keys.utils';
+import { filterExists } from '../../../core/tools/filter-exists';
 
 @Injectable({
   providedIn: 'root'
@@ -30,6 +32,19 @@ export class RequestsStoreService extends CleanableStoreService {
 
   constructor(store: Store<AppState>) {
     super(store);
+  }
+
+  public getClarificationRequestsForRole(userRole: UserRole, ifNeededOnly = true)
+    : Observable<ClarificationRequest[]> {
+    const key = StoreKeys.forUserRole(userRole);
+    this.loadRequests(RequestsStateKey.CLARIFICATION, userRole, key, ifNeededOnly);
+    return this.selectClarificationRequestsForKey(key).pipe(filterExists());
+  }
+
+  public getClarificationRequestForId(userRole: UserRole, requestId: string, ifNeededOnly = true)
+    : Observable<ClarificationRequest | undefined> {
+    this.loadRequestForId(RequestsStateKey.CLARIFICATION, userRole, requestId, ifNeededOnly);
+    return this.selectClarificationRequestForId(requestId);
   }
 
   public loadRequests(resourceType: RequestsStateKey, userRole: UserRole, key: string, ifNeededOnly = true): void {

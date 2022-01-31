@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { Thesis } from '../../../../base/models/dto/thesis-topic.model';
+import { Thesis } from '../../../../base/models/dto/thesis.model';
 import { Router } from '@angular/router';
 import { Reservation } from '../../../../base/models/dto/reservation.model';
 import { ReservationStatus } from '../../../../base/models/dto/reservation-status.model';
@@ -15,9 +15,9 @@ import { FakeSessionData } from '../../../../../fakes/fake.data';
 export class LecturerReservationsComponent {
 
   private topics: Thesis[] = [
-    FakeSessionData.topic,
-    FakeSessionData.topic,
-    FakeSessionData.topic
+    FakeSessionData.thesis,
+    FakeSessionData.thesis,
+    FakeSessionData.thesis
   ];
 
   private reservations: Reservation[] = [
@@ -26,10 +26,10 @@ export class LecturerReservationsComponent {
     FakeSessionData.reservation
   ];
 
-  data = Object.entries(groupBy(this.reservations, res => res.topicId))
-    .map(([topicId, reservations]) => {
+  data = Object.entries(groupBy(this.reservations, res => res.thesisId))
+    .map(([thesisId, reservations]) => {
       return {
-        topic: this.topics.find(t => t.id === topicId)!,
+        thesis: this.topics.find(t => t.id === thesisId)!,
         notReviewedReservations: reservations.filter(r => r.status === ReservationStatus.SUBMITTED).length
       };
     });

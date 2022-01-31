@@ -21,7 +21,7 @@ export const loadRequestForIdIfNeededAction = createAction(
 
 
 export const invalidateRequestsDataAction = createAction(
-  '[REQUESTS] Invalidate requests data',
+  '[REQUESTS] Invalidate store resource',
   props<{ resourceType: RequestsStateKey }>()
 );
 

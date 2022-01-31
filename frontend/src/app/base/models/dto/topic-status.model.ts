@@ -1,4 +1,4 @@
-export enum TopicStatus {
+export enum ThesisStatus {
   Waiting = 'WAITING',
   PROPOSED_BY_STUDENT = 'PROPOSED_BY_STUDENT',
   REJECTED_BY_LECTURER = 'REJECTED_BY_LECTURER',

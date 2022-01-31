@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { Thesis } from '../../../../base/models/dto/thesis-topic.model';
+import { Thesis } from '../../../../base/models/dto/thesis.model';
 import { Router } from '@angular/router';
 import { FakeSessionData } from '../../../../../fakes/fake.data';
 
@@ -10,7 +10,7 @@ import { FakeSessionData } from '../../../../../fakes/fake.data';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CoordinatorTopicsComponent {
-  private topic: Thesis = FakeSessionData.topic;
+  private topic: Thesis = FakeSessionData.thesis;
 
   public topics: Thesis[] = [
     this.topic,

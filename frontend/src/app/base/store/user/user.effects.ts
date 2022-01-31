@@ -17,7 +17,7 @@ import { selectIsLoggedIn } from '../auth/auth.selectors';
 
 
 @Injectable()
-export class userEffects {
+export class UserEffects {
 
   loadCurrentUserIfNeeded = createEffect(() => this.actions.pipe(
     ofType(loadCurrentUserIfNeededAction),

@@ -3,14 +3,16 @@ import { AuthData } from '../app/base/models/auth-data.model';
 import { User } from '../app/base/models/dto/user.model';
 import { ApiLabel } from '../app/core/models/api-route.model';
 import { Dictionary } from '../app/core/models/dictionary.model';
-import { Thesis } from '../app/base/models/dto/thesis-topic.model';
-import { TopicStatus } from '../app/base/models/dto/topic-status.model';
+import { Thesis } from '../app/base/models/dto/thesis.model';
+import { ThesisStatus } from '../app/base/models/dto/topic-status.model';
 import { Reservation } from '../app/base/models/dto/reservation.model';
 import { ReservationStatus } from '../app/base/models/dto/reservation-status.model';
 import { ClarificationRequest } from '../app/base/models/dto/clarification-request.model';
 import { RequestStatus } from '../app/base/models/dto/request-status.model';
 import { ChangeRequest } from '../app/base/models/dto/change-request.model';
 import { Timetable } from '../app/base/models/dto/timetable.model';
+import { isNil } from 'lodash-es';
+import { DiplomaSession } from '../app/base/models/dto/diploma-session.model';
 
 const user: User = {
   id: '1',
@@ -28,14 +30,14 @@ const user: User = {
   ]
 };
 
-const topic: Thesis = {
-  id: '10',
+const thesis: Thesis = {
+  id: '12',
   supervisorId: '1',
-  diplomaSessionId: '12',
+  diplomaSessionId: '10',
   topic: 'Predykcja zachowań ludzi podczas lockdownu',
   description: 'Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu',
   numberOfStudents: 1,
-  status: TopicStatus.APPROVED_BY_COORDINATOR,
+  status: ThesisStatus.APPROVED_BY_COMMITTEE,
   reportedByStudent: false,
   submissionDate: new Date()
 };
@@ -44,13 +46,13 @@ const reservation: Reservation = {
   id: '1',
   creationDate: new Date(),
   status: ReservationStatus.CONFIRMED,
-  topicId: '12'
+  thesisId: '12'
 };
 
 const clarificationRequest: ClarificationRequest = {
   id: '1',
-  studentId: '2',
-  thesisId: '3',
+  studentId: '244001',
+  thesisId: '12',
   employeeId: '4',
   submissionDate: new Date(),
   newTopic: 'nowy temat pracy',
@@ -60,26 +62,41 @@ const clarificationRequest: ClarificationRequest = {
 
 const changeRequest: ChangeRequest = {
   id: '1',
-  studentId: '2',
+  studentId: '244001',
   employeeId: '4',
   submissionDate: new Date(),
   status: RequestStatus.WAITING,
-  newThesisId: '5',
-  oldThesisId: '2'
+  newThesisId: '12',
+  oldThesisId: '12'
 };
 
 const timetable: Timetable = {
-  id: '1',
-  diplomaSessionId: '1',
-  changingTopics: new Date(),
-  selectingTopics: new Date(),
-  submittingTopics: new Date(),
-  clarificationTopics: new Date(),
-  approvingTopicsByCommittee: new Date(),
-  approvingTopicsByCoordinator: new Date()
+  id: '10',
+  diplomaSessionId: '10',
+  changingThesis: new Date(),
+  selectingThesis: new Date(),
+  submittingThesis: new Date(),
+  clarificationThesis: new Date(2023, 1),
+  approvingThesisByCommittee: new Date(),
+  approvingThesisByCoordinator: new Date()
 };
 
-const clarificationRequestApi = [
+const diplomaSession: DiplomaSession = {
+  id: '10',
+  timetableId: '10',
+  fieldOfStudyId: '6',
+  year: '2022/2023'
+};
+
+const reservations = [
+  reservation,
+  reservation,
+  reservation,
+  reservation,
+  reservation
+];
+
+const clarificationRequests = [
   clarificationRequest,
   clarificationRequest,
   clarificationRequest,
@@ -87,7 +104,7 @@ const clarificationRequestApi = [
   clarificationRequest
 ];
 
-const changeRequestApi = [
+const changeRequests = [
   changeRequest,
   changeRequest,
   changeRequest,
@@ -100,8 +117,14 @@ const changeRequestApi = [
 
 const responseByApiKey: Dictionary<any> = {
   [ApiLabel.GET_USER]: user,
-  [ApiLabel.GET_CHANGE_REQUESTS]: changeRequestApi,
-  [ApiLabel.GET_CLARIFICATION_REQUESTS]: clarificationRequestApi
+  [ApiLabel.GET_CHANGE_REQUEST]: changeRequest,
+  [ApiLabel.GET_CHANGE_REQUESTS]: changeRequests,
+  [ApiLabel.GET_CLARIFICATION_REQUEST]: clarificationRequest,
+  [ApiLabel.GET_CLARIFICATION_REQUESTS]: clarificationRequests,
+  [ApiLabel.GET_DIPLOMA_SESSION]: diplomaSession,
+  [ApiLabel.GET_RESERVATIONS]: reservations,
+  [ApiLabel.GET_TIMETABLE]: timetable,
+  [ApiLabel.GET_THESIS]: thesis
 };
 
 function generateAuthData(): AuthData {
@@ -112,17 +135,25 @@ function generateAuthData(): AuthData {
   };
 }
 
+function handleLabel(apiLabel: ApiLabel): NonNullable<any> {
+  switch (apiLabel) {
+    case ApiLabel.LOGIN:
+    case ApiLabel.REFRESH:
+      return generateAuthData();
+    default:
+      return responseByApiKey[apiLabel];
+  }
+}
+
 export const FakeSessionData = {
-  handleApiLabel(apiLabel: ApiLabel) {
-    switch (apiLabel) {
-      case ApiLabel.LOGIN:
-      case ApiLabel.REFRESH:
-        return generateAuthData();
-      default:
-        return responseByApiKey[apiLabel];
+  handleApiLabel(apiLabel: ApiLabel): NonNullable<any> {
+    const response = handleLabel(apiLabel);
+    if (isNil(response)) {
+      throw new Error('FAKES: Unhandled Api Label: ' + apiLabel);
     }
+    return response;
   },
-  topic,
+  thesis,
   reservation,
   changeRequest,
   clarificationRequest,

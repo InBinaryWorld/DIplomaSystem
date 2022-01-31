@@ -11,7 +11,7 @@ import { ContextRoutingService } from '../../../core/services/context-routing.se
 import { SessionStoreService } from '../../../base/services/store/session-store.service';
 import { UserStoreService } from '../../../base/services/store/user-store.service';
 import { RequestsStoreService } from '../../../base/services/store/requests-store.service';
-import { ReservationsStoreService } from '../../../base/services/store/reservations-store.service';
+import { ThesesStoreService } from '../../../base/services/store/theses-store.service';
 import { skip } from 'rxjs';
 
 @Component({
@@ -23,7 +23,7 @@ import { skip } from 'rxjs';
 export class AppComponent extends BaseComponent implements OnInit {
   spinnerName = spinnerName;
 
-  constructor(private readonly reservationsStoreService: ReservationsStoreService,
+  constructor(private readonly reservationsStoreService: ThesesStoreService,
               private readonly contextRoutingService: ContextRoutingService,
               private readonly requestsStoreService: RequestsStoreService,
               private readonly translationsService: AppTranslateService,

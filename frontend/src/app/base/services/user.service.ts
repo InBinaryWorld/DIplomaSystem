@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { User } from '../models/dto/user.model';
 import { UserRole } from '../models/dto/user-role.model';
 import { filterNotInProgress } from '../../core/tools/filter-not-in-progress';
 import { map } from 'rxjs/operators';
 import { UserStoreService } from './store/user-store.service';
+import { User } from '../models/dto/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +15,7 @@ export class UserService {
   }
 
   public getCurrentUser(ifNeededOnly = true): Observable<User | undefined> {
-    this.userStoreService.loadCurrentUser(ifNeededOnly);
-    return this.userStoreService.selectCurrentUser();
+    return this.userStoreService.getCurrentUser(ifNeededOnly);
   }
 
   public getUserRolesWaitIfInProgress(ifNeededOnly = true): Observable<UserRole[] | undefined> {

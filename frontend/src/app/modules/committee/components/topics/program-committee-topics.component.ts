@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { Thesis } from '../../../../base/models/dto/thesis-topic.model';
+import { Thesis } from '../../../../base/models/dto/thesis.model';
 import { Router } from '@angular/router';
 import { FakeSessionData } from '../../../../../fakes/fake.data';
 
@@ -11,7 +11,7 @@ import { FakeSessionData } from '../../../../../fakes/fake.data';
 })
 export class ProgramCommitteeTopicsComponent {
 
-  private topic: Thesis = FakeSessionData.topic;
+  private topic: Thesis = FakeSessionData.thesis;
 
   public topicsApprovedByCoordinator: Thesis[] = [
     this.topic,

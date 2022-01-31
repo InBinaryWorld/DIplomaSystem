@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { Thesis } from '../../../../base/models/dto/thesis-topic.model';
+import { Thesis } from '../../../../base/models/dto/thesis.model';
 import { Router } from '@angular/router';
 import { Reservation } from '../../../../base/models/dto/reservation.model';
 import { TranslationKeys } from '../../../../core/utils/translation-keys.utils';
@@ -13,7 +13,7 @@ import { FakeSessionData } from '../../../../../fakes/fake.data';
 })
 export class StudentReservationsComponent {
 
-  private topic: Thesis = FakeSessionData.topic;
+  private topic: Thesis = FakeSessionData.thesis;
 
   topics: Thesis[] = [
     this.topic,

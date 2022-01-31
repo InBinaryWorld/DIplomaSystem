@@ -17,7 +17,7 @@ import {
   loadGeneralResourceSuccessAction
 } from './general.actions';
 
-export const GeneralFeatureName = 'general';
+export const generalFeatureName = 'general';
 
 export const initialState = new GeneralState();
 

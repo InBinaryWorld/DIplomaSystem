@@ -9,6 +9,8 @@ import { filterExists } from '../../../../core/tools/filter-exists';
 import { RoleComponent } from '../../../../base/components/role-component.directive';
 import { Role } from '../../../../base/models/dto/role.model';
 import { RequestsService } from '../../../../base/services/requests.service';
+import { StudentViewService } from '../../services/student-view.service';
+import { ClarificationRequestExt } from '../../../../base/models/extended/clarification-request-ext.model';
 
 @Component({
   selector: 'app-student-topic-clarifications',
@@ -18,10 +20,12 @@ import { RequestsService } from '../../../../base/services/requests.service';
 })
 export class StudentTopicClarificationsComponent extends RoleComponent implements OnInit {
 
-  clarificationRequests?: ClarificationRequest[];
+  clarificationRequests?: ClarificationRequestExt[];
+  canCreateClarification = false;
 
-  constructor(private readonly router: Router,
+  constructor(private readonly studentViewService: StudentViewService,
               private readonly requestsService: RequestsService,
+              private readonly router: Router,
               sessionStoreService: SessionStoreService,
               changeDetector: ChangeDetectorRef) {
     super(sessionStoreService, changeDetector);
@@ -32,14 +36,30 @@ export class StudentTopicClarificationsComponent extends RoleComponent implement
   }
 
   ngOnInit(): void {
+    this.initClarificationRequests();
+    this.initButtonsAvailability();
+  }
+
+  private initClarificationRequests(): void {
     this.addSubscription(
       this.userRole.pipe(
-        switchMap(userRole => this.requestsService.getClarificationRequestsForRole(userRole)),
+        switchMap(userRole => this.studentViewService.getExtClarificationRequests(userRole.id)),
         filterExists()
       ).subscribe(requests => {
         this.clarificationRequests = requests!;
         this.markForCheck();
       })
+    );
+  }
+
+  initButtonsAvailability(): void {
+    this.addSubscription(
+      this.userRole.pipe(switchMap(userRole => this.studentViewService.canCreateClarificationRequest(userRole.id)))
+        .subscribe(canCreateClarification => {
+          console.log(canCreateClarification);
+          this.canCreateClarification = canCreateClarification;
+          this.markForCheck();
+        })
     );
   }
 
@@ -55,10 +75,5 @@ export class StudentTopicClarificationsComponent extends RoleComponent implement
     return TranslationKeys.forRequestStatus(item.status);
   }
 
-  isCreatePossible(): boolean {
-    // TODO:
-    const hasReservedTopic = true;
-    const timeIsCorrect = true;
-    return hasReservedTopic && timeIsCorrect;
-  }
+
 }

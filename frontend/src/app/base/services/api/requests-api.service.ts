@@ -5,46 +5,38 @@ import { ApiLabel } from '../../../core/models/api-route.model';
 import { UserRole } from '../../models/dto/user-role.model';
 import { RequestParams } from '../../../core/models/request-param.model';
 import { Dictionary } from '../../../core/models/dictionary.model';
-import { isNil } from 'lodash-es';
-import { RequestsStateKey } from '../../store/requests/requests.state';
+import { RequestsStateKey, RequestType } from '../../store/requests/requests.state';
+import { BaseApiService } from './base-api.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class RequestsApiService {
-
-  private apiLabelMap: Dictionary<ApiLabel> = {
+export class RequestsApiService extends BaseApiService {
+  private requestsApiLabelMap: Dictionary<ApiLabel> = {
     [RequestsStateKey.CLARIFICATION]: ApiLabel.GET_CLARIFICATION_REQUESTS,
     [RequestsStateKey.CHANGE]: ApiLabel.GET_CHANGE_REQUESTS
   };
+  private requestApiLabelMap: Dictionary<ApiLabel> = {
+    [RequestsStateKey.CLARIFICATION]: ApiLabel.GET_CLARIFICATION_REQUEST,
+    [RequestsStateKey.CHANGE]: ApiLabel.GET_CHANGE_REQUEST
+  };
 
   constructor(private readonly http: ServerHttpService) {
+    super();
   }
 
-  getRequestsForUserRole(resourceType: RequestsStateKey, userRole: UserRole): Observable<any> {
-    const apiLabel = this.apiLabelMap[resourceType];
-    if (isNil(apiLabel)) {
-      throw new Error('Unhandled resource type: ' + resourceType);
-    }
-    return this.getRequests(apiLabel, userRole);
-  }
+  getRequestsForUserRole(resourceType: RequestsStateKey, userRole: UserRole): Observable<RequestType[]> {
+    const apiLabel = this.getApiLabel(this.requestsApiLabelMap, resourceType);
 
-  getRequestForId(resourceType: RequestsStateKey, id: string): Observable<any> {
-    const apiLabel = this.apiLabelMap[resourceType];
-    if (isNil(apiLabel)) {
-      throw new Error('Unhandled resource type: ' + resourceType);
-    }
-    return this.getResourceForId(apiLabel, id);
-  }
-
-  private getRequests<T>(apiLabel: ApiLabel, userRole: UserRole): Observable<T[]> {
     const queryParams = new RequestParams();
     queryParams.addIfValueExists('role', userRole.role);
     queryParams.addIfValueExists('roleId', userRole.id);
     return this.http.getWithLabel(apiLabel, undefined, queryParams);
   }
 
-  private getResourceForId<T>(apiLabel: ApiLabel, id: string): Observable<T> {
+  getRequestForId(resourceType: RequestsStateKey, id: string): Observable<RequestType> {
+    const apiLabel = this.getApiLabel(this.requestApiLabelMap, resourceType);
+
     const query = new RequestParams();
     query.addIfValueExists('id', id);
     return this.http.getWithLabel(apiLabel, undefined, query);

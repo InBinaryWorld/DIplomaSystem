@@ -4,7 +4,7 @@ import { SessionStoreModule } from './store/session/session-store.module';
 import { UserStoreModule } from './store/user/user-store.module';
 import { RequestsStoreModule } from './store/requests/requests-store.module';
 import { GeneralResourcesStoreModule } from './store/general/general-store.module';
-import { ReservationsStoreModule } from './store/reservations/reservations-store.module';
+import { ThesesStoreModule } from './store/theses/theses-store.module';
 
 @NgModule({
   declarations: [],
@@ -14,7 +14,7 @@ import { ReservationsStoreModule } from './store/reservations/reservations-store
     UserStoreModule,
     RequestsStoreModule,
     GeneralResourcesStoreModule,
-    ReservationsStoreModule
+    ThesesStoreModule
   ],
   exports: [
     AuthStoreModule,
@@ -22,7 +22,7 @@ import { ReservationsStoreModule } from './store/reservations/reservations-store
     UserStoreModule,
     RequestsStoreModule,
     GeneralResourcesStoreModule,
-    ReservationsStoreModule
+    ThesesStoreModule
   ]
 })
 export class BaseModule {

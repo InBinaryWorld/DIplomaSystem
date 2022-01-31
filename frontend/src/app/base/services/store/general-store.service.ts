@@ -33,20 +33,38 @@ import { Timetable } from '../../models/dto/timetable.model';
 })
 export class GeneralResourcesStoreService extends CleanableStoreService {
 
-  private publicKey = 'PUBLIC';
-
   constructor(store: Store<AppState>) {
     super(store);
+  }
+
+  public getTimetablesForKey(key: string, ifNeededOnly = true): Observable<Timetable[] | undefined> {
+    this.loadResourcesForKey(GeneralResourcesStateKey.TIMETABLES, key, ifNeededOnly);
+    return this.selectTimetablesForKey(key);
+  }
+
+  public getTimetableForId(id: string, ifNeededOnly = true): Observable<Timetable | undefined> {
+    this.loadResourceForId(GeneralResourcesStateKey.TIMETABLES, id, ifNeededOnly);
+    return this.selectTimetableForId(id);
+  }
+
+  public getDiplomaSessionsForKey(key: string, ifNeededOnly = true): Observable<DiplomaSession[] | undefined> {
+    this.loadResourcesForKey(GeneralResourcesStateKey.DIPLOMA_SESSIONS, key, ifNeededOnly);
+    return this.selectDiplomaSessionsForKey(key);
+  }
+
+  public getDiplomaSessionForId(id: string, ifNeededOnly = true): Observable<DiplomaSession | undefined> {
+    this.loadResourceForId(GeneralResourcesStateKey.DIPLOMA_SESSIONS, id, ifNeededOnly);
+    return this.selectDiplomaSessionForId(id);
   }
 
   public invalidateStoreForKey(resourceType: GeneralResourcesStateKey): void {
     this.store.dispatch(invalidateGeneralResourcesAction({ resourceType }));
   }
 
-  public loadResources(resourceType: GeneralResourcesStateKey, ifNeededOnly = true): void {
+  public loadResourcesForKey(resourceType: GeneralResourcesStateKey, key: string, ifNeededOnly = true): void {
     const action = ifNeededOnly
-      ? loadGeneralResourcesIfNeededAction({ resourceType, key: this.publicKey })
-      : loadGeneralResourcesAction({ resourceType, key: this.publicKey });
+      ? loadGeneralResourcesIfNeededAction({ resourceType, key })
+      : loadGeneralResourcesAction({ resourceType, key });
     this.store.dispatch(action);
   }
 
@@ -57,32 +75,32 @@ export class GeneralResourcesStoreService extends CleanableStoreService {
     this.store.dispatch(action);
   }
 
-  public selectDepartments(): Observable<Department[] | undefined> {
-    return this.store.select(selectDepartmentsForKey, this.publicKey);
+  public selectDepartmentsForKey(key: string): Observable<Department[] | undefined> {
+    return this.store.select(selectDepartmentsForKey, key);
   }
 
   public selectDepartmentForId(id: string): Observable<Department | undefined> {
     return this.store.select(selectDepartmentForId, id);
   }
 
-  public selectFieldsOfStudy(): Observable<FieldOfStudy[] | undefined> {
-    return this.store.select(selectFieldsOfStudyForKey, this.publicKey);
+  public selectFieldsOfStudyForKey(key: string): Observable<FieldOfStudy[] | undefined> {
+    return this.store.select(selectFieldsOfStudyForKey, key);
   }
 
   public selectFieldOfStudyForId(id: string): Observable<FieldOfStudy | undefined> {
     return this.store.select(selectFieldOfStudyForId, id);
   }
 
-  public selectDiplomaSessions(): Observable<DiplomaSession[] | undefined> {
-    return this.store.select(selectDiplomaSessionsForKey, this.publicKey);
+  public selectDiplomaSessionsForKey(key: string): Observable<DiplomaSession[] | undefined> {
+    return this.store.select(selectDiplomaSessionsForKey, key);
   }
 
   public selectDiplomaSessionForId(id: string): Observable<DiplomaSession | undefined> {
     return this.store.select(selectDiplomaSessionForId, id);
   }
 
-  public selectTimetables(): Observable<Timetable[] | undefined> {
-    return this.store.select(selectTimetablesForKey, this.publicKey);
+  public selectTimetablesForKey(key: string): Observable<Timetable[] | undefined> {
+    return this.store.select(selectTimetablesForKey, key);
   }
 
   public selectTimetableForId(id: string): Observable<Timetable | undefined> {
@@ -96,5 +114,6 @@ export class GeneralResourcesStoreService extends CleanableStoreService {
   public getProgressSelector(): Selector<AppState, boolean> {
     return selectGeneralStateInProgress;
   }
+
 
 }

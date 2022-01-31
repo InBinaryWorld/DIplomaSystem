@@ -4,44 +4,37 @@ import { Observable } from 'rxjs';
 import { ApiLabel } from '../../../core/models/api-route.model';
 import { RequestParams } from '../../../core/models/request-param.model';
 import { Dictionary } from '../../../core/models/dictionary.model';
-import { isNil } from 'lodash-es';
-import { GeneralResourcesStateKey } from '../../store/general/general.state';
+import { GeneralResourcesStateKey, GeneralResourceType } from '../../store/general/general.state';
+import { BaseApiService } from './base-api.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class GeneralResourcesApiService {
-  private apiLabelMap: Dictionary<ApiLabel> = {
+export class GeneralResourcesApiService extends BaseApiService {
+  private resourcesApiLabelMap: Dictionary<ApiLabel> = {
     [GeneralResourcesStateKey.TIMETABLES]: ApiLabel.GET_TIMETABLES,
     [GeneralResourcesStateKey.DEPARTMENTS]: ApiLabel.GET_DEPARTMENTS,
     [GeneralResourcesStateKey.FIELDS_OF_STUDY]: ApiLabel.GET_FIELDS_OF_STUDY,
     [GeneralResourcesStateKey.DIPLOMA_SESSIONS]: ApiLabel.GET_DIPLOMA_SESSIONS
   };
+  private resourceApiLabelMap: Dictionary<ApiLabel> = {
+    [GeneralResourcesStateKey.TIMETABLES]: ApiLabel.GET_TIMETABLE,
+    [GeneralResourcesStateKey.DEPARTMENTS]: ApiLabel.GET_DEPARTMENT,
+    [GeneralResourcesStateKey.FIELDS_OF_STUDY]: ApiLabel.GET_FIELD_OF_STUDY,
+    [GeneralResourcesStateKey.DIPLOMA_SESSIONS]: ApiLabel.GET_DIPLOMA_SESSION
+  };
 
   constructor(private readonly http: ServerHttpService) {
+    super();
   }
 
-  getResourcesForType(resourceType: GeneralResourcesStateKey): Observable<any> {
-    const apiLabel = this.apiLabelMap[resourceType];
-    if (isNil(apiLabel)) {
-      throw new Error('Unhandled resource type: ' + resourceType);
-    }
-    return this.getAllResources(apiLabel);
-  }
-
-  getResourceForId(resourceType: GeneralResourcesStateKey, id: string): Observable<any> {
-    const apiLabel = this.apiLabelMap[resourceType];
-    if (isNil(apiLabel)) {
-      throw new Error('Unhandled resource type: ' + resourceType);
-    }
-    return this.getResource(apiLabel, id);
-  }
-
-  private getAllResources<T>(apiLabel: ApiLabel): Observable<T[]> {
+  getResourcesForType(resourceType: GeneralResourcesStateKey): Observable<GeneralResourceType[]> {
+    const apiLabel = this.getApiLabel(this.resourcesApiLabelMap, resourceType);
     return this.http.getWithLabel(apiLabel);
   }
 
-  private getResource<T>(apiLabel: ApiLabel, id: string): Observable<T> {
+  getResourceForId(resourceType: GeneralResourcesStateKey, id: string): Observable<GeneralResourceType> {
+    const apiLabel = this.getApiLabel(this.resourceApiLabelMap, resourceType);
     const query = new RequestParams();
     query.addIfValueExists('id', id);
     return this.http.getWithLabel(apiLabel, undefined, query);

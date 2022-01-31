@@ -17,7 +17,7 @@ import {
   loadRequestSuccessAction
 } from './requests.actions';
 
-export const RequestsFeatureName = 'requests';
+export const requestsFeatureName = 'requests';
 
 export const initialState = new RequestsState();
 

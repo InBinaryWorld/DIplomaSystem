@@ -1,5 +1,5 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { GeneralFeatureName } from './general.reducer';
+import { generalFeatureName } from './general.reducer';
 import { GeneralResourcesStateKey, GeneralResourceType, GeneralState } from './general.state';
 import { AppState } from '../app-state.model';
 import { forIdSelector, forKeySelector, StoreResource } from '../../../core/store/base-store-state.model';
@@ -9,7 +9,7 @@ import { FieldOfStudy } from '../../models/dto/field-of-study.model';
 import { Timetable } from '../../models/dto/timetable.model';
 
 
-export const selectGeneralState = createFeatureSelector<GeneralState>(GeneralFeatureName);
+export const selectGeneralState = createFeatureSelector<GeneralState>(generalFeatureName);
 export const selectGeneralStateInProgress = createSelector(selectGeneralState, state => state.isInProgress);
 export const selectGeneralStateError = createSelector(selectGeneralState, state => state.error);
 

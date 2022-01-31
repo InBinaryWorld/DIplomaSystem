@@ -18,7 +18,7 @@ import { SharedModule } from '../modules/shared/shared.module';
 import { AdminModule } from '../modules/admin/admin.module';
 import { StudentModule } from '../modules/student/student.module';
 import { localStorageSync } from 'ngrx-store-localstorage';
-import { AuthFeatureName } from '../base/store/auth/auth.reducer';
+import { authFeatureName } from '../base/store/auth/auth.reducer';
 import { DeanModule } from '../modules/dean/dean.module';
 import { LecturerModule } from '../modules/lecturer/lecturer.module';
 import { CoordinatorModule } from '../modules/coordinator/coordinator.module';
@@ -28,7 +28,7 @@ import { registerLocaleData } from '@angular/common';
 import localePl from '@angular/common/locales/pl';
 import { clearStoreMetaReducer } from '../core/store/clear-store.reducer';
 import { AuthInterceptor } from '../base/interceptors/auth.interceptor';
-import { SessionFeatureName } from '../base/store/session/session.reducer';
+import { sessionFeatureName } from '../base/store/session/session.reducer';
 import { BaseModule } from '../base/base.module';
 import { SpinnerInterceptor } from '../base/interceptors/spinner.interceptor';
 
@@ -47,8 +47,8 @@ const translateConfig: TranslateModuleConfig = {
 
 const localStorageSyncReducer = localStorageSync({
   keys: [
-    { [AuthFeatureName]: ['authData'] },
-    { [SessionFeatureName]: ['language', 'contextRole'] }
+    { [authFeatureName]: ['authData'] },
+    { [sessionFeatureName]: ['language', 'contextRole'] }
   ],
   rehydrate: true
 });
