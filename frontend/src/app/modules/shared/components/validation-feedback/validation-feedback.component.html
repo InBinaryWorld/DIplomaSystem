@@ -1,0 +1,6 @@
+<div *ngIf="errors?.['required']" class="invalid-feedback" style="display: block">
+  {{ 'Form.Feedback.Required' |  translate }}
+</div>
+<div *ngIf="errors?.['maxlength']" class="invalid-feedback" style="display: block">
+  {{ 'Form.Feedback.MaxLength' |  translate }}
+</div>

@@ -12,9 +12,9 @@ import { Role } from '../../base/models/dto/role.model';
 import { Injectable } from '@angular/core';
 import { UserRole } from '../../base/models/dto/user-role.model';
 import { isEmpty, isNil } from 'lodash-es';
-import { SessionStoreService } from '../../base/services/store/session-store.service';
 import { isNotNil } from '../tools/is-not-nil';
 import { UserService } from '../../base/services/user.service';
+import { SessionService } from '../../base/services/session.service';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +23,7 @@ export class RoleGuard implements CanActivateChild, CanActivate {
 
   protected constructor(private readonly router: Router,
                         private readonly userService: UserService,
-                        private readonly sessionStoreService: SessionStoreService) {
+                        private readonly sessionService: SessionService) {
   }
 
   get requiredRole(): Role {
@@ -53,7 +53,7 @@ export class RoleGuard implements CanActivateChild, CanActivate {
   }
 
   private check(pathAllowedRoles: Role[][]): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return this.sessionStoreService.getContextRole().pipe(
+    return this.sessionService.getContextRole().pipe(
       first(), switchMap(userRole => {
         if (this.testRoles(userRole, pathAllowedRoles)) {
           return of(true);
@@ -67,7 +67,7 @@ export class RoleGuard implements CanActivateChild, CanActivate {
     return this.userService.getUserRolesWaitIfInProgress().pipe(
       first(),
       map((roles?) => roles?.find(role => this.testRoles(role, pathAllowedRoles))),
-      tap(role => isNotNil(role) && this.sessionStoreService.setContextRole(role)),
+      tap(role => isNotNil(role) && this.sessionService.setContextRole(role)),
       map(role => isNotNil(role))
     );
   }

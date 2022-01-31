@@ -8,7 +8,7 @@ export abstract class CleanableStoreService {
   protected constructor(protected readonly store: Store<AppState>) {
   }
 
-  public abstract getProgressSelector(): Selector<AppState, boolean>;
+  protected abstract getProgressSelector(): Selector<AppState, boolean>;
 
   public selectStoreProgress(): Observable<boolean> {
     return this.store.select(this.getProgressSelector()).pipe(

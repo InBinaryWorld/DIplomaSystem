@@ -116,6 +116,7 @@ const changeRequests = [
 
 
 const responseByApiKey: Dictionary<any> = {
+  [ApiLabel.CREATE_CLARIFICATION_REQUEST]: clarificationRequest,
   [ApiLabel.GET_USER]: user,
   [ApiLabel.GET_CHANGE_REQUEST]: changeRequest,
   [ApiLabel.GET_CHANGE_REQUESTS]: changeRequests,

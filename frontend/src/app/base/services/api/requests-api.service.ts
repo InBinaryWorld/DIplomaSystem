@@ -7,6 +7,7 @@ import { RequestParams } from '../../../core/models/request-param.model';
 import { Dictionary } from '../../../core/models/dictionary.model';
 import { RequestsStateKey, RequestType } from '../../store/requests/requests.state';
 import { BaseApiService } from './base-api.service';
+import { ClarificationRequest } from '../../models/dto/clarification-request.model';
 
 @Injectable({
   providedIn: 'root'
@@ -44,7 +45,11 @@ export class RequestsApiService extends BaseApiService {
 
   rejectClarificationRequestForRole(userRole: UserRole, requestId: string): Observable<void> {
     const rejectPayload = { requestId, role: userRole.role, roleId: userRole.id };
-    return this.http.postWithLabel(ApiLabel.REJECT_CLARIFICATION_REQUESTS, rejectPayload);
+    return this.http.postWithLabel(ApiLabel.REJECT_CLARIFICATION_REQUEST, rejectPayload);
+  }
+
+  createClarificationRequest(thesisId: string, payload: Partial<ClarificationRequest>): Observable<ClarificationRequest> {
+    return this.http.postWithLabel(ApiLabel.CREATE_CLARIFICATION_REQUEST, payload);
   }
 
 }

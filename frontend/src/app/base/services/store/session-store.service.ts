@@ -22,7 +22,7 @@ export class SessionStoreService extends CleanableStoreService {
     super(store);
   }
 
-  public getProgressSelector(): Selector<AppState, boolean> {
+  protected getProgressSelector(): Selector<AppState, boolean> {
     return selectSessionStateInProgress;
   }
 
@@ -34,15 +34,15 @@ export class SessionStoreService extends CleanableStoreService {
     this.store.dispatch(setLanguageAction({ language }));
   }
 
-  getContextRole(): Observable<UserRole | undefined> {
+  selectSessionContextRole(): Observable<UserRole | undefined> {
     return this.store.select(selectSessionContextRole);
   }
 
-  getLanguage(): Observable<AppLanguage | undefined> {
+  selectSessionLanguage(): Observable<AppLanguage | undefined> {
     return this.store.select(selectSessionLanguage);
   }
 
-  getError(): Observable<any> {
+  selectError(): Observable<any> {
     return this.store.select(selectSessionStateError);
   }
 

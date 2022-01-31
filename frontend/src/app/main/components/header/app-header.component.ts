@@ -5,13 +5,13 @@ import { FormControl } from '@angular/forms';
 import { BaseComponent } from '../../../core/components/base-component.directive';
 import { SpinnerService } from '../../../core/services/spinner.service';
 import { UserRole } from '../../../base/models/dto/user-role.model';
-import { SessionStoreService } from '../../../base/services/store/session-store.service';
 import { AuthStoreService } from '../../../base/services/store/auth-store.service';
 import { distinctUntilChanged, switchMap } from 'rxjs';
 import { filterExists } from '../../../core/tools/filter-exists';
 import { User } from '../../../base/models/dto/user.model';
 import { TranslationKeys } from '../../../core/utils/translation-keys.utils';
 import { UserService } from '../../../base/services/user.service';
+import { SessionService } from '../../../base/services/session.service';
 
 @Component({
   selector: 'app-header',
@@ -28,7 +28,7 @@ export class AppHeaderComponent extends BaseComponent implements OnInit {
 
 
   constructor(private readonly translateService: AppTranslateService,
-              private readonly sessionStoreService: SessionStoreService,
+              private readonly sessionService: SessionService,
               private readonly authStoreService: AuthStoreService,
               private readonly spinnerService: SpinnerService,
               private readonly userService: UserService,
@@ -60,7 +60,7 @@ export class AppHeaderComponent extends BaseComponent implements OnInit {
   private handleLangControlChanges(): void {
     this.addSubscription(
       this.languageControl.valueChanges
-        .subscribe(lang => this.sessionStoreService.setLanguage(lang))
+        .subscribe(lang => this.sessionService.setLanguage(lang))
     );
   }
 
@@ -68,12 +68,12 @@ export class AppHeaderComponent extends BaseComponent implements OnInit {
     this.addSubscription(
       this.roleContextControl.valueChanges.subscribe(roleId => {
         const role = this.user?.roles.find(role => this.roleToId(role) === roleId);
-        this.sessionStoreService.setContextRole(role);
+        this.sessionService.setContextRole(role);
       })
     );
 
     this.addSubscription(
-      this.sessionStoreService.getContextRole().subscribe(role => {
+      this.sessionService.getContextRole().subscribe(role => {
         this.roleContextControl.setValue(this.roleToId(role), { emitEvent: false });
         this.markForCheck();
       })

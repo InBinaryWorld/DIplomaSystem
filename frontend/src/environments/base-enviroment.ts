@@ -12,6 +12,7 @@ export const baseEnvironment = {
     api: {
       [ApiLabel.LOGIN]: 'TODO',
       [ApiLabel.REFRESH]: 'TODO',
+      [ApiLabel.CREATE_CLARIFICATION_REQUEST]: 'TODO',
       [ApiLabel.GET_CHANGE_REQUEST]: 'TODO',
       [ApiLabel.GET_CHANGE_REQUESTS]: 'TODO',
       [ApiLabel.GET_CLARIFICATION_REQUEST]: 'TODO',
@@ -30,7 +31,7 @@ export const baseEnvironment = {
       [ApiLabel.GET_TIMETABLE]: 'TODO',
       [ApiLabel.GET_TIMETABLES]: 'TODO',
       [ApiLabel.GET_USER]: 'TODO',
-      [ApiLabel.REJECT_CLARIFICATION_REQUESTS]: 'TODO'
+      [ApiLabel.REJECT_CLARIFICATION_REQUEST]: 'TODO'
 
     }
   }

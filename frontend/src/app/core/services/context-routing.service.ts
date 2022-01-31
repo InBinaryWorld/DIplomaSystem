@@ -4,7 +4,6 @@ import { Role } from '../../base/models/dto/role.model';
 import { Dictionary } from '../models/dictionary.model';
 import { CleanableService } from './cleanable.service';
 import { Cleanable } from '../components/cleanable.directive';
-import { SessionStoreService } from '../../base/services/store/session-store.service';
 import { combineLatest, distinctUntilChanged, filter, Observable, skip } from 'rxjs';
 import { isNil } from 'lodash-es';
 import { filterExists } from '../tools/filter-exists';
@@ -12,6 +11,7 @@ import { first, map } from 'rxjs/operators';
 import { firstItem } from '../tools/first-item';
 import { UserRole } from '../../base/models/dto/user-role.model';
 import { UserService } from '../../base/services/user.service';
+import { SessionService } from '../../base/services/session.service';
 
 
 @Injectable({
@@ -30,7 +30,7 @@ export class ContextRoutingService implements CleanableService {
     [Role.PROGRAM_COMMITTEE_MEMBER]: '/program-committee'
   };
 
-  constructor(private readonly sessionStoreService: SessionStoreService,
+  constructor(private readonly sessionService: SessionService,
               private readonly userService: UserService,
               private readonly router: Router) {
   }
@@ -40,12 +40,12 @@ export class ContextRoutingService implements CleanableService {
   }
 
   init(cleanable: Cleanable, changeDetector: ChangeDetectorRef): void {
-    const contextRole = this.sessionStoreService.getContextRole().pipe(skip(1));
+    const contextRole = this.sessionService.getContextRole().pipe(skip(1));
     cleanable.addSubscription(
-      combineLatest([contextRole, this.getRouterEvents()])
-        .pipe(distinctUntilChanged(([role1], [role2]) => role1?.role === role2?.role))
+      combineLatest([contextRole.pipe(map(ur => ur?.role)), this.getRouterEvents()])
+        .pipe(distinctUntilChanged(([role1], [role2]) => role1 === role2))
         .subscribe(([role, event]) => {
-          const contextPath = (role && this.routeByRole[role.role]) || this.loginRoute;
+          const contextPath = (role && this.routeByRole[role]) || this.loginRoute;
           if (isNil(event) || !event!.url.startsWith(contextPath)) {
             this.router.navigate([contextPath]).then();
           }

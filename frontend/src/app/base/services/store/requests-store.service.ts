@@ -34,6 +34,20 @@ export class RequestsStoreService extends CleanableStoreService {
     super(store);
   }
 
+  public getChangeRequestsForRole(userRole: UserRole, ifNeededOnly = true)
+    : Observable<ChangeRequest[]> {
+    const key = StoreKeys.forUserRole(userRole);
+    this.loadRequests(RequestsStateKey.CHANGE, userRole, key, ifNeededOnly);
+    return this.selectChangeRequestsForKey(key).pipe(filterExists());
+  }
+
+  public getChangeRequestForId(userRole: UserRole, requestId: string, ifNeededOnly = true)
+    : Observable<ChangeRequest | undefined> {
+    this.loadRequestForId(RequestsStateKey.CLARIFICATION, userRole, requestId, ifNeededOnly);
+    return this.selectChangeRequestForId(requestId);
+  }
+
+
   public getClarificationRequestsForRole(userRole: UserRole, ifNeededOnly = true)
     : Observable<ClarificationRequest[]> {
     const key = StoreKeys.forUserRole(userRole);

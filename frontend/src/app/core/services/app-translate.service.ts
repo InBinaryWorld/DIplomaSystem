@@ -4,9 +4,9 @@ import { AppLanguage } from '../models/app-language.model';
 import { CleanableService } from './cleanable.service';
 import { Dictionary } from '../models/dictionary.model';
 import { Cleanable } from '../components/cleanable.directive';
-import { SessionStoreService } from '../../base/services/store/session-store.service';
 import { SettingsService } from './settings.service';
 import { isNotNil } from '../tools/is-not-nil';
+import { SessionService } from '../../base/services/session.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +20,7 @@ export class AppTranslateService extends CleanableService {
 
   constructor(private readonly settingsService: SettingsService,
               private readonly translateService: TranslateService,
-              private readonly sessionStoreService: SessionStoreService) {
+              private readonly sessionService: SessionService) {
     super();
   }
 
@@ -31,7 +31,7 @@ export class AppTranslateService extends CleanableService {
   public init(cleanable: Cleanable, changeDetector: ChangeDetectorRef): void {
     this.translateService.setDefaultLang(this.defaultLanguage);
     cleanable.addSubscription(
-      this.sessionStoreService.getLanguage().subscribe(language => {
+      this.sessionService.getLanguage().subscribe(language => {
         const lang = isNotNil(language) ? language : this.defaultLanguage;
         this.translateService.use(lang as AppLanguage);
         changeDetector.markForCheck();

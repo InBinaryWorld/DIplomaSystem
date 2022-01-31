@@ -3,47 +3,48 @@
     <h1 class="display-6">{{ 'Student.TopicClarificationCreate.Header' | translate }}</h1>
   </div>
 
-  <div class="row py-3">
+  <div *ngIf="thesis" class="row py-3">
+    <app-error-alert *ngIf="errorVisible"></app-error-alert>
     <form *ngIf="currentTopicForm" [formGroup]="currentTopicForm">
       <fieldset disabled>
         <div class="mb-3">
-          <label for="currentThesisTopic"
-                 class="form-label">{{ 'Student.TopicClarification.CurrentThesisTopic' | translate }}</label>
+          <label for="currentThesisTopic" class="form-label">
+            {{ 'Form.Label.CurrentThesisTopic' | translate }}
+          </label>
           <input type="text" formControlName="currentThesisTopic" id="currentThesisTopic" class="form-control">
         </div>
         <div class="mb-4">
-          <label for="currentDescription"
-                 class="form-label">{{ 'Student.TopicClarification.CurrentDescription' | translate }}</label>
+          <label for="currentDescription" class="form-label">
+            {{ 'Form.Label.CurrentDescription' | translate }}
+          </label>
           <textarea formControlName="currentDescription" id="currentDescription" class="form-control"></textarea>
         </div>
       </fieldset>
     </form>
     <form *ngIf="newTopicForm" [formGroup]="newTopicForm">
       <div class="mb-3">
-        <label for="newThesisTopic"
-               class="form-label">{{ 'Student.TopicClarification.NewThesisTopic' | translate }}</label>
-        <input type="text" formControlName="newThesisTopic" id="newThesisTopic" class="form-control">
+        <label for="newThesisTopic" class="form-label">
+          {{ 'Form.Label.NewThesisTopic' | translate }}
+        </label>
+        <input type="text" formControlName="newThesisTopic" id="newThesisTopic" class="form-control"
+               [class.is-invalid]="getErrors('newThesisTopic')">
+        <app-validation-feedback [errors]="getErrors('newThesisTopic')"></app-validation-feedback>
       </div>
       <div class="mb-4">
-        <label for="newDescription"
-               class="form-label">{{ 'Student.TopicClarification.NewDescription' | translate }}</label>
-        <textarea formControlName="newDescription" id="newDescription" class="form-control"></textarea>
+        <label for="newDescription" class="form-label">
+          {{ 'Form.Label.NewDescription' | translate }}
+        </label>
+        <textarea formControlName="newDescription" id="newDescription" class="form-control"
+                  [class.is-invalid]="getErrors('newDescription')">
+        </textarea>
+        <app-validation-feedback [errors]="getErrors('newDescription')"></app-validation-feedback>
       </div>
-      <div class="gap-2 d-flex">
-        <div class="my-auto">
-          <label>Status: </label>
-          <label>Zaakceptowany</label>
-        </div>
-        <button routerLink="../" type="submit" class="btn btn-primary ms-auto">
-          {{ 'Button.Cancel' | translate }}
-        </button>
-      </div>
-      <div class="gap-2 d-flex">
-        <button (click)="cancel()" type="submit" class="btn btn-primary ms-auto ">
-          {{ 'Button.Reject' | translate }}
-        </button>
-        <button (click)="confirm()" type="submit" class="btn btn-success">
-          {{ 'Button.Approve' | translate }}
+      <div class="gap-2 d-flex justify-content-end">
+        <button
+          type="submit" class="btn btn-success"
+          [disabled]="!newTopicForm!.valid"
+          (click)="confirm()">
+          {{ 'Button.Create' | translate }}
         </button>
       </div>
     </form>

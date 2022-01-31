@@ -1,16 +1,19 @@
 import { Injectable } from '@angular/core';
-import { Observable, switchMap } from 'rxjs';
+import { Observable, of, switchMap } from 'rxjs';
 import { Timetable } from '../models/dto/timetable.model';
 import { map } from 'rxjs/operators';
 import { filterExists } from '../../core/tools/filter-exists';
 import { GeneralResourcesStoreService } from './store/general-store.service';
+import { ThesesService } from './theses.service';
+import { isNil } from 'lodash-es';
 
 @Injectable({
   providedIn: 'root'
 })
-export class TimetableService {
+export class DeadlinesService {
 
-  constructor(private readonly generalResourcesStoreService: GeneralResourcesStoreService) {
+  constructor(private readonly generalResourcesStoreService: GeneralResourcesStoreService,
+              private readonly thesesService: ThesesService) {
   }
 
   public verifyChangeTopicDeadline(timetableId: string): Observable<boolean> {
@@ -48,6 +51,30 @@ export class TimetableService {
       filterExists(), map(timetable => this.checkDate(deadlineSelector(timetable)))
     );
   }
+
+
+  public canCreateClarificationRequest(studentId: string): Observable<boolean> {
+    return this.thesesService.getActiveReservedThesisForStudentId(studentId).pipe(
+      switchMap(thesis => isNil(thesis)
+        ? of(false)
+        : this.verifyDeadlineForDiplomaSessionId(
+          thesis.diplomaSessionId, t => t.clarificationThesis
+        )
+      )
+    );
+  }
+
+  public canCreateChangeRequest(studentId: string): Observable<boolean> {
+    return this.thesesService.getActiveReservedThesisForStudentId(studentId).pipe(
+      switchMap(thesis => isNil(thesis)
+        ? of(false)
+        : this.verifyDeadlineForDiplomaSessionId(
+          thesis.diplomaSessionId, t => t.changingThesis
+        )
+      )
+    );
+  }
+
 
   private checkDate(endDate: Date): boolean {
     return new Date() < endDate;

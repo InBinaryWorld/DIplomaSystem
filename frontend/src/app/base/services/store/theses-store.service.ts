@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Selector, Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { AppState } from '../../store/app-state.model';
 import { CleanableStoreService } from '../../../core/services/cleanable-store.service';
 import { selectRequestsStateError } from '../../store/requests/requests.selectors';
@@ -54,6 +54,11 @@ export class ThesesStoreService extends CleanableStoreService {
   public getReservationForId(reservationId: string): Observable<Reservation | undefined> {
     this.loadReservationForId(reservationId);
     return this.selectReservationForId(reservationId);
+  }
+
+  public getActiveReservationForStudent(studentId: string): Observable<Reservation | undefined> {
+    // TODO:
+    return of(undefined);
   }
 
   public loadThesesForUserRole(userRole: UserRole, key: string, ifNeededOnly = true): void {

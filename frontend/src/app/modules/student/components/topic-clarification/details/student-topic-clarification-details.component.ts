@@ -4,13 +4,13 @@ import { BehaviorSubject, combineLatest, distinctUntilChanged, map, Observable, 
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Role } from '../../../../../base/models/dto/role.model';
 import { ClarificationRequest } from '../../../../../base/models/dto/clarification-request.model';
-import { SessionStoreService } from '../../../../../base/services/store/session-store.service';
 import { filterExists } from '../../../../../core/tools/filter-exists';
 import { RoleComponent } from '../../../../../base/components/role-component.directive';
 import { UserRole } from '../../../../../base/models/dto/user-role.model';
 import { BaseRequest } from '../../../../../base/models/dto/base-request.model';
 import { TranslationKeys } from '../../../../../core/utils/translation-keys.utils';
 import { RequestsService } from '../../../../../base/services/requests.service';
+import { SessionService } from '../../../../../base/services/session.service';
 
 @Component({
   selector: 'app-student-topic-clarification-details',
@@ -28,9 +28,9 @@ export class StudentTopicClarificationDetailsComponent extends RoleComponent imp
   constructor(private readonly formBuilder: FormBuilder,
               private readonly activatedRoute: ActivatedRoute,
               private readonly requestsService: RequestsService,
-              sessionStoreService: SessionStoreService,
+              sessionService: SessionService,
               changeDetector: ChangeDetectorRef) {
-    super(sessionStoreService, changeDetector);
+    super(sessionService, changeDetector);
   }
 
   get role(): Role {
