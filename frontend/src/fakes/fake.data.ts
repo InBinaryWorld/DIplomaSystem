@@ -76,15 +76,16 @@ const changeRequest: ChangeRequest = {
   oldThesisId: '12'
 };
 
+const date = new Date(2023, 1);
 const timetable: Timetable = {
   id: '10',
   diplomaSessionId: '10',
-  selectingThesis: new Date(),
-  submittingThesis: new Date(),
-  changingThesis: new Date(2023, 1),
-  clarificationThesis: new Date(2023, 1),
-  approvingThesisByCommittee: new Date(),
-  approvingThesisByCoordinator: new Date()
+  selectingThesis: date,
+  submittingThesis: date,
+  changingThesis: date,
+  clarificationThesis: date,
+  approvingThesisByCommittee: date,
+  approvingThesisByCoordinator: date
 };
 
 const diplomaSession: DiplomaSession = {
@@ -100,6 +101,14 @@ const supervisors = [
   supervisor,
   supervisor,
   supervisor
+];
+
+const theses = [
+  thesis,
+  thesis,
+  thesis,
+  thesis,
+  thesis
 ];
 
 const reservations = [
@@ -140,7 +149,8 @@ const responseByApiKey: Dictionary<any> = {
   [ApiLabel.GET_DIPLOMA_SESSION]: diplomaSession,
   [ApiLabel.GET_RESERVATIONS]: reservations,
   [ApiLabel.GET_TIMETABLE]: timetable,
-  [ApiLabel.GET_THESIS]: thesis
+  [ApiLabel.GET_THESIS]: thesis,
+  [ApiLabel.GET_THESES]: theses
 };
 
 function generateAuthData(): AuthData {
@@ -175,5 +185,6 @@ export const FakeData = {
   clarificationRequest,
   timetable,
   supervisor,
-  supervisors
+  supervisors,
+  diplomaSession
 };

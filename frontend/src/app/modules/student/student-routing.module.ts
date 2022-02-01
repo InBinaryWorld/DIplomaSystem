@@ -4,7 +4,7 @@ import { StudentComponent } from './components/student/student.component';
 import { AuthGuard } from '../../core/guards/auth.guard';
 import { RoleGuard } from '../../core/guards/role.guard';
 import { Role } from '../../base/models/dto/role.model';
-import { StudentTopicChangesComponent } from './components/topic-change/student-topic-changes.component';
+import { StudentChangeRequestsComponent } from './components/topic-change/student-change-requests.component';
 import {
   StudentTopicClarificationsComponent
 } from './components/topic-clarification/student-topic-clarifications.component';
@@ -96,7 +96,7 @@ const routes: Routes = [
           {
             path: '',
             pathMatch: 'full',
-            component: StudentTopicChangesComponent
+            component: StudentChangeRequestsComponent
           },
           {
             path: 'details/:requestId',

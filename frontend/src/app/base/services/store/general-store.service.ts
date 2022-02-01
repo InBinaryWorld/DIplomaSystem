@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Selector, Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { AppState } from '../../store/app-state.model';
 import { CleanableStoreService } from '../../../core/services/cleanable-store.service';
 import {
@@ -27,6 +27,7 @@ import { Department } from '../../models/dto/department.model';
 import { FieldOfStudy } from '../../models/dto/field-of-study.model';
 import { DiplomaSession } from '../../models/dto/diploma-session.model';
 import { Timetable } from '../../models/dto/timetable.model';
+import { FakeData } from '../../../../fakes/fake.data';
 
 @Injectable({
   providedIn: 'root'
@@ -55,6 +56,13 @@ export class GeneralResourcesStoreService extends CleanableStoreService {
   public getDiplomaSessionForId(id: string, ifNeededOnly = true): Observable<DiplomaSession | undefined> {
     this.loadResourceForId(GeneralResourcesStateKey.DIPLOMA_SESSIONS, id, ifNeededOnly);
     return this.selectDiplomaSessionForId(id);
+  }
+
+  public getCurrentDiplomaSession(ifNeededOnly = true): Observable<DiplomaSession> {
+    return of(FakeData.diplomaSession);
+    // TODO:
+    // this.loadCurrentDiplomaSession(ifNeededOnly);
+    // return this.selectCurrentDiplomaSession(id).pipe(filterExist());
   }
 
   public invalidateStoreForKey(resourceType: GeneralResourcesStateKey): void {
@@ -114,6 +122,5 @@ export class GeneralResourcesStoreService extends CleanableStoreService {
   public getProgressSelector(): Selector<AppState, boolean> {
     return selectGeneralStateInProgress;
   }
-
 
 }

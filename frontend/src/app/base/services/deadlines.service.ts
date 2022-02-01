@@ -16,28 +16,36 @@ export class DeadlinesService {
               private readonly thesesService: ThesesService) {
   }
 
-  public verifyChangeTopicDeadline(timetableId: string): Observable<boolean> {
-    return this.verifyDeadline(timetableId, t => t.changingThesis);
+  public canReserveThesis(): Observable<boolean> {
+    return this.checkForCurrentDiplomaSession(t => t.selectingThesis);
   }
 
-  public verifyClarificationTopicDeadline(timetableId: string): Observable<boolean> {
-    return this.verifyDeadline(timetableId, t => t.clarificationThesis);
+  public canCreateThesisProposition(): Observable<boolean> {
+    return this.checkForCurrentDiplomaSession(t => t.submittingThesis);
   }
 
-  public verifySelectingTopicDeadline(timetableId: string): Observable<boolean> {
-    return this.verifyDeadline(timetableId, t => t.selectingThesis);
+  public canCreateClarificationRequest(studentId: string): Observable<boolean> {
+    return this.checkForActiveReservedThesis(studentId, t => t.clarificationThesis);
   }
 
-  public verifySubmittingTopicDeadline(timetableId: string): Observable<boolean> {
-    return this.verifyDeadline(timetableId, t => t.submittingThesis);
+  public canCreateChangeRequest(studentId: string): Observable<boolean> {
+    return this.checkForActiveReservedThesis(studentId, t => t.changingThesis);
   }
 
-  public verifyApprovingTopicByCommitteeDeadline(timetableId: string): Observable<boolean> {
-    return this.verifyDeadline(timetableId, t => t.approvingThesisByCommittee);
+  private checkForActiveReservedThesis(studentId: string, deadlineSelector: (timetable: Timetable) => Date): Observable<boolean> {
+    return this.thesesService.getActiveReservedThesisForStudentId(studentId).pipe(
+      switchMap(thesis => isNil(thesis)
+        ? of(false)
+        : this.verifyDeadlineForDiplomaSessionId(
+          thesis.diplomaSessionId, deadlineSelector
+        )
+      )
+    );
   }
 
-  public verifyApprovingTopicByCoordinatorDeadline(timetableId: string): Observable<boolean> {
-    return this.verifyDeadline(timetableId, t => t.approvingThesisByCoordinator);
+  private checkForCurrentDiplomaSession(deadlineSelector: (timetable: Timetable) => Date): Observable<boolean> {
+    return this.generalResourcesStoreService.getCurrentDiplomaSession()
+      .pipe(switchMap(ds => this.verifyDeadline(ds.timetableId, deadlineSelector)));
   }
 
   public verifyDeadlineForDiplomaSessionId(diplomaSessionId: string, deadlineSelector: (timetable: Timetable) => Date): Observable<boolean> {
@@ -51,30 +59,6 @@ export class DeadlinesService {
       filterExists(), map(timetable => this.checkDate(deadlineSelector(timetable)))
     );
   }
-
-
-  public canCreateClarificationRequest(studentId: string): Observable<boolean> {
-    return this.thesesService.getActiveReservedThesisForStudentId(studentId).pipe(
-      switchMap(thesis => isNil(thesis)
-        ? of(false)
-        : this.verifyDeadlineForDiplomaSessionId(
-          thesis.diplomaSessionId, t => t.clarificationThesis
-        )
-      )
-    );
-  }
-
-  public canCreateChangeRequest(studentId: string): Observable<boolean> {
-    return this.thesesService.getActiveReservedThesisForStudentId(studentId).pipe(
-      switchMap(thesis => isNil(thesis)
-        ? of(false)
-        : this.verifyDeadlineForDiplomaSessionId(
-          thesis.diplomaSessionId, t => t.changingThesis
-        )
-      )
-    );
-  }
-
 
   private checkDate(endDate: Date): boolean {
     return new Date() < endDate;

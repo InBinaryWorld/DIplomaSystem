@@ -125,5 +125,13 @@
   "RequestStatus.APPROVED": "Zatwierdzony",
   "RequestStatus.DISMISSED": "Odrzucony",
   "RequestStatus.WAITING": "Oczekujący",
+  "ThesisStatus.WAITING": "Waiting",
+  "ThesisStatus.PROPOSED_BY_STUDENT": "Zaproponowany przez studenta",
+  "ThesisStatus.REJECTED_BY_LECTURER": "Odrzucony przez prowadzącego",
+  "ThesisStatus.REJECTED_BY_COORDINATOR": "Odrzucony przez koordynatora",
+  "ThesisStatus.APPROVED_BY_COORDINATOR": "Zatwierdzony przez koordynatora",
+  "ThesisStatus.TO_CORRECT": "Do poprawy",
+  "ThesisStatus.REJECTED_BY_COMMITTEE": "Odrzucony przez komisję",
+  "ThesisStatus.APPROVED_BY_COMMITTEE": "Zatwierdzony przez komisję",
   "Alert.Error.GenericError": "Ups.. ! Coś poszło nie tak \uD83D\uDE22"
 }

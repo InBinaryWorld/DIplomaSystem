@@ -28,16 +28,16 @@ export class ThesesEffects {
 
   loadThesesIfNeededAction = createEffect(() => this.actions.pipe(
     ofType(loadThesesIfNeededAction),
-    mergeIfNil(({ userRole, key }) => this.store.select(
+    mergeIfNil(({ key }) => this.store.select(
       selectThesesDataIdsForTypeAndKey, { resourceType: ThesesStateKey.THESES, key }
     )),
-    map(({ userRole, key }) => loadThesesAction({ userRole, key }))
+    map(({ options, key }) => loadThesesAction({ options, key }))
   ));
 
   loadThesesAction = createEffect(() => this.actions.pipe(
     ofType(loadThesesAction),
-    mergeMap(({ userRole, key }) =>
-      this.thesesApiService.getThesesForUserRole(userRole).pipe(
+    mergeMap(({ options, key }) =>
+      this.thesesApiService.getThesesForUserRole(options).pipe(
         map(collection => loadThesesSuccessAction(
           { resourceType: ThesesStateKey.THESES, collection, key })),
         catchError(error => of(loadThesesFailedAction({ error })))

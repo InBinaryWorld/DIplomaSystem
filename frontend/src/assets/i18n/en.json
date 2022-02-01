@@ -124,5 +124,13 @@
   "RequestStatus.APPROVED": "Approved",
   "RequestStatus.DISMISSED": "Dismissed",
   "RequestStatus.WAITING": "Waiting",
+  "ThesisStatus.WAITING": "Waiting",
+  "ThesisStatus.PROPOSED_BY_STUDENT": "Proposed by student",
+  "ThesisStatus.REJECTED_BY_LECTURER": "Rejected by lecturer",
+  "ThesisStatus.REJECTED_BY_COORDINATOR": "Rejected by coordinator",
+  "ThesisStatus.APPROVED_BY_COORDINATOR": "Approved by coordinator",
+  "ThesisStatus.TO_CORRECT": "To correct",
+  "ThesisStatus.REJECTED_BY_COMMITTEE": "Rejected by committee",
+  "ThesisStatus.APPROVED_BY_COMMITTEE": "Approved by committee",
   "Alert.Error.GenericError": "Ops.. ! Something goes wrong \uD83D\uDE22"
 }

@@ -5,8 +5,8 @@ import { ApiLabel } from '../../../core/models/api-route.model';
 import { Reservation } from '../../models/dto/reservation.model';
 import { ReservationMember } from '../../models/dto/reservation-member.model';
 import { RequestParams } from '../../../core/models/request-param.model';
-import { UserRole } from '../../models/dto/user-role.model';
 import { Thesis } from '../../models/dto/thesis.model';
+import { LoadThesisActionOptions } from '../../store/theses/theses.actions';
 
 @Injectable({
   providedIn: 'root'
@@ -16,10 +16,9 @@ export class ThesesApiService {
   constructor(private readonly http: ServerHttpService) {
   }
 
-  getThesesForUserRole(userRole: UserRole): Observable<Thesis[]> {
+  getThesesForUserRole(options: LoadThesisActionOptions): Observable<Thesis[]> {
     const queryParams = new RequestParams();
-    queryParams.addIfValueExists('role', userRole.role);
-    queryParams.addIfValueExists('roleId', userRole.id);
+    queryParams.addIfValueExists('proposedBy', options.proposedByStudentId);
     return this.http.getWithLabel(ApiLabel.GET_THESES, undefined, queryParams);
   }
 

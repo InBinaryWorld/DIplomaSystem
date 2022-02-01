@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Selector, Store } from '@ngrx/store';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { AppState } from '../../store/app-state.model';
 import { CleanableStoreService } from '../../../core/services/cleanable-store.service';
 import { selectRequestsStateError } from '../../store/requests/requests.selectors';
@@ -13,6 +13,7 @@ import {
   loadStudentReservationsIfNeededAction,
   loadThesesAction,
   loadThesesIfNeededAction,
+  LoadThesisActionOptions,
   loadThesisForIdAction,
   loadThesisForIdIfNeededAction
 } from '../../store/theses/theses.actions';
@@ -23,9 +24,9 @@ import {
   selectThesesStateInProgress,
   selectThesisForId
 } from '../../store/theses/theses.selectors';
-import { UserRole } from '../../models/dto/user-role.model';
 import { ThesesStateKey } from '../../store/theses/theses.state';
 import { Thesis } from '../../models/dto/thesis.model';
+import { filterExists } from '../../../core/tools/filter-exists';
 
 @Injectable({
   providedIn: 'root'
@@ -36,9 +37,10 @@ export class ThesesStoreService extends CleanableStoreService {
     super(store);
   }
 
-  public getThesesForUserRole(userRole: UserRole, key: string): Observable<Thesis[] | undefined> {
-    this.loadThesesForUserRole(userRole, key);
-    return this.selectThesesForKey(key);
+  public getTheses(options: LoadThesisActionOptions): Observable<Thesis[]> {
+    const key = options.toKey();
+    this.loadTheses(options, key);
+    return this.selectThesesForKey(key).pipe(filterExists());
   }
 
   public getThesisForId(thesisId: string): Observable<Thesis | undefined> {
@@ -56,15 +58,10 @@ export class ThesesStoreService extends CleanableStoreService {
     return this.selectReservationForId(reservationId);
   }
 
-  public getActiveReservationForStudent(studentId: string): Observable<Reservation | undefined> {
-    // TODO:
-    return of(undefined);
-  }
-
-  public loadThesesForUserRole(userRole: UserRole, key: string, ifNeededOnly = true): void {
+  public loadTheses(options: LoadThesisActionOptions, key: string, ifNeededOnly = true): void {
     const action = ifNeededOnly
-      ? loadThesesIfNeededAction({ userRole, key })
-      : loadThesesAction({ userRole, key });
+      ? loadThesesIfNeededAction({ options, key })
+      : loadThesesAction({ options, key });
     this.store.dispatch(action);
   }
 

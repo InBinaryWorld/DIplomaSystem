@@ -4,19 +4,20 @@ import { BaseRequest } from '../../../../base/models/dto/base-request.model';
 import { TranslationKeys } from '../../../../core/utils/translation-keys.utils';
 import { ChangeRequest } from '../../../../base/models/dto/change-request.model';
 import { Role } from '../../../../base/models/dto/role.model';
-import { switchMap } from 'rxjs';
+import { Observable, switchMap } from 'rxjs';
 import { DeadlinesService } from '../../../../base/services/deadlines.service';
 import { RequestsService } from '../../../../base/services/requests.service';
 import { SessionService } from '../../../../base/services/session.service';
 import { RoleComponent } from '../../../../base/components/role-component.directive';
+import { UserRole } from '../../../../base/models/dto/user-role.model';
 
 @Component({
-  selector: 'app-student-topic-change',
-  templateUrl: './student-topic-changes.component.html',
-  styleUrls: ['./student-topic-changes.component.css'],
+  selector: 'app-student-change-requests',
+  templateUrl: './student-change-requests.component.html',
+  styleUrls: ['./student-change-requests.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class StudentTopicChangesComponent extends RoleComponent implements OnInit {
+export class StudentChangeRequestsComponent extends RoleComponent implements OnInit {
 
   changeRequests?: ChangeRequest[];
   canCreateNew = false;
@@ -40,7 +41,7 @@ export class StudentTopicChangesComponent extends RoleComponent implements OnIni
 
   private initChangeRequests(): void {
     this.addSubscription(this.userRoleSource.pipe(
-        switchMap(userRole => this.requestsService.getChangeRequestsForRole(userRole))
+        switchMap(ur => this.getChangeRequestsSource(ur))
       ).subscribe(requests => {
         this.changeRequests = requests!;
         this.markForCheck();
@@ -58,6 +59,11 @@ export class StudentTopicChangesComponent extends RoleComponent implements OnIni
       })
     );
   }
+
+  private getChangeRequestsSource(userRole: UserRole): Observable<ChangeRequest[]> {
+    return this.requestsService.getChangeRequestsForRole(userRole);
+  }
+
 
   public requestDetails(request: ChangeRequest): void {
     this.router.navigate(['/student/change-requests/details', request.id]).then();

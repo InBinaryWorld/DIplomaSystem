@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { StudentRoutingModule } from './student-routing.module';
 import { SharedModule } from '../shared/shared.module';
 import { StudentComponent } from './components/student/student.component';
-import { StudentTopicChangesComponent } from './components/topic-change/student-topic-changes.component';
+import { StudentChangeRequestsComponent } from './components/topic-change/student-change-requests.component';
 import {
   StudentTopicClarificationsComponent
 } from './components/topic-clarification/student-topic-clarifications.component';
@@ -38,7 +38,7 @@ import {
 @NgModule({
   declarations: [
     StudentComponent,
-    StudentTopicChangesComponent,
+    StudentChangeRequestsComponent,
     StudentReservationsComponent,
     StudentTopicDetailsComponent,
     StudentReservationDetailsComponent,

@@ -4,7 +4,6 @@ import { Reservation } from '../models/dto/reservation.model';
 import { ThesesStoreService } from './store/theses-store.service';
 import { StoreKeys } from '../../core/utils/store-keys.utils';
 import { Role } from '../models/dto/role.model';
-import { UserRole } from '../models/dto/user-role.model';
 import { Thesis } from '../models/dto/thesis.model';
 import { map } from 'rxjs/operators';
 import { ReservationStatus } from '../models/dto/reservation-status.model';
@@ -12,6 +11,7 @@ import { ThesisStatus } from '../models/dto/topic-status.model';
 import { filterExists } from '../../core/tools/filter-exists';
 import { firstItem } from '../../core/tools/first-item';
 import { isNil } from 'lodash-es';
+import { LoadThesisActionOptions } from '../store/theses/theses.actions';
 
 @Injectable({
   providedIn: 'root'
@@ -27,9 +27,9 @@ export class ThesesService {
   constructor(private readonly reservationsStoreService: ThesesStoreService) {
   }
 
-  public getThesesForUserRole(userRole: UserRole): Observable<Thesis[] | undefined> {
-    const key = StoreKeys.forUserRole(userRole);
-    return this.reservationsStoreService.getThesesForUserRole(userRole, key);
+  public getProposedByStudentTheses(studentId: string): Observable<Thesis[]> {
+    const options = LoadThesisActionOptions.proposedByStudent(studentId);
+    return this.reservationsStoreService.getTheses(options);
   }
 
   public getThesisForId(thesisId: string): Observable<Thesis | undefined> {

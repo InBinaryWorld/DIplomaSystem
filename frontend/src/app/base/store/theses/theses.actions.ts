@@ -1,6 +1,5 @@
 import { createAction, props } from '@ngrx/store';
 import { ThesesStateKey, ThesesStoreType } from './theses.state';
-import { UserRole } from '../../models/dto/user-role.model';
 
 export const loadStudentReservationsAction = createAction(
   '[THESES] Load student reservations',
@@ -22,11 +21,11 @@ export const loadReservationForIdIfNeededAction = createAction(
 
 export const loadThesesAction = createAction(
   '[THESES] Load theses',
-  props<{ userRole: UserRole, key: string }>()
+  props<{ options: LoadThesisActionOptions, key: string }>()
 );
 export const loadThesesIfNeededAction = createAction(
   '[THESES] Load theses if needed',
-  props<{ userRole: UserRole, key: string }>()
+  props<{ options: LoadThesisActionOptions, key: string }>()
 );
 export const loadThesisForIdAction = createAction(
   '[THESES] Load thesis for id',
@@ -56,3 +55,17 @@ export const loadThesesFailedAction = createAction(
   '[THESES] Load failed',
   props<{ error: any }>()
 );
+
+export class LoadThesisActionOptions {
+  proposedByStudentId?: string;
+
+  static proposedByStudent(studentId: string): LoadThesisActionOptions {
+    const options = new LoadThesisActionOptions();
+    options.proposedByStudentId = studentId;
+    return options;
+  }
+
+  toKey(): string {
+    return ['PBSI' + this.proposedByStudentId].join('$');
+  }
+}
