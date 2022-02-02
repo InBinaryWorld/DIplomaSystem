@@ -1,5 +1,6 @@
 package pwr.diplomaproject.model.entity
 
+import pwr.diplomaproject.model.dto.TopicDto
 import pwr.diplomaproject.model.enum.TopicStatus
 import java.time.LocalDate
 import javax.persistence.Entity
@@ -23,4 +24,7 @@ data class Topic(
     val coordinatorComments: String,
     val createdByStudent: Boolean,
     val creationDate: LocalDate
-)
+) {
+    fun toDto(): TopicDto =
+        TopicDto(id, topic, description, studentCount, status, coordinatorComments, createdByStudent, creationDate)
+}
