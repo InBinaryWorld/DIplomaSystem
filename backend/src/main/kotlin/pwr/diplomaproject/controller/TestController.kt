@@ -4,13 +4,16 @@ import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.ok
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
+import java.security.Principal
 
 @Controller
 class TestController {
 
     @GetMapping("/public")
-    fun public(): ResponseEntity<Unit> = ok(Unit)
+    fun public(): ResponseEntity<String> = ok("dane publiczne")
 
     @GetMapping("/private")
-    fun private(): ResponseEntity<Unit> = ok(Unit)
+    fun private(principal: Principal?): ResponseEntity<String> {
+        return ok("dane prywatne, user_id=${principal?.name}")
+    }
 }
