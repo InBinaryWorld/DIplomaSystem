@@ -4,7 +4,6 @@ import pwr.diplomaproject.model.enum.ReservationStatus
 import java.time.LocalDate
 import javax.persistence.Entity
 import javax.persistence.Id
-import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
 
 @Entity

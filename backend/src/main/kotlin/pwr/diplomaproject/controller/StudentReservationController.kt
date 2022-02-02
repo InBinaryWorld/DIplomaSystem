@@ -1,15 +1,20 @@
 package pwr.diplomaproject.controller
 
+import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 import pwr.diplomaproject.model.dto.StudentReservationDto
+import pwr.diplomaproject.service.StudentReservationService
 
 @RestController
 @RequestMapping("/student/reservation")
-class StudentReservationController {
+class StudentReservationController(
+    private val studentReservationService: StudentReservationService
+) {
 
     @GetMapping
-    fun getReservations(): List<StudentReservationDto> = TODO()
+    fun getReservations(): ResponseEntity<List<StudentReservationDto>> =
+        studentReservationService.getReservations()
 
     @GetMapping("/{id}")
     fun getReservation(@PathVariable id: Long): StudentReservationDto = TODO()
