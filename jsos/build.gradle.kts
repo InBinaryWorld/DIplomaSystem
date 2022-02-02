@@ -20,6 +20,11 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+	implementation("org.springframework.security.oauth:spring-security-oauth2:2.4.2.RELEASE")
+	implementation("org.springframework.boot:spring-boot-starter-security:2.4.13")
+	implementation("org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.4.13")
+	implementation("com.mercateo.spring:spring-security-jwt:2.1.1")
+	implementation("com.nimbusds:nimbus-jose-jwt:9.16")
 	providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
