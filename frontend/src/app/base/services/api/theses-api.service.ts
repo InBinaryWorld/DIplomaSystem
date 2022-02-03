@@ -53,4 +53,14 @@ export class ThesesApiService {
     return this.http.postWithLabel(ApiLabel.CREATE_THESIS, thesis);
   }
 
+  public confirmParticipationInReservation(memberId: IdType): Observable<ReservationMember> {
+    const payload = { memberId };
+    return this.http.postWithLabel(ApiLabel.CONFIRM_PARTICIPATION_IN_RESERVATION, payload);
+  }
+
+  public confirmMemberReservation(memberId: IdType): Observable<ReservationMember> {
+    const payload = { memberId };
+    return this.http.postWithLabel(ApiLabel.CONFIRM_MEMBER_RESERVATION, payload);
+  }
+
 }

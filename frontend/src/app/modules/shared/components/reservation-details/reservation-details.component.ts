@@ -1,15 +1,21 @@
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { BehaviorSubject, combineLatest, Observable, switchMap } from 'rxjs';
+import { BehaviorSubject, combineLatest, map, Observable, switchMap } from 'rxjs';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { RequestsService } from '../../../../base/services/requests.service';
 import { Role } from '../../../../base/models/dto/role.model';
 import { RoleComponent } from '../../../../base/components/role-component.directive';
 import { SessionService } from '../../../../base/services/session.service';
 import { UserRole } from '../../../../base/models/dto/user-role.model';
-import { ChangeRequest } from '../../../../base/models/dto/change-request.model';
-import { filterExists } from '../../../../core/tools/filter-exists';
 import { IdType } from '../../../../base/models/dto/id.model';
+import { DiplomaSession } from '../../../../base/models/dto/diploma-session.model';
+import { DeadlinesService } from '../../../../base/services/deadlines.service';
+import { ThesesService } from '../../../../base/services/theses.service';
+import { GeneralResourcesService } from '../../../../base/services/general-resources.service';
+import { LabelBuilder } from '../../../../base/utils/label-builder.utils';
+import { Reservation } from '../../../../base/models/dto/reservation.model';
+import { ReservationMember } from '../../../../base/models/dto/reservation-member.model';
+import { ReservationStatus } from '../../../../base/models/dto/reservation-status.model';
+import { ReservationMemberStatus } from '../../../../base/models/dto/reservation-member-status.model';
 
 @Component({
   selector: 'app-reservation-details',
@@ -20,14 +26,22 @@ import { IdType } from '../../../../base/models/dto/id.model';
 export class ReservationDetailsComponent extends RoleComponent implements OnInit {
 
   form?: FormGroup;
-  request?: ChangeRequest;
-  supervisor: any;
+
+  userRole?: UserRole;
+  studentMember?: ReservationMember;
+  reservation?: Reservation;
+  diplomaSession?: DiplomaSession;
+
+  isErrorVisible = false;
 
   reloadTrigger = new BehaviorSubject<boolean>(true);
 
-  constructor(private readonly formBuilder: FormBuilder,
+  constructor(private readonly router: Router,
+              private readonly formBuilder: FormBuilder,
+              private readonly deadlinesService: DeadlinesService,
+              private readonly thesesService: ThesesService,
+              private readonly generalResourcesService: GeneralResourcesService,
               private readonly activatedRoute: ActivatedRoute,
-              private readonly requestsService: RequestsService,
               sessionService: SessionService,
               changeDetector: ChangeDetectorRef) {
     super(sessionService, changeDetector);
@@ -37,46 +51,88 @@ export class ReservationDetailsComponent extends RoleComponent implements OnInit
     return [Role.STUDENT];
   }
 
-  get requestId(): Observable<string> {
-    return this.getPathParam(this.activatedRoute, 'requestId');
+  get reservationIdSource(): Observable<string> {
+    return this.getPathParam(this.activatedRoute, 'reservationId');
   }
 
   ngOnInit(): void {
-    this.initForm();
-    this.loadRequest();
+    this.loadReservation();
   }
 
-  private initForm(): void {
-    this.form = this.formBuilder.group({
-      topic: [],
-      description: [],
-      supervisorName: []
-    });
-  }
-
-  private loadRequest(): void {
+  private loadReservation(): void {
     this.addSubscription(
-      combineLatest([this.userRoleSource, this.requestId, this.reloadTrigger])
-        .pipe(switchMap(([userRole, id]) => this.getRequest(userRole, id)))
-        .subscribe(request => {
-          this.request = request!;
-          this.setFormData(request);
+      combineLatest([this.userRoleSource, this.reservationIdSource, this.reloadTrigger])
+        .pipe(switchMap(([userRole, id]) => this.getDataSource(userRole, id)))
+        .subscribe(([userRole, reservation, diplomaSession]) => {
+          this.userRole = userRole;
+          this.reservation = reservation;
+          this.diplomaSession = diplomaSession;
+          this.studentMember = reservation.reservationMembers.find(
+            member => member.studentId === this.userRole!.id
+          );
+          this.initForm(reservation, diplomaSession);
         })
     );
   }
 
-  private setFormData(request: ChangeRequest): void {
-    this.form!.setValue({
-      topic: 'TODO: topic',
-      description: 'TODO: description',
-      supervisorName: 'TODO: John Lennon'
+  private getDataSource(userRole: UserRole, reservationId: IdType): Observable<[UserRole, Reservation, DiplomaSession]> {
+    return this.thesesService.getReservationForId(reservationId).pipe(
+      switchMap(reservation => this.generalResourcesService.getDiplomaSessionForId(reservation.thesis.diplomaSessionId).pipe(
+          map(diplomaSession => [userRole, reservation, diplomaSession] as [UserRole, Reservation, DiplomaSession])
+        )
+      )
+    );
+  }
+
+  public canConfirmParticipation(): boolean {
+    const isSuggestedMember = this.studentMember!.status === ReservationMemberStatus.SUGGESTED;
+    const isReservationWaiting = this.reservation!.status === ReservationStatus.WAITING ?? false;
+    return isSuggestedMember && isReservationWaiting;
+  }
+
+  public canStudentConfirmReservation(): boolean {
+    const isWillingMember = this.studentMember!.status === ReservationMemberStatus.WILLING;
+    const isReservationAccepted = this.reservation!.status === ReservationStatus.ACCEPTED ?? false;
+    return isWillingMember && isReservationAccepted;
+  }
+
+  private initForm(reservation: Reservation, diplomaSession: DiplomaSession): void {
+    const group: any = {
+      topic: reservation.thesis.topic,
+      supervisorName: LabelBuilder.forEmployee(reservation.thesis.supervisor),
+      diplomaSession: LabelBuilder.forDiplomaSession(diplomaSession),
+      description: reservation.thesis.description
+    };
+    reservation.reservationMembers.forEach(member => {
+      group[this.keyForMember(member)] = LabelBuilder.forStudent(member.student);
     });
+
+    this.form = this.formBuilder.group(group);
     this.markForCheck();
   }
 
-  private getRequest(userRole: UserRole, requestId: IdType): Observable<ChangeRequest> {
-    return this.requestsService.getChangeRequestForId(requestId).pipe(filterExists());
+  public keyForMember(member: ReservationMember): string {
+    return 'member_' + member.id;
   }
 
+  public confirmParticipation(): void {
+    this.thesesService.confirmParticipationInReservation(this.studentMember!.id).subscribe({
+      next: () => this.reload(),
+      error: () => this.isErrorVisible = true
+    });
+  }
+
+  public confirmMemberReservation(): void {
+    this.thesesService.confirmMemberReservationInReservation(this.studentMember!.id).subscribe({
+      next: () => this.reload(),
+      error: () => this.isErrorVisible = true
+    });
+  }
+
+  private reload(): void {
+    console.log('clicked');
+    this.isErrorVisible = false;
+    this.reloadTrigger.next(true);
+  }
 
 }

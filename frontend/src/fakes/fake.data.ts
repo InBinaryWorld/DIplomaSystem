@@ -20,6 +20,8 @@ import { UserPerson } from '../app/base/models/dto/user-person.model';
 import { FieldOfStudy } from '../app/base/models/dto/field-of-study.model';
 import { StudyDegree } from '../app/base/models/dto/study-degree.model';
 import { Student } from '../app/base/models/dto/student.model';
+import { ReservationMember } from '../app/base/models/dto/reservation-member.model';
+import { ReservationMemberStatus } from '../app/base/models/dto/reservation-member-status.model';
 
 const userId: IdType = '1';
 
@@ -32,7 +34,8 @@ const diplomaSectionMemberId: IdType = '140';
 const programCommitteeMemberId: IdType = '176';
 
 const thesisId: IdType = '7';
-const reservationId: IdType = '7';
+const reservationId: IdType = '32';
+const reservationMemberId: IdType = '75';
 
 const timetableId: IdType = '14';
 const departmentId: IdType = '4';
@@ -88,12 +91,41 @@ const thesis: Thesis = {
   supervisor: lecturer
 };
 
+const fieldOfStudy: FieldOfStudy = {
+  id: fieldOfStudyId,
+  departmentId: departmentId,
+  activeDiplomaSessionId: diplomaSessionId,
+  degree: StudyDegree.MASTERS,
+  name: 'Informatyka Stosowana'
+};
+
+const student: Student = {
+  id: studentId,
+  userId: userId,
+  fieldOfStudyId: fieldOfStudyId,
+  indexNumber: '249013',
+  fieldOfStudy: fieldOfStudy,
+  user: userPerson
+};
+
+const reservationMember: ReservationMember = {
+  id: reservationMemberId,
+  student: student,
+  reservationId: reservationId,
+  studentId: studentId,
+  status: ReservationMemberStatus.WILLING
+};
+
 const reservation: Reservation = {
   id: reservationId,
   creationDate: new Date(),
-  status: ReservationStatus.CONFIRMED,
+  status: ReservationStatus.ACCEPTED,
   thesisId: thesisId,
-  thesis: thesis
+  thesis: thesis,
+  reservationMembers: [
+    reservationMember,
+    reservationMember
+  ]
 };
 
 const clarificationRequest: ClarificationRequest = {
@@ -122,13 +154,6 @@ const changeRequest: ChangeRequest = {
   previousThesis: thesis
 };
 
-const fieldOfStudy: FieldOfStudy = {
-  id: fieldOfStudyId,
-  departmentId: departmentId,
-  activeDiplomaSessionId: diplomaSessionId,
-  degree: StudyDegree.MASTERS,
-  name: 'Informatyka Stosowana'
-};
 
 const timetable: Timetable = {
   id: timetableId,
@@ -147,15 +172,6 @@ const diplomaSession: DiplomaSession = {
   fieldOfStudyId: fieldOfStudyId,
   year: '2022/2023',
   fieldOfStudy: fieldOfStudy
-};
-
-const student: Student = {
-  id: studentId,
-  userId: userId,
-  fieldOfStudyId: fieldOfStudyId,
-  indexNumber: '249013',
-  fieldOfStudy: fieldOfStudy,
-  user: userPerson
 };
 
 
@@ -211,6 +227,8 @@ const changeRequests: ChangeRequest[] = [
 
 
 const responseByApiKey: Dictionary<any> = {
+  [ApiLabel.CONFIRM_MEMBER_RESERVATION]: reservationMember,
+  [ApiLabel.CONFIRM_PARTICIPATION_IN_RESERVATION]: reservationMember,
   [ApiLabel.CREATE_CLARIFICATION_REQUEST]: clarificationRequest,
   [ApiLabel.CREATE_CHANGE_REQUEST]: changeRequest,
   [ApiLabel.CREATE_THESIS]: thesis,
@@ -221,6 +239,7 @@ const responseByApiKey: Dictionary<any> = {
   [ApiLabel.GET_CLARIFICATION_REQUESTS]: clarificationRequests,
   [ApiLabel.GET_DIPLOMA_SESSION]: diplomaSession,
   [ApiLabel.GET_EMPLOYEES]: lecturers,
+  [ApiLabel.GET_RESERVATION]: reservation,
   [ApiLabel.GET_RESERVATIONS]: reservations,
   [ApiLabel.GET_STUDENT]: student,
   [ApiLabel.GET_STUDENTS]: students,

@@ -2,6 +2,7 @@ import { ReservationStatus } from '../models/dto/reservation-status.model';
 import { Role } from '../models/dto/role.model';
 import { RequestStatus } from '../models/dto/request-status.model';
 import { ThesisStatus } from '../models/dto/topic-status.model';
+import { ReservationMemberStatus } from '../models/dto/reservation-member-status.model';
 
 export class TranslationKeys {
 
@@ -11,6 +12,10 @@ export class TranslationKeys {
 
   public static forReservationStatus(status: ReservationStatus): string {
     return 'ReservationsStatus.' + status;
+  }
+
+  public static forReservationMemberStatus(status: ReservationMemberStatus): string {
+    return 'ReservationMember.' + status;
   }
 
   public static forRequestStatus(status: RequestStatus): string {

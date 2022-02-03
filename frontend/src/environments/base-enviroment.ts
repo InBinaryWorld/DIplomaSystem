@@ -12,6 +12,9 @@ export const baseEnvironment = {
     api: {
       [ApiLabel.LOGIN]: 'TODO',
       [ApiLabel.REFRESH]: 'TODO',
+      [ApiLabel.REFRESH]: 'TODO',
+      [ApiLabel.CONFIRM_MEMBER_RESERVATION]: 'TODO',
+      [ApiLabel.CONFIRM_PARTICIPATION_IN_RESERVATION]: 'TODO',
       [ApiLabel.CREATE_CLARIFICATION_REQUEST]: 'TODO',
       [ApiLabel.CREATE_CHANGE_REQUEST]: 'TODO',
       [ApiLabel.CREATE_THESIS]: 'TODO',
