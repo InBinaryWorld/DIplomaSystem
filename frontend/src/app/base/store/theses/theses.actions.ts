@@ -43,11 +43,11 @@ export const invalidateThesesDataAction = createAction(
   props<{ resourceType: ThesesStateKey }>()
 );
 
-export const loadThesesSuccessAction = createAction(
+export const loadThesesStoreCollectionSuccessAction = createAction(
   '[THESES] Load collection successful',
   props<{ resourceType: ThesesStateKey, collection: ThesesStoreType[], key: string }>()
 );
-export const loadThesisSuccessAction = createAction(
+export const loadThesisStoreInstanceSuccessAction = createAction(
   '[THESES] Load instance successful',
   props<{ resourceType: ThesesStateKey, instance: ThesesStoreType }>()
 );
@@ -67,6 +67,9 @@ export class LoadThesisActionOptions {
   }
 
   toKey(): string {
-    return ['PBSI' + this.proposedByStudentId].join('$');
+    return [
+      'LoadThesisActionOptions',
+      'PBSI' + this.proposedByStudentId
+    ].join('$');
   }
 }

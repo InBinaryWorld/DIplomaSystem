@@ -12,10 +12,10 @@ import {
   loadThesesAction,
   loadThesesFailedAction,
   loadThesesIfNeededAction,
-  loadThesesSuccessAction,
+  loadThesesStoreCollectionSuccessAction,
   loadThesisForIdAction,
   loadThesisForIdIfNeededAction,
-  loadThesisSuccessAction
+  loadThesisStoreInstanceSuccessAction
 } from './theses.actions';
 import { mergeIfNil } from '../../../core/tools/If-needed-only-functions';
 import { selectThesesDataForTypeAndId, selectThesesDataIdsForTypeAndKey } from './theses.selectors';
@@ -38,7 +38,7 @@ export class ThesesEffects {
     ofType(loadThesesAction),
     mergeMap(({ options, key }) =>
       this.thesesApiService.getThesesForUserRole(options).pipe(
-        map(collection => loadThesesSuccessAction(
+        map(collection => loadThesesStoreCollectionSuccessAction(
           { resourceType: ThesesStateKey.THESES, collection, key })),
         catchError(error => of(loadThesesFailedAction({ error })))
       ))
@@ -55,7 +55,7 @@ export class ThesesEffects {
   loadThesisForIdAction = createEffect(() => this.actions.pipe(
     ofType(loadThesisForIdAction),
     mergeMap(({ id }) => this.thesesApiService.getThesisForId(id).pipe(
-      map(instance => loadThesisSuccessAction(
+      map(instance => loadThesisStoreInstanceSuccessAction(
         { resourceType: ThesesStateKey.THESES, instance }
       )),
       catchError(error => of(loadThesesFailedAction({ error })))
@@ -74,7 +74,7 @@ export class ThesesEffects {
     ofType(loadStudentReservationsAction),
     mergeMap(({ key, studentId }) =>
       this.thesesApiService.getStudentReservations(studentId).pipe(
-        map(collection => loadThesesSuccessAction(
+        map(collection => loadThesesStoreCollectionSuccessAction(
           { resourceType: ThesesStateKey.RESERVATIONS, collection, key }
         )),
         catchError(error => of(loadThesesFailedAction({ error })))
@@ -92,7 +92,7 @@ export class ThesesEffects {
   loadReservationForIdAction = createEffect(() => this.actions.pipe(
     ofType(loadReservationForIdAction),
     mergeMap(({ id }) => this.thesesApiService.getReservationForId(id).pipe(
-      map(instance => loadThesisSuccessAction(
+      map(instance => loadThesisStoreInstanceSuccessAction(
         { resourceType: ThesesStateKey.RESERVATIONS, instance }
       )),
       catchError(error => of(loadThesesFailedAction({ error })))

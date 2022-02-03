@@ -14,9 +14,9 @@ import {
   loadStudentReservationsAction,
   loadThesesAction,
   loadThesesFailedAction,
-  loadThesesSuccessAction,
+  loadThesesStoreCollectionSuccessAction,
   loadThesisForIdAction,
-  loadThesisSuccessAction
+  loadThesisStoreInstanceSuccessAction
 } from './theses.actions';
 
 export const thesesFeatureName = 'theses';
@@ -30,8 +30,8 @@ export const thesesReducer = createReducer(
   on(loadThesesAction, startProgressReducer()),
   on(loadThesisForIdAction, startProgressReducer()),
   on(loadThesesFailedAction, failedReducer()),
-  on(loadThesisSuccessAction, resourceSuccessReducer()),
-  on(loadThesesSuccessAction, resourcesSuccessReducer()),
+  on(loadThesisStoreInstanceSuccessAction, resourceSuccessReducer()),
+  on(loadThesesStoreCollectionSuccessAction, resourcesSuccessReducer()),
   on(invalidateThesesDataAction, resourceInvalidateReducer()),
   on(clearStoreAction, () => initialState)
 );
