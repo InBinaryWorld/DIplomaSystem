@@ -80,6 +80,7 @@
   "Student.TopicChangeDetails.Header": "Thesis Change Request",
   "Student.TopicChangeCreate.Header": "Create Change Request",
   "Student.CreateThesis.Header": "Create Thesis",
+  "ReservationDetails.Header": "Reservation Details",
   "ThesisDetails.Header": "Thesis Details",
   "Button.Add": "Add",
   "Button.Approve": "Approve",

@@ -51,8 +51,8 @@ export class StudentTopicPropositionsComponent extends RoleComponent implements 
     this.addSubscription(
       this.userRoleSource.pipe(
         switchMap(userRole => this.deadlinesService.canCreateThesisProposition(userRole.id))
-      ).subscribe(canCreateClarification => {
-        this.canCreateNew = canCreateClarification;
+      ).subscribe(canCreateNew => {
+        this.canCreateNew = canCreateNew;
         this.markForCheck();
       })
     );

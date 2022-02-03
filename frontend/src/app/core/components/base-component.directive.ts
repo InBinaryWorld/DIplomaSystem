@@ -1,4 +1,5 @@
 import { ChangeDetectorRef, Directive } from '@angular/core';
+import { Role } from 'src/app/base/models/dto/role.model';
 import { LabelBuilder } from 'src/app/base/utils/label-builder.utils';
 import { TranslationKeys } from 'src/app/base/utils/translation-keys.utils';
 import { Cleanable } from './cleanable.directive';
@@ -6,6 +7,7 @@ import { Cleanable } from './cleanable.directive';
 @Directive()
 export abstract class BaseComponent extends Cleanable {
 
+  Role = Role;
   LabelBuilder = LabelBuilder;
   TranslationKeys = TranslationKeys;
 

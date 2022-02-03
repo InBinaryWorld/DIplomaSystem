@@ -82,7 +82,7 @@ const thesis: Thesis = {
   topic: 'Predykcja zachowań ludzi podczas lockdownu',
   description: 'Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu',
   numberOfStudents: 1,
-  status: ThesisStatus.APPROVED_BY_COMMITTEE,
+  status: ThesisStatus.REJECTED_BY_COORDINATOR,
   reportedByStudent: false,
   submissionDate: new Date(),
   supervisor: lecturer

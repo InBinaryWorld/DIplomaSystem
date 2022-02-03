@@ -59,9 +59,11 @@ export class StudentReservationsComponent extends RoleComponent implements OnIni
   initButtonsAvailability(): void {
     this.addSubscription(
       this.userRoleSource.pipe(
-        switchMap(userRole => this.deadlinesService.canReserveThesis((userRole.id)))
-      ).subscribe(canCreateClarification => {
-        this.canCreateNew = canCreateClarification;
+        switchMap(userRole => this.userService.getStudentForId(userRole.id)),
+        switchMap(student => this.deadlinesService
+          .canReserveThesisWithDiplomaSessionId(student.id, student.fieldOfStudy.activeDiplomaSessionId))
+      ).subscribe(canCreateNew => {
+        this.canCreateNew = canCreateNew;
         this.markForCheck();
       })
     );
@@ -71,9 +73,9 @@ export class StudentReservationsComponent extends RoleComponent implements OnIni
     return this.userRoleSource.pipe(
       switchMap(userRole => this.userService.getStudentForId(userRole.id)),
       switchMap(student => combineLatest([
-          this.thesesService.getThesesToReserve(student.id),
+          this.thesesService.getThesesToReserveForActiveSession(student),
           this.thesesService.getStudentReservations(student.id),
-          this.thesesService.getActiveConfirmedStudentReservation(student)
+          this.thesesService.getConfirmedStudentReservationOnNotRejectedThesisForActiveSession(student)
         ]).pipe(map(([t, r, cr]) => ([student, t, r, cr] as
           [Student, Thesis[], Reservation[], Reservation | undefined])))
       )

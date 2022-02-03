@@ -81,6 +81,7 @@
   "Student.TopicChangeDetails.Header": "Wniosek o Zmianę Tematu Pracy Dyplomowej",
   "Student.TopicChangeCreate.Header": "Złóż Wniosek o Zmianę Tematu",
   "Student.CreateThesis.Header": "Zgłoś Propozycję Pracy Dyplomowej",
+  "ReservationDetails.Header": "Szczegóły rezerwacji",
   "ThesisDetails.Header": "Szczegóły pracy dyplomowej",
   "Button.Add": "Dodaj",
   "Button.Approve": "Zatwierdź",

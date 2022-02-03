@@ -12,7 +12,7 @@ import { filterExists } from '../../../../core/tools/filter-exists';
 import { IdType } from '../../../../base/models/dto/id.model';
 
 @Component({
-  selector: 'app-student-topic-change-details',
+  selector: 'app-reservation-details',
   templateUrl: './reservation-details.component.html',
   styleUrls: ['./reservation-details.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush

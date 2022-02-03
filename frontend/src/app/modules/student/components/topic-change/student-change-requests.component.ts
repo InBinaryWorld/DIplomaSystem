@@ -51,8 +51,8 @@ export class StudentChangeRequestsComponent extends RoleComponent implements OnI
     this.addSubscription(
       this.userRoleSource.pipe(switchMap(userRole =>
         this.deadlinesService.canCreateChangeRequest(userRole.id)
-      )).subscribe(canCreateClarification => {
-        this.canCreateNew = canCreateClarification;
+      )).subscribe(canCreateNew => {
+        this.canCreateNew = canCreateNew;
         this.markForCheck();
       })
     );

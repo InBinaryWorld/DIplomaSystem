@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of, switchMap } from 'rxjs';
+import { Observable, of, shareReplay, switchMap } from 'rxjs';
 import { Reservation } from '../models/dto/reservation.model';
 import { ThesesStoreService } from './store/theses-store.service';
 import { StoreKeys } from '../utils/store-keys.utils';
@@ -36,8 +36,9 @@ export class ThesesService {
     this.thesesStoreService.invalidateStoreForType(ThesesStateKey.THESES);
   }
 
-  public getThesesToReserve(studentId: IdType): Observable<Thesis[]> {
-    const options = LoadThesisActionOptions.proposedByStudent(studentId);
+  public getThesesToReserveForActiveSession(student: Student): Observable<Thesis[]> {
+    const diplomaSessionId = student.fieldOfStudy.activeDiplomaSessionId;
+    const options = LoadThesisActionOptions.availableToReserveForStudent(student.id, diplomaSessionId);
     return this.thesesStoreService.getTheses(options);
   }
 
@@ -59,26 +60,25 @@ export class ThesesService {
     return this.thesesStoreService.getReservationForId(reservationId);
   }
 
-  public getConfirmedReservationsForStudentId(studentId: IdType): Observable<Reservation[]> {
-    return this.getStudentReservations(studentId).pipe(
-      map(reservations => reservations.filter(r => r.status === ReservationStatus.CONFIRMED))
-    );
+  public getConfirmedStudentReservationOnNotRejectedThesisForActiveSession(student: Student): Observable<Reservation | undefined> {
+    return this.getConfirmedStudentReservationsOnNotRejectedThesisForDiplomaSessionId(student.id, student.fieldOfStudy.activeDiplomaSessionId)
+      .pipe(map(i => firstItem(i)));
   }
 
-  public getActiveConfirmedStudentReservation(student: Student): Observable<Reservation | undefined> {
-    return this.getStudentReservations(student.id).pipe(
+  public getConfirmedStudentReservationsOnNotRejectedThesisForDiplomaSessionId(studentId: IdType, diplomaSessionId: IdType): Observable<Reservation[]> {
+    return this.getStudentReservations(studentId).pipe(
       map(reservations => reservations.filter(r => {
         const isConfirmed = r.status === ReservationStatus.CONFIRMED;
-        const isSessionMatch = r.thesis.diplomaSessionId === student.fieldOfStudy.activeDiplomaSessionId;
+        const isSessionMatch = r.thesis.diplomaSessionId === diplomaSessionId;
         const isActive = !this.inactiveThesisStates.includes(r.thesis.status);
         return isConfirmed && isSessionMatch && isActive;
       })),
-      map(reservations => firstItem(reservations))
+      shareReplay(1)
     );
   }
 
   public getActiveReservedThesisForStudent(student: Student): Observable<Thesis | undefined> {
-    return this.getActiveConfirmedStudentReservation(student).pipe(
+    return this.getConfirmedStudentReservationOnNotRejectedThesisForActiveSession(student).pipe(
       switchMap(r => isNil(r) ? of(undefined) : this.getThesisForId(r.thesisId))
     );
   }

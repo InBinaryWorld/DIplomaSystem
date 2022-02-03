@@ -32,6 +32,13 @@
           {{ 'Form.Label.Status' | translate }}:
           <b>{{ TranslationKeys.forThesisStatus(thesis.status) | translate }}</b>
         </h6>
+        <ng-container *ngIf="userRole?.role === Role.STUDENT">
+          <button type="button" class="btn btn-primary"
+                  [disabled]="!canReserve"
+                  (click)="reserveTopic()">
+            {{ 'Button.Reserve' | translate }}
+          </button>
+        </ng-container>
       </div>
     </form>
   </div>

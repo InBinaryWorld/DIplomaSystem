@@ -59,6 +59,7 @@ export const loadThesesFailedAction = createAction(
 
 export class LoadThesisActionOptions {
   proposedByStudentId?: string;
+  diplomaSessionId?: string;
   availableToReserveForStudentId?: string;
 
   static proposedByStudent(studentId: IdType): LoadThesisActionOptions {
@@ -67,9 +68,10 @@ export class LoadThesisActionOptions {
     return options;
   }
 
-  static availableToReserveForStudent(studentId: IdType): LoadThesisActionOptions {
+  static availableToReserveForStudent(studentId: IdType, diplomaSessionId: IdType): LoadThesisActionOptions {
     const options = new LoadThesisActionOptions();
     options.availableToReserveForStudentId = studentId;
+    options.diplomaSessionId = diplomaSessionId;
     return options;
   }
 
@@ -77,7 +79,8 @@ export class LoadThesisActionOptions {
     return [
       'LoadThesisActionOptions',
       'PBSI_' + this.proposedByStudentId,
-      'ATRFS_' + this.availableToReserveForStudentId
+      'ATRFS_' + this.availableToReserveForStudentId,
+      'DSI_' + this.diplomaSessionId
     ].join('$');
   }
 }

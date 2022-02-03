@@ -1,4 +1,4 @@
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { BehaviorSubject, combineLatest, map, Observable, switchMap } from 'rxjs';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
@@ -12,6 +12,7 @@ import { IdType } from '../../../../base/models/dto/id.model';
 import { GeneralResourcesService } from '../../../../base/services/general-resources.service';
 import { DiplomaSession } from '../../../../base/models/dto/diploma-session.model';
 import { LabelBuilder } from '../../../../base/utils/label-builder.utils';
+import { DeadlinesService } from '../../../../base/services/deadlines.service';
 
 @Component({
   selector: 'app-thesis-details',
@@ -27,9 +28,13 @@ export class ThesisDetailsComponent extends RoleComponent implements OnInit {
   userRole?: UserRole;
   diplomaSession?: DiplomaSession;
 
+  canReserve?: boolean;
+
   reloadTrigger = new BehaviorSubject<boolean>(true);
 
-  constructor(private readonly formBuilder: FormBuilder,
+  constructor(private readonly router: Router,
+              private readonly formBuilder: FormBuilder,
+              private readonly deadlinesService: DeadlinesService,
               private readonly thesesService: ThesesService,
               private readonly generalResourcesService: GeneralResourcesService,
               private readonly activatedRoute: ActivatedRoute,
@@ -49,6 +54,7 @@ export class ThesisDetailsComponent extends RoleComponent implements OnInit {
   ngOnInit(): void {
     this.initForm();
     this.loadThesis();
+    this.checkButtonAvailability();
   }
 
   private initForm(): void {
@@ -83,6 +89,17 @@ export class ThesisDetailsComponent extends RoleComponent implements OnInit {
     );
   }
 
+  private checkButtonAvailability(): void {
+    this.addSubscription(
+      combineLatest([this.userRoleSource, this.thesisIdSource, this.reloadTrigger]).pipe(
+        switchMap(([userRole, thesisId]) => this.deadlinesService.canReserveThesisForId(userRole.id, thesisId))
+      ).subscribe(canReserve => {
+        this.canReserve = canReserve;
+        this.markForCheck();
+      })
+    );
+  }
+
   private setFormData(thesis: Thesis, diplomaSession: DiplomaSession): void {
     this.form!.setValue({
       topic: thesis.topic,
@@ -94,4 +111,7 @@ export class ThesisDetailsComponent extends RoleComponent implements OnInit {
     this.markForCheck();
   }
 
+  public reserveTopic(): void {
+    this.router.navigate(['/student/reservations/create', this.thesis!.id]).then();
+  }
 }

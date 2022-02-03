@@ -20,6 +20,7 @@ export class ThesesApiService {
   public getThesesForUserRole(options: LoadThesisActionOptions): Observable<Thesis[]> {
     const queryParams = new RequestParams();
     queryParams.addIfValueExists('proposedBy', options.proposedByStudentId);
+    queryParams.addIfValueExists('diplomaSessionId', options.diplomaSessionId);
     queryParams.addIfValueExists('availableToReserveForStudentId', options.availableToReserveForStudentId);
     return this.http.getWithLabel(ApiLabel.GET_THESES, undefined, queryParams);
   }
