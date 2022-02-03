@@ -1,5 +1,6 @@
 import { IdType, WithId } from './id.model';
 import { UserPerson } from './user-person.model';
+import { FieldOfStudy } from './field-of-study.model';
 
 export interface Student extends WithId {
   userId: IdType,
@@ -7,5 +8,5 @@ export interface Student extends WithId {
   fieldOfStudyId: IdType,
   // additional
   user: UserPerson,
-  activeDiplomaSessionId: IdType
+  fieldOfStudy: FieldOfStudy;
 }

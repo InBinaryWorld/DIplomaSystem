@@ -14,7 +14,7 @@
       <div class="mb-3">
         <label for="supervisorId" class="form-label">{{ 'Form.Label.Supervisor' | translate }}</label>
         <select formControlName="supervisorId" id="supervisorId" class="form-control">
-          <option *ngFor="let item of supervisors" [value]="item.id">{{ item.name }}</option>
+          <option *ngFor="let item of supervisors" [value]="item.id">{{ LabelBuilder.forEmployee(item) }}</option>
         </select>
         <app-validation-feedback [errors]="getErrors(form,'supervisorId')"></app-validation-feedback>
       </div>

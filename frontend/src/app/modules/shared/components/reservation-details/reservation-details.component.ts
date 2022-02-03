@@ -4,11 +4,9 @@ import { BehaviorSubject, combineLatest, Observable, switchMap } from 'rxjs';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { RequestsService } from '../../../../base/services/requests.service';
 import { Role } from '../../../../base/models/dto/role.model';
-import { TranslationKeys } from '../../../../base/utils/translation-keys.utils';
 import { RoleComponent } from '../../../../base/components/role-component.directive';
 import { SessionService } from '../../../../base/services/session.service';
 import { UserRole } from '../../../../base/models/dto/user-role.model';
-import { BaseRequest } from '../../../../base/models/dto/base-request.model';
 import { ChangeRequest } from '../../../../base/models/dto/change-request.model';
 import { filterExists } from '../../../../core/tools/filter-exists';
 import { IdType } from '../../../../base/models/dto/id.model';
@@ -80,8 +78,5 @@ export class ReservationDetailsComponent extends RoleComponent implements OnInit
     return this.requestsService.getChangeRequestForId(requestId).pipe(filterExists());
   }
 
-  public getStatusTranslationKey(item: BaseRequest): string {
-    return TranslationKeys.forRequestStatus(item.status);
-  }
 
 }

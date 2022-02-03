@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Thesis } from '../../../../base/models/dto/thesis.model';
 import { Router } from '@angular/router';
 import { Reservation } from '../../../../base/models/dto/reservation.model';
-import { TranslationKeys } from '../../../../base/utils/translation-keys.utils';
 import { FakeData } from '../../../../../fakes/fake.data';
 
 @Component({
@@ -38,10 +37,6 @@ export class StudentReservationsComponent {
 
 
   constructor(private readonly router: Router) {
-  }
-
-  getStatusTranslationKey(item: Reservation): string {
-    return TranslationKeys.forReservationStatus(item.status);
   }
 
   public topicDetails(topic: Thesis): void {

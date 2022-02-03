@@ -4,7 +4,6 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Reservation } from '../../../../../base/models/dto/reservation.model';
 import { ReservationStatus } from '../../../../../base/models/dto/reservation-status.model';
-import { TranslationKeys } from '../../../../../base/utils/translation-keys.utils';
 import { isNotNil } from '../../../../../core/tools/is-not-nil';
 import { FakeData } from '../../../../../../fakes/fake.data';
 
@@ -79,10 +78,6 @@ export class LecturerReservationsManageComponent implements OnInit {
 
   public isApproveActionAvailable(reservation: Reservation): boolean {
     return !this.isTopicReserved() && this.allowedStatusesForApproveAction.includes(reservation.status);
-  }
-
-  getStatusTranslationKey(item: Reservation): string {
-    return TranslationKeys.forReservationStatus(item.status);
   }
 
   approveReservation(item: Reservation): void {

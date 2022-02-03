@@ -23,7 +23,7 @@ export abstract class RoleComponent extends BaseComponent {
   get userRoleSource(): Observable<UserRole> {
     const filter: OperatorFunction<UserRole | undefined, UserRole> = isEmpty(this.roles)
       ? filterExists() : filterRoles(this.roles);
-    return this.sessionService.getContextRole()
+    return this.sessionService.selectContextRole()
       .pipe(filter, distinctUntilChanged());
   }
 

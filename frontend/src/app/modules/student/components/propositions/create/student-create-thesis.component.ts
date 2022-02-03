@@ -73,7 +73,9 @@ export class StudentCreateThesisComponent extends RoleComponent implements OnIni
   private getDataSource(): Observable<[Student, Employee[]]> {
     return this.userRoleSource.pipe(
       switchMap(userRole => this.userService.getStudentForId(userRole.id).pipe(
-        switchMap(student => this.userService.getAvailableSupervisors(student.activeDiplomaSessionId).pipe(
+        switchMap(student => this.userService.getAvailableSupervisors(
+          student.fieldOfStudy.activeDiplomaSessionId
+        ).pipe(
           map(supervisors => ([student, supervisors] as [Student, Employee[]]))
         ))
       ))
@@ -92,7 +94,7 @@ export class StudentCreateThesisComponent extends RoleComponent implements OnIni
       supervisorId: formData.supervisorId,
       authorStudentId: student.id,
       reportedByStudent: true,
-      diplomaSessionId: student.activeDiplomaSessionId
+      diplomaSessionId: student.fieldOfStudy.activeDiplomaSessionId
     };
   }
 

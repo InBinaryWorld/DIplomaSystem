@@ -37,9 +37,9 @@
           <tbody>
           <tr *ngFor="let item of proposedTheses">
             <th style="width: 5%" scope="row">{{ item.id }}</th>
-            <td style="width: 45%">TODO: Some Topic</td>
+            <td style="width: 45%">{{ LabelBuilder.forEmployee(item.supervisor) }}</td>
             <td style="width: 20%">TODO: Janusz Kowalski</td>
-            <td style="width: 20%">{{ getStatusTranslationKey(item) | translate }}</td>
+            <td style="width: 20%">{{ TranslationKeys.forThesisStatus(item.status) | translate }}</td>
             <td style="width: auto" class="action-col">
               <button (click)="thesisDetails(item)" type="button" class=" btn btn-primary">
                 {{ 'Button.Details' | translate }}

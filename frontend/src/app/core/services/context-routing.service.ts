@@ -40,7 +40,7 @@ export class ContextRoutingService implements CleanableService {
   }
 
   init(cleanable: Cleanable, changeDetector: ChangeDetectorRef): void {
-    const contextRole = this.sessionService.getContextRole().pipe(skip(1));
+    const contextRole = this.sessionService.selectContextRole().pipe(skip(1));
     cleanable.addSubscription(
       combineLatest([contextRole.pipe(map(ur => ur?.role)), this.getRouterEvents()])
         .pipe(distinctUntilChanged(([role1], [role2]) => role1 === role2))

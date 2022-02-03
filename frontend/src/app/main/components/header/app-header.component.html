@@ -6,7 +6,7 @@
     <div *ngIf="user" class=" me-3">
       <select [formControl]="roleContextControl" class="d-flex form-select">
         <option *ngFor="let role of user.roles" [ngValue]="roleToId(role)">
-          {{ getRoleLabelKey(role) | translate }} {{ '(' + role.id + ')' }}
+          {{ TranslationKeys.forRole(role.role) | translate }} {{ '(' + role.id + ')' }}
         </option>
       </select>
     </div>

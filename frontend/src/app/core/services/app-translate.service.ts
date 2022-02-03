@@ -5,7 +5,6 @@ import { CleanableService } from './cleanable.service';
 import { Dictionary } from '../models/dictionary.model';
 import { Cleanable } from '../components/cleanable.directive';
 import { SettingsService } from './settings.service';
-import { isNotNil } from '../tools/is-not-nil';
 import { SessionService } from '../../base/services/session.service';
 
 @Injectable({
@@ -29,14 +28,18 @@ export class AppTranslateService extends CleanableService {
   }
 
   public init(cleanable: Cleanable, changeDetector: ChangeDetectorRef): void {
-    this.translateService.setDefaultLang(this.defaultLanguage);
+    this.setDefault();
     cleanable.addSubscription(
       this.sessionService.getLanguage().subscribe(language => {
-        const lang = isNotNil(language) ? language : this.defaultLanguage;
-        this.translateService.use(lang as AppLanguage);
+        this.translateService.use(language);
         changeDetector.markForCheck();
       })
     );
+  }
+
+  private setDefault(): void {
+    const defaultLang = this.settingsService.getDefaultLanguage();
+    this.translateService.setDefaultLang(defaultLang);
   }
 
   public getCurrentLanguage(): AppLanguage {

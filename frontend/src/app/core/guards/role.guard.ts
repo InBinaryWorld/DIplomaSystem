@@ -53,7 +53,7 @@ export class RoleGuard implements CanActivateChild, CanActivate {
   }
 
   private check(pathAllowedRoles: Role[][]): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return this.sessionService.getContextRole().pipe(
+    return this.sessionService.selectContextRole().pipe(
       first(), switchMap(userRole => {
         if (this.testRoles(userRole, pathAllowedRoles)) {
           return of(true);

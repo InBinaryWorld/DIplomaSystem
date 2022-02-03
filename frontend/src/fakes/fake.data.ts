@@ -17,6 +17,8 @@ import { Employee } from '../app/base/models/dto/employee.model';
 import { EmployeeRole } from '../app/base/models/dto/employee-role.model';
 import { IdType } from '../app/base/models/dto/id.model';
 import { UserPerson } from '../app/base/models/dto/user-person.model';
+import { FieldOfStudy } from '../app/base/models/dto/field-of-study.model';
+import { StudyDegree } from '../app/base/models/dto/study-degree.model';
 
 const userId: IdType = '1';
 
@@ -117,6 +119,14 @@ const changeRequest: ChangeRequest = {
   previousThesis: thesis
 };
 
+const fieldOfStudy: FieldOfStudy = {
+  id: fieldOfStudyId,
+  departmentId: departmentId,
+  activeDiplomaSessionId: diplomaSessionId,
+  degree: StudyDegree.MASTERS,
+  name: 'Informatyka Stosowana'
+};
+
 const timetable: Timetable = {
   id: timetableId,
   diplomaSessionId: diplomaSessionId,
@@ -133,11 +143,10 @@ const diplomaSession: DiplomaSession = {
   timetableId: timetableId,
   fieldOfStudyId: fieldOfStudyId,
   year: '2022/2023',
-  fieldOfStudyName: 'Informatyka Stosowana',
-  departmentName: 'Wydział Informatyki i Telekomunikacji'
+  fieldOfStudy: fieldOfStudy
 };
 
-const supervisors: Employee[] = [
+const lecturers: Employee[] = [
   lecturer,
   lecturer,
   lecturer,
@@ -189,6 +198,7 @@ const responseByApiKey: Dictionary<any> = {
   [ApiLabel.GET_CLARIFICATION_REQUEST]: clarificationRequest,
   [ApiLabel.GET_CLARIFICATION_REQUESTS]: clarificationRequests,
   [ApiLabel.GET_DIPLOMA_SESSION]: diplomaSession,
+  [ApiLabel.GET_EMPLOYEES]: lecturers,
   [ApiLabel.GET_RESERVATIONS]: reservations,
   [ApiLabel.GET_TIMETABLE]: timetable,
   [ApiLabel.GET_THESIS]: thesis,
@@ -226,6 +236,6 @@ export const FakeData = {
   changeRequest,
   clarificationRequest,
   timetable,
-  supervisors,
+  supervisors: lecturers,
   diplomaSession
 };

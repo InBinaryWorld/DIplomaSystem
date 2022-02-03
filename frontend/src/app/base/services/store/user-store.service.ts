@@ -45,10 +45,9 @@ export class UserStoreService extends CleanableStoreService {
     super(store);
   }
 
-  public getCurrentUser(ifNeededOnly = true): Observable<User> {
+  public getCurrentUser(ifNeededOnly = true): Observable<User | undefined> {
     this.loadCurrentUser(ifNeededOnly);
-    return this.selectCurrentUser().pipe(filterExists());
-
+    return this.selectCurrentUser();
   }
 
   public getEmployees(options: LoadEmployeesActionOptions): Observable<Employee[]> {

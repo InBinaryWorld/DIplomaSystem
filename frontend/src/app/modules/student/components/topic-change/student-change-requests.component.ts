@@ -1,7 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { BaseRequest } from '../../../../base/models/dto/base-request.model';
-import { TranslationKeys } from '../../../../base/utils/translation-keys.utils';
 import { ChangeRequest } from '../../../../base/models/dto/change-request.model';
 import { Role } from '../../../../base/models/dto/role.model';
 import { Observable, switchMap } from 'rxjs';
@@ -10,8 +8,6 @@ import { RequestsService } from '../../../../base/services/requests.service';
 import { SessionService } from '../../../../base/services/session.service';
 import { RoleComponent } from '../../../../base/components/role-component.directive';
 import { UserRole } from '../../../../base/models/dto/user-role.model';
-import { Employee } from '../../../../base/models/dto/employee.model';
-import { LabelBuilder } from '../../../../base/utils/label-builder.utils';
 
 @Component({
   selector: 'app-student-change-requests',
@@ -73,14 +69,6 @@ export class StudentChangeRequestsComponent extends RoleComponent implements OnI
 
   public createRequest() {
     this.router.navigate(['/student/change-requests/create']).then();
-  }
-  
-  public getEmployeeFullName(employee: Employee): string {
-    return LabelBuilder.forEmployee(employee);
-  }
-
-  public getStatusTranslationKey(item: BaseRequest): string {
-    return TranslationKeys.forRequestStatus(item.status);
   }
 
 }

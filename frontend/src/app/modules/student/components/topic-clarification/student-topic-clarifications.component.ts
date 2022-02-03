@@ -1,8 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { TranslationKeys } from '../../../../base/utils/translation-keys.utils';
 import { ClarificationRequest } from '../../../../base/models/dto/clarification-request.model';
-import { BaseRequest } from '../../../../base/models/dto/base-request.model';
 import { switchMap } from 'rxjs';
 import { filterExists } from '../../../../core/tools/filter-exists';
 import { RoleComponent } from '../../../../base/components/role-component.directive';
@@ -10,8 +8,6 @@ import { Role } from '../../../../base/models/dto/role.model';
 import { RequestsService } from '../../../../base/services/requests.service';
 import { DeadlinesService } from '../../../../base/services/deadlines.service';
 import { SessionService } from '../../../../base/services/session.service';
-import { Employee } from '../../../../base/models/dto/employee.model';
-import { LabelBuilder } from '../../../../base/utils/label-builder.utils';
 
 @Component({
   selector: 'app-student-topic-clarifications',
@@ -72,12 +68,5 @@ export class StudentTopicClarificationsComponent extends RoleComponent implement
     this.router.navigate(['/student/clarification-requests/create']).then();
   }
 
-  getEmployeeFullName(employee: Employee): any {
-    return LabelBuilder.forEmployee(employee);
-  }
-
-  public getStatusTranslationKey(item: BaseRequest): string {
-    return TranslationKeys.forRequestStatus(item.status);
-  }
 
 }

@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { loginAction, loginFailedAction, loginSuccessAction, logoutAction, refreshTokenAction } from './auth.actions';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { catchError, map, mergeMap, switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { AuthApiService } from '../../services/api/auth-api.service';
 import { Store } from '@ngrx/store';
 import { AppState } from '../app-state.model';
 import { selectAuthData } from './auth.selectors';
+import { loadCurrentUserAction } from '../user/user.actions';
 
 @Injectable()
 export class AuthEffects {
@@ -14,7 +15,10 @@ export class AuthEffects {
   login = createEffect(() => this.actions.pipe(
     ofType(loginAction),
     switchMap(action => this.authService.login(action.loginData).pipe(
-      map(sessionData => loginSuccessAction({ authData: sessionData })),
+      mergeMap(sessionData => [
+        loginSuccessAction({ authData: sessionData }),
+        loadCurrentUserAction()
+      ]),
       catchError(error => of(loginFailedAction(error)))
     ))
   ));

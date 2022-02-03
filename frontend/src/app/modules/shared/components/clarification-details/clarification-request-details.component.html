@@ -30,7 +30,7 @@
       <div class="gap-2 d-flex">
         <h6 class="my-auto me-auto">
           {{ 'Form.Label.Status' | translate }}:
-          <b>{{ getStatusTranslationKey(request) | translate }}</b>
+          <b>{{ TranslationKeys.forRequestStatus(request.status) | translate }}</b>
         </h6>
         <!--        <button type="submit"-->
         <!--                class="btn btn-outline-danger"-->

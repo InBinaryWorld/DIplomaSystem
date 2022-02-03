@@ -20,7 +20,7 @@ export class UserService {
   constructor(private readonly userStoreService: UserStoreService) {
   }
 
-  public getCurrentUser(ifNeededOnly = true): Observable<User> {
+  public getCurrentUser(ifNeededOnly = true): Observable<User | undefined> {
     return this.userStoreService.getCurrentUser(ifNeededOnly);
   }
 

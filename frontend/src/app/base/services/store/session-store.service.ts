@@ -10,24 +10,38 @@ import {
   selectSessionStateError,
   selectSessionStateInProgress
 } from '../../store/session/session.selectors';
-import { setContextRoleAction, setLanguageAction } from '../../store/session/session.actions';
+import {
+  setContextRoleAction,
+  setLanguageAction,
+  setLanguageIfNeededAction
+} from '../../store/session/session.actions';
 import { AppLanguage } from '../../../core/models/app-language.model';
+import { filterExists } from '../../../core/tools/filter-exists';
+import { SettingsService } from '../../../core/services/settings.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SessionStoreService extends CleanableStoreService {
 
-  constructor(store: Store<AppState>) {
+  constructor(private readonly settingsService: SettingsService,
+              store: Store<AppState>) {
     super(store);
   }
 
-  protected getProgressSelector(): Selector<AppState, boolean> {
-    return selectSessionStateInProgress;
+  public getLanguage(): Observable<AppLanguage> {
+    const defaultLang = this.settingsService.getDefaultLanguage();
+    this.setLanguageIfNeeded(defaultLang);
+    return this.selectSessionLanguage().pipe(filterExists());
   }
+
 
   public setContextRole(role?: UserRole): void {
     this.store.dispatch(setContextRoleAction({ contextRole: role }));
+  }
+
+  public setLanguageIfNeeded(language: AppLanguage): void {
+    this.store.dispatch(setLanguageIfNeededAction({ language }));
   }
 
   public setLanguage(language: AppLanguage): void {
@@ -42,8 +56,12 @@ export class SessionStoreService extends CleanableStoreService {
     return this.store.select(selectSessionLanguage);
   }
 
-  selectError(): Observable<any> {
+  public selectError(): Observable<any> {
     return this.store.select(selectSessionStateError);
+  }
+
+  protected getProgressSelector(): Selector<AppState, boolean> {
+    return selectSessionStateInProgress;
   }
 
 }

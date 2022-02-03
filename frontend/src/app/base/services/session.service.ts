@@ -12,6 +12,10 @@ export class SessionService {
   constructor(private readonly sessionStoreService: SessionStoreService) {
   }
 
+  public getLanguage(): Observable<AppLanguage> {
+    return this.sessionStoreService.getLanguage();
+  }
+
   public setContextRole(role?: UserRole): void {
     this.sessionStoreService.setContextRole(role);
   }
@@ -20,15 +24,11 @@ export class SessionService {
     this.sessionStoreService.setLanguage(language);
   }
 
-  public getContextRole(): Observable<UserRole | undefined> {
+  public selectContextRole(): Observable<UserRole | undefined> {
     return this.sessionStoreService.selectSessionContextRole();
   }
 
-  public getLanguage(): Observable<AppLanguage | undefined> {
-    return this.sessionStoreService.selectSessionLanguage();
-  }
-
-  public getError(): Observable<any> {
+  public selectError(): Observable<any> {
     return this.sessionStoreService.selectError();
   }
 

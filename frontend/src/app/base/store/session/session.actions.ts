@@ -4,4 +4,5 @@ import { AppLanguage } from '../../../core/models/app-language.model';
 
 
 export const setContextRoleAction = createAction('[SESSION] Set user role', props<{ contextRole?: UserRole }>());
+export const setLanguageIfNeededAction = createAction('[SESSION] Set language if needed', props<{ language: AppLanguage }>());
 export const setLanguageAction = createAction('[SESSION] Set language', props<{ language: AppLanguage }>());

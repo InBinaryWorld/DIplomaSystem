@@ -6,8 +6,6 @@ import { Role } from '../../../../base/models/dto/role.model';
 import { ClarificationRequest } from '../../../../base/models/dto/clarification-request.model';
 import { filterExists } from '../../../../core/tools/filter-exists';
 import { RoleComponent } from '../../../../base/components/role-component.directive';
-import { BaseRequest } from '../../../../base/models/dto/base-request.model';
-import { TranslationKeys } from '../../../../base/utils/translation-keys.utils';
 import { RequestsService } from '../../../../base/services/requests.service';
 import { SessionService } from '../../../../base/services/session.service';
 import { IdType } from '../../../../base/models/dto/id.model';
@@ -89,10 +87,6 @@ export class ClarificationRequestDetailsComponent extends RoleComponent implemen
       newDescription: request.newDescription
     });
     this.markForCheck();
-  }
-
-  public getStatusTranslationKey(item: BaseRequest): string {
-    return TranslationKeys.forRequestStatus(item.status);
   }
 
   // private reload(): void {

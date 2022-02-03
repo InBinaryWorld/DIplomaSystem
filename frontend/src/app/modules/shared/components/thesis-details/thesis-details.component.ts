@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { BehaviorSubject, combineLatest, map, Observable, switchMap } from 'rxjs';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Role } from '../../../../base/models/dto/role.model';
-import { TranslationKeys } from '../../../../base/utils/translation-keys.utils';
 import { RoleComponent } from '../../../../base/components/role-component.directive';
 import { SessionService } from '../../../../base/services/session.service';
 import { UserRole } from '../../../../base/models/dto/user-role.model';
@@ -93,10 +92,6 @@ export class ThesisDetailsComponent extends RoleComponent implements OnInit {
       description: thesis.description
     });
     this.markForCheck();
-  }
-
-  public getStatusTranslationKey(item: Thesis): string {
-    return TranslationKeys.forThesisStatus(item.status);
   }
 
 }
