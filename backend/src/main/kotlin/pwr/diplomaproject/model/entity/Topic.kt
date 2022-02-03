@@ -11,7 +11,7 @@ data class Topic(
     @Id
     val id: Long,
     @ManyToOne
-    val teacher: Employee,
+    val lecturer: Employee,
     @ManyToOne
     val student: Student?,
     @ManyToOne

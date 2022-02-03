@@ -5,6 +5,6 @@ enum class ReservationStatus {
     REGISTERED,
     ACCEPTED,
     REJECTED_BY_STUDENT,
-    REJECTED_BY_TEACHER,
+    REJECTED_BY_LECTURER,
     CONFIRMED
 }

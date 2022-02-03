@@ -6,5 +6,5 @@ enum class EmployeeType {
     COORDINATOR,
     PROGRAMME_COMMISSION_MEMBER,
     DEACON,
-    TEACHER
+    LECTURER
 }
