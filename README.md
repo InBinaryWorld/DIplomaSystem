@@ -13,7 +13,7 @@
             'd' to GrantedAuthority { "DEAN" },
             'c' to GrantedAuthority { "COORDINATOR" },
             'p' to GrantedAuthority { "PROGRAM_COMMITTEE_MEMBER" },
-            'd' to GrantedAuthority { "DIPLOMA_SECTION_MEMBER" }
+            'm' to GrantedAuthority { "DIPLOMA_SECTION_MEMBER" }
         )
     ```
     * `<id>` to id użytkownika odpowiadające id z encji `User` (tabeli `AppUser`)
