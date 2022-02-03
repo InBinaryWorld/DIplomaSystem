@@ -2,7 +2,7 @@ package pwr.diplomaproject.controller
 
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.web.bind.annotation.*
-import pwr.diplomaproject.model.dto.CoordinatorSubjectDetailsDto
+import pwr.diplomaproject.model.dto.SubjectDetailsDto
 import pwr.diplomaproject.model.dto.SubjectDto
 import pwr.diplomaproject.model.form.CoordinatorCommentForm
 
@@ -20,7 +20,7 @@ class CoordinatorSubjectController {
 
     @Operation(summary = "Szczegóły zaproponowanego tematu")
     @GetMapping("/{id}")
-    fun getSubject(@PathVariable id: Long): CoordinatorSubjectDetailsDto = TODO()
+    fun getSubject(@PathVariable id: Long): SubjectDetailsDto = TODO()
 
     @Operation(summary = "Zaakceptowanie zaproponowanego tematu")
     @GetMapping("/accept/{id}")

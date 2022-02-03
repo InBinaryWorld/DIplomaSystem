@@ -3,8 +3,8 @@ package pwr.diplomaproject.controller
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.web.bind.annotation.*
 import pwr.diplomaproject.model.dto.LecturerStudentProposedSubjectDetailsDto
-import pwr.diplomaproject.model.dto.LecturerSubjectDetailsDto
 import pwr.diplomaproject.model.dto.LecturerSubjectToCorrectDetailsDto
+import pwr.diplomaproject.model.dto.SubjectDetailsDto
 import pwr.diplomaproject.model.dto.SubjectDto
 import pwr.diplomaproject.model.form.LecturerNewTopicForm
 import pwr.diplomaproject.model.form.LecturerTopicCorrectionForm
@@ -19,7 +19,7 @@ class LecturerSubjectController {
 
     @Operation(summary = "Szczegóły tematu zgłoszonego przez prowadzącego")
     @GetMapping("/proposed/{id}")
-    fun getProposedSubject(@PathVariable id: Long): LecturerSubjectDetailsDto = TODO()
+    fun getProposedSubject(@PathVariable id: Long): SubjectDetailsDto = TODO()
 
     @Operation(summary = "Zgłoszenie tematu pracy przez prowadzącego")
     @PostMapping
