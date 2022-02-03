@@ -38,11 +38,11 @@ export class StudentCreateThesisComponent extends RoleComponent implements OnIni
 
   confirm() {
     const formData = this.form?.value;
-    // const payload = this.prepareCreatePayload(this.userRole!, formData);
-    // this.thesesService.createThesis(payload).subscribe({
-    //   next: () => this.redirectOnSuccess(),
-    //   error: () => this.errorVisible = true
-    // });
+    const payload = this.prepareCreatePayload(this.student!, formData);
+    this.thesesService.createThesis(payload).subscribe({
+      next: () => this.redirectOnSuccess(),
+      error: () => this.errorVisible = true
+    });
   }
 
   ngOnInit(): void {
@@ -54,9 +54,9 @@ export class StudentCreateThesisComponent extends RoleComponent implements OnIni
     this.form = this.formBuilder.group({
       topic: [undefined, AppValidators.topicValidator],
       supervisorId: [undefined, Validators.required],
-      diplomaSessionId: [undefined, Validators.required],
       numberOfStudents: [undefined, AppValidators.numberOfStudentsValidator],
-      description: [undefined, AppValidators.descriptionValidator]
+      description: [undefined, AppValidators.descriptionValidator],
+      fieldOfStudy: [{ value: '', disabled: true }]
     });
   }
 
@@ -65,6 +65,7 @@ export class StudentCreateThesisComponent extends RoleComponent implements OnIni
       .subscribe(([student, supervisors]) => {
         this.student = student;
         this.supervisors = supervisors;
+        this.setFormData(student);
         this.markForCheck();
       })
     );
@@ -82,6 +83,12 @@ export class StudentCreateThesisComponent extends RoleComponent implements OnIni
     );
   }
 
+  private setFormData(student: Student): void {
+    this.form?.patchValue({
+      fieldOfStudy: student.fieldOfStudy.name
+    });
+  }
+
   get roles(): Role[] {
     return [Role.STUDENT];
   }
@@ -89,10 +96,10 @@ export class StudentCreateThesisComponent extends RoleComponent implements OnIni
   private prepareCreatePayload(student: Student, formData: any): Partial<Thesis> {
     return {
       topic: formData.topic,
-      description: formData.description,
-      numberOfStudents: formData.numberOfStudents,
       supervisorId: formData.supervisorId,
       authorStudentId: student.id,
+      numberOfStudents: formData.numberOfStudents,
+      description: formData.description,
       reportedByStudent: true,
       diplomaSessionId: student.fieldOfStudy.activeDiplomaSessionId
     };

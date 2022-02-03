@@ -19,6 +19,7 @@ import { IdType } from '../app/base/models/dto/id.model';
 import { UserPerson } from '../app/base/models/dto/user-person.model';
 import { FieldOfStudy } from '../app/base/models/dto/field-of-study.model';
 import { StudyDegree } from '../app/base/models/dto/study-degree.model';
+import { Student } from '../app/base/models/dto/student.model';
 
 const userId: IdType = '1';
 
@@ -62,6 +63,7 @@ const user: User = {
     { id: programCommitteeMemberId, role: Role.PROGRAM_COMMITTEE_MEMBER }
   ]
 };
+
 // Is also supervisor supervisors
 const lecturer: Employee = {
   id: lecturerId,
@@ -146,12 +148,30 @@ const diplomaSession: DiplomaSession = {
   fieldOfStudy: fieldOfStudy
 };
 
+const student: Student = {
+  id: studentId,
+  userId: userId,
+  fieldOfStudyId: fieldOfStudyId,
+  indexNumber: '249013',
+  fieldOfStudy: fieldOfStudy,
+  user: userPerson
+};
+
+
 const lecturers: Employee[] = [
   lecturer,
   lecturer,
   lecturer,
   lecturer,
   lecturer
+];
+
+const students: Student[] = [
+  student,
+  student,
+  student,
+  student,
+  student
 ];
 
 const theses: Thesis[] = [
@@ -192,6 +212,7 @@ const changeRequests: ChangeRequest[] = [
 const responseByApiKey: Dictionary<any> = {
   [ApiLabel.CREATE_CLARIFICATION_REQUEST]: clarificationRequest,
   [ApiLabel.CREATE_CHANGE_REQUEST]: changeRequest,
+  [ApiLabel.CREATE_THESIS]: thesis,
   [ApiLabel.GET_USER]: user,
   [ApiLabel.GET_CHANGE_REQUEST]: changeRequest,
   [ApiLabel.GET_CHANGE_REQUESTS]: changeRequests,
@@ -200,6 +221,8 @@ const responseByApiKey: Dictionary<any> = {
   [ApiLabel.GET_DIPLOMA_SESSION]: diplomaSession,
   [ApiLabel.GET_EMPLOYEES]: lecturers,
   [ApiLabel.GET_RESERVATIONS]: reservations,
+  [ApiLabel.GET_STUDENT]: student,
+  [ApiLabel.GET_STUDENTS]: students,
   [ApiLabel.GET_TIMETABLE]: timetable,
   [ApiLabel.GET_THESIS]: thesis,
   [ApiLabel.GET_THESES]: theses
