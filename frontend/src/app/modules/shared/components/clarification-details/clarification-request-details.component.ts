@@ -7,7 +7,7 @@ import { ClarificationRequest } from '../../../../base/models/dto/clarification-
 import { filterExists } from '../../../../core/tools/filter-exists';
 import { RoleComponent } from '../../../../base/components/role-component.directive';
 import { BaseRequest } from '../../../../base/models/dto/base-request.model';
-import { TranslationKeys } from '../../../../core/utils/translation-keys.utils';
+import { TranslationKeys } from '../../../../base/utils/translation-keys.utils';
 import { RequestsService } from '../../../../base/services/requests.service';
 import { SessionService } from '../../../../base/services/session.service';
 import { IdType } from '../../../../base/models/dto/id.model';
@@ -83,8 +83,8 @@ export class ClarificationRequestDetailsComponent extends RoleComponent implemen
 
   private setFormData(request: ClarificationRequest): void {
     this.form!.setValue({
-      currentThesisTopic: request.currentTopic,
-      currentDescription: request.currentDescription,
+      currentThesisTopic: request.baseThesis.topic,
+      currentDescription: request.baseThesis.description,
       newThesisTopic: request.newTopic,
       newDescription: request.newDescription
     });

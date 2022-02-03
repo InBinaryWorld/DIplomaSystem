@@ -13,7 +13,7 @@ import {
   selectUserStateError,
   selectUserStateInProgress
 } from '../../store/user/user.selectors';
-import { User } from '../../models/dto/user.model';
+import { User } from '../../models/dto/user-ext.model';
 import {
   invalidateCurrentUserAction,
   invalidateUserDataAction,
@@ -45,9 +45,10 @@ export class UserStoreService extends CleanableStoreService {
     super(store);
   }
 
-  public getCurrentUser(ifNeededOnly = true): Observable<User | undefined> {
+  public getCurrentUser(ifNeededOnly = true): Observable<User> {
     this.loadCurrentUser(ifNeededOnly);
-    return this.selectCurrentUser();
+    return this.selectCurrentUser().pipe(filterExists());
+
   }
 
   public getEmployees(options: LoadEmployeesActionOptions): Observable<Employee[]> {
@@ -56,9 +57,9 @@ export class UserStoreService extends CleanableStoreService {
     return this.selectEmployeesForKey(key).pipe(filterExists());
   }
 
-  public getEmployeeForId(id: IdType): Observable<Employee | undefined> {
+  public getEmployeeForId(id: IdType): Observable<Employee> {
     this.loadEmployeeForId(id);
-    return this.selectEmployeeForId(id);
+    return this.selectEmployeeForId(id).pipe(filterExists());
   }
 
   public getStudents(options: LoadStudentsActionOptions): Observable<Student[]> {
@@ -67,9 +68,9 @@ export class UserStoreService extends CleanableStoreService {
     return this.selectStudentsForKey(key).pipe(filterExists());
   }
 
-  public getStudentForId(id: IdType): Observable<Student | undefined> {
+  public getStudentForId(id: IdType): Observable<Student> {
     this.loadStudentForId(id);
-    return this.selectStudentForId(id);
+    return this.selectStudentForId(id).pipe(filterExists());
   }
 
   public loadCurrentUser(ifNeededOnly = true): void {

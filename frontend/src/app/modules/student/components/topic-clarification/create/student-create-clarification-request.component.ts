@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ClarificationRequest } from '../../../../../base/models/dto/clarification-request.model';
-import { AppValidators } from '../../../../../core/utils/validators.utils';
+import { AppValidators } from '../../../../../base/utils/validators.utils';
 import { ThesesService } from '../../../../../base/services/theses.service';
 import { RequestsService } from '../../../../../base/services/requests.service';
 import { RoleComponent } from '../../../../../base/components/role-component.directive';

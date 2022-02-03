@@ -2,15 +2,15 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ThesesService } from '../../../../../base/services/theses.service';
-import { map, Observable, of, switchMap } from 'rxjs';
-import { AppValidators } from '../../../../../core/utils/validators.utils';
-import { FakeData } from '../../../../../../fakes/fake.data';
+import { map, Observable, switchMap } from 'rxjs';
+import { AppValidators } from '../../../../../base/utils/validators.utils';
 import { Thesis } from '../../../../../base/models/dto/thesis.model';
 import { Role } from '../../../../../base/models/dto/role.model';
 import { RoleComponent } from '../../../../../base/components/role-component.directive';
 import { SessionService } from '../../../../../base/services/session.service';
-import { UserRole } from '../../../../../base/models/dto/user-role.model';
 import { Student } from '../../../../../base/models/dto/student.model';
+import { Employee } from '../../../../../base/models/dto/employee.model';
+import { UserService } from '../../../../../base/services/user.service';
 
 @Component({
   selector: 'app-student-create-thesis',
@@ -23,12 +23,13 @@ export class StudentCreateThesisComponent extends RoleComponent implements OnIni
   form?: FormGroup;
 
   supervisors?: any[];
-  userRole?: UserRole;
+  student?: Student;
 
   errorVisible = false;
 
   constructor(private readonly router: Router,
               private readonly formBuilder: FormBuilder,
+              private readonly userService: UserService,
               private readonly thesesService: ThesesService,
               sessionService: SessionService,
               changeDetector: ChangeDetectorRef) {
@@ -61,26 +62,22 @@ export class StudentCreateThesisComponent extends RoleComponent implements OnIni
 
   private initData(): void {
     this.addSubscription(this.getDataSource()
-      .subscribe(([userRole, supervisors]) => {
-        this.userRole = userRole;
+      .subscribe(([student, supervisors]) => {
+        this.student = student;
         this.supervisors = supervisors;
         this.markForCheck();
       })
     );
   }
 
-  private getDataSource(): Observable<[UserRole, any[]]> {
+  private getDataSource(): Observable<[Student, Employee[]]> {
     return this.userRoleSource.pipe(
-      switchMap(userRole => this.getSupervisors(userRole).pipe(
-        map(supervisors => ([userRole, supervisors] as [UserRole, any[]]))
+      switchMap(userRole => this.userService.getStudentForId(userRole.id).pipe(
+        switchMap(student => this.userService.getAvailableSupervisors(student.activeDiplomaSessionId).pipe(
+          map(supervisors => ([student, supervisors] as [Student, Employee[]]))
+        ))
       ))
     );
-  }
-
-  //TODO: diplomaSessionId from userRole
-  private getSupervisors(student: UserRole): Observable<any[]> {
-    // get for thesis.diplomaSessionId
-    return of(FakeData.supervisors);
   }
 
   get roles(): Role[] {

@@ -112,6 +112,7 @@
   "Form.Label.Supervisor": "Opiekun pracy",
   "Form.Label.CurrentThesisTopic": "Obecny temat",
   "Form.Label.CurrentDescription": "Obecny opis",
+  "Form.Label.DiplomaSession": "Sesja dyplomowania",
   "Form.Label.NewThesisTopic": "Nowy temat",
   "Form.Label.NewDescription": "Nowy opis",
   "Form.Label.Status": "Status",

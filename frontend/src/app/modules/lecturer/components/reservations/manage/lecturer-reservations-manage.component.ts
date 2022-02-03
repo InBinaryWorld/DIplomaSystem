@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Reservation } from '../../../../../base/models/dto/reservation.model';
 import { ReservationStatus } from '../../../../../base/models/dto/reservation-status.model';
-import { TranslationKeys } from '../../../../../core/utils/translation-keys.utils';
+import { TranslationKeys } from '../../../../../base/utils/translation-keys.utils';
 import { isNotNil } from '../../../../../core/tools/is-not-nil';
 import { FakeData } from '../../../../../../fakes/fake.data';
 

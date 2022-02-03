@@ -8,8 +8,8 @@ import { UserRole } from '../../../base/models/dto/user-role.model';
 import { AuthStoreService } from '../../../base/services/store/auth-store.service';
 import { distinctUntilChanged, switchMap } from 'rxjs';
 import { filterExists } from '../../../core/tools/filter-exists';
-import { User } from '../../../base/models/dto/user.model';
-import { TranslationKeys } from '../../../core/utils/translation-keys.utils';
+import { User } from '../../../base/models/dto/user-ext.model';
+import { TranslationKeys } from '../../../base/utils/translation-keys.utils';
 import { UserService } from '../../../base/services/user.service';
 import { SessionService } from '../../../base/services/session.service';
 

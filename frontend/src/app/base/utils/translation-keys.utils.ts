@@ -1,7 +1,7 @@
-import { ReservationStatus } from '../../base/models/dto/reservation-status.model';
-import { Role } from '../../base/models/dto/role.model';
-import { RequestStatus } from '../../base/models/dto/request-status.model';
-import { ThesisStatus } from '../../base/models/dto/topic-status.model';
+import { ReservationStatus } from '../models/dto/reservation-status.model';
+import { Role } from '../models/dto/role.model';
+import { RequestStatus } from '../models/dto/request-status.model';
+import { ThesisStatus } from '../models/dto/topic-status.model';
 
 export class TranslationKeys {
 

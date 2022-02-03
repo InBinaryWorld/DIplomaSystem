@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ServerHttpService } from '../../../core/services/server-http.service';
 import { Observable } from 'rxjs';
 import { ApiLabel } from '../../../core/models/api-route.model';
-import { User } from '../../models/dto/user.model';
+import { User } from '../../models/dto/user-ext.model';
 import { LoadEmployeesActionOptions, LoadStudentsActionOptions } from '../../store/user/user.actions';
 import { Student } from '../../models/dto/student.model';
 import { Employee } from '../../models/dto/employee.model';

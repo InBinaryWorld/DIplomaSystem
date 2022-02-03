@@ -111,6 +111,7 @@
   "Form.Label.Supervisor": "Supervisor",
   "Form.Label.CurrentThesisTopic": "Current topic",
   "Form.Label.CurrentDescription": "Current description",
+  "Form.Label.DiplomaSession": "Diploma session",
   "Form.Label.NewThesisTopic": "New topic",
   "Form.Label.NewDescription": "New description",
   "Form.Label.Status": "Status",

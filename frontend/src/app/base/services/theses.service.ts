@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of, switchMap } from 'rxjs';
 import { Reservation } from '../models/dto/reservation.model';
 import { ThesesStoreService } from './store/theses-store.service';
-import { StoreKeys } from '../../core/utils/store-keys.utils';
+import { StoreKeys } from '../utils/store-keys.utils';
 import { Role } from '../models/dto/role.model';
 import { Thesis } from '../models/dto/thesis.model';
 import { map, tap } from 'rxjs/operators';
@@ -33,7 +33,7 @@ export class ThesesService {
     return this.thesesStoreService.getTheses(options);
   }
 
-  public getThesisForId(thesisId: IdType): Observable<Thesis | undefined> {
+  public getThesisForId(thesisId: IdType): Observable<Thesis> {
     return this.thesesStoreService.getThesisForId(thesisId);
   }
 
@@ -42,7 +42,7 @@ export class ThesesService {
     return this.thesesStoreService.getStudentReservations(studentId, key).pipe(filterExists());
   }
 
-  public getReservationForId(reservationId: IdType): Observable<Reservation | undefined> {
+  public getReservationForId(reservationId: IdType): Observable<Reservation> {
     return this.thesesStoreService.getReservationForId(reservationId);
   }
 

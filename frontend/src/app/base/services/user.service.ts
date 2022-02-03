@@ -4,7 +4,7 @@ import { UserRole } from '../models/dto/user-role.model';
 import { filterNotInProgress } from '../../core/tools/filter-not-in-progress';
 import { map } from 'rxjs/operators';
 import { UserStoreService } from './store/user-store.service';
-import { User } from '../models/dto/user.model';
+import { User } from '../models/dto/user-ext.model';
 import { IdType } from '../models/dto/id.model';
 import { filterExists } from '../../core/tools/filter-exists';
 import { UserStateKey } from '../store/user/user.state';
@@ -20,7 +20,7 @@ export class UserService {
   constructor(private readonly userStoreService: UserStoreService) {
   }
 
-  public getCurrentUser(ifNeededOnly = true): Observable<User | undefined> {
+  public getCurrentUser(ifNeededOnly = true): Observable<User> {
     return this.userStoreService.getCurrentUser(ifNeededOnly);
   }
 
@@ -37,7 +37,7 @@ export class UserService {
   //   return this.userStoreService.getStudents(options);
   // }
 
-  public getStudentForId(id: IdType): Observable<Student | undefined> {
+  public getStudentForId(id: IdType): Observable<Student> {
     return this.userStoreService.getStudentForId(id);
   }
 
@@ -46,7 +46,7 @@ export class UserService {
     return this.userStoreService.getEmployees(options).pipe(filterExists());
   }
 
-  public getEmployeeForId(id: IdType): Observable<Employee | undefined> {
+  public getEmployeeForId(id: IdType): Observable<Employee> {
     return this.userStoreService.getEmployeeForId(id);
   }
 

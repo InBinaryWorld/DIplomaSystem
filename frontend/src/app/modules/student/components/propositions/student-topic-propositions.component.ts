@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { TranslationKeys } from '../../../../core/utils/translation-keys.utils';
+import { TranslationKeys } from '../../../../base/utils/translation-keys.utils';
 import { DeadlinesService } from '../../../../base/services/deadlines.service';
 import { SessionService } from '../../../../base/services/session.service';
 import { Role } from '../../../../base/models/dto/role.model';

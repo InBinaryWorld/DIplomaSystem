@@ -29,6 +29,7 @@ import { DiplomaSession } from '../../models/dto/diploma-session.model';
 import { Timetable } from '../../models/dto/timetable.model';
 import { FakeData } from '../../../../fakes/fake.data';
 import { IdType } from '../../models/dto/id.model';
+import { filterExists } from '../../../core/tools/filter-exists';
 
 @Injectable({
   providedIn: 'root'
@@ -39,24 +40,24 @@ export class GeneralResourcesStoreService extends CleanableStoreService {
     super(store);
   }
 
-  public getTimetablesForKey(key: string, ifNeededOnly = true): Observable<Timetable[] | undefined> {
+  public getTimetablesForKey(key: string, ifNeededOnly = true): Observable<Timetable[]> {
     this.loadResourcesForKey(GeneralResourcesStateKey.TIMETABLES, key, ifNeededOnly);
-    return this.selectTimetablesForKey(key);
+    return this.selectTimetablesForKey(key).pipe(filterExists());
   }
 
-  public getTimetableForId(id: IdType, ifNeededOnly = true): Observable<Timetable | undefined> {
+  public getTimetableForId(id: IdType, ifNeededOnly = true): Observable<Timetable> {
     this.loadResourceForId(GeneralResourcesStateKey.TIMETABLES, id, ifNeededOnly);
-    return this.selectTimetableForId(id);
+    return this.selectTimetableForId(id).pipe(filterExists());
   }
 
-  public getDiplomaSessionsForKey(key: string, ifNeededOnly = true): Observable<DiplomaSession[] | undefined> {
+  public getDiplomaSessionsForKey(key: string, ifNeededOnly = true): Observable<DiplomaSession[]> {
     this.loadResourcesForKey(GeneralResourcesStateKey.DIPLOMA_SESSIONS, key, ifNeededOnly);
-    return this.selectDiplomaSessionsForKey(key);
+    return this.selectDiplomaSessionsForKey(key).pipe(filterExists());
   }
 
-  public getDiplomaSessionForId(id: IdType, ifNeededOnly = true): Observable<DiplomaSession | undefined> {
+  public getDiplomaSessionForId(id: IdType, ifNeededOnly = true): Observable<DiplomaSession> {
     this.loadResourceForId(GeneralResourcesStateKey.DIPLOMA_SESSIONS, id, ifNeededOnly);
-    return this.selectDiplomaSessionForId(id);
+    return this.selectDiplomaSessionForId(id).pipe(filterExists());
   }
 
   public getCurrentDiplomaSession(ifNeededOnly = true): Observable<DiplomaSession> {

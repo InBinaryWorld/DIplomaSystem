@@ -38,25 +38,25 @@ export class ThesesStoreService extends CleanableStoreService {
     super(store);
   }
 
-  public getTheses(options: LoadThesisActionOptions): Observable<Thesis[]> {
+  public getTheses(options: LoadThesisActionOptions, ifNeededOnly = true): Observable<Thesis[]> {
     const key = options.toKey();
-    this.loadTheses(options, key);
+    this.loadTheses(options, key, ifNeededOnly);
     return this.selectThesesForKey(key).pipe(filterExists());
   }
 
-  public getThesisForId(thesisId: IdType): Observable<Thesis | undefined> {
-    this.loadThesisForId(thesisId);
-    return this.selectThesisForId(thesisId);
+  public getThesisForId(thesisId: IdType, ifNeededOnly = true): Observable<Thesis> {
+    this.loadThesisForId(thesisId, ifNeededOnly);
+    return this.selectThesisForId(thesisId).pipe(filterExists());
   }
 
-  public getStudentReservations(studentId: IdType, key: string): Observable<Reservation[] | undefined> {
-    this.loadStudentReservations(studentId, key);
-    return this.selectReservationsForKey(key);
+  public getStudentReservations(studentId: IdType, key: string, ifNeededOnly = true): Observable<Reservation[]> {
+    this.loadStudentReservations(studentId, key, ifNeededOnly);
+    return this.selectReservationsForKey(key).pipe(filterExists());
   }
 
-  public getReservationForId(reservationId: IdType): Observable<Reservation | undefined> {
-    this.loadReservationForId(reservationId);
-    return this.selectReservationForId(reservationId);
+  public getReservationForId(reservationId: IdType, ifNeededOnly = true): Observable<Reservation> {
+    this.loadReservationForId(reservationId, ifNeededOnly);
+    return this.selectReservationForId(reservationId).pipe(filterExists());
   }
 
   public loadTheses(options: LoadThesisActionOptions, key: string, ifNeededOnly = true): void {

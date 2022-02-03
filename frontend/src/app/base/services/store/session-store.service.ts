@@ -26,19 +26,19 @@ export class SessionStoreService extends CleanableStoreService {
     return selectSessionStateInProgress;
   }
 
-  setContextRole(role?: UserRole): void {
+  public setContextRole(role?: UserRole): void {
     this.store.dispatch(setContextRoleAction({ contextRole: role }));
   }
 
-  setLanguage(language: AppLanguage): void {
+  public setLanguage(language: AppLanguage): void {
     this.store.dispatch(setLanguageAction({ language }));
   }
 
-  selectSessionContextRole(): Observable<UserRole | undefined> {
+  public selectSessionContextRole(): Observable<UserRole | undefined> {
     return this.store.select(selectSessionContextRole);
   }
 
-  selectSessionLanguage(): Observable<AppLanguage | undefined> {
+  public selectSessionLanguage(): Observable<AppLanguage | undefined> {
     return this.store.select(selectSessionLanguage);
   }
 

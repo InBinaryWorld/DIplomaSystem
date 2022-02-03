@@ -4,7 +4,7 @@ import { BehaviorSubject, combineLatest, Observable, switchMap } from 'rxjs';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { RequestsService } from '../../../../base/services/requests.service';
 import { Role } from '../../../../base/models/dto/role.model';
-import { TranslationKeys } from '../../../../core/utils/translation-keys.utils';
+import { TranslationKeys } from '../../../../base/utils/translation-keys.utils';
 import { RoleComponent } from '../../../../base/components/role-component.directive';
 import { SessionService } from '../../../../base/services/session.service';
 import { UserRole } from '../../../../base/models/dto/user-role.model';

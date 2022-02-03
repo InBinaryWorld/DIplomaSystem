@@ -28,31 +28,31 @@ export class AuthStoreService extends CleanableStoreService {
     return selectAuthStoreInProgress;
   }
 
-  login(loginData: LoginData): void {
+  public login(loginData: LoginData): void {
     this.store.dispatch(loginAction({ loginData }));
   }
 
-  refresh(): void {
+  public refresh(): void {
     this.store.dispatch(refreshTokenAction());
   }
 
-  logout(): void {
+  public logout(): void {
     this.store.dispatch(logoutAction());
   }
 
-  isUserLoggedIn(): Observable<boolean> {
+  public isUserLoggedIn(): Observable<boolean> {
     return this.store.select(selectIsLoggedIn);
   }
 
-  getAuthState(): Observable<AuthState | undefined> {
+  public getAuthState(): Observable<AuthState | undefined> {
     return this.store.select(selectAuthState);
   }
 
-  getAuthData(): Observable<AuthData | undefined> {
+  public getAuthData(): Observable<AuthData | undefined> {
     return this.store.select(selectAuthData);
   }
 
-  getError(): Observable<any> {
+  public getError(): Observable<any> {
     return this.store.select(selectAuthError);
   }
 

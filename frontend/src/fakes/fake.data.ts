@@ -1,6 +1,6 @@
 import { Role } from '../app/base/models/dto/role.model';
 import { AuthData } from '../app/base/models/auth-data.model';
-import { User } from '../app/base/models/dto/user.model';
+import { User } from '../app/base/models/dto/user-ext.model';
 import { ApiLabel } from '../app/core/models/api-route.model';
 import { Dictionary } from '../app/core/models/dictionary.model';
 import { Thesis } from '../app/base/models/dto/thesis.model';
@@ -13,103 +13,139 @@ import { ChangeRequest } from '../app/base/models/dto/change-request.model';
 import { Timetable } from '../app/base/models/dto/timetable.model';
 import { isNil } from 'lodash-es';
 import { DiplomaSession } from '../app/base/models/dto/diploma-session.model';
+import { Employee } from '../app/base/models/dto/employee.model';
+import { EmployeeRole } from '../app/base/models/dto/employee-role.model';
+import { IdType } from '../app/base/models/dto/id.model';
+import { UserPerson } from '../app/base/models/dto/user-person.model';
 
-// Available supervisors
-const supervisor: any = {
-  id: '1',
-  name: 'Prof. Jack Daniels'
+const userId: IdType = '1';
+
+const adminId: IdType = '2';
+const deanId: IdType = '63';
+const studentId: IdType = '1482';
+const lecturerId: IdType = '1';
+const coordinatorId: IdType = '185';
+const diplomaSectionMemberId: IdType = '140';
+const programCommitteeMemberId: IdType = '176';
+
+const thesisId: IdType = '7';
+const reservationId: IdType = '7';
+
+const timetableId: IdType = '14';
+const departmentId: IdType = '4';
+const fieldOfStudyId: IdType = '2';
+const diplomaSessionId: IdType = '14';
+
+const changeRequestId: IdType = '116';
+const clarificationRequestId: IdType = '583';
+
+
+const deadline = new Date(2023, 1);
+
+const userPerson: UserPerson = {
+  id: userId,
+  firstName: 'Jack',
+  lastName: 'Daniels'
 };
 
 const user: User = {
-  id: '1',
-  firstName: 'Jack',
-  lastName: 'Daniels',
+  ...userPerson,
   roles: [
-    { id: '244001', role: Role.STUDENT },
-    { id: '244902', role: Role.STUDENT },
-    { id: '2', role: Role.ADMIN },
-    { id: '14', role: Role.DEAN },
-    { id: '162', role: Role.COORDINATOR },
-    { id: '5007', role: Role.LECTURER },
-    { id: '1072', role: Role.DIPLOMA_SECTION_MEMBER },
-    { id: '759', role: Role.PROGRAM_COMMITTEE_MEMBER }
+    { id: studentId, role: Role.STUDENT },
+    { id: adminId, role: Role.ADMIN },
+    { id: deanId, role: Role.DEAN },
+    { id: coordinatorId, role: Role.COORDINATOR },
+    { id: lecturerId, role: Role.LECTURER },
+    { id: diplomaSectionMemberId, role: Role.DIPLOMA_SECTION_MEMBER },
+    { id: programCommitteeMemberId, role: Role.PROGRAM_COMMITTEE_MEMBER }
   ]
 };
+// Is also supervisor supervisors
+const lecturer: Employee = {
+  id: lecturerId,
+  userId: userId,
+  departmentId: departmentId,
+  employeeRole: EmployeeRole.LECTURER,
+  title: 'Prof.',
+  user: userPerson
+};
+
 
 const thesis: Thesis = {
-  id: '12',
-  supervisorId: '1',
-  diplomaSessionId: '10',
+  id: thesisId,
+  supervisorId: lecturerId,
+  diplomaSessionId: diplomaSessionId,
   topic: 'Predykcja zachowań ludzi podczas lockdownu',
   description: 'Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu',
   numberOfStudents: 1,
   status: ThesisStatus.APPROVED_BY_COMMITTEE,
   reportedByStudent: false,
-  submissionDate: new Date()
+  submissionDate: new Date(),
+  supervisor: lecturer
 };
 
 const reservation: Reservation = {
-  id: '1',
+  id: reservationId,
   creationDate: new Date(),
   status: ReservationStatus.CONFIRMED,
-  thesisId: '12'
+  thesisId: thesisId
 };
 
 const clarificationRequest: ClarificationRequest = {
-  id: '1',
-  studentId: '244001',
-  thesisId: '12',
-  employeeId: '4',
+  id: clarificationRequestId,
+  studentId: studentId,
+  thesisId: thesisId,
+  employeeId: deanId,
   submissionDate: new Date(),
+  status: RequestStatus.WAITING,
   newTopic: 'nowy temat pracy',
   newDescription: 'nowy opis pracy',
-  supervisorName: 'PhD John Lennon',
-  currentTopic: 'Predykcja zachowań ludzi podczas lockdownu',
-  currentDescription: 'Predykcja zachowań ludzi podczas lockdownu - opis',
-  status: RequestStatus.WAITING
+  supervisor: lecturer,
+  baseThesis: thesis
 };
 
 const changeRequest: ChangeRequest = {
-  id: '1',
-  studentId: '244001',
-  employeeId: '4',
+  id: changeRequestId,
+  studentId: studentId,
+  employeeId: programCommitteeMemberId,
   submissionDate: new Date(),
   status: RequestStatus.WAITING,
-  newThesisId: '12',
-  oldThesisId: '12',
-  newSupervisorName: 'PhD Jerzy Dudek',
-  newTopic: 'Predykcja zachowań ludzi podczas lockdownu',
-  newDescription: 'Predykcja zachowań ludzi podczas lockdownu - opis'
+  newThesisId: thesisId,
+  oldThesisId: thesisId,
+  supervisor: lecturer,
+  newThesis: thesis,
+  previousThesis: thesis
 };
 
-const date = new Date(2023, 1);
 const timetable: Timetable = {
-  id: '10',
-  diplomaSessionId: '10',
-  selectingThesis: date,
-  submittingThesis: date,
-  changingThesis: date,
-  clarificationThesis: date,
-  approvingThesisByCommittee: date,
-  approvingThesisByCoordinator: date
+  id: timetableId,
+  diplomaSessionId: diplomaSessionId,
+  selectingThesis: deadline,
+  submittingThesis: deadline,
+  changingThesis: deadline,
+  clarificationThesis: deadline,
+  approvingThesisByCommittee: deadline,
+  approvingThesisByCoordinator: deadline
 };
 
 const diplomaSession: DiplomaSession = {
-  id: '10',
-  timetableId: '10',
-  fieldOfStudyId: '6',
-  year: '2022/2023'
+  id: diplomaSessionId,
+  timetableId: timetableId,
+  fieldOfStudyId: fieldOfStudyId,
+  year: '2022/2023',
+  fieldOfStudyName: 'Informatyka Stosowana',
+  departmentName: 'Wydział Informatyki i Telekomunikacji'
 };
 
-const supervisors = [
-  supervisor,
-  supervisor,
-  supervisor,
-  supervisor,
-  supervisor
+const supervisors: Employee[] = [
+  lecturer,
+  lecturer,
+  lecturer,
+  lecturer,
+  lecturer
 ];
 
-const theses = [
+const theses: Thesis[] = [
   thesis,
   thesis,
   thesis,
@@ -117,7 +153,7 @@ const theses = [
   thesis
 ];
 
-const reservations = [
+const reservations: Reservation[] = [
   reservation,
   reservation,
   reservation,
@@ -125,7 +161,7 @@ const reservations = [
   reservation
 ];
 
-const clarificationRequests = [
+const clarificationRequests: ClarificationRequest[] = [
   clarificationRequest,
   clarificationRequest,
   clarificationRequest,
@@ -133,7 +169,7 @@ const clarificationRequests = [
   clarificationRequest
 ];
 
-const changeRequests = [
+const changeRequests: ChangeRequest[] = [
   changeRequest,
   changeRequest,
   changeRequest,
@@ -190,7 +226,6 @@ export const FakeData = {
   changeRequest,
   clarificationRequest,
   timetable,
-  supervisor,
   supervisors,
   diplomaSession
 };

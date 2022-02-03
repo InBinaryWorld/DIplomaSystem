@@ -22,7 +22,7 @@ import { RequestsStateKey } from '../../store/requests/requests.state';
 import { ClarificationRequest } from '../../models/dto/clarification-request.model';
 import { UserRole } from '../../models/dto/user-role.model';
 import { ChangeRequest } from '../../models/dto/change-request.model';
-import { StoreKeys } from '../../../core/utils/store-keys.utils';
+import { StoreKeys } from '../../utils/store-keys.utils';
 import { filterExists } from '../../../core/tools/filter-exists';
 import { IdType } from '../../models/dto/id.model';
 
@@ -43,9 +43,10 @@ export class RequestsStoreService extends CleanableStoreService {
   }
 
   public getChangeRequestForId(requestId: IdType, ifNeededOnly = true)
-    : Observable<ChangeRequest | undefined> {
+    : Observable<ChangeRequest> {
     this.loadRequestForId(RequestsStateKey.CHANGE, requestId, ifNeededOnly);
-    return this.selectChangeRequestForId(requestId);
+    return this.selectChangeRequestForId(requestId).pipe(filterExists());
+
   }
 
 
@@ -57,9 +58,9 @@ export class RequestsStoreService extends CleanableStoreService {
   }
 
   public getClarificationRequestForId(requestId: IdType, ifNeededOnly = true)
-    : Observable<ClarificationRequest | undefined> {
+    : Observable<ClarificationRequest> {
     this.loadRequestForId(RequestsStateKey.CLARIFICATION, requestId, ifNeededOnly);
-    return this.selectClarificationRequestForId(requestId);
+    return this.selectClarificationRequestForId(requestId).pipe(filterExists());
   }
 
   public loadRequests(resourceType: RequestsStateKey, userRole: UserRole, key: string, ifNeededOnly = true): void {

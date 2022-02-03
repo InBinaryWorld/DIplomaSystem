@@ -1,4 +1,4 @@
-import { UserRole } from '../../base/models/dto/user-role.model';
+import { UserRole } from '../models/dto/user-role.model';
 
 export class StoreKeys {
 

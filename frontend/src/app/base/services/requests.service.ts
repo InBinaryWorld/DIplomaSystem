@@ -23,7 +23,7 @@ export class RequestsService {
     return this.requestsStoreService.getChangeRequestsForRole(userRole, ifNeededOnly);
   }
 
-  public getChangeRequestForId(requestId: IdType, ifNeededOnly = true): Observable<ChangeRequest | undefined> {
+  public getChangeRequestForId(requestId: IdType, ifNeededOnly = true): Observable<ChangeRequest> {
     return this.requestsStoreService.getChangeRequestForId(requestId, ifNeededOnly);
   }
 
@@ -31,7 +31,7 @@ export class RequestsService {
     return this.requestsStoreService.getClarificationRequestsForRole(userRole, ifNeededOnly);
   }
 
-  public getClarificationRequestForId(requestId: IdType, ifNeededOnly = true): Observable<ClarificationRequest | undefined> {
+  public getClarificationRequestForId(requestId: IdType, ifNeededOnly = true): Observable<ClarificationRequest> {
     return this.requestsStoreService.getClarificationRequestForId(requestId, ifNeededOnly);
   }
 

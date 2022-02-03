@@ -1,5 +1,5 @@
 import { BaseStoreState, StoreResource } from '../../../core/store/base-store-state.model';
-import { User } from '../../models/dto/user.model';
+import { User } from '../../models/dto/user-ext.model';
 import { Student } from '../../models/dto/student.model';
 import { Employee } from '../../models/dto/employee.model';
 

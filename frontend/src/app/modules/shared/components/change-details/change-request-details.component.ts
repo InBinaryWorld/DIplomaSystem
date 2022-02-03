@@ -6,12 +6,13 @@ import { Role } from '../../../../base/models/dto/role.model';
 import { filterExists } from '../../../../core/tools/filter-exists';
 import { RoleComponent } from '../../../../base/components/role-component.directive';
 import { BaseRequest } from '../../../../base/models/dto/base-request.model';
-import { TranslationKeys } from '../../../../core/utils/translation-keys.utils';
+import { TranslationKeys } from '../../../../base/utils/translation-keys.utils';
 import { RequestsService } from '../../../../base/services/requests.service';
 import { SessionService } from '../../../../base/services/session.service';
 import { ChangeRequest } from '../../../../base/models/dto/change-request.model';
 import { IdType } from '../../../../base/models/dto/id.model';
 import { UserRole } from '../../../../base/models/dto/user-role.model';
+import { LabelBuilder } from '../../../../base/utils/label-builder.utils';
 
 @Component({
   selector: 'app-change-request-details',
@@ -81,9 +82,9 @@ export class ChangeRequestDetailsComponent extends RoleComponent implements OnIn
 
   private setFormData(request: ChangeRequest): void {
     this.form!.setValue({
-      topic: request.newTopic,
-      description: request.newDescription,
-      supervisorName: request.newSupervisorName
+      topic: request.newThesis.topic,
+      description: request.newThesis.description,
+      supervisorName: LabelBuilder.forEmployee(request.supervisor)
     });
     this.markForCheck();
   }
