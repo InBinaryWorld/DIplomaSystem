@@ -2,11 +2,9 @@ package pwr.diplomaproject.controller
 
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import pwr.diplomaproject.model.dto.StudentReservationDto
+import pwr.diplomaproject.model.form.StudentReservationForm
 import pwr.diplomaproject.service.StudentReservationService
 import java.security.Principal
 
@@ -30,11 +28,15 @@ class StudentReservationController(
     ): ResponseEntity<StudentReservationDto> =
         studentReservationService.getReservation(studentId, reservationId)
 
-    @Operation(summary = "Ostateczne potwierdzenie rezerwacji przez studenta")
+    @Operation(summary = "Potwierdzenie rezerwacji przez studenta (wstępne lub ostateczne)")
     @GetMapping("/approve/{id}")
     fun approveReservation(@PathVariable id: Long): Unit = TODO()
 
     @Operation(summary = "Odrzucenie rezerwacji")
     @GetMapping("/cancel/{id}")
     fun cancelReservation(@PathVariable id: Long): Unit = TODO()
+
+    @Operation(summary = "Rezerwacja tematu (i zgłoszenie grupy)")
+    @PostMapping
+    fun makeReservation(@RequestBody form: StudentReservationForm): Unit = TODO()
 }

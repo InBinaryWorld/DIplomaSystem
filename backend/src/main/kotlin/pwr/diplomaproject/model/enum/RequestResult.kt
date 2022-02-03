@@ -1,6 +1,6 @@
 package pwr.diplomaproject.model.enum
 
-enum class ApplicationResult {
+enum class RequestResult {
     WAITING,
     ACCEPTED,
     REJECTED

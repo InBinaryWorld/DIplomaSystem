@@ -8,5 +8,6 @@ data class StudentSubjectDetailsDto(
     val supervisorName: String,
     val numberOfStudents: Int,
     val description: String,
-    val status: TopicStatus
+    val status: TopicStatus,
+    val students: List<StudentNameDto>
 )

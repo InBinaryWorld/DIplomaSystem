@@ -1,12 +1,10 @@
 package pwr.diplomaproject.controller
 
 import io.swagger.v3.oas.annotations.Operation
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import pwr.diplomaproject.model.dto.StudentSubjectDetailsDto
 import pwr.diplomaproject.model.dto.StudentSubjectDto
+import pwr.diplomaproject.model.form.StudentSubjectPropositionForm
 
 @RestController
 @RequestMapping("/student/subject")
@@ -20,7 +18,15 @@ class StudentSubjectController {
     @GetMapping("/proposed")
     fun getProposedSubjects(): List<StudentSubjectDto> = TODO()
 
-    @Operation(summary = "Dane tematu")
+    @Operation(summary = "Szczegóły tematu")
     @GetMapping("/{id}")
     fun getSubject(@PathVariable id: Long): StudentSubjectDetailsDto = TODO()
+
+    @Operation(summary = "Dodanie propozycji tematu przez studenta")
+    @PostMapping("/propose")
+    fun proposeSubject(@RequestBody form: StudentSubjectPropositionForm): Unit = TODO()
+
+    @Operation(summary = "Usunięcie propozycji tematu studenta")
+    @DeleteMapping("/proposed/{id}")
+    fun deleteProposedSubject(@PathVariable id: Long): Unit = TODO()
 }
