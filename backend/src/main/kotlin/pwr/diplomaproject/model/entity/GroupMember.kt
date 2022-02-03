@@ -1,9 +1,7 @@
 package pwr.diplomaproject.model.entity
 
 import pwr.diplomaproject.model.enum.MemberStatus
-import javax.persistence.Entity
-import javax.persistence.Id
-import javax.persistence.ManyToOne
+import javax.persistence.*
 
 @Entity
 data class GroupMember(
@@ -13,5 +11,6 @@ data class GroupMember(
     val reservation: Reservation,
     @ManyToOne
     val student: Student,
+    @Enumerated(EnumType.STRING)
     val status: MemberStatus
 )

@@ -1,9 +1,7 @@
 package pwr.diplomaproject.model.entity
 
 import pwr.diplomaproject.model.enum.EmployeeType
-import javax.persistence.Entity
-import javax.persistence.Id
-import javax.persistence.ManyToOne
+import javax.persistence.*
 
 @Entity
 data class Employee(
@@ -13,6 +11,7 @@ data class Employee(
     val user: User,
     @ManyToOne
     val faculty: Faculty,
+    @Enumerated(EnumType.STRING)
     val type: EmployeeType,
     val title: String
 )

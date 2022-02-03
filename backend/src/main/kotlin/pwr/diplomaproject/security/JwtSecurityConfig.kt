@@ -13,6 +13,7 @@ class JwtSecurityConfig : WebSecurityConfigurerAdapter() {
             authorizeRequests {
                 authorize("/public", permitAll)
                 authorize("/private", hasAnyRole("ADMIN"))
+                authorize("/student/reservation", hasAnyRole("STUDENT"))
                 authorize("*", permitAll)
             }
         }

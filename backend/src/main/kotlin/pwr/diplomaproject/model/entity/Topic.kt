@@ -2,9 +2,7 @@ package pwr.diplomaproject.model.entity
 
 import pwr.diplomaproject.model.enum.TopicStatus
 import java.time.LocalDate
-import javax.persistence.Entity
-import javax.persistence.Id
-import javax.persistence.ManyToOne
+import javax.persistence.*
 
 @Entity
 data class Topic(
@@ -19,6 +17,7 @@ data class Topic(
     val topic: String,
     val description: String,
     val studentCount: Int,
+    @Enumerated(EnumType.STRING)
     val status: TopicStatus,
     val coordinatorComments: String,
     val createdByStudent: Boolean,

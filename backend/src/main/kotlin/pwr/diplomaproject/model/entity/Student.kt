@@ -3,6 +3,7 @@ package pwr.diplomaproject.model.entity
 import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.ManyToOne
+import javax.persistence.OneToMany
 
 @Entity
 data class Student(
@@ -12,5 +13,7 @@ data class Student(
     val user: User,
     @ManyToOne
     val courseOfStudy: CourseOfStudy,
-    val index: String
+    val index: String,
+    @OneToMany(mappedBy = "student")
+    val groupMembers: List<GroupMember>
 )
