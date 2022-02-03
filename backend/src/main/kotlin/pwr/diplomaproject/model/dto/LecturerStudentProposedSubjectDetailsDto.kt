@@ -1,6 +1,6 @@
 package pwr.diplomaproject.model.dto
 
-data class TeacherStudentProposedSubjectDetailsDto(
+data class LecturerStudentProposedSubjectDetailsDto(
     val id: Long,
     val topic: String,
     val description: String,

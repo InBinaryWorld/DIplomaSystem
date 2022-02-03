@@ -5,20 +5,20 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import pwr.diplomaproject.model.dto.TeacherSubjectReservationDetailsDto
-import pwr.diplomaproject.model.dto.TeacherSubjectReservationDto
+import pwr.diplomaproject.model.dto.LecturerSubjectReservationDetailsDto
+import pwr.diplomaproject.model.dto.LecturerSubjectReservationDto
 
 @RestController
-@RequestMapping("/teacher/reservation")
-class TeacherReservationController {
+@RequestMapping("/lecturer/reservation")
+class LecturerReservationController {
 
     @Operation(summary = "Tematy prowadzącego dla których może zarządzać rezerwacjami")
     @GetMapping
-    fun getSubjects(): List<TeacherSubjectReservationDto> = TODO()
+    fun getSubjects(): List<LecturerSubjectReservationDto> = TODO()
 
     @Operation(summary = "Szczegóły tematu i zgłoszonych do niego rezerwacji")
     @GetMapping("/{id}")
-    fun getSubject(@PathVariable id: Long): TeacherSubjectReservationDetailsDto = TODO()
+    fun getSubject(@PathVariable id: Long): LecturerSubjectReservationDetailsDto = TODO()
 
     @Operation(summary = "Zatwierdzenie rezerwacji tematu")
     @GetMapping("/accept/{id}")

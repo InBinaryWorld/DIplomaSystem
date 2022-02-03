@@ -1,6 +1,6 @@
 package pwr.diplomaproject.model.form
 
-data class TeacherTopicCorrectionForm(
+data class LecturerTopicCorrectionForm(
     val topicId: Long,
     val topic: String,
     val numberOfStudents: Int,

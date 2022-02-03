@@ -1,8 +1,10 @@
 package pwr.diplomaproject.model.dto
 
-data class TeacherSubjectDetailsDto(
+import java.time.LocalDate
+
+data class LecturerSubjectDto(
     val id: Long,
     val topic: String,
     val numberOfStudents: Int,
-    val description: String
+    val creationDate: LocalDate
 )
