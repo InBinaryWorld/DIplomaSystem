@@ -2,6 +2,7 @@ package pwr.diplomaproject.controller
 
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.http.ResponseEntity
+import org.springframework.http.ResponseEntity.ok
 import org.springframework.web.bind.annotation.*
 import pwr.diplomaproject.model.dto.StudentReservationDto
 import pwr.diplomaproject.model.form.StudentReservationForm
@@ -17,7 +18,7 @@ class StudentReservationController(
     @Operation(summary = "Złożone rezerwacje zalogowanego studenta")
     @GetMapping
     fun getReservations(@RequestParam studentId: Long): ResponseEntity<List<StudentReservationDto>> =
-        studentReservationService.getReservations()
+        ok(studentReservationService.getReservations(studentId))
 
     @Operation(summary = "Dane rezerwacji studenta")
     @GetMapping("/{reservationId}")

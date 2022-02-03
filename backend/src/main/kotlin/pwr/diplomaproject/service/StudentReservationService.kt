@@ -12,10 +12,9 @@ class StudentReservationService(
     private val reservationRepository: ReservationRepository,
     private val studentRepository: StudentRepository
 ) {
-    fun getReservations(): ResponseEntity<List<StudentReservationDto>> =
-        ResponseEntity.ok(reservationRepository.findAll().map {
-            StudentReservationDtoFactory.create(it)
-        })
+    fun getReservations(studentId: Long): List<StudentReservationDto> =
+        reservationRepository.findByStudentId(studentId)
+            .map(StudentReservationDtoFactory.Companion::create)
 
     fun getReservation(
         studentId: Long,
