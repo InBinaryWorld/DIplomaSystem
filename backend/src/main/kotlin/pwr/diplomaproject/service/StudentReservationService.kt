@@ -14,7 +14,7 @@ class StudentReservationService(
 ) {
     fun getReservations(studentId: Long): List<StudentReservationDto> =
         reservationRepository.findByStudentId(studentId)
-            .map(StudentReservationDtoFactory.Companion::create)
+            .map { StudentReservationDtoFactory.create(it) }
 
     fun getReservation(
         studentId: Long,

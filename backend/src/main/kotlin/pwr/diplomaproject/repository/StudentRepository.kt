@@ -5,4 +5,9 @@ import org.springframework.stereotype.Repository
 import pwr.diplomaproject.model.entity.Student
 
 @Repository
-interface StudentRepository : JpaRepository<Student, Long>
+interface StudentRepository : JpaRepository<Student, Long> {
+
+    fun getStudentsByUserId(userId: Long): List<Student>
+
+    fun getStudentByIndex(index: String): Student
+}
