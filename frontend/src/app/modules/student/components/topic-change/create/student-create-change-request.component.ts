@@ -11,10 +11,10 @@ import { Role } from '../../../../../base/models/dto/role.model';
 import { AppValidators } from '../../../../../base/utils/validators.utils';
 import { filterExists } from '../../../../../core/tools/filter-exists';
 import { first } from 'rxjs/operators';
-import { UserRole } from '../../../../../base/models/dto/user-role.model';
 import { IdType } from '../../../../../base/models/dto/id.model';
 import { UserService } from '../../../../../base/services/user.service';
 import { Employee } from '../../../../../base/models/dto/employee.model';
+import { Student } from '../../../../../base/models/dto/student.model';
 
 @Component({
   selector: 'app-student-topic-create-clarification',
@@ -26,7 +26,7 @@ export class StudentCreateChangeRequestComponent extends RoleComponent implement
 
   form?: FormGroup;
 
-  studentId?: string;
+  student?: Student;
   baseThesis?: Thesis;
   supervisors?: any[];
 
@@ -45,7 +45,7 @@ export class StudentCreateChangeRequestComponent extends RoleComponent implement
 
   confirm() {
     const formData = this.form?.value;
-    const request = this.prepareRequestForFormData(this.studentId!, this.baseThesis!, formData);
+    const request = this.prepareRequestForFormData(this.student!.id, this.baseThesis!, formData);
     this.requestsService.createChangeRequest(this.baseThesis!.id, request).subscribe({
       next: (request) => this.router.navigate(['/student/change-requests/details/', request.id]),
       error: () => this.errorVisible = true
@@ -67,28 +67,29 @@ export class StudentCreateChangeRequestComponent extends RoleComponent implement
 
   private initData(): void {
     this.addSubscription(
-      this.getDataSource().subscribe(([userRole, thesis, supervisors]) => {
+      this.getDataSource().subscribe(([student, thesis, supervisors]) => {
         this.baseThesis = thesis;
-        this.studentId = userRole.id;
+        this.student = student;
         this.supervisors = supervisors;
         this.setFormData(thesis);
       })
     );
   }
 
-  private getDataSource(): Observable<[UserRole, Thesis, any[]]> {
+  private getDataSource(): Observable<[Student, Thesis, any[]]> {
     return this.userRoleSource.pipe(
-      switchMap(userRole => this.getBaseThesis(userRole).pipe(
+      switchMap(userRole => this.userService.getStudentForId(userRole.id)),
+      switchMap(student => this.getBaseThesis(student).pipe(
         switchMap(thesis => this.userService.getAvailableSupervisors(thesis.diplomaSessionId).pipe(
-            map(supervisors => ([userRole, thesis, supervisors] as [UserRole, Thesis, Employee[]]))
+            map(supervisors => ([student, thesis, supervisors] as [Student, Thesis, Employee[]]))
           )
         )
       ))
     );
   }
 
-  private getBaseThesis(userRole: UserRole): Observable<Thesis> {
-    return this.thesesService.getActiveReservedThesisForStudentId(userRole.id)
+  private getBaseThesis(student: Student): Observable<Thesis> {
+    return this.thesesService.getActiveReservedThesisForStudent(student)
       .pipe(filterExists(), first());
   }
 

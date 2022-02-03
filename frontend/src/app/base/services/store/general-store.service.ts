@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Selector, Store } from '@ngrx/store';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { AppState } from '../../store/app-state.model';
 import { CleanableStoreService } from '../../../core/services/cleanable-store.service';
 import {
@@ -27,7 +27,6 @@ import { Department } from '../../models/dto/department.model';
 import { FieldOfStudy } from '../../models/dto/field-of-study.model';
 import { DiplomaSession } from '../../models/dto/diploma-session.model';
 import { Timetable } from '../../models/dto/timetable.model';
-import { FakeData } from '../../../../fakes/fake.data';
 import { IdType } from '../../models/dto/id.model';
 import { filterExists } from '../../../core/tools/filter-exists';
 
@@ -58,13 +57,6 @@ export class GeneralResourcesStoreService extends CleanableStoreService {
   public getDiplomaSessionForId(id: IdType, ifNeededOnly = true): Observable<DiplomaSession> {
     this.loadResourceForId(GeneralResourcesStateKey.DIPLOMA_SESSIONS, id, ifNeededOnly);
     return this.selectDiplomaSessionForId(id).pipe(filterExists());
-  }
-
-  public getCurrentDiplomaSession(ifNeededOnly = true): Observable<DiplomaSession> {
-    return of(FakeData.diplomaSession);
-    // TODO:
-    // this.loadCurrentDiplomaSession(ifNeededOnly);
-    // return this.selectCurrentDiplomaSession(id).pipe(filterExist());
   }
 
   public invalidateStoreForKey(resourceType: GeneralResourcesStateKey): void {

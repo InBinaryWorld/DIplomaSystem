@@ -7,7 +7,7 @@ import { Observable, switchMap } from 'rxjs';
 import { Thesis } from '../../../../base/models/dto/thesis.model';
 import { RoleComponent } from '../../../../base/components/role-component.directive';
 import { ThesesService } from '../../../../base/services/theses.service';
-import { UserRole } from '../../../../base/models/dto/user-role.model';
+import { UserService } from '../../../../base/services/user.service';
 
 @Component({
   selector: 'app-student-topic-propositions',
@@ -22,6 +22,7 @@ export class StudentTopicPropositionsComponent extends RoleComponent implements 
 
   constructor(private readonly deadlinesService: DeadlinesService,
               private readonly thesesService: ThesesService,
+              private readonly userService: UserService,
               private readonly router: Router,
               sessionService: SessionService,
               changeDetector: ChangeDetectorRef) {
@@ -38,9 +39,8 @@ export class StudentTopicPropositionsComponent extends RoleComponent implements 
   }
 
   private initProposedTheses(): void {
-    this.addSubscription(this.userRoleSource.pipe(
-        switchMap(ur => this.getThesisSource(ur))
-      ).subscribe(theses => {
+    this.addSubscription(
+      this.getDataSource().subscribe(theses => {
         this.proposedTheses = theses!;
         this.markForCheck();
       })
@@ -49,16 +49,19 @@ export class StudentTopicPropositionsComponent extends RoleComponent implements 
 
   initButtonsAvailability(): void {
     this.addSubscription(
-      this.deadlinesService.canCreateThesisProposition()
-        .subscribe(canCreateClarification => {
-          this.canCreateNew = canCreateClarification;
-          this.markForCheck();
-        })
+      this.userRoleSource.pipe(
+        switchMap(userRole => this.deadlinesService.canCreateThesisProposition(userRole.id))
+      ).subscribe(canCreateClarification => {
+        this.canCreateNew = canCreateClarification;
+        this.markForCheck();
+      })
     );
   }
 
-  private getThesisSource(userRole: UserRole): Observable<Thesis[]> {
-    return this.thesesService.getProposedByStudentTheses(userRole.id);
+  private getDataSource(): Observable<Thesis[]> {
+    return this.userRoleSource.pipe(
+      switchMap(userRole => this.thesesService.getProposedByStudentTheses(userRole.id))
+    );
   }
 
   public thesisDetails(thesis: Thesis): void {

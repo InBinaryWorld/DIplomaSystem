@@ -59,6 +59,7 @@ export const loadThesesFailedAction = createAction(
 
 export class LoadThesisActionOptions {
   proposedByStudentId?: string;
+  availableToReserveForStudentId?: string;
 
   static proposedByStudent(studentId: IdType): LoadThesisActionOptions {
     const options = new LoadThesisActionOptions();
@@ -66,10 +67,17 @@ export class LoadThesisActionOptions {
     return options;
   }
 
+  static availableToReserveForStudent(studentId: IdType): LoadThesisActionOptions {
+    const options = new LoadThesisActionOptions();
+    options.availableToReserveForStudentId = studentId;
+    return options;
+  }
+
   toKey(): string {
     return [
       'LoadThesisActionOptions',
-      'PBSI' + this.proposedByStudentId
+      'PBSI_' + this.proposedByStudentId,
+      'ATRFS_' + this.availableToReserveForStudentId
     ].join('$');
   }
 }

@@ -92,7 +92,8 @@ const reservation: Reservation = {
   id: reservationId,
   creationDate: new Date(),
   status: ReservationStatus.CONFIRMED,
-  thesisId: thesisId
+  thesisId: thesisId,
+  thesis: thesis
 };
 
 const clarificationRequest: ClarificationRequest = {

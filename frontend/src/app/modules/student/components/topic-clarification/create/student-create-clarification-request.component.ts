@@ -11,10 +11,11 @@ import { map, Observable, switchMap } from 'rxjs';
 import { Thesis } from '../../../../../base/models/dto/thesis.model';
 import { Role } from '../../../../../base/models/dto/role.model';
 import { isNil } from 'lodash-es';
-import { UserRole } from '../../../../../base/models/dto/user-role.model';
 import { filterExists } from '../../../../../core/tools/filter-exists';
 import { first } from 'rxjs/operators';
 import { IdType } from '../../../../../base/models/dto/id.model';
+import { UserService } from '../../../../../base/services/user.service';
+import { Student } from '../../../../../base/models/dto/student.model';
 
 @Component({
   selector: 'app-student-topic-create-clarification',
@@ -30,12 +31,13 @@ export class StudentCreateClarificationRequestComponent extends RoleComponent im
   newTopicForm?: FormGroup;
 
   thesis?: Thesis;
-  studentId?: string;
+  student?: Student;
 
   errorVisible = false;
 
   constructor(private readonly router: Router,
               private readonly formBuilder: FormBuilder,
+              private readonly userService: UserService,
               private readonly thesesService: ThesesService,
               private readonly requestsService: RequestsService,
               sessionService: SessionService,
@@ -45,7 +47,7 @@ export class StudentCreateClarificationRequestComponent extends RoleComponent im
 
   confirm() {
     const formData = this.newTopicForm?.value;
-    const request = this.prepareRequestForFormData(this.studentId!, this.thesis!, formData);
+    const request = this.prepareRequestForFormData(this.student!.id, this.thesis!, formData);
     this.requestsService.createClarificationRequest(this.thesis!.id, request).subscribe({
       next: (request) => this.router.navigate(['/student/change-requests/details/', request.id]),
       error: () => this.errorVisible = true
@@ -70,24 +72,25 @@ export class StudentCreateClarificationRequestComponent extends RoleComponent im
 
   private initData(): void {
     this.addSubscription(this.getDataSource()
-      .subscribe(([userRole, thesis]) => {
+      .subscribe(([student, thesis]) => {
         this.thesis = thesis;
-        this.studentId = userRole.id;
+        this.student = student;
         this.setCurrentFormData(thesis);
       })
     );
   }
 
-  private getDataSource(): Observable<[UserRole, Thesis]> {
+  private getDataSource(): Observable<[Student, Thesis]> {
     return this.userRoleSource.pipe(
-      switchMap(userRole => this.getBaseThesis(userRole).pipe(
-        map(thesis => ([userRole, thesis] as [UserRole, Thesis])))
+      switchMap(userRole => this.userService.getStudentForId(userRole.id)),
+      switchMap(student => this.getBaseThesis(student).pipe(
+        map(thesis => ([student, thesis] as [Student, Thesis])))
       )
     );
   }
 
-  private getBaseThesis(userRole: UserRole): Observable<Thesis> {
-    return this.thesesService.getActiveReservedThesisForStudentId(userRole.id)
+  private getBaseThesis(student: Student): Observable<Thesis> {
+    return this.thesesService.getActiveReservedThesisForStudent(student)
       .pipe(filterExists(), first());
   }
 
