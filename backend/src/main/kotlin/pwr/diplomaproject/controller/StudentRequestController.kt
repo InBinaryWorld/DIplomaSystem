@@ -15,7 +15,7 @@ class StudentRequestController {
 
     @Operation(summary = "Złożone przez zalogowanego studenta wnioski o zmianę tematu")
     @GetMapping("/topic-change")
-    fun getTopicChangeRequest(): List<StudentRequestDto> = TODO()
+    fun getTopicChangeRequest(@RequestParam studentId: Long): List<StudentRequestDto> = TODO()
 
     @Operation(summary = "Szczegóły wniosku o zmianę tematu")
     @GetMapping("/topic-change/{id}")
@@ -23,7 +23,7 @@ class StudentRequestController {
 
     @Operation(summary = "Złożone przez zalogowanego studenta wnioski o doprecyzowanie tematu")
     @GetMapping("/topic-correction")
-    fun getTopicCorrectionRequest(): List<StudentRequestDto> = TODO()
+    fun getTopicCorrectionRequest(@RequestParam studentId: Long): List<StudentRequestDto> = TODO()
 
     @Operation(summary = "Szczegóły wniosku o doprecyzowanie tematu")
     @GetMapping("/topic-correction/{id}")
@@ -31,15 +31,21 @@ class StudentRequestController {
 
     @Operation(summary = "Złożenie wniosku o zmianę tematu - na istniejący temat")
     @PostMapping("/topic-change/existing")
-    fun makeTopicChangeToExistingTopicRequest(@RequestBody form: StudentTopicChangeRequestExistingTopicForm): Unit = TODO()
+    fun makeTopicChangeToExistingTopicRequest(
+        @RequestParam studentId: Long,
+        @RequestBody form: StudentTopicChangeRequestExistingTopicForm): Unit = TODO()
 
     @Operation(summary = "Złożenie wniosku o zmianę tematu - na nowy temat")
     @PostMapping("/topic-change/new")
-    fun makeTopicChangeToNewTopicRequest(@RequestBody form: StudentTopicChangeRequestNewTopicForm): Unit = TODO()
+    fun makeTopicChangeToNewTopicRequest(
+        @RequestParam studentId: Long,
+        @RequestBody form: StudentTopicChangeRequestNewTopicForm): Unit = TODO()
 
     @Operation(summary = "Złożenie wniosku o doprecyzowanie tematu")
     @PostMapping("/topic-correction")
-    fun makeTopicCorrectionRequest(@RequestBody form: StudentTopicCorrectionRequestForm): Unit = TODO()
+    fun makeTopicCorrectionRequest(
+        @RequestParam studentId: Long,
+        @RequestBody form: StudentTopicCorrectionRequestForm): Unit = TODO()
 
     @Operation(summary = "Anulowanie wniosku o zmianę tematu")
     @DeleteMapping("/topic-change/{id}")

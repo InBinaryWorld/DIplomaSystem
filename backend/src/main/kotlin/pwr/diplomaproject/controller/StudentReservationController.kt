@@ -16,14 +16,14 @@ class StudentReservationController(
 
     @Operation(summary = "Złożone rezerwacje zalogowanego studenta")
     @GetMapping
-    fun getReservations(): ResponseEntity<List<StudentReservationDto>> =
+    fun getReservations(@RequestParam studentId: Long): ResponseEntity<List<StudentReservationDto>> =
         studentReservationService.getReservations()
 
     @Operation(summary = "Dane rezerwacji studenta")
-    @GetMapping("/{studentId}/{reservationId}")
+    @GetMapping("/{reservationId}")
     fun getReservation(
         principal: Principal?,
-        @PathVariable studentId: Long,
+        @RequestParam studentId: Long,
         @PathVariable reservationId: Long
     ): ResponseEntity<StudentReservationDto> =
         studentReservationService.getReservation(studentId, reservationId)
@@ -38,5 +38,7 @@ class StudentReservationController(
 
     @Operation(summary = "Rezerwacja tematu (i zgłoszenie grupy)")
     @PostMapping
-    fun makeReservation(@RequestBody form: StudentReservationForm): Unit = TODO()
+    fun makeReservation(
+        @RequestParam studentId: Long,
+        @RequestBody form: StudentReservationForm): Unit = TODO()
 }

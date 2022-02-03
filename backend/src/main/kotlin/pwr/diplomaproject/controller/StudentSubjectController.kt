@@ -12,11 +12,11 @@ class StudentSubjectController {
 
     @Operation(summary = "Dostępne tematy do zarezerwowania przez zalogowanego studenta")
     @GetMapping("/available")
-    fun getAvailableSubjects(): List<StudentSubjectDto> = TODO()
+    fun getAvailableSubjects(@RequestParam studentId: Long): List<StudentSubjectDto> = TODO()
 
     @Operation(summary = "Propozycje tematów złożone przez zalogowanego studenta")
     @GetMapping("/proposed")
-    fun getProposedSubjects(): List<StudentSubjectDto> = TODO()
+    fun getProposedSubjects(@RequestParam studentId: Long): List<StudentSubjectDto> = TODO()
 
     @Operation(summary = "Szczegóły tematu")
     @GetMapping("/{id}")
@@ -24,7 +24,9 @@ class StudentSubjectController {
 
     @Operation(summary = "Dodanie propozycji tematu przez studenta")
     @PostMapping("/propose")
-    fun proposeSubject(@RequestBody form: StudentSubjectPropositionForm): Unit = TODO()
+    fun proposeSubject(
+        @RequestParam studentId: Long,
+        @RequestBody form: StudentSubjectPropositionForm): Unit = TODO()
 
     @Operation(summary = "Usunięcie propozycji tematu studenta")
     @DeleteMapping("/proposed/{id}")
