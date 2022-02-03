@@ -27,17 +27,17 @@
           {{ 'Form.Label.NewThesisTopic' | translate }}
         </label>
         <input type="text" formControlName="newThesisTopic" id="newThesisTopic" class="form-control"
-               [class.is-invalid]="getErrors('newThesisTopic')">
-        <app-validation-feedback [errors]="getErrors('newThesisTopic')"></app-validation-feedback>
+               [class.is-invalid]="getErrors(newTopicForm,'newThesisTopic')">
+        <app-validation-feedback [errors]="getErrors(newTopicForm,'newThesisTopic')"></app-validation-feedback>
       </div>
       <div class="mb-4">
         <label for="newDescription" class="form-label">
           {{ 'Form.Label.NewDescription' | translate }}
         </label>
         <textarea formControlName="newDescription" id="newDescription" class="form-control"
-                  [class.is-invalid]="getErrors('newDescription')">
+                  [class.is-invalid]="getErrors(newTopicForm,'newDescription')">
         </textarea>
-        <app-validation-feedback [errors]="getErrors('newDescription')"></app-validation-feedback>
+        <app-validation-feedback [errors]="getErrors(newTopicForm,'newDescription')"></app-validation-feedback>
       </div>
       <div class="gap-2 d-flex justify-content-end">
         <button

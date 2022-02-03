@@ -8,6 +8,7 @@ import { RequestsApiService } from './api/requests-api.service';
 import { ClarificationRequest } from '../models/dto/clarification-request.model';
 import { ThesesStoreService } from './store/theses-store.service';
 import { ChangeRequest } from '../models/dto/change-request.model';
+import { IdType } from '../models/dto/id.model';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +23,7 @@ export class RequestsService {
     return this.requestsStoreService.getChangeRequestsForRole(userRole, ifNeededOnly);
   }
 
-  public getChangeRequestForId(userRole: UserRole, requestId: string, ifNeededOnly = true): Observable<ChangeRequest | undefined> {
+  public getChangeRequestForId(userRole: UserRole, requestId: IdType, ifNeededOnly = true): Observable<ChangeRequest | undefined> {
     return this.requestsStoreService.getChangeRequestForId(userRole, requestId, ifNeededOnly);
   }
 
@@ -30,7 +31,7 @@ export class RequestsService {
     return this.requestsStoreService.getClarificationRequestsForRole(userRole, ifNeededOnly);
   }
 
-  public getClarificationRequestForId(userRole: UserRole, requestId: string, ifNeededOnly = true): Observable<ClarificationRequest | undefined> {
+  public getClarificationRequestForId(userRole: UserRole, requestId: IdType, ifNeededOnly = true): Observable<ClarificationRequest | undefined> {
     return this.requestsStoreService.getClarificationRequestForId(userRole, requestId, ifNeededOnly);
   }
 
@@ -42,22 +43,22 @@ export class RequestsService {
     this.requestsStoreService.invalidateStoreForType(RequestsStateKey.CHANGE);
   }
 
-  public rejectClarificationRequest(userRole: UserRole, id: string): Observable<void> {
+  public rejectClarificationRequest(userRole: UserRole, id: IdType): Observable<void> {
     return this.requestsApiService.rejectClarificationRequestForRole(userRole, id)
       .pipe(tap(() => this.invalidateClarificationRequests()));
   }
 
-  public createClarificationRequest(thesisId: string, request: Partial<ClarificationRequest>): Observable<ClarificationRequest> {
+  public createClarificationRequest(thesisId: IdType, request: Partial<ClarificationRequest>): Observable<ClarificationRequest> {
     return this.requestsApiService.createClarificationRequest(thesisId, request)
       .pipe(tap(() => this.invalidateClarificationRequests()));
   }
 
-  public createChangeRequest(thesisId: string, request: any): Observable<ChangeRequest> {
+  public createChangeRequest(thesisId: IdType, request: any): Observable<ChangeRequest> {
     return this.requestsApiService.createChangeRequest(thesisId, request)
       .pipe(tap(() => this.invalidateChangeRequests()));
   }
 
-  // public getExtClarificationRequests(userRole: UserRole, studentId: string): Observable<ClarificationRequestExt[]> {
+  // public getExtClarificationRequests(userRole: UserRole, studentId: IdType): Observable<ClarificationRequestExt[]> {
   //   return this.getClarificationRequestsForRole(userRole).pipe(
   //     switchMap(clarifications => {
   //       if (isEmpty(clarifications)) {

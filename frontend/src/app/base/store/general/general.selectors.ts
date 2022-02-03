@@ -7,6 +7,7 @@ import { Department } from '../../models/dto/department.model';
 import { DiplomaSession } from '../../models/dto/diploma-session.model';
 import { FieldOfStudy } from '../../models/dto/field-of-study.model';
 import { Timetable } from '../../models/dto/timetable.model';
+import { IdType } from '../../models/dto/id.model';
 
 
 export const selectGeneralState = createFeatureSelector<GeneralState>(generalFeatureName);
@@ -47,7 +48,7 @@ export const selectTimetableForId = createSelector<AppState, string, StoreResour
 
 
 // For Effect
-export const selectGeneralResourcesForTypeAndId = createSelector<AppState, { resourceType: GeneralResourcesStateKey, id: string }, GeneralState, GeneralResourceType | undefined>(
+export const selectGeneralResourcesForTypeAndId = createSelector<AppState, { resourceType: GeneralResourcesStateKey, id: IdType }, GeneralState, GeneralResourceType | undefined>(
   selectGeneralState, (state, { resourceType, id }) => state[resourceType].cachedById[id]
 );
 export const selectGeneralResourceIdsForTypeAndKey = createSelector<AppState, { resourceType: GeneralResourcesStateKey, key: string }, GeneralState, string[] | undefined>(

@@ -6,6 +6,7 @@ import { RequestParams } from '../../../core/models/request-param.model';
 import { Dictionary } from '../../../core/models/dictionary.model';
 import { GeneralResourcesStateKey, GeneralResourceType } from '../../store/general/general.state';
 import { BaseApiService } from './base-api.service';
+import { IdType } from '../../models/dto/id.model';
 
 @Injectable({
   providedIn: 'root'
@@ -33,7 +34,7 @@ export class GeneralResourcesApiService extends BaseApiService {
     return this.http.getWithLabel(apiLabel);
   }
 
-  getResourceForId(resourceType: GeneralResourcesStateKey, id: string): Observable<GeneralResourceType> {
+  getResourceForId(resourceType: GeneralResourcesStateKey, id: IdType): Observable<GeneralResourceType> {
     const apiLabel = this.getApiLabel(this.resourceApiLabelMap, resourceType);
     const query = new RequestParams();
     query.addIfValueExists('id', id);

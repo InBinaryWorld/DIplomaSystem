@@ -1,8 +1,8 @@
 import { ReservationStatus } from './reservation-status.model';
-import { WithId } from './id.model';
+import { IdType, WithId } from './id.model';
 
 export interface Reservation extends WithId {
-  thesisId: string;
+  thesisId: IdType;
   status: ReservationStatus;
   creationDate: Date;
 }

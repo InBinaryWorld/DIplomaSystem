@@ -1,6 +1,7 @@
 import { createAction, props } from '@ngrx/store';
 import { UserRole } from '../../models/dto/user-role.model';
 import { RequestsStateKey, RequestType } from './requests.state';
+import { IdType } from '../../models/dto/id.model';
 
 export const loadRequestsAction = createAction(
   '[REQUESTS] Load requests',
@@ -12,11 +13,11 @@ export const loadRequestsIfNeededAction = createAction(
 );
 export const loadRequestForIdAction = createAction(
   '[REQUESTS] Load request for id',
-  props<{ resourceType: RequestsStateKey, userRole: UserRole, id: string }>()
+  props<{ resourceType: RequestsStateKey, userRole: UserRole, id: IdType }>()
 );
 export const loadRequestForIdIfNeededAction = createAction(
   '[REQUESTS] Load request for id if needed',
-  props<{ resourceType: RequestsStateKey, userRole: UserRole, id: string }>()
+  props<{ resourceType: RequestsStateKey, userRole: UserRole, id: IdType }>()
 );
 
 

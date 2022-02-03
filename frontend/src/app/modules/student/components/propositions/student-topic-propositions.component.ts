@@ -29,8 +29,8 @@ export class StudentTopicPropositionsComponent extends RoleComponent implements 
     super(sessionService, changeDetector);
   }
 
-  get role(): Role {
-    return Role.STUDENT;
+  get roles(): Role[] {
+    return [Role.STUDENT];
   }
 
   ngOnInit(): void {

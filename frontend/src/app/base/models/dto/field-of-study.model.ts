@@ -1,8 +1,10 @@
 import { StudyDegree } from './study-degree.model';
-import { WithId } from './id.model';
+import { IdType, WithId } from './id.model';
 
 export interface FieldOfStudy extends WithId {
-  departmentId: string,
+  departmentId: IdType,
   name: string,
   degree: StudyDegree,
+  // active diploma session for field of study
+  activeDiplomaSessionId: IdType
 }

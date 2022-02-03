@@ -3,7 +3,7 @@
     <h1 class="display-6">{{ 'Student.TopicChangeCreate.Header' | translate }}</h1>
   </div>
 
-  <div *ngIf="baseThesis" class="row py-3">
+  <div *ngIf="form" class="row py-3">
     <app-error-alert *ngIf="errorVisible"></app-error-alert>
     <form *ngIf="form" [formGroup]="form">
       <div class="mb-3">
@@ -17,6 +17,10 @@
           <option *ngFor="let item of supervisors" [value]="item.id">{{ item.name }}</option>
         </select>
         <app-validation-feedback [errors]="getErrors(form,'supervisorId')"></app-validation-feedback>
+      </div>
+      <div class="mb-3">
+        <label for="numberOfStudents" class="form-label">{{ 'Form.Label.NumberOfStudents' | translate }}</label>
+        <input type="number" formControlName="numberOfStudents" id="numberOfStudents" class="form-control">
       </div>
       <div class="mb-4">
         <label for="description" class="form-label">{{ 'Form.Label.Description' | translate }}</label>

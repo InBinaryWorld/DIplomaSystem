@@ -24,6 +24,7 @@ import { UserRole } from '../../models/dto/user-role.model';
 import { ChangeRequest } from '../../models/dto/change-request.model';
 import { StoreKeys } from '../../../core/utils/store-keys.utils';
 import { filterExists } from '../../../core/tools/filter-exists';
+import { IdType } from '../../models/dto/id.model';
 
 @Injectable({
   providedIn: 'root'
@@ -41,7 +42,7 @@ export class RequestsStoreService extends CleanableStoreService {
     return this.selectChangeRequestsForKey(key).pipe(filterExists());
   }
 
-  public getChangeRequestForId(userRole: UserRole, requestId: string, ifNeededOnly = true)
+  public getChangeRequestForId(userRole: UserRole, requestId: IdType, ifNeededOnly = true)
     : Observable<ChangeRequest | undefined> {
     this.loadRequestForId(RequestsStateKey.CHANGE, userRole, requestId, ifNeededOnly);
     return this.selectChangeRequestForId(requestId);
@@ -55,7 +56,7 @@ export class RequestsStoreService extends CleanableStoreService {
     return this.selectClarificationRequestsForKey(key).pipe(filterExists());
   }
 
-  public getClarificationRequestForId(userRole: UserRole, requestId: string, ifNeededOnly = true)
+  public getClarificationRequestForId(userRole: UserRole, requestId: IdType, ifNeededOnly = true)
     : Observable<ClarificationRequest | undefined> {
     this.loadRequestForId(RequestsStateKey.CLARIFICATION, userRole, requestId, ifNeededOnly);
     return this.selectClarificationRequestForId(requestId);
@@ -68,7 +69,7 @@ export class RequestsStoreService extends CleanableStoreService {
     this.store.dispatch(action);
   }
 
-  public loadRequestForId(resourceType: RequestsStateKey, userRole: UserRole, id: string, ifNeededOnly = true): void {
+  public loadRequestForId(resourceType: RequestsStateKey, userRole: UserRole, id: IdType, ifNeededOnly = true): void {
     const action = ifNeededOnly
       ? loadRequestForIdIfNeededAction({ resourceType, userRole, id })
       : loadRequestForIdAction({ resourceType, userRole, id });
@@ -83,7 +84,7 @@ export class RequestsStoreService extends CleanableStoreService {
     return this.store.select(selectClarificationRequestsForKey, key);
   }
 
-  public selectClarificationRequestForId(id: string): Observable<ClarificationRequest | undefined> {
+  public selectClarificationRequestForId(id: IdType): Observable<ClarificationRequest | undefined> {
     return this.store.select(selectClarificationRequestForId, id);
   }
 
@@ -91,7 +92,7 @@ export class RequestsStoreService extends CleanableStoreService {
     return this.store.select(selectChangeRequestsForKey, key);
   }
 
-  public selectChangeRequestForId(id: string): Observable<ChangeRequest | undefined> {
+  public selectChangeRequestForId(id: IdType): Observable<ChangeRequest | undefined> {
     return this.store.select(selectChangeRequestForId, id);
   }
 

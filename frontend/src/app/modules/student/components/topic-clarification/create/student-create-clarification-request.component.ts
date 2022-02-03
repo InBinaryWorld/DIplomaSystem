@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ValidationErrors } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ClarificationRequest } from '../../../../../base/models/dto/clarification-request.model';
 import { AppValidators } from '../../../../../core/utils/validators.utils';
@@ -14,6 +14,7 @@ import { isNil } from 'lodash-es';
 import { UserRole } from '../../../../../base/models/dto/user-role.model';
 import { filterExists } from '../../../../../core/tools/filter-exists';
 import { first } from 'rxjs/operators';
+import { IdType } from '../../../../../base/models/dto/id.model';
 
 @Component({
   selector: 'app-student-topic-create-clarification',
@@ -49,11 +50,6 @@ export class StudentCreateClarificationRequestComponent extends RoleComponent im
       next: (request) => this.router.navigate(['/student/change-requests/details/', request.id]),
       error: () => this.errorVisible = true
     });
-  }
-
-  getErrors(controlName: string): ValidationErrors | null {
-    const control = this.newTopicForm!.get(controlName)!;
-    return (control.dirty || control.touched) ? control.errors : null;
   }
 
   ngOnInit(): void {
@@ -108,11 +104,11 @@ export class StudentCreateClarificationRequestComponent extends RoleComponent im
     this.markForCheck();
   }
 
-  get role(): Role {
-    return Role.STUDENT;
+  get roles(): Role[] {
+    return [Role.STUDENT];
   }
 
-  private prepareRequestForFormData(studentId: string, thesis: Thesis, formData: any): Partial<ClarificationRequest> {
+  private prepareRequestForFormData(studentId: IdType, thesis: Thesis, formData: any): Partial<ClarificationRequest> {
     return {
       studentId: studentId,
       newTopic: formData.newThesisTopic,

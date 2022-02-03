@@ -4,3 +4,9 @@
 <div *ngIf="errors?.['maxlength']" class="invalid-feedback" style="display: block">
   {{ 'Form.Feedback.MaxLength' |  translate }}
 </div>
+<div *ngIf="errors?.['min']" class="invalid-feedback" style="display: block">
+  {{ 'Form.Feedback.Min' |  translate }}
+</div>
+<div *ngIf="errors?.['max']" class="invalid-feedback" style="display: block">
+  {{ 'Form.Feedback.Max' |  translate }}
+</div>

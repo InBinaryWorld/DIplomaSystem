@@ -10,19 +10,9 @@ import {
 } from './components/topic-clarification/student-topic-clarifications.component';
 import { StudentReservationsComponent } from './components/reservations/student-reservations.component';
 import {
-  StudentReservationDetailsComponent
-} from './components/reservations/details/student-reservation-details.component';
-import { StudentTopicDetailsComponent } from './components/reservations/topic/student-topic-details.component';
-import {
   StudentCreateReservationComponent
 } from './components/reservations/create/student-create-reservation.component';
 import { StudentTopicPropositionsComponent } from './components/propositions/student-topic-propositions.component';
-import {
-  StudentCreatePropositionComponent
-} from './components/propositions/create/student-create-proposition.component';
-import {
-  StudentPropositionDetailsComponent
-} from './components/propositions/details/student-proposition-details.component';
 import {
   StudentCreateClarificationRequestComponent
 } from './components/topic-clarification/create/student-create-clarification-request.component';
@@ -35,6 +25,9 @@ import {
 import {
   StudentCreateChangeRequestComponent
 } from './components/topic-change/create/student-create-change-request.component';
+import { ReservationDetailsComponent } from '../shared/components/reservation-details/reservation-details.component';
+import { ThesisDetailsComponent } from '../shared/components/thesis-details/thesis-details.component';
+import { StudentCreateThesisComponent } from './components/propositions/create/student-create-thesis.component';
 
 
 const routes: Routes = [
@@ -59,12 +52,12 @@ const routes: Routes = [
             component: StudentReservationsComponent
           },
           {
-            path: 'details/:id',
-            component: StudentReservationDetailsComponent
+            path: 'details/:reservationId',
+            component: ReservationDetailsComponent
           },
           {
-            path: 'topic/:id',
-            component: StudentTopicDetailsComponent
+            path: 'topic/:thesisId',
+            component: ThesisDetailsComponent
           },
           {
             path: 'create/:id',
@@ -81,12 +74,12 @@ const routes: Routes = [
             component: StudentTopicPropositionsComponent
           },
           {
-            path: 'details/:topicId',
-            component: StudentPropositionDetailsComponent
+            path: 'details/:thesisId',
+            component: ThesisDetailsComponent
           },
           {
             path: 'create',
-            component: StudentCreatePropositionComponent
+            component: StudentCreateThesisComponent
           }
         ]
       },

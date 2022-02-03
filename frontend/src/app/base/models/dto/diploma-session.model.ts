@@ -1,7 +1,7 @@
-import { WithId } from './id.model';
+import { IdType, WithId } from './id.model';
 
 export interface DiplomaSession extends WithId {
-  timetableId: string,
-  fieldOfStudyId: string,
+  timetableId: IdType,
+  fieldOfStudyId: IdType,
   year: string,
 }

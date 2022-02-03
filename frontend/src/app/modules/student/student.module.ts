@@ -9,19 +9,9 @@ import {
 } from './components/topic-clarification/student-topic-clarifications.component';
 import { StudentReservationsComponent } from './components/reservations/student-reservations.component';
 import {
-  StudentReservationDetailsComponent
-} from './components/reservations/details/student-reservation-details.component';
-import { StudentTopicDetailsComponent } from './components/reservations/topic/student-topic-details.component';
-import {
   StudentCreateReservationComponent
 } from './components/reservations/create/student-create-reservation.component';
 import { StudentTopicPropositionsComponent } from './components/propositions/student-topic-propositions.component';
-import {
-  StudentCreatePropositionComponent
-} from './components/propositions/create/student-create-proposition.component';
-import {
-  StudentPropositionDetailsComponent
-} from './components/propositions/details/student-proposition-details.component';
 import {
   StudentClarificationRequestDetailsComponent
 } from './components/topic-clarification/details/student-clarification-request-details.component';
@@ -34,18 +24,16 @@ import {
 import {
   StudentCreateChangeRequestComponent
 } from './components/topic-change/create/student-create-change-request.component';
+import { StudentCreateThesisComponent } from './components/propositions/create/student-create-thesis.component';
 
 @NgModule({
   declarations: [
     StudentComponent,
     StudentChangeRequestsComponent,
     StudentReservationsComponent,
-    StudentTopicDetailsComponent,
-    StudentReservationDetailsComponent,
+    StudentCreateThesisComponent,
     StudentCreateReservationComponent,
     StudentTopicPropositionsComponent,
-    StudentCreatePropositionComponent,
-    StudentPropositionDetailsComponent,
     StudentTopicClarificationsComponent,
     StudentCreateChangeRequestComponent,
     StudentChangeRequestDetailsComponent,

@@ -1,10 +1,10 @@
 import { ThesisStatus } from './topic-status.model';
-import { WithId } from './id.model';
+import { IdType, WithId } from './id.model';
 
 export interface Thesis extends WithId {
-  supervisorId: string;
-  diplomaSessionId: string;
-  authorStudentId?: string;
+  supervisorId: IdType;
+  diplomaSessionId: IdType;
+  authorStudentId?: IdType;
   topic: string;
   description: string;
   numberOfStudents: number;

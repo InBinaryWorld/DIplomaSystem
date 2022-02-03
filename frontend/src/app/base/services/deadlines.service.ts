@@ -6,6 +6,7 @@ import { filterExists } from '../../core/tools/filter-exists';
 import { GeneralResourcesStoreService } from './store/general-store.service';
 import { ThesesService } from './theses.service';
 import { isNil } from 'lodash-es';
+import { IdType } from '../models/dto/id.model';
 
 @Injectable({
   providedIn: 'root'
@@ -24,15 +25,15 @@ export class DeadlinesService {
     return this.checkForCurrentDiplomaSession(t => t.submittingThesis);
   }
 
-  public canCreateClarificationRequest(studentId: string): Observable<boolean> {
+  public canCreateClarificationRequest(studentId: IdType): Observable<boolean> {
     return this.checkForActiveReservedThesis(studentId, t => t.clarificationThesis);
   }
 
-  public canCreateChangeRequest(studentId: string): Observable<boolean> {
+  public canCreateChangeRequest(studentId: IdType): Observable<boolean> {
     return this.checkForActiveReservedThesis(studentId, t => t.changingThesis);
   }
 
-  private checkForActiveReservedThesis(studentId: string, deadlineSelector: (timetable: Timetable) => Date): Observable<boolean> {
+  private checkForActiveReservedThesis(studentId: IdType, deadlineSelector: (timetable: Timetable) => Date): Observable<boolean> {
     return this.thesesService.getActiveReservedThesisForStudentId(studentId).pipe(
       switchMap(thesis => isNil(thesis)
         ? of(false)
@@ -48,13 +49,13 @@ export class DeadlinesService {
       .pipe(switchMap(ds => this.verifyDeadline(ds.timetableId, deadlineSelector)));
   }
 
-  public verifyDeadlineForDiplomaSessionId(diplomaSessionId: string, deadlineSelector: (timetable: Timetable) => Date): Observable<boolean> {
+  public verifyDeadlineForDiplomaSessionId(diplomaSessionId: IdType, deadlineSelector: (timetable: Timetable) => Date): Observable<boolean> {
     return this.generalResourcesStoreService.getDiplomaSessionForId(diplomaSessionId).pipe(
       filterExists(), switchMap(ds => this.verifyDeadline(ds.timetableId, deadlineSelector))
     );
   }
 
-  public verifyDeadline(timetableId: string, deadlineSelector: (timetable: Timetable) => Date): Observable<boolean> {
+  public verifyDeadline(timetableId: IdType, deadlineSelector: (timetable: Timetable) => Date): Observable<boolean> {
     return this.generalResourcesStoreService.getTimetableForId(timetableId).pipe(
       filterExists(), map(timetable => this.checkDate(deadlineSelector(timetable)))
     );

@@ -1,7 +1,7 @@
 import { OnReducer } from '@ngrx/store/src/reducer_creator';
 import { ActionType } from '@ngrx/store/src/models';
 import { Dictionary } from '../models/dictionary.model';
-import { WithId } from '../../base/models/dto/id.model';
+import { IdType, WithId } from '../../base/models/dto/id.model';
 import { keyBy } from 'lodash-es';
 
 export abstract class BaseStoreState {
@@ -28,7 +28,7 @@ export class StoreResource<T extends WithId> {
   }
 }
 
-export function forIdSelector<T extends WithId>(resource: StoreResource<T>, id: string): T | undefined {
+export function forIdSelector<T extends WithId>(resource: StoreResource<T>, id: IdType): T | undefined {
   return resource.cachedById[id];
 }
 

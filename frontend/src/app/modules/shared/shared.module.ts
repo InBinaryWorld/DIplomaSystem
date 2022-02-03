@@ -7,13 +7,18 @@ import { RouterModule } from '@angular/router';
 import { LocalDatePipe } from './pipes/local-date.pipe';
 import { ValidationFeedbackComponent } from './components/validation-feedback/validation-feedback.component';
 import { ErrorAlertComponent } from './components/alerts/error/error-alert.component';
+import { ReservationDetailsComponent } from './components/reservation-details/reservation-details.component';
+import { ThesisDetailsComponent } from './components/thesis-details/thesis-details.component';
+
 
 @NgModule({
   declarations: [
     SidebarComponent,
     ErrorAlertComponent,
     ValidationFeedbackComponent,
-    LocalDatePipe
+    LocalDatePipe,
+    ThesisDetailsComponent,
+    ReservationDetailsComponent
   ],
   imports: [
     CommonModule,
@@ -31,7 +36,9 @@ import { ErrorAlertComponent } from './components/alerts/error/error-alert.compo
     SidebarComponent,
     ErrorAlertComponent,
     ValidationFeedbackComponent,
-    LocalDatePipe
+    LocalDatePipe,
+    ThesisDetailsComponent,
+    ReservationDetailsComponent
   ]
 })
 export class SharedModule {

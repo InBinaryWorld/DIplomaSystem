@@ -27,6 +27,7 @@ import {
 import { ThesesStateKey } from '../../store/theses/theses.state';
 import { Thesis } from '../../models/dto/thesis.model';
 import { filterExists } from '../../../core/tools/filter-exists';
+import { IdType } from '../../models/dto/id.model';
 
 @Injectable({
   providedIn: 'root'
@@ -43,17 +44,17 @@ export class ThesesStoreService extends CleanableStoreService {
     return this.selectThesesForKey(key).pipe(filterExists());
   }
 
-  public getThesisForId(thesisId: string): Observable<Thesis | undefined> {
+  public getThesisForId(thesisId: IdType): Observable<Thesis | undefined> {
     this.loadThesisForId(thesisId);
     return this.selectThesisForId(thesisId);
   }
 
-  public getStudentReservations(studentId: string, key: string): Observable<Reservation[] | undefined> {
+  public getStudentReservations(studentId: IdType, key: string): Observable<Reservation[] | undefined> {
     this.loadStudentReservations(studentId, key);
     return this.selectReservationsForKey(key);
   }
 
-  public getReservationForId(reservationId: string): Observable<Reservation | undefined> {
+  public getReservationForId(reservationId: IdType): Observable<Reservation | undefined> {
     this.loadReservationForId(reservationId);
     return this.selectReservationForId(reservationId);
   }
@@ -65,21 +66,21 @@ export class ThesesStoreService extends CleanableStoreService {
     this.store.dispatch(action);
   }
 
-  public loadThesisForId(id: string, ifNeededOnly = true): void {
+  public loadThesisForId(id: IdType, ifNeededOnly = true): void {
     const action = ifNeededOnly
       ? loadThesisForIdIfNeededAction({ id })
       : loadThesisForIdAction({ id });
     this.store.dispatch(action);
   }
 
-  public loadStudentReservations(studentId: string, key: string, ifNeededOnly = true): void {
+  public loadStudentReservations(studentId: IdType, key: string, ifNeededOnly = true): void {
     const action = ifNeededOnly
       ? loadStudentReservationsIfNeededAction({ studentId, key })
       : loadStudentReservationsAction({ studentId, key });
     this.store.dispatch(action);
   }
 
-  public loadReservationForId(id: string, ifNeededOnly = true): void {
+  public loadReservationForId(id: IdType, ifNeededOnly = true): void {
     const action = ifNeededOnly
       ? loadReservationForIdIfNeededAction({ id })
       : loadReservationForIdAction({ id });
@@ -94,7 +95,7 @@ export class ThesesStoreService extends CleanableStoreService {
     return this.store.select(selectReservationsForKey, key);
   }
 
-  public selectReservationForId(id: string): Observable<Reservation | undefined> {
+  public selectReservationForId(id: IdType): Observable<Reservation | undefined> {
     return this.store.select(selectReservationForId, id);
   }
 
@@ -102,7 +103,7 @@ export class ThesesStoreService extends CleanableStoreService {
     return this.store.select(selectThesesForKey, key);
   }
 
-  public selectThesisForId(id: string): Observable<Thesis | undefined> {
+  public selectThesisForId(id: IdType): Observable<Thesis | undefined> {
     return this.store.select(selectThesisForId, id);
   }
 

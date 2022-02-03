@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ClarificationRequest } from '../../../../../base/models/dto/clarification-request.model';
 import { ThesesService } from '../../../../../base/services/theses.service';
 import { RequestsService } from '../../../../../base/services/requests.service';
 import { RoleComponent } from '../../../../../base/components/role-component.directive';
@@ -14,6 +13,7 @@ import { filterExists } from '../../../../../core/tools/filter-exists';
 import { first } from 'rxjs/operators';
 import { UserRole } from '../../../../../base/models/dto/user-role.model';
 import { FakeData } from '../../../../../../fakes/fake.data';
+import { IdType } from '../../../../../base/models/dto/id.model';
 
 @Component({
   selector: 'app-student-topic-create-clarification',
@@ -23,7 +23,6 @@ import { FakeData } from '../../../../../../fakes/fake.data';
 })
 export class StudentCreateChangeRequestComponent extends RoleComponent implements OnInit {
 
-  request?: ClarificationRequest;
   form?: FormGroup;
 
   studentId?: string;
@@ -49,11 +48,6 @@ export class StudentCreateChangeRequestComponent extends RoleComponent implement
       next: (request) => this.router.navigate(['/student/change-requests/details/', request.id]),
       error: () => this.errorVisible = true
     });
-  }
-
-  getErrors(controlName: string): ValidationErrors | null {
-    const control = this.form!.get(controlName)!;
-    return (control.dirty || control.touched) ? control.errors : null;
   }
 
   ngOnInit(): void {
@@ -96,7 +90,7 @@ export class StudentCreateChangeRequestComponent extends RoleComponent implement
       .pipe(filterExists(), first());
   }
 
-  //TODO:
+  //TODO: diplomaSessionId from thesis
   private getSupervisors(thesis: Thesis): Observable<any[]> {
     // get for thesis.diplomaSessionId
     return of(FakeData.supervisors);
@@ -111,12 +105,12 @@ export class StudentCreateChangeRequestComponent extends RoleComponent implement
     this.markForCheck();
   }
 
-  get role(): Role {
-    return Role.STUDENT;
+  get roles(): Role[] {
+    return [Role.STUDENT];
   }
 
   // TODO: check and correct
-  private prepareRequestForFormData(studentId: string, thesis: Thesis, formData: any): any {
+  private prepareRequestForFormData(studentId: IdType, thesis: Thesis, formData: any): any {
     return {
       studentId: studentId,
       thesisId: thesis.id,

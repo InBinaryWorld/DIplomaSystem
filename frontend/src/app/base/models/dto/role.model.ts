@@ -1,9 +1,12 @@
-export enum Role {
-    ADMIN = 'ADMIN',
-    STUDENT = 'STUDENT',
-    LECTURER = 'LECTURER',
-    DEAN = 'DEAN',
-    COORDINATOR = 'COORDINATOR',
-    PROGRAM_COMMITTEE_MEMBER = 'PROGRAM_COMMITTEE_MEMBER',
-    DIPLOMA_SECTION_MEMBER = 'DIPLOMA_SECTION_MEMBER',
+import { EmployeeRole } from './employee-role.model';
+
+export enum StudentRole {
+  STUDENT = 'STUDENT'
 }
+
+export type Role = StudentRole | EmployeeRole;
+
+export const Role = {
+  ...StudentRole,
+  ...EmployeeRole
+};

@@ -1,21 +1,22 @@
 import { createAction, props } from '@ngrx/store';
 import { ThesesStateKey, ThesesStoreType } from './theses.state';
+import { IdType } from '../../models/dto/id.model';
 
 export const loadStudentReservationsAction = createAction(
   '[THESES] Load student reservations',
-  props<{ studentId: string, key: string }>()
+  props<{ studentId: IdType, key: string }>()
 );
 export const loadStudentReservationsIfNeededAction = createAction(
   '[THESES] Load student reservations if needed',
-  props<{ studentId: string, key: string }>()
+  props<{ studentId: IdType, key: string }>()
 );
 export const loadReservationForIdAction = createAction(
   '[THESES] Load reservation for id',
-  props<{ id: string }>()
+  props<{ id: IdType }>()
 );
 export const loadReservationForIdIfNeededAction = createAction(
   '[THESES] Load reservation for id if needed',
-  props<{ id: string }>()
+  props<{ id: IdType }>()
 );
 
 
@@ -29,11 +30,11 @@ export const loadThesesIfNeededAction = createAction(
 );
 export const loadThesisForIdAction = createAction(
   '[THESES] Load thesis for id',
-  props<{ id: string }>()
+  props<{ id: IdType }>()
 );
 export const loadThesisForIdIfNeededAction = createAction(
   '[THESES] Load thesis for id if needed',
-  props<{ id: string }>()
+  props<{ id: IdType }>()
 );
 
 
@@ -59,7 +60,7 @@ export const loadThesesFailedAction = createAction(
 export class LoadThesisActionOptions {
   proposedByStudentId?: string;
 
-  static proposedByStudent(studentId: string): LoadThesisActionOptions {
+  static proposedByStudent(studentId: IdType): LoadThesisActionOptions {
     const options = new LoadThesisActionOptions();
     options.proposedByStudentId = studentId;
     return options;

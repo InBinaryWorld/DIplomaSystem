@@ -2,24 +2,24 @@ import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { BehaviorSubject, combineLatest, Observable, switchMap } from 'rxjs';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { Role } from '../../../../../base/models/dto/role.model';
-import { filterExists } from '../../../../../core/tools/filter-exists';
-import { RoleComponent } from '../../../../../base/components/role-component.directive';
-import { UserRole } from '../../../../../base/models/dto/user-role.model';
-import { BaseRequest } from '../../../../../base/models/dto/base-request.model';
-import { TranslationKeys } from '../../../../../core/utils/translation-keys.utils';
-import { RequestsService } from '../../../../../base/services/requests.service';
-import { SessionService } from '../../../../../base/services/session.service';
-import { ChangeRequest } from '../../../../../base/models/dto/change-request.model';
-import { IdType } from '../../../../../base/models/dto/id.model';
+import { RequestsService } from '../../../../base/services/requests.service';
+import { Role } from '../../../../base/models/dto/role.model';
+import { TranslationKeys } from '../../../../core/utils/translation-keys.utils';
+import { RoleComponent } from '../../../../base/components/role-component.directive';
+import { SessionService } from '../../../../base/services/session.service';
+import { UserRole } from '../../../../base/models/dto/user-role.model';
+import { BaseRequest } from '../../../../base/models/dto/base-request.model';
+import { ChangeRequest } from '../../../../base/models/dto/change-request.model';
+import { filterExists } from '../../../../core/tools/filter-exists';
+import { IdType } from '../../../../base/models/dto/id.model';
 
 @Component({
   selector: 'app-student-topic-change-details',
-  templateUrl: './student-change-request-details.component.html',
-  styleUrls: ['./student-change-request-details.component.css'],
+  templateUrl: './reservation-details.component.html',
+  styleUrls: ['./reservation-details.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class StudentChangeRequestDetailsComponent extends RoleComponent implements OnInit {
+export class ReservationDetailsComponent extends RoleComponent implements OnInit {
 
   form?: FormGroup;
   request?: ChangeRequest;

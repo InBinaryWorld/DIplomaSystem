@@ -28,6 +28,7 @@ import { FieldOfStudy } from '../../models/dto/field-of-study.model';
 import { DiplomaSession } from '../../models/dto/diploma-session.model';
 import { Timetable } from '../../models/dto/timetable.model';
 import { FakeData } from '../../../../fakes/fake.data';
+import { IdType } from '../../models/dto/id.model';
 
 @Injectable({
   providedIn: 'root'
@@ -43,7 +44,7 @@ export class GeneralResourcesStoreService extends CleanableStoreService {
     return this.selectTimetablesForKey(key);
   }
 
-  public getTimetableForId(id: string, ifNeededOnly = true): Observable<Timetable | undefined> {
+  public getTimetableForId(id: IdType, ifNeededOnly = true): Observable<Timetable | undefined> {
     this.loadResourceForId(GeneralResourcesStateKey.TIMETABLES, id, ifNeededOnly);
     return this.selectTimetableForId(id);
   }
@@ -53,7 +54,7 @@ export class GeneralResourcesStoreService extends CleanableStoreService {
     return this.selectDiplomaSessionsForKey(key);
   }
 
-  public getDiplomaSessionForId(id: string, ifNeededOnly = true): Observable<DiplomaSession | undefined> {
+  public getDiplomaSessionForId(id: IdType, ifNeededOnly = true): Observable<DiplomaSession | undefined> {
     this.loadResourceForId(GeneralResourcesStateKey.DIPLOMA_SESSIONS, id, ifNeededOnly);
     return this.selectDiplomaSessionForId(id);
   }
@@ -76,7 +77,7 @@ export class GeneralResourcesStoreService extends CleanableStoreService {
     this.store.dispatch(action);
   }
 
-  public loadResourceForId(resourceType: GeneralResourcesStateKey, id: string, ifNeededOnly = true): void {
+  public loadResourceForId(resourceType: GeneralResourcesStateKey, id: IdType, ifNeededOnly = true): void {
     const action = ifNeededOnly
       ? loadGeneralResourceForIdIfNeededAction({ resourceType, id })
       : loadGeneralResourceForIdAction({ resourceType, id });
@@ -87,7 +88,7 @@ export class GeneralResourcesStoreService extends CleanableStoreService {
     return this.store.select(selectDepartmentsForKey, key);
   }
 
-  public selectDepartmentForId(id: string): Observable<Department | undefined> {
+  public selectDepartmentForId(id: IdType): Observable<Department | undefined> {
     return this.store.select(selectDepartmentForId, id);
   }
 
@@ -95,7 +96,7 @@ export class GeneralResourcesStoreService extends CleanableStoreService {
     return this.store.select(selectFieldsOfStudyForKey, key);
   }
 
-  public selectFieldOfStudyForId(id: string): Observable<FieldOfStudy | undefined> {
+  public selectFieldOfStudyForId(id: IdType): Observable<FieldOfStudy | undefined> {
     return this.store.select(selectFieldOfStudyForId, id);
   }
 
@@ -103,7 +104,7 @@ export class GeneralResourcesStoreService extends CleanableStoreService {
     return this.store.select(selectDiplomaSessionsForKey, key);
   }
 
-  public selectDiplomaSessionForId(id: string): Observable<DiplomaSession | undefined> {
+  public selectDiplomaSessionForId(id: IdType): Observable<DiplomaSession | undefined> {
     return this.store.select(selectDiplomaSessionForId, id);
   }
 
@@ -111,7 +112,7 @@ export class GeneralResourcesStoreService extends CleanableStoreService {
     return this.store.select(selectTimetablesForKey, key);
   }
 
-  public selectTimetableForId(id: string): Observable<Timetable | undefined> {
+  public selectTimetableForId(id: IdType): Observable<Timetable | undefined> {
     return this.store.select(selectTimetableForId, id);
   }
 

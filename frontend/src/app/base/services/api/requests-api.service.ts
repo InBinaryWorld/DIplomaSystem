@@ -9,6 +9,7 @@ import { RequestsStateKey, RequestType } from '../../store/requests/requests.sta
 import { BaseApiService } from './base-api.service';
 import { ClarificationRequest } from '../../models/dto/clarification-request.model';
 import { ChangeRequest } from '../../models/dto/change-request.model';
+import { IdType } from '../../models/dto/id.model';
 
 @Injectable({
   providedIn: 'root'
@@ -36,7 +37,7 @@ export class RequestsApiService extends BaseApiService {
     return this.http.getWithLabel(apiLabel, undefined, queryParams);
   }
 
-  getRequestForId(resourceType: RequestsStateKey, id: string): Observable<RequestType> {
+  getRequestForId(resourceType: RequestsStateKey, id: IdType): Observable<RequestType> {
     const apiLabel = this.getApiLabel(this.requestApiLabelMap, resourceType);
 
     const query = new RequestParams();
@@ -44,16 +45,16 @@ export class RequestsApiService extends BaseApiService {
     return this.http.getWithLabel(apiLabel, undefined, query);
   }
 
-  rejectClarificationRequestForRole(userRole: UserRole, requestId: string): Observable<void> {
+  rejectClarificationRequestForRole(userRole: UserRole, requestId: IdType): Observable<void> {
     const rejectPayload = { requestId, role: userRole.role, roleId: userRole.id };
     return this.http.postWithLabel(ApiLabel.REJECT_CLARIFICATION_REQUEST, rejectPayload);
   }
 
-  createClarificationRequest(thesisId: string, payload: Partial<ClarificationRequest>): Observable<ClarificationRequest> {
+  createClarificationRequest(thesisId: IdType, payload: Partial<ClarificationRequest>): Observable<ClarificationRequest> {
     return this.http.postWithLabel(ApiLabel.CREATE_CLARIFICATION_REQUEST, payload);
   }
 
-  createChangeRequest(thesisId: string, payload: any): Observable<ChangeRequest> {
+  createChangeRequest(thesisId: IdType, payload: any): Observable<ChangeRequest> {
     return this.http.postWithLabel(ApiLabel.CREATE_CHANGE_REQUEST, payload);
   }
 

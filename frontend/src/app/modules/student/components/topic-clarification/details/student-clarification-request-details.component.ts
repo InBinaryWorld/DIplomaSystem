@@ -1,6 +1,6 @@
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { BehaviorSubject, combineLatest, distinctUntilChanged, map, Observable, switchMap } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable, switchMap } from 'rxjs';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Role } from '../../../../../base/models/dto/role.model';
 import { ClarificationRequest } from '../../../../../base/models/dto/clarification-request.model';
@@ -11,6 +11,7 @@ import { BaseRequest } from '../../../../../base/models/dto/base-request.model';
 import { TranslationKeys } from '../../../../../core/utils/translation-keys.utils';
 import { RequestsService } from '../../../../../base/services/requests.service';
 import { SessionService } from '../../../../../base/services/session.service';
+import { IdType } from '../../../../../base/models/dto/id.model';
 
 @Component({
   selector: 'app-student-topic-clarification-details',
@@ -33,16 +34,12 @@ export class StudentClarificationRequestDetailsComponent extends RoleComponent i
     super(sessionService, changeDetector);
   }
 
-  get role(): Role {
-    return Role.STUDENT;
+  get roles(): Role[] {
+    return [Role.STUDENT];
   }
 
   get requestId(): Observable<string> {
-    return this.activatedRoute.paramMap.pipe(
-      map(params => params.get('requestId')),
-      filterExists(),
-      distinctUntilChanged()
-    );
+    return this.getPathParam(this.activatedRoute, 'requestId');
   }
 
   ngOnInit(): void {
@@ -80,7 +77,7 @@ export class StudentClarificationRequestDetailsComponent extends RoleComponent i
     this.markForCheck();
   }
 
-  private getRequest(userRole: UserRole, requestId: string): Observable<ClarificationRequest> {
+  private getRequest(userRole: UserRole, requestId: IdType): Observable<ClarificationRequest> {
     return this.requestsService.getClarificationRequestForId(userRole, requestId)
       .pipe(filterExists());
   }

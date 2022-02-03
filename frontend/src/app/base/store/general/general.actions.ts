@@ -1,5 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { GeneralResourcesStateKey, GeneralResourceType } from './general.state';
+import { IdType } from '../../models/dto/id.model';
 
 export const loadGeneralResourcesAction = createAction(
   '[GENERAL] Load general resources',
@@ -11,11 +12,11 @@ export const loadGeneralResourcesIfNeededAction = createAction(
 );
 export const loadGeneralResourceForIdAction = createAction(
   '[GENERAL] Load general resource for id',
-  props<{ resourceType: GeneralResourcesStateKey, id: string }>()
+  props<{ resourceType: GeneralResourcesStateKey, id: IdType }>()
 );
 export const loadGeneralResourceForIdIfNeededAction = createAction(
   '[GENERAL] Load general resource for id if needed',
-  props<{ resourceType: GeneralResourcesStateKey, id: string }>()
+  props<{ resourceType: GeneralResourcesStateKey, id: IdType }>()
 );
 
 export const invalidateGeneralResourcesAction = createAction(

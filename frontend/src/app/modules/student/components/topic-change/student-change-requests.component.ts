@@ -30,8 +30,8 @@ export class StudentChangeRequestsComponent extends RoleComponent implements OnI
     super(sessionService, changeDetector);
   }
 
-  get role(): Role {
-    return Role.STUDENT;
+  get roles(): Role[] {
+    return [Role.STUDENT];
   }
 
   ngOnInit(): void {
