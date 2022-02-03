@@ -21,6 +21,8 @@
       <div class="mb-3">
         <label for="numberOfStudents" class="form-label">{{ 'Form.Label.NumberOfStudents' | translate }}</label>
         <input type="number" formControlName="numberOfStudents" id="numberOfStudents" class="form-control">
+        <app-validation-feedback [errors]="getErrors(form,'numberOfStudents')"></app-validation-feedback>
+        {{getErrors(form, 'numberOfStudents')?.['pattern']}}
       </div>
       <div class="mb-4">
         <label for="description" class="form-label">{{ 'Form.Label.Description' | translate }}</label>

@@ -13,14 +13,8 @@ import {
 } from './components/reservations/create/student-create-reservation.component';
 import { StudentTopicPropositionsComponent } from './components/propositions/student-topic-propositions.component';
 import {
-  StudentClarificationRequestDetailsComponent
-} from './components/topic-clarification/details/student-clarification-request-details.component';
-import {
   StudentCreateClarificationRequestComponent
 } from './components/topic-clarification/create/student-create-clarification-request.component';
-import {
-  StudentChangeRequestDetailsComponent
-} from './components/topic-change/details/student-change-request-details.component';
 import {
   StudentCreateChangeRequestComponent
 } from './components/topic-change/create/student-create-change-request.component';
@@ -36,9 +30,7 @@ import { StudentCreateThesisComponent } from './components/propositions/create/s
     StudentTopicPropositionsComponent,
     StudentTopicClarificationsComponent,
     StudentCreateChangeRequestComponent,
-    StudentChangeRequestDetailsComponent,
-    StudentCreateClarificationRequestComponent,
-    StudentClarificationRequestDetailsComponent
+    StudentCreateClarificationRequestComponent
   ],
   imports: [
     SharedModule,

@@ -13,11 +13,11 @@ export const loadRequestsIfNeededAction = createAction(
 );
 export const loadRequestForIdAction = createAction(
   '[REQUESTS] Load request for id',
-  props<{ resourceType: RequestsStateKey, userRole: UserRole, id: IdType }>()
+  props<{ resourceType: RequestsStateKey, id: IdType }>()
 );
 export const loadRequestForIdIfNeededAction = createAction(
   '[REQUESTS] Load request for id if needed',
-  props<{ resourceType: RequestsStateKey, userRole: UserRole, id: IdType }>()
+  props<{ resourceType: RequestsStateKey, id: IdType }>()
 );
 
 

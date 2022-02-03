@@ -17,17 +17,15 @@ import {
   StudentCreateClarificationRequestComponent
 } from './components/topic-clarification/create/student-create-clarification-request.component';
 import {
-  StudentClarificationRequestDetailsComponent
-} from './components/topic-clarification/details/student-clarification-request-details.component';
-import {
-  StudentChangeRequestDetailsComponent
-} from './components/topic-change/details/student-change-request-details.component';
+  ClarificationRequestDetailsComponent
+} from '../shared/components/clarification-details/clarification-request-details.component';
 import {
   StudentCreateChangeRequestComponent
 } from './components/topic-change/create/student-create-change-request.component';
 import { ReservationDetailsComponent } from '../shared/components/reservation-details/reservation-details.component';
 import { ThesisDetailsComponent } from '../shared/components/thesis-details/thesis-details.component';
 import { StudentCreateThesisComponent } from './components/propositions/create/student-create-thesis.component';
+import { ChangeRequestDetailsComponent } from '../shared/components/change-details/change-request-details.component';
 
 
 const routes: Routes = [
@@ -93,7 +91,7 @@ const routes: Routes = [
           },
           {
             path: 'details/:requestId',
-            component: StudentChangeRequestDetailsComponent
+            component: ChangeRequestDetailsComponent
           },
           {
             path: 'create',
@@ -111,7 +109,7 @@ const routes: Routes = [
           },
           {
             path: 'details/:requestId',
-            component: StudentClarificationRequestDetailsComponent
+            component: ClarificationRequestDetailsComponent
           },
           {
             path: 'create',

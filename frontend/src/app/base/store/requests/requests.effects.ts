@@ -39,12 +39,12 @@ export class RequestsEffects {
   loadRequestsForIdIfNeededAction = createEffect(() => this.actions.pipe(
     ofType(loadRequestForIdIfNeededAction),
     mergeIfNil(({ resourceType, id }) => this.store.select(selectRequestForTypeAndId, { resourceType, id })),
-    map(({ resourceType, userRole, id }) => loadRequestForIdAction({ resourceType, userRole, id }))
+    map(({ resourceType, id }) => loadRequestForIdAction({ resourceType, id }))
   ));
 
   loadRequestsForIdAction = createEffect(() => this.actions.pipe(
     ofType(loadRequestForIdAction),
-    mergeMap(({ resourceType, userRole, id }) => this.requestsService.getRequestForId(resourceType, id).pipe(
+    mergeMap(({ resourceType, id }) => this.requestsService.getRequestForId(resourceType, id).pipe(
       map(instance => loadRequestSuccessAction({ resourceType, instance })),
       catchError(error => of(loadRequestsFailedAction({ error })))
     ))

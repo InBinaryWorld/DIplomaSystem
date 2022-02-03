@@ -119,6 +119,7 @@
   "Form.Feedback.MaxLength": "Wprowadzona wartość jest za długa!",
   "Form.Feedback.Min": "Wprowadzona wartość jest za mała!",
   "Form.Feedback.Max": "Wprowadzona wartość jest za duża!",
+  "Form.Feedback.Pattern": "Wprowadzono wartość w nieprawidłowym formacie!",
   "Form.Feedback.Required": "Pole jest wymagane!",
   "ReservationsStatus.WAITING": "Oczekująca",
   "ReservationsStatus.SUBMITTED": "Zgłoszona",

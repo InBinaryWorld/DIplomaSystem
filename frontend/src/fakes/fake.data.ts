@@ -63,6 +63,9 @@ const clarificationRequest: ClarificationRequest = {
   submissionDate: new Date(),
   newTopic: 'nowy temat pracy',
   newDescription: 'nowy opis pracy',
+  supervisorName: 'PhD John Lennon',
+  currentTopic: 'Predykcja zachowań ludzi podczas lockdownu',
+  currentDescription: 'Predykcja zachowań ludzi podczas lockdownu - opis',
   status: RequestStatus.WAITING
 };
 
@@ -73,7 +76,10 @@ const changeRequest: ChangeRequest = {
   submissionDate: new Date(),
   status: RequestStatus.WAITING,
   newThesisId: '12',
-  oldThesisId: '12'
+  oldThesisId: '12',
+  newSupervisorName: 'PhD Jerzy Dudek',
+  newTopic: 'Predykcja zachowań ludzi podczas lockdownu',
+  newDescription: 'Predykcja zachowań ludzi podczas lockdownu - opis'
 };
 
 const date = new Date(2023, 1);

@@ -42,9 +42,9 @@ export class RequestsStoreService extends CleanableStoreService {
     return this.selectChangeRequestsForKey(key).pipe(filterExists());
   }
 
-  public getChangeRequestForId(userRole: UserRole, requestId: IdType, ifNeededOnly = true)
+  public getChangeRequestForId(requestId: IdType, ifNeededOnly = true)
     : Observable<ChangeRequest | undefined> {
-    this.loadRequestForId(RequestsStateKey.CHANGE, userRole, requestId, ifNeededOnly);
+    this.loadRequestForId(RequestsStateKey.CHANGE, requestId, ifNeededOnly);
     return this.selectChangeRequestForId(requestId);
   }
 
@@ -56,9 +56,9 @@ export class RequestsStoreService extends CleanableStoreService {
     return this.selectClarificationRequestsForKey(key).pipe(filterExists());
   }
 
-  public getClarificationRequestForId(userRole: UserRole, requestId: IdType, ifNeededOnly = true)
+  public getClarificationRequestForId(requestId: IdType, ifNeededOnly = true)
     : Observable<ClarificationRequest | undefined> {
-    this.loadRequestForId(RequestsStateKey.CLARIFICATION, userRole, requestId, ifNeededOnly);
+    this.loadRequestForId(RequestsStateKey.CLARIFICATION, requestId, ifNeededOnly);
     return this.selectClarificationRequestForId(requestId);
   }
 
@@ -69,10 +69,10 @@ export class RequestsStoreService extends CleanableStoreService {
     this.store.dispatch(action);
   }
 
-  public loadRequestForId(resourceType: RequestsStateKey, userRole: UserRole, id: IdType, ifNeededOnly = true): void {
+  public loadRequestForId(resourceType: RequestsStateKey, id: IdType, ifNeededOnly = true): void {
     const action = ifNeededOnly
-      ? loadRequestForIdIfNeededAction({ resourceType, userRole, id })
-      : loadRequestForIdAction({ resourceType, userRole, id });
+      ? loadRequestForIdIfNeededAction({ resourceType, id })
+      : loadRequestForIdAction({ resourceType, id });
     this.store.dispatch(action);
   }
 

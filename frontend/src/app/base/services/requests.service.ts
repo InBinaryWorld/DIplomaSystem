@@ -23,16 +23,16 @@ export class RequestsService {
     return this.requestsStoreService.getChangeRequestsForRole(userRole, ifNeededOnly);
   }
 
-  public getChangeRequestForId(userRole: UserRole, requestId: IdType, ifNeededOnly = true): Observable<ChangeRequest | undefined> {
-    return this.requestsStoreService.getChangeRequestForId(userRole, requestId, ifNeededOnly);
+  public getChangeRequestForId(requestId: IdType, ifNeededOnly = true): Observable<ChangeRequest | undefined> {
+    return this.requestsStoreService.getChangeRequestForId(requestId, ifNeededOnly);
   }
 
   public getClarificationRequestsForRole(userRole: UserRole, ifNeededOnly = true): Observable<ClarificationRequest[]> {
     return this.requestsStoreService.getClarificationRequestsForRole(userRole, ifNeededOnly);
   }
 
-  public getClarificationRequestForId(userRole: UserRole, requestId: IdType, ifNeededOnly = true): Observable<ClarificationRequest | undefined> {
-    return this.requestsStoreService.getClarificationRequestForId(userRole, requestId, ifNeededOnly);
+  public getClarificationRequestForId(requestId: IdType, ifNeededOnly = true): Observable<ClarificationRequest | undefined> {
+    return this.requestsStoreService.getClarificationRequestForId(requestId, ifNeededOnly);
   }
 
   public invalidateClarificationRequests(): void {

@@ -118,6 +118,7 @@
   "Form.Feedback.MaxLength": "Provided value is too long!",
   "Form.Feedback.Min": "Provided value is too small!",
   "Form.Feedback.Max": "Provided value is too large!",
+  "Form.Feedback.Pattern": "Provided value in invalid format!",
   "Form.Feedback.Required": "Field is required!",
   "ReservationsStatus.WAITING": "Waiting",
   "ReservationsStatus.SUBMITTED": "Submitted",

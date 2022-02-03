@@ -9,6 +9,10 @@ import { ValidationFeedbackComponent } from './components/validation-feedback/va
 import { ErrorAlertComponent } from './components/alerts/error/error-alert.component';
 import { ReservationDetailsComponent } from './components/reservation-details/reservation-details.component';
 import { ThesisDetailsComponent } from './components/thesis-details/thesis-details.component';
+import {
+  ClarificationRequestDetailsComponent
+} from './components/clarification-details/clarification-request-details.component';
+import { ChangeRequestDetailsComponent } from './components/change-details/change-request-details.component';
 
 
 @NgModule({
@@ -18,7 +22,9 @@ import { ThesisDetailsComponent } from './components/thesis-details/thesis-detai
     ValidationFeedbackComponent,
     LocalDatePipe,
     ThesisDetailsComponent,
-    ReservationDetailsComponent
+    ReservationDetailsComponent,
+    ClarificationRequestDetailsComponent,
+    ChangeRequestDetailsComponent
   ],
   imports: [
     CommonModule,
@@ -38,7 +44,9 @@ import { ThesisDetailsComponent } from './components/thesis-details/thesis-detai
     ValidationFeedbackComponent,
     LocalDatePipe,
     ThesisDetailsComponent,
-    ReservationDetailsComponent
+    ReservationDetailsComponent,
+    ClarificationRequestDetailsComponent,
+    ChangeRequestDetailsComponent
   ]
 })
 export class SharedModule {

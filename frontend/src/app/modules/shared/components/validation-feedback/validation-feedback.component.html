@@ -10,3 +10,6 @@
 <div *ngIf="errors?.['max']" class="invalid-feedback" style="display: block">
   {{ 'Form.Feedback.Max' |  translate }}
 </div>
+<div *ngIf="errors?.['pattern']" class="invalid-feedback" style="display: block">
+  {{ 'Form.Feedback.Pattern' |  translate }}
+</div>
