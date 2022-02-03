@@ -3,7 +3,7 @@ package pwr.diplomaproject.controller
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.web.bind.annotation.*
 import pwr.diplomaproject.model.dto.CoordinatorSubjectDetailsDto
-import pwr.diplomaproject.model.dto.CoordinatorSubjectDto
+import pwr.diplomaproject.model.dto.SubjectDto
 import pwr.diplomaproject.model.form.CoordinatorCommentForm
 
 @RestController
@@ -12,11 +12,11 @@ class CoordinatorSubjectController {
 
     @Operation(summary = "Do weryfikacji - zaproponowane tematy prac dyplomowych")
     @GetMapping("/to-verify")
-    fun getSubjectsToVerify(): List<CoordinatorSubjectDto> = TODO()
+    fun getSubjectsToVerify(): List<SubjectDto> = TODO()
 
     @Operation(summary = "Zweryfikowane - zaproponowane tematy")
     @GetMapping("/verified")
-    fun getSubjectsVerified(): List<CoordinatorSubjectDto> = TODO()
+    fun getSubjectsVerified(): List<SubjectDto> = TODO()
 
     @Operation(summary = "Szczegóły zaproponowanego tematu")
     @GetMapping("/{id}")

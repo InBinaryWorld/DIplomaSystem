@@ -4,8 +4,8 @@ import io.swagger.v3.oas.annotations.Operation
 import org.springframework.web.bind.annotation.*
 import pwr.diplomaproject.model.dto.LecturerStudentProposedSubjectDetailsDto
 import pwr.diplomaproject.model.dto.LecturerSubjectDetailsDto
-import pwr.diplomaproject.model.dto.LecturerSubjectDto
 import pwr.diplomaproject.model.dto.LecturerSubjectToCorrectDetailsDto
+import pwr.diplomaproject.model.dto.SubjectDto
 import pwr.diplomaproject.model.form.LecturerNewTopicForm
 import pwr.diplomaproject.model.form.LecturerTopicCorrectionForm
 
@@ -15,7 +15,7 @@ class LecturerSubjectController {
 
     @Operation(summary = "Zgłoszone tematy przez prowadzącego")
     @GetMapping("/proposed")
-    fun getProposedSubjects(): List<LecturerSubjectDto> = TODO()
+    fun getProposedSubjects(): List<SubjectDto> = TODO()
 
     @Operation(summary = "Szczegóły tematu zgłoszonego przez prowadzącego")
     @GetMapping("/proposed/{id}")
@@ -27,7 +27,7 @@ class LecturerSubjectController {
 
     @Operation(summary = "Propozycje studentów tematów z udziałem prowadzącego")
     @GetMapping("/student-propositions")
-    fun getStudentProposedSubjects(): List<LecturerSubjectDto> = TODO()
+    fun getStudentProposedSubjects(): List<SubjectDto> = TODO()
 
     @Operation(summary = "Szczegóły propozycji tematu studentów")
     @GetMapping("/student-propositions/{id}")
@@ -43,7 +43,7 @@ class LecturerSubjectController {
 
     @Operation(summary = "Tematy do poprawy")
     @GetMapping("/to-correct")
-    fun getSubjectsToCorrect(): List<LecturerSubjectDto> = TODO()
+    fun getSubjectsToCorrect(): List<SubjectDto> = TODO()
 
     @Operation(summary = "Szczegóły tematu do poprawy")
     @GetMapping("/to-correct/{id}")

@@ -2,9 +2,11 @@ package pwr.diplomaproject.model.dto
 
 import pwr.diplomaproject.model.enum.TopicStatus
 
-data class CoordinatorSubjectDto(
+data class SubjectDto (
     val id: Long,
     val topic: String,
     val lecturerName: String,
-    val status: TopicStatus?
+    val creationDate: String,
+    val numberOfStudents: Int,
+    val status: TopicStatus
 )

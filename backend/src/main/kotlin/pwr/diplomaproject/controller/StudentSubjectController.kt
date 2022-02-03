@@ -3,7 +3,7 @@ package pwr.diplomaproject.controller
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.web.bind.annotation.*
 import pwr.diplomaproject.model.dto.StudentSubjectDetailsDto
-import pwr.diplomaproject.model.dto.StudentSubjectDto
+import pwr.diplomaproject.model.dto.SubjectDto
 import pwr.diplomaproject.model.form.StudentSubjectPropositionForm
 
 @RestController
@@ -12,11 +12,11 @@ class StudentSubjectController {
 
     @Operation(summary = "Dostępne tematy do zarezerwowania przez zalogowanego studenta")
     @GetMapping("/available")
-    fun getAvailableSubjects(@RequestParam studentId: Long): List<StudentSubjectDto> = TODO()
+    fun getAvailableSubjects(@RequestParam studentId: Long): List<SubjectDto> = TODO()
 
     @Operation(summary = "Propozycje tematów złożone przez zalogowanego studenta")
     @GetMapping("/proposed")
-    fun getProposedSubjects(@RequestParam studentId: Long): List<StudentSubjectDto> = TODO()
+    fun getProposedSubjects(@RequestParam studentId: Long): List<SubjectDto> = TODO()
 
     @Operation(summary = "Szczegóły tematu")
     @GetMapping("/{id}")
