@@ -1,6 +1,6 @@
 <div class="container">
   <div class="row my-4">
-    <h1 class="display-6">{{ 'ThesisDetails.Header' | translate }}</h1>
+    <h1 class="display-6">{{ headerKey | translate }}</h1>
   </div>
 
   <div *ngIf="form && thesis" class="row mb-3">
@@ -9,6 +9,9 @@
     </app-warning-alert>
     <app-warning-alert *ngIf="isWarningVisible(Role.COORDINATOR, canCoordinatorConsiderThesis)" class="my-2"
                        messageKey="Alert.Warning.Coordinator.CannotConsiderThesis">
+    </app-warning-alert>
+    <app-warning-alert *ngIf="isWarningVisible(Role.PROGRAM_COMMITTEE_MEMBER, canCommitteeMemberConsiderThesis)"
+                       class="my-2" messageKey="Alert.Warning.CommitteeMember.CannotConsiderThesis">
     </app-warning-alert>
     <form [formGroup]="form">
       <div class="mb-3">
@@ -64,6 +67,18 @@
           <button type="button" class="btn btn-primary"
                   [disabled]="!canCoordinatorConsiderThesis"
                   (click)="approveThesisWithCoordinator()">
+            {{ 'Button.Approve' | translate }}
+          </button>
+        </ng-container>
+        <ng-container *ngIf="userRole?.role === Role.PROGRAM_COMMITTEE_MEMBER">
+          <button type="button" class="btn btn-outline-danger"
+                  [disabled]="!canCommitteeMemberConsiderThesis"
+                  (click)="rejectThesisWithCommitteeMember()">
+            {{ 'Button.Reject' | translate }}
+          </button>
+          <button type="button" class="btn btn-primary"
+                  [disabled]="!canCommitteeMemberConsiderThesis"
+                  (click)="approveThesisWithCommitteeMember()">
             {{ 'Button.Approve' | translate }}
           </button>
         </ng-container>

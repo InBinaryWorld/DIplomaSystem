@@ -300,6 +300,7 @@ const responseByApiKey: Dictionary<any> = {
   [ApiLabel.ABANDON_MEMBER_RESERVATION]: reservationMember,
   [ApiLabel.APPROVE_CLARIFICATION_REQUEST]: clarificationRequest,
   [ApiLabel.APPROVE_THESIS_WITH_COORDINATOR]: thesis,
+  [ApiLabel.APPROVE_THESIS_WITH_COMMITTEE_MEMBER]: thesis,
   [ApiLabel.CONFIRM_MEMBER_RESERVATION]: reservationMember,
   [ApiLabel.CONFIRM_PARTICIPATION_IN_RESERVATION]: reservationMember,
   [ApiLabel.CREATE_CLARIFICATION_REQUEST]: clarificationRequest,
@@ -320,6 +321,7 @@ const responseByApiKey: Dictionary<any> = {
   [ApiLabel.GET_THESIS]: thesis,
   [ApiLabel.GET_THESES]: theses,
   [ApiLabel.REJECT_CLARIFICATION_REQUEST]: clarificationRequest,
+  [ApiLabel.REJECT_THESIS_WITH_COMMITTEE_MEMBER]: clarificationRequest,
   [ApiLabel.REJECT_THESIS_WITH_COORDINATOR]: thesis,
   [ApiLabel.REQUEST_THESIS_CORRECTIONS]: thesis
 };

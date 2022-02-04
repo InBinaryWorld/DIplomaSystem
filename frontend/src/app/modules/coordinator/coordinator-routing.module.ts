@@ -32,7 +32,10 @@ const routes: Routes = [
           {
             path: ':thesisId',
             pathMatch: 'full',
-            component: ThesisDetailsComponent
+            component: ThesisDetailsComponent,
+            data: {
+              [ThesisDetailsComponent.HEADER_KEY]: 'ThesisDetails.Header.TopicReview'
+            }
           }
         ]
       }

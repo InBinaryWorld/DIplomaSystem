@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { NavItem } from "../../../shared/models/nav-item.model";
+import { NavItem } from '../../../shared/models/nav-item.model';
 
 @Component({
   selector: 'app-dean',
@@ -11,6 +11,7 @@ export class ProgramCommitteeComponent {
 
   public navItems: NavItem[] = [
     { path: '/program-committee/topic', nameKey: 'Sidebar.ProgramCommittee.ProposedTopics' },
+    { path: '/program-committee/change-requests', nameKey: 'Sidebar.ProgramCommittee.TopicChangeRequests' }
   ];
 
 }

@@ -6,12 +6,12 @@ import { ChangeRequest } from '../../../../../base/models/dto/change-request.mod
 import { FakeData } from '../../../../../../fakes/fake.data';
 
 @Component({
-  selector: 'app-section-topic-change-details',
-  templateUrl: './section-topic-change-details.component.html',
-  styleUrls: ['./section-topic-change-details.component.css'],
+  selector: 'app-program-committee-topic-change-details',
+  templateUrl: './program-committee-topic-change-details.component.html',
+  styleUrls: ['./program-committee-topic-change-details.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SectionTopicChangeDetailsComponent implements OnInit {
+export class ProgramCommitteeTopicChangeDetailsComponent implements OnInit {
 
   form?: FormGroup;
 
@@ -24,11 +24,11 @@ export class SectionTopicChangeDetailsComponent implements OnInit {
   }
 
   approve() {
-    this.router.navigate(['/diploma-section/change-requests']);
+    this.router.navigate(['/program-committee/change-requests']);
   }
 
   reject() {
-    this.router.navigate(['/diploma-section/change-requests']);
+    this.router.navigate(['/program-committee/change-requests']);
   }
 
   ngOnInit(): void {

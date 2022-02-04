@@ -10,8 +10,7 @@ import { NavItem } from '../../../shared/models/nav-item.model';
 export class DiplomaSectionComponent {
 
   public navItems: NavItem[] = [
-    { path: '/diploma-section/timetable', nameKey: 'Sidebar.DiplomaSection.Timetables' },
-    { path: '/diploma-section/change-requests', nameKey: 'Sidebar.DiplomaSection.TopicChangeRequests' }
+    { path: '/diploma-section/timetable', nameKey: 'Sidebar.DiplomaSection.Timetables' }
   ];
 
 }

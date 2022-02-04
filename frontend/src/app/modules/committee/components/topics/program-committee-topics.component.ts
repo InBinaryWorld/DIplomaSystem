@@ -1,7 +1,14 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Thesis } from '../../../../base/models/dto/thesis.model';
 import { Router } from '@angular/router';
-import { FakeData } from '../../../../../fakes/fake.data';
+import { PermissionsService } from '../../../../base/services/permissions.service';
+import { ThesesService } from '../../../../base/services/theses.service';
+import { UserService } from '../../../../base/services/user.service';
+import { SessionService } from '../../../../base/services/session.service';
+import { Role } from '../../../../base/models/dto/role.model';
+import { switchMap } from 'rxjs';
+import { RoleComponent } from '../../../../base/components/role-component.directive';
+import { ThesisStatus } from '../../../../base/models/dto/topic-status.model';
 
 @Component({
   selector: 'app-lecturer-topics',
@@ -9,23 +16,38 @@ import { FakeData } from '../../../../../fakes/fake.data';
   styleUrls: ['./program-committee-topics.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ProgramCommitteeTopicsComponent {
+export class ProgramCommitteeTopicsComponent extends RoleComponent implements OnInit {
 
-  private topic: Thesis = FakeData.thesis;
+  thesesToConsider?: Thesis[];
 
-  public topicsApprovedByCoordinator: Thesis[] = [
-    this.topic,
-    this.topic,
-    this.topic,
-    this.topic,
-    this.topic,
-    this.topic,
-    this.topic,
-    this.topic
-  ];
+  constructor(private readonly deadlinesService: PermissionsService,
+              private readonly thesesService: ThesesService,
+              private readonly userService: UserService,
+              private readonly router: Router,
+              sessionService: SessionService,
+              changeDetector: ChangeDetectorRef) {
+    super(sessionService, changeDetector);
+  }
 
+  get roles(): Role[] {
+    return [Role.PROGRAM_COMMITTEE_MEMBER];
+  }
 
-  constructor(private readonly router: Router) {
+  ngOnInit(): void {
+    this.initTheses();
+  }
+
+  private initTheses(): void {
+    this.addSubscription(
+      this.userRoleSource.pipe(
+        switchMap(userRole => this.userService.getEmployeeForId(userRole.id)),
+        switchMap(committeeMember => this.thesesService
+          .getThesisWithStatusForDepartment(committeeMember.departmentId, ThesisStatus.APPROVED_BY_COORDINATOR))
+      ).subscribe(thesesToConsider => {
+        this.thesesToConsider = thesesToConsider;
+        this.markForCheck();
+      })
+    );
   }
 
   public reviewTopic(topic: Thesis): void {

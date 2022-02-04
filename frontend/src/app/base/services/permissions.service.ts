@@ -35,6 +35,12 @@ export class PermissionsService {
       t => t.approvingThesisByCoordinator, ThesisStatus.WAITING);
   }
 
+  // CommitteeMember
+  public canCommitteeMemberConsiderThesis(committeeMemberId: IdType, thesisId: IdType): Observable<boolean> {
+    return this.canEmployeeActOnThesis(committeeMemberId, thesisId,
+      t => t.approvingThesisByCommittee, ThesisStatus.APPROVED_BY_COORDINATOR);
+  }
+
   // Lecturer
   public canLecturerAcceptProposedThesis(coordinatorId: IdType, thesisId: IdType): Observable<boolean> {
     return combineLatest([

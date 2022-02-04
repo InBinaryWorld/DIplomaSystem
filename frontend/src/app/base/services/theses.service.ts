@@ -41,8 +41,8 @@ export class ThesesService {
     this.thesesStoreService.invalidateStoreForType(ThesesStateKey.RESERVATIONS);
   }
 
-  public getWaitingThesis(departmentId: IdType): Observable<Thesis[]> {
-    const options = LoadThesisActionOptions.forStatusAndDepartment(departmentId, ThesisStatus.WAITING);
+  public getThesisWithStatusForDepartment(departmentId: IdType, status: ThesisStatus): Observable<Thesis[]> {
+    const options = LoadThesisActionOptions.forStatusAndDepartment(departmentId, status);
     return this.thesesStoreService.getTheses(options);
   }
 
@@ -132,6 +132,16 @@ export class ThesesService {
   public approveThesisWithCoordinator(coordinatorId: IdType, thesisId: IdType): Observable<Thesis> {
     const payload = { coordinatorId, thesisId };
     return this.thesesApiService.approveThesisWithCoordinator(payload)
+      .pipe(tap(() => this.invalidateTheses()));
+  }
+
+  public rejectThesisWithCommitteeMember(committeeMemberId: IdType, payload: object): Observable<Thesis> {
+    return this.thesesApiService.rejectThesisWithCommitteeMember(committeeMemberId, payload)
+      .pipe(tap(() => this.invalidateTheses()));
+  }
+
+  public approveThesisWithCommitteeMember(committeeMemberId: IdType, payload: object): Observable<Thesis> {
+    return this.thesesApiService.approveThesisWithCommitteeMember(payload)
       .pipe(tap(() => this.invalidateTheses()));
   }
 

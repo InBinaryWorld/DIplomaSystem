@@ -8,6 +8,7 @@ import { switchMap } from 'rxjs';
 import { RoleComponent } from '../../../../base/components/role-component.directive';
 import { ThesesService } from '../../../../base/services/theses.service';
 import { UserService } from '../../../../base/services/user.service';
+import { ThesisStatus } from '../../../../base/models/dto/topic-status.model';
 
 @Component({
   selector: 'app-topic-change-requests',
@@ -40,7 +41,8 @@ export class CoordinatorTopicsComponent extends RoleComponent implements OnInit 
     this.addSubscription(
       this.userRoleSource.pipe(
         switchMap(userRole => this.userService.getEmployeeForId(userRole.id)),
-        switchMap(coordinator => this.thesesService.getWaitingThesis(coordinator.departmentId))
+        switchMap(coordinator => this.thesesService
+          .getThesisWithStatusForDepartment(coordinator.departmentId, ThesisStatus.WAITING))
       ).subscribe(thesesToConsider => {
         this.thesesToConsider = thesesToConsider;
         this.markForCheck();

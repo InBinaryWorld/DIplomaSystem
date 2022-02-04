@@ -5,9 +5,13 @@ import { RoleGuard } from '../../core/guards/role.guard';
 import { Role } from '../../base/models/dto/role.model';
 import { ProgramCommitteeTopicsComponent } from './components/topics/program-committee-topics.component';
 import { ProgramCommitteeComponent } from './components/program-committee/program-committee.component';
+import { ThesisDetailsComponent } from '../shared/components/thesis-details/thesis-details.component';
 import {
-  ProgramCommitteeTopicReviewComponent
-} from './components/topics/review/program-committee-topic-review.component';
+  ProgramCommitteeTopicChangeComponent
+} from './components/topic-changes/program-committee-topic-change.component';
+import {
+  ProgramCommitteeTopicChangeDetailsComponent
+} from './components/topic-changes/details/program-committee-topic-change-details.component';
 
 
 const routes: Routes = [
@@ -32,8 +36,25 @@ const routes: Routes = [
             component: ProgramCommitteeTopicsComponent
           },
           {
-            path: ':id',
-            component: ProgramCommitteeTopicReviewComponent
+            path: ':thesisId',
+            component: ThesisDetailsComponent,
+            data: {
+              [ThesisDetailsComponent.HEADER_KEY]: 'ThesisDetails.Header.TopicReview'
+            }
+          }
+        ]
+      },
+      {
+        path: 'change-requests',
+        children: [
+          {
+            path: '',
+            pathMatch: 'full',
+            component: ProgramCommitteeTopicChangeComponent
+          },
+          {
+            path: ':requestId',
+            component: ProgramCommitteeTopicChangeDetailsComponent
           }
         ]
       }

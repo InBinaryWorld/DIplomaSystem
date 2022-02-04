@@ -5,12 +5,12 @@ import { Router } from '@angular/router';
 import { FakeData } from '../../../../../fakes/fake.data';
 
 @Component({
-  selector: 'app-topic-change',
-  templateUrl: './section-topic-change.component.html',
-  styleUrls: ['./section-topic-change.component.css'],
+  selector: 'app-program-committee-topic-change',
+  templateUrl: './program-committee-topic-change.component.html',
+  styleUrls: ['./program-committee-topic-change.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SectionTopicChangeComponent {
+export class ProgramCommitteeTopicChangeComponent {
 
   topic: Thesis = FakeData.thesis;
 

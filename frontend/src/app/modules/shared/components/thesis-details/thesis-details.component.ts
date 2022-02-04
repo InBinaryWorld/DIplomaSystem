@@ -27,6 +27,9 @@ import { AppValidators } from '../../../../base/utils/validators.utils';
 })
 export class ThesisDetailsComponent extends RoleComponent implements OnInit {
 
+  static HEADER_KEY = 'headerKey';
+  headerKey = 'ThesisDetails.Header';
+
   form?: FormGroup;
 
   thesis?: Thesis;
@@ -35,9 +38,9 @@ export class ThesisDetailsComponent extends RoleComponent implements OnInit {
 
   canStudentReserve?: boolean;
   canCoordinatorConsiderThesis?: boolean;
+  canCommitteeMemberConsiderThesis?: boolean;
 
   isErrorVisible = false;
-
   reloadTrigger = new BehaviorSubject<boolean>(true);
 
   constructor(private readonly router: Router,
@@ -52,7 +55,7 @@ export class ThesisDetailsComponent extends RoleComponent implements OnInit {
   }
 
   get roles(): Role[] {
-    return [Role.STUDENT, Role.COORDINATOR];
+    return [Role.STUDENT, Role.COORDINATOR, Role.PROGRAM_COMMITTEE_MEMBER];
   }
 
   get thesisIdSource(): Observable<string> {
@@ -63,12 +66,11 @@ export class ThesisDetailsComponent extends RoleComponent implements OnInit {
     return this.userRole?.role === role && isNotNil(canDoSth) && !canDoSth;
   }
 
-
   ngOnInit(): void {
     this.loadThesis();
+    this.initHeaderLabel();
     this.checkButtonAvailability();
   }
-
 
   private loadThesis(): void {
     this.addSubscription(
@@ -101,6 +103,8 @@ export class ThesisDetailsComponent extends RoleComponent implements OnInit {
               return this.checkForStudent(userRole.id, thesisId);
             case Role.COORDINATOR :
               return this.checkForCoordinator(userRole.id, thesisId);
+            case Role.PROGRAM_COMMITTEE_MEMBER :
+              return this.checkForCommitteeMember(userRole.id, thesisId);
           }
           return NEVER;
         })
@@ -126,6 +130,15 @@ export class ThesisDetailsComponent extends RoleComponent implements OnInit {
     );
   }
 
+  checkForCommitteeMember(committeeMemberId: IdType, thesisId: IdType): Observable<void> {
+    return this.deadlinesService.canCommitteeMemberConsiderThesis(committeeMemberId, thesisId).pipe(
+      map(canConsider => {
+        this.canCommitteeMemberConsiderThesis = canConsider;
+        this.markForCheck();
+      })
+    );
+  }
+
   private setFormData(userRole: UserRole, thesis: Thesis, diplomaSession: DiplomaSession): void {
     const group = this.getGroupForRole(userRole, thesis, diplomaSession);
     this.form = this.formBuilder.group(group);
@@ -143,7 +156,6 @@ export class ThesisDetailsComponent extends RoleComponent implements OnInit {
 
   getGroupForCoordinator(thesis: Thesis, diplomaSession: DiplomaSession): Dictionary<any> {
     const isCommentDisabled: boolean = thesis.status !== ThesisStatus.WAITING;
-
     return {
       topic: [{ value: thesis.topic, disabled: true }],
       supervisorName: [{ value: LabelBuilder.forEmployee(thesis.supervisor), disabled: true }],
@@ -169,30 +181,40 @@ export class ThesisDetailsComponent extends RoleComponent implements OnInit {
   }
 
   approveThesisWithCoordinator(): void {
-    this.addSubscription(
-      this.thesesService.approveThesisWithCoordinator(this.userRole!.id, this.thesis!.id).subscribe({
-        next: () => this.reload(),
-        error: () => this.isErrorVisible = true
-      })
-    );
+    const actionSource = this.thesesService.approveThesisWithCoordinator(this.userRole!.id, this.thesis!.id);
+    this.handleAction(actionSource);
   }
 
   requestForThesisCorrectionsWithCoordinator(): void {
     const comment = this.form!.value['coordinatorComment'];
     const payload = { comment, thesisId: this.thesis!.id };
-    this.addSubscription(
-      this.thesesService.requestForThesisCorrectionsWithCoordinator(this.userRole!.id, payload).subscribe({
-        next: () => this.reload(),
-        error: () => this.isErrorVisible = true
-      })
-    );
+    const actionSource = this.thesesService.requestForThesisCorrectionsWithCoordinator(this.userRole!.id, payload);
+    this.handleAction(actionSource);
   }
 
   rejectThesisWithCoordinator(): void {
     const comment = this.form!.value['coordinatorComment'];
     const payload = { comment, thesisId: this.thesis!.id };
+    const actionSource = this.thesesService.rejectThesisWithCoordinator(this.userRole!.id, payload);
+    this.handleAction(actionSource);
+  }
+
+
+  rejectThesisWithCommitteeMember(): void {
+    const payload = { thesisId: this.thesis!.id };
+    const actionSource = this.thesesService.rejectThesisWithCommitteeMember(this.userRole!.id, payload);
+    this.handleAction(actionSource);
+  }
+
+  approveThesisWithCommitteeMember(): void {
+    const payload = { thesisId: this.thesis!.id };
+    const actionSource = this.thesesService.approveThesisWithCommitteeMember(this.userRole!.id, payload);
+    this.handleAction(actionSource);
+  }
+
+  private handleAction<T>(actionSource: Observable<T>): void {
     this.addSubscription(
-      this.thesesService.rejectThesisWithCoordinator(this.userRole!.id, payload).subscribe({
+      actionSource.subscribe({
         next: () => this.reload(),
         error: () => this.isErrorVisible = true
       })
@@ -212,4 +234,17 @@ export class ThesisDetailsComponent extends RoleComponent implements OnInit {
     return this.thesis?.status === ThesisStatus.TO_CORRECT
       || this.thesis?.status === ThesisStatus.WAITING && this.userRole?.role === Role.COORDINATOR;
   }
+
+  private initHeaderLabel(): void {
+    this.addSubscription(
+      this.activatedRoute.data.subscribe(data => {
+        const headerKey = data[ThesisDetailsComponent.HEADER_KEY];
+        if (isNotNil(headerKey)) {
+          this.headerKey = headerKey;
+          this.markForCheck();
+        }
+      })
+    );
+  }
+
 }
