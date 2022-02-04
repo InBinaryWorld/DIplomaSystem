@@ -111,7 +111,7 @@ class StudentReservationService(
         val newReservation = Reservation(
             id = reservationRepository.getNextId(),
             topic = topic,
-            status = ReservationStatus.WAITING,
+            status = if (form.studentIds.size == 1) ReservationStatus.REGISTERED else ReservationStatus.WAITING,
             creationDate = LocalDate.now(),
         )
 
