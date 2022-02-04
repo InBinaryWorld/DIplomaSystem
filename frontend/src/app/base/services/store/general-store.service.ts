@@ -5,10 +5,26 @@ import { AppState } from '../../store/app-state.model';
 import { CleanableStoreService } from '../../../core/services/cleanable-store.service';
 import {
   invalidateGeneralResourcesAction,
-  loadGeneralResourceForIdAction,
-  loadGeneralResourceForIdIfNeededAction,
-  loadGeneralResourcesAction,
-  loadGeneralResourcesIfNeededAction
+  loadDepartmentForIdAction,
+  loadDepartmentForIdIfNeededAction,
+  loadDepartmentsAction,
+  LoadDepartmentsActionOptions,
+  loadDepartmentsIfNeededAction,
+  loadDiplomaSessionForIdAction,
+  loadDiplomaSessionForIdIfNeededAction,
+  loadDiplomaSessionsAction,
+  LoadDiplomaSessionsActionOptions,
+  loadDiplomaSessionsIfNeededAction,
+  loadFieldOfStudyForIdAction,
+  loadFieldOfStudyForIdIfNeededAction,
+  loadFieldsOfStudyAction,
+  LoadFieldsOfStudyActionOptions,
+  loadFieldsOfStudyIfNeededAction,
+  loadTimetableForIdAction,
+  loadTimetableForIdIfNeededAction,
+  loadTimetablesAction,
+  LoadTimetablesActionOptions,
+  loadTimetablesIfNeededAction
 } from '../../store/general/general.actions';
 import {
   selectDepartmentForId,
@@ -39,41 +55,107 @@ export class GeneralResourcesStoreService extends CleanableStoreService {
     super(store);
   }
 
-  public getTimetablesForKey(key: string, ifNeededOnly = true): Observable<Timetable[]> {
-    this.loadResourcesForKey(GeneralResourcesStateKey.TIMETABLES, key, ifNeededOnly);
+  public getTimetablesForKey(options: LoadTimetablesActionOptions, ifNeededOnly = true): Observable<Timetable[]> {
+    const key = options.toKey();
+    this.loadTimetablesForKey(options, key, ifNeededOnly);
     return this.selectTimetablesForKey(key).pipe(filterExists());
   }
 
   public getTimetableForId(id: IdType, ifNeededOnly = true): Observable<Timetable> {
-    this.loadResourceForId(GeneralResourcesStateKey.TIMETABLES, id, ifNeededOnly);
+    this.loadTimetableForId(id, ifNeededOnly);
     return this.selectTimetableForId(id).pipe(filterExists());
   }
 
-  public getDiplomaSessionsForKey(key: string, ifNeededOnly = true): Observable<DiplomaSession[]> {
-    this.loadResourcesForKey(GeneralResourcesStateKey.DIPLOMA_SESSIONS, key, ifNeededOnly);
+  public getDiplomaSessionsForKey(options: LoadDiplomaSessionsActionOptions, ifNeededOnly = true): Observable<DiplomaSession[]> {
+    const key = options.toKey();
+    this.loadDiplomaSessionForKey(options, key, ifNeededOnly);
     return this.selectDiplomaSessionsForKey(key).pipe(filterExists());
   }
 
   public getDiplomaSessionForId(id: IdType, ifNeededOnly = true): Observable<DiplomaSession> {
-    this.loadResourceForId(GeneralResourcesStateKey.DIPLOMA_SESSIONS, id, ifNeededOnly);
+    this.loadDiplomaSessionForId(id, ifNeededOnly);
     return this.selectDiplomaSessionForId(id).pipe(filterExists());
+  }
+
+  public getDepartmentsForKey(options: LoadDepartmentsActionOptions, ifNeededOnly = true): Observable<Department[]> {
+    const key = options.toKey();
+    this.loadDepartmentsForKey(options, key, ifNeededOnly);
+    return this.selectDepartmentsForKey(key).pipe(filterExists());
+  }
+
+  public getDepartmentForId(id: IdType, ifNeededOnly = true): Observable<Department> {
+    this.loadDepartmentForId(id, ifNeededOnly);
+    return this.selectDepartmentForId(id).pipe(filterExists());
+  }
+
+  public getFieldsOfStudy(options: LoadFieldsOfStudyActionOptions, ifNeededOnly = true): Observable<FieldOfStudy[]> {
+    const key = options.toKey();
+    this.loadFieldsOfStudyForKey(options, key, ifNeededOnly);
+    return this.selectFieldsOfStudyForKey(key).pipe(filterExists());
+  }
+
+  public getFieldOfStudyForId(id: IdType, ifNeededOnly = true): Observable<FieldOfStudy> {
+    this.loadFieldOfStudyForId(id, ifNeededOnly);
+    return this.selectFieldOfStudyForId(id).pipe(filterExists());
   }
 
   public invalidateStoreForKey(resourceType: GeneralResourcesStateKey): void {
     this.store.dispatch(invalidateGeneralResourcesAction({ resourceType }));
   }
 
-  public loadResourcesForKey(resourceType: GeneralResourcesStateKey, key: string, ifNeededOnly = true): void {
+  public loadTimetablesForKey(options: LoadTimetablesActionOptions, key: string, ifNeededOnly = true): void {
     const action = ifNeededOnly
-      ? loadGeneralResourcesIfNeededAction({ resourceType, key })
-      : loadGeneralResourcesAction({ resourceType, key });
+      ? loadTimetablesIfNeededAction({ options, key })
+      : loadTimetablesAction({ options, key });
     this.store.dispatch(action);
   }
 
-  public loadResourceForId(resourceType: GeneralResourcesStateKey, id: IdType, ifNeededOnly = true): void {
+  public loadDiplomaSessionForKey(options: LoadDiplomaSessionsActionOptions, key: string, ifNeededOnly = true): void {
     const action = ifNeededOnly
-      ? loadGeneralResourceForIdIfNeededAction({ resourceType, id })
-      : loadGeneralResourceForIdAction({ resourceType, id });
+      ? loadDiplomaSessionsIfNeededAction({ options, key })
+      : loadDiplomaSessionsAction({ options, key });
+    this.store.dispatch(action);
+  }
+
+  public loadDepartmentsForKey(options: LoadDepartmentsActionOptions, key: string, ifNeededOnly = true): void {
+    const action = ifNeededOnly
+      ? loadDepartmentsIfNeededAction({ options, key })
+      : loadDepartmentsAction({ options, key });
+    this.store.dispatch(action);
+  }
+
+  public loadFieldsOfStudyForKey(options: LoadFieldsOfStudyActionOptions, key: string, ifNeededOnly = true): void {
+    const action = ifNeededOnly
+      ? loadFieldsOfStudyIfNeededAction({ options, key })
+      : loadFieldsOfStudyAction({ options, key });
+    this.store.dispatch(action);
+  }
+
+  public loadTimetableForId(id: IdType, ifNeededOnly = true): void {
+    const action = ifNeededOnly
+      ? loadTimetableForIdIfNeededAction({ id })
+      : loadTimetableForIdAction({ id });
+    this.store.dispatch(action);
+  }
+
+  public loadDiplomaSessionForId(id: IdType, ifNeededOnly = true): void {
+    const action = ifNeededOnly
+      ? loadDiplomaSessionForIdIfNeededAction({ id })
+      : loadDiplomaSessionForIdAction({ id });
+    this.store.dispatch(action);
+  }
+
+  public loadDepartmentForId(id: IdType, ifNeededOnly = true): void {
+    const action = ifNeededOnly
+      ? loadDepartmentForIdIfNeededAction({ id })
+      : loadDepartmentForIdAction({ id });
+    this.store.dispatch(action);
+  }
+
+  public loadFieldOfStudyForId(id: IdType, ifNeededOnly = true): void {
+    const action = ifNeededOnly
+      ? loadFieldOfStudyForIdIfNeededAction({ id })
+      : loadFieldOfStudyForIdAction({ id });
     this.store.dispatch(action);
   }
 

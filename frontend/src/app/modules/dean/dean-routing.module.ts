@@ -7,6 +7,9 @@ import { Role } from '../../base/models/dto/role.model';
 import {
   DeanTopicClarificationRequestsComponent
 } from './components/clarification/dean-topic-clarification-requests.component';
+import {
+  ClarificationRequestDetailsComponent
+} from '../shared/components/clarification-details/clarification-request-details.component';
 
 
 const routes: Routes = [
@@ -31,8 +34,8 @@ const routes: Routes = [
             component: DeanTopicClarificationRequestsComponent
           },
           {
-            path: ':id',
-            component: DeanTopicClarificationRequestsComponent
+            path: ':requestId',
+            component: ClarificationRequestDetailsComponent
           }
         ]
       }

@@ -2,28 +2,79 @@ import { createAction, props } from '@ngrx/store';
 import { GeneralResourcesStateKey, GeneralResourceType } from './general.state';
 import { IdType } from '../../models/dto/id.model';
 
-export const loadGeneralResourcesAction = createAction(
-  '[GENERAL] Load general resources',
-  props<{ resourceType: GeneralResourcesStateKey, key: string }>()
+export const loadTimetablesAction = createAction(
+  '[GENERAL] Load timetables',
+  props<{ options: LoadTimetablesActionOptions, key: string }>()
 );
-export const loadGeneralResourcesIfNeededAction = createAction(
-  '[GENERAL] Load general resources if needed',
-  props<{ resourceType: GeneralResourcesStateKey, key: string }>()
+export const loadTimetablesIfNeededAction = createAction(
+  '[GENERAL] Load timetables if needed',
+  props<{ options: LoadTimetablesActionOptions, key: string }>()
 );
-export const loadGeneralResourceForIdAction = createAction(
-  '[GENERAL] Load general resource for id',
-  props<{ resourceType: GeneralResourcesStateKey, id: IdType }>()
+export const loadTimetableForIdAction = createAction(
+  '[GENERAL] Load timetable for id',
+  props<{ id: IdType }>()
 );
-export const loadGeneralResourceForIdIfNeededAction = createAction(
-  '[GENERAL] Load general resource for id if needed',
-  props<{ resourceType: GeneralResourcesStateKey, id: IdType }>()
+export const loadTimetableForIdIfNeededAction = createAction(
+  '[GENERAL] Load timetable for id if needed',
+  props<{ id: IdType }>()
 );
+
+export const loadDiplomaSessionsAction = createAction(
+  '[GENERAL] Load diploma sessions',
+  props<{ options: LoadDiplomaSessionsActionOptions, key: string }>()
+);
+export const loadDiplomaSessionsIfNeededAction = createAction(
+  '[GENERAL] Load diploma sessions if needed',
+  props<{ options: LoadDiplomaSessionsActionOptions, key: string }>()
+);
+export const loadDiplomaSessionForIdAction = createAction(
+  '[GENERAL] Load diploma sessions for id',
+  props<{ id: IdType }>()
+);
+export const loadDiplomaSessionForIdIfNeededAction = createAction(
+  '[GENERAL] Load diploma sessions for id if needed',
+  props<{ id: IdType }>()
+);
+
+export const loadDepartmentsAction = createAction(
+  '[GENERAL] Load departments',
+  props<{ options: LoadDepartmentsActionOptions, key: string }>()
+);
+export const loadDepartmentsIfNeededAction = createAction(
+  '[GENERAL] Load departments if needed',
+  props<{ options: LoadDepartmentsActionOptions, key: string }>()
+);
+export const loadDepartmentForIdAction = createAction(
+  '[GENERAL] Load department for id',
+  props<{ id: IdType }>()
+);
+export const loadDepartmentForIdIfNeededAction = createAction(
+  '[GENERAL] Load department for id if needed',
+  props<{ id: IdType }>()
+);
+
+export const loadFieldsOfStudyAction = createAction(
+  '[GENERAL] Load fields of study',
+  props<{ options: LoadFieldsOfStudyActionOptions, key: string }>()
+);
+export const loadFieldsOfStudyIfNeededAction = createAction(
+  '[GENERAL] Load fields of study if needed',
+  props<{ options: LoadFieldsOfStudyActionOptions, key: string }>()
+);
+export const loadFieldOfStudyForIdAction = createAction(
+  '[GENERAL] Load field of study for id',
+  props<{ id: IdType }>()
+);
+export const loadFieldOfStudyForIdIfNeededAction = createAction(
+  '[GENERAL] Load field of study for id if needed',
+  props<{ id: IdType }>()
+);
+
 
 export const invalidateGeneralResourcesAction = createAction(
   '[GENERAL] Invalidate store resource',
   props<{ resourceType: GeneralResourcesStateKey }>()
 );
-
 
 export const loadGeneralResourcesSuccessAction = createAction(
   '[GENERAL]  Load collection successful',
@@ -38,3 +89,45 @@ export const loadGeneralResourcesFailedAction = createAction(
   '[GENERAL] Load failed',
   props<{ error: any }>()
 );
+
+
+export class LoadTimetablesActionOptions {
+  toKey(): string {
+    return [
+      'LoadTimetablesActionOptions'
+    ].join('$');
+  }
+}
+
+export class LoadDepartmentsActionOptions {
+  toKey(): string {
+    return [
+      'LoadDepartmentsActionOptions'
+    ].join('$');
+  }
+}
+
+export class LoadFieldsOfStudyActionOptions {
+  departmentId?: IdType;
+
+  static forDepartment(departmentId: IdType): LoadFieldsOfStudyActionOptions {
+    const options = new LoadFieldsOfStudyActionOptions();
+    options.departmentId = departmentId;
+    return options;
+  }
+
+  toKey(): string {
+    return [
+      'LoadFieldsOfStudyActionOptions',
+      'DI_' + this.departmentId
+    ].join('$');
+  }
+}
+
+export class LoadDiplomaSessionsActionOptions {
+  toKey(): string {
+    return [
+      'LoadDiplomaSessionsActionOptions'
+    ].join('$');
+  }
+}

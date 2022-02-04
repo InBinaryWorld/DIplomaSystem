@@ -8,14 +8,17 @@ import { SessionService } from '../../../../base/services/session.service';
 import { UserRole } from '../../../../base/models/dto/user-role.model';
 import { IdType } from '../../../../base/models/dto/id.model';
 import { DiplomaSession } from '../../../../base/models/dto/diploma-session.model';
-import { DeadlinesService } from '../../../../base/services/deadlines.service';
+import { PermissionsService } from '../../../../base/services/permissions.service';
 import { ThesesService } from '../../../../base/services/theses.service';
 import { GeneralResourcesService } from '../../../../base/services/general-resources.service';
 import { LabelBuilder } from '../../../../base/utils/label-builder.utils';
 import { Reservation } from '../../../../base/models/dto/reservation.model';
 import { ReservationMember } from '../../../../base/models/dto/reservation-member.model';
-import { ReservationStatus } from '../../../../base/models/dto/reservation-status.model';
-import { ReservationMemberStatus } from '../../../../base/models/dto/reservation-member-status.model';
+import { finalReservationStates, ReservationStatus } from '../../../../base/models/dto/reservation-status.model';
+import {
+  finalMemberStatuses,
+  ReservationMemberStatus
+} from '../../../../base/models/dto/reservation-member-status.model';
 
 @Component({
   selector: 'app-reservation-details',
@@ -38,7 +41,7 @@ export class ReservationDetailsComponent extends RoleComponent implements OnInit
 
   constructor(private readonly router: Router,
               private readonly formBuilder: FormBuilder,
-              private readonly deadlinesService: DeadlinesService,
+              private readonly deadlinesService: PermissionsService,
               private readonly thesesService: ThesesService,
               private readonly generalResourcesService: GeneralResourcesService,
               private readonly activatedRoute: ActivatedRoute,
@@ -85,15 +88,21 @@ export class ReservationDetailsComponent extends RoleComponent implements OnInit
   }
 
   public canConfirmParticipation(): boolean {
-    const isSuggestedMember = this.studentMember!.status === ReservationMemberStatus.SUGGESTED;
-    const isReservationWaiting = this.reservation!.status === ReservationStatus.WAITING ?? false;
-    return isSuggestedMember && isReservationWaiting;
+    const isMemberSuggested = this.studentMember!.status === ReservationMemberStatus.SUGGESTED;
+    const isReservationWaiting = this.reservation!.status === ReservationStatus.WAITING;
+    return isMemberSuggested && isReservationWaiting;
   }
 
   public canStudentConfirmReservation(): boolean {
-    const isWillingMember = this.studentMember!.status === ReservationMemberStatus.WILLING;
-    const isReservationAccepted = this.reservation!.status === ReservationStatus.ACCEPTED ?? false;
-    return isWillingMember && isReservationAccepted;
+    const isMemberWilling = this.studentMember!.status === ReservationMemberStatus.WILLING;
+    const isReservationAccepted = this.reservation!.status === ReservationStatus.ACCEPTED;
+    return isMemberWilling && isReservationAccepted;
+  }
+
+  canAbandonReservation(): Boolean {
+    const isMemberStatusNotFinal = !finalMemberStatuses.includes(this.studentMember!.status);
+    const isReservationStatusNotFinal = !finalReservationStates.includes(this.reservation!.status);
+    return isMemberStatusNotFinal && isReservationStatusNotFinal;
   }
 
   private initForm(reservation: Reservation, diplomaSession: DiplomaSession): void {

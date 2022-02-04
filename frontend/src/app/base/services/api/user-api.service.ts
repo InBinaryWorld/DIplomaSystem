@@ -33,8 +33,9 @@ export class UserApiService {
 
   getEmployees(options: LoadEmployeesActionOptions): Observable<Employee[]> {
     const query = new RequestParams();
+    query.addIfValueExists('role', options.role);
     query.addIfValueExists('diplomaSessionId', options.diplomaSessionId);
-    query.addIfValueExists('availableSupervisorsOnly', options.onlyAvailableSupervisors);
+    query.addIfValueExists('supervisorsOnly', options.supervisorsOnly);
     return this.http.getWithLabel(ApiLabel.GET_EMPLOYEES, undefined, query);
   }
 

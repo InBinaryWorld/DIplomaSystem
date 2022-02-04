@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { ChangeRequest } from '../../../../base/models/dto/change-request.model';
 import { Role } from '../../../../base/models/dto/role.model';
 import { Observable, switchMap } from 'rxjs';
-import { DeadlinesService } from '../../../../base/services/deadlines.service';
+import { PermissionsService } from '../../../../base/services/permissions.service';
 import { RequestsService } from '../../../../base/services/requests.service';
 import { SessionService } from '../../../../base/services/session.service';
 import { RoleComponent } from '../../../../base/components/role-component.directive';
@@ -20,7 +20,7 @@ export class StudentChangeRequestsComponent extends RoleComponent implements OnI
   changeRequests?: ChangeRequest[];
   canCreateNew = false;
 
-  constructor(private readonly deadlinesService: DeadlinesService,
+  constructor(private readonly deadlinesService: PermissionsService,
               private readonly requestsService: RequestsService,
               private readonly router: Router,
               sessionService: SessionService,

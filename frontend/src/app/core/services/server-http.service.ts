@@ -24,9 +24,9 @@ export class ServerHttpService {
     return this.settingsService.serverBaseUrl;
   }
 
-  doFakeRequest<T>(apiLabel: ApiLabel): Observable<T> {
+  doFakeRequest<T>(apiLabel: ApiLabel, query?: RequestParams): Observable<T> {
     const time = this.settingsService.fakeApiDelay();
-    return of(FakeData.handleApiLabel(apiLabel)).pipe(
+    return of(FakeData.handleApiLabel(apiLabel, query)).pipe(
       tap(() => this.spinnerService.showFor(time)),
       delay(time)
     );
@@ -35,7 +35,7 @@ export class ServerHttpService {
   getWithLabel<T>(apiLabel: ApiLabel, params?: RequestParams, query?: RequestParams, headers: HttpHeaders = new HttpHeaders()): Observable<T> {
     const urlTemplate = this.settingsService.getServerApi(apiLabel);
     if (this.settingsService.isFakeApiEnabled()) {
-      return this.doFakeRequest<T>(apiLabel);
+      return this.doFakeRequest<T>(apiLabel, query);
     }
     return this.get<T>(urlTemplate, params, query, headers);
   }

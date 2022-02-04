@@ -38,7 +38,7 @@
           <tr *ngFor="let item of clarificationRequests">
             <th style="width: 5%" scope="row">{{ item.id }}</th>
             <td style="width: 45%">{{ item.baseThesis.topic }}</td>
-            <td style="width: 20%">{{ LabelBuilder.forEmployee(item.supervisor) }}</td>
+            <td style="width: 20%">{{ LabelBuilder.forEmployee(item.baseThesis.supervisor) }}</td>
             <td style="width: 20%">{{ TranslationKeys.forRequestStatus(item.status) | translate }}</td>
             <td style="width: auto" class="action-col">
               <button (click)="requestDetails(item)" type="button" class=" btn btn-primary">

@@ -10,6 +10,7 @@ import { BaseApiService } from './base-api.service';
 import { ClarificationRequest } from '../../models/dto/clarification-request.model';
 import { ChangeRequest } from '../../models/dto/change-request.model';
 import { IdType } from '../../models/dto/id.model';
+import { Role } from '../../models/dto/role.model';
 
 @Injectable({
   providedIn: 'root'
@@ -45,9 +46,14 @@ export class RequestsApiService extends BaseApiService {
     return this.http.getWithLabel(apiLabel, undefined, query);
   }
 
-  rejectClarificationRequestForRole(userRole: UserRole, requestId: IdType): Observable<void> {
-    const rejectPayload = { requestId, role: userRole.role, roleId: userRole.id };
-    return this.http.postWithLabel(ApiLabel.REJECT_CLARIFICATION_REQUEST, rejectPayload);
+  rejectClarificationRequestWithDean(deanId: IdType, requestId: IdType): Observable<void> {
+    const payload = { requestId, role: Role.DEAN, roleId: deanId };
+    return this.http.postWithLabel(ApiLabel.REJECT_CLARIFICATION_REQUEST, payload);
+  }
+
+  approveClarificationRequestWithDean(deanId: IdType, requestId: IdType): Observable<void> {
+    const payload = { requestId, role: Role.DEAN, roleId: deanId };
+    return this.http.postWithLabel(ApiLabel.APPROVE_CLARIFICATION_REQUEST, payload);
   }
 
   createClarificationRequest(thesisId: IdType, payload: Partial<ClarificationRequest>): Observable<ClarificationRequest> {

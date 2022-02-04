@@ -43,8 +43,13 @@ export class RequestsService {
     this.requestsStoreService.invalidateStoreForType(RequestsStateKey.CHANGE);
   }
 
-  public rejectClarificationRequest(userRole: UserRole, id: IdType): Observable<void> {
-    return this.requestsApiService.rejectClarificationRequestForRole(userRole, id)
+  public rejectClarificationRequestWithDean(deanId: IdType, requestId: IdType): Observable<void> {
+    return this.requestsApiService.rejectClarificationRequestWithDean(deanId, requestId)
+      .pipe(tap(() => this.invalidateClarificationRequests()));
+  }
+
+  public approveClarificationRequestWithDean(deanId: IdType, requestId: IdType): Observable<void> {
+    return this.requestsApiService.approveClarificationRequestWithDean(deanId, requestId)
       .pipe(tap(() => this.invalidateClarificationRequests()));
   }
 

@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@
 import { Thesis } from '../../../../base/models/dto/thesis.model';
 import { Router } from '@angular/router';
 import { Reservation } from '../../../../base/models/dto/reservation.model';
-import { DeadlinesService } from '../../../../base/services/deadlines.service';
+import { PermissionsService } from '../../../../base/services/permissions.service';
 import { ThesesService } from '../../../../base/services/theses.service';
 import { SessionService } from '../../../../base/services/session.service';
 import { Role } from '../../../../base/models/dto/role.model';
@@ -26,7 +26,7 @@ export class StudentReservationsComponent extends RoleComponent implements OnIni
 
   canCreateNew = false;
 
-  constructor(private readonly deadlinesService: DeadlinesService,
+  constructor(private readonly deadlinesService: PermissionsService,
               private readonly thesesService: ThesesService,
               private readonly userService: UserService,
               private readonly router: Router,

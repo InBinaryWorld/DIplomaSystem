@@ -6,3 +6,9 @@ export enum ReservationStatus {
   REJECTED_BY_LECTURER = 'REJECTED_BY_LECTURER',
   CONFIRMED = 'CONFIRMED',
 }
+
+export const finalReservationStates: ReservationStatus[] = [
+  ReservationStatus.CONFIRMED,
+  ReservationStatus.REJECTED_BY_LECTURER,
+  ReservationStatus.REJECTED_BY_STUDENT
+];
