@@ -7,7 +7,6 @@ import javax.persistence.*
 @Entity
 data class Topic(
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long,
     @ManyToOne
     val lecturer: Employee,

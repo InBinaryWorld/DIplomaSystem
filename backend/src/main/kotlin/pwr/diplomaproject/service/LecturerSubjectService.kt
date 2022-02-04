@@ -33,7 +33,7 @@ class LecturerSubjectService @Autowired constructor(
         subjectService.getDetails(subjectId)
 
     fun proposeSubject(userId: Long, form: LecturerNewTopicForm) {
-        val newSubject = Topic(0,
+        val newSubject = Topic(subjectRepository.getNextId(),
             employeeRepository.getEmployeeByUserIdAndType(userId, EmployeeType.LECTURER),
             null,
             graduationRepository.findCurrentGraduationByCourseOfStudyId(form.courseOfStudyId)!!,

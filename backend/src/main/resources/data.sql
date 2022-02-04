@@ -47,23 +47,36 @@ values (1, '2023-01-01', '2023-01-01', '2023-01-01', '2023-01-01', '2023-01-01',
 
 
 -- Table: topic
-insert into topic (coordinator_comments, created_by_student, creation_date, description, status, student_count,
+insert into topic (id, coordinator_comments, created_by_student, creation_date, description, status, student_count,
                    topic, graduation_id, student_id, lecturer_id)
-values ('Lorem ipsum', false, '2022-02-09', 'Lorem ipsum', 'WAITING', 1,
+values (1, 'Lorem ipsum', false, '2022-02-09', 'Lorem ipsum', 'WAITING', 1,
         'Predykcja zachowań ludzi podczas lockdownu', 1, null, 1),
-       ('Lorem ipsum', false, '2022-02-04', 'Lorem ipsum', 'WAITING', 2,
+       (2, 'Lorem ipsum', false, '2022-02-04', 'Lorem ipsum', 'WAITING', 2,
         'Aplikacja z przepisami kucharskimi', 1, null, 1),
-       ('Lorem ipsum', false, '2022-02-04', 'Lorem ipsum', 'NEEDS_CORRECTION', 2,
+       (3, 'Lorem ipsum', false, '2022-02-04', 'Lorem ipsum', 'NEEDS_CORRECTION', 2,
         'Aplikacja z przepisami kucharskimi', 1, null, 1),
-       ('Lorem ipsum', true, '2022-02-04', 'Lorem ipsum', 'PROPOSED_BY_STUDENT', 2,
+       (4, 'Lorem ipsum', true, '2022-02-04', 'Lorem ipsum', 'PROPOSED_BY_STUDENT', 2,
+        'Aplikacja z przepisami kucharskimi', 1, 2, 1),
+       (5, 'Lorem ipsum', true, '2022-02-04', 'Lorem ipsum', 'ACCEPTED_BY_COMMISSION', 2,
+        'Aplikacja z przepisami kucharskimi', 1, 2, 1),
+       (6, 'Lorem ipsum', true, '2022-02-04', 'Lorem ipsum', 'ACCEPTED_BY_COMMISSION', 2,
         'Aplikacja z przepisami kucharskimi', 1, 2, 1);
 
 
 -- Table: reservation
 insert into reservation (id, creation_date, status, topic_id)
-values (1, '2022-02-10', 'WAITING', 1);
+values (1, '2022-02-10', 'WAITING', 1),
+       (2, '2022-02-10', 'REGISTERED', 6),
+       (3, '2022-02-10', 'REGISTERED', 6),
+       (4, '2022-02-10', 'REJECTED_BY_LECTURER', 5);
 
 
 -- Table: group_member
 insert into group_member (id, status, reservation_id, student_id)
-values (1, 'SUGGESTED', 1, 1);
+values (1, 'SUGGESTED', 1, 1),
+       (2, 'WILLING', 2, 1),
+       (3, 'WILLING', 2, 2),
+       (4, 'WILLING', 3, 3),
+       (5, 'WILLING', 4, 1),
+       (6, 'WILLING', 4, 2),
+       (7, 'WILLING', 4, 3);

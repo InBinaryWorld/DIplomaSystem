@@ -4,5 +4,5 @@ data class LecturerSubjectReservationDto(
     val subjectId: Long,
     val topic: String,
     val numberOfStudents: Int,
-    val requireDecision: Int
+    val requireDecision: Long
 )
