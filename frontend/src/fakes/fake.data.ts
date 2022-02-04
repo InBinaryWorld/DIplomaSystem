@@ -244,6 +244,7 @@ const changeRequests: ChangeRequest[] = [
 
 
 const responseByApiKey: Dictionary<any> = {
+  [ApiLabel.ABANDON_MEMBER_RESERVATION]: reservationMember,
   [ApiLabel.CONFIRM_MEMBER_RESERVATION]: reservationMember,
   [ApiLabel.CONFIRM_PARTICIPATION_IN_RESERVATION]: reservationMember,
   [ApiLabel.CREATE_CLARIFICATION_REQUEST]: clarificationRequest,

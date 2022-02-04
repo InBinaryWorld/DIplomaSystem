@@ -85,6 +85,7 @@
   "ThesisDetails.Header": "Thesis Details",
   "Button.Add": "Add",
   "Button.Approve": "Approve",
+  "Button.Abandon": "Abandon",
   "Button.Cancel": "Cancel",
   "Button.Correct": "Correct",
   "Button.Create": "Create",
@@ -150,5 +151,7 @@
   "ThesisStatus.REJECTED_BY_COMMITTEE": "Rejected by committee",
   "ThesisStatus.APPROVED_BY_COMMITTEE": "Approved by committee",
   "Alert.Error.GenericError": "Ops.. ! Something goes wrong \uD83D\uDE22",
+  "Alert.Error.NotUniqueStudents": "The same student cannot be selected multiple times",
+  "Alert.Warning.CannotCreateRequest": "You cannot create request. Possible reasons: \n • You haven't confirmed reservation yet \n • The timetable does not allow to create request at this point ",
   "Alert.Warning.CannotCreateReservation": "You cannot book this thesis. Possible reasons: \n • You already have a confirmed reservation \n • The timetable does not allow a reservation at this point \n • The thesis was not accepted by the program committee"
 }

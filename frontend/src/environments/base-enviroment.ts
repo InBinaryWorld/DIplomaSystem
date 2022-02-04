@@ -13,6 +13,7 @@ export const baseEnvironment = {
       [ApiLabel.LOGIN]: 'TODO',
       [ApiLabel.REFRESH]: 'TODO',
       [ApiLabel.REFRESH]: 'TODO',
+      [ApiLabel.ABANDON_MEMBER_RESERVATION]: 'TODO',
       [ApiLabel.CONFIRM_MEMBER_RESERVATION]: 'TODO',
       [ApiLabel.CONFIRM_PARTICIPATION_IN_RESERVATION]: 'TODO',
       [ApiLabel.CREATE_CLARIFICATION_REQUEST]: 'TODO',

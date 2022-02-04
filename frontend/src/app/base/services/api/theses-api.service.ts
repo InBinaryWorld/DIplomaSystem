@@ -64,6 +64,11 @@ export class ThesesApiService {
     return this.http.postWithLabel(ApiLabel.CONFIRM_MEMBER_RESERVATION, payload);
   }
 
+  public abandonReservation(memberId: IdType): Observable<ReservationMember> {
+    const payload = { memberId };
+    return this.http.postWithLabel(ApiLabel.ABANDON_MEMBER_RESERVATION, payload);
+  }
+
   //TODO:
   public createReservation(payload: object): Observable<Reservation> {
     return this.http.postWithLabel(ApiLabel.CREATE_RESERVATION, payload);

@@ -24,6 +24,8 @@
       </div>
       <div class="mb-3">
         <label class="form-label">{{ 'Form.Label.Students' | translate }}</label>
+        <app-error-alert *ngIf="notUniqueStudents" class="mb-2" messageKey="Alert.Error.NotUniqueStudents">
+        </app-error-alert>
         <div class="row">
           <div class="col-7">
             <input type="text" formControlName="initiator" class="form-control">
@@ -51,6 +53,7 @@
             </button>
           </div>
         </div>
+
       </div>
       <div class="mb-4">
         <label for="description" class="form-label">{{ 'Form.Label.Description' | translate }}</label>
@@ -59,7 +62,7 @@
       <div class="gap-2 d-flex justify-content-end">
         <button
           type="submit" class="btn btn-success"
-          [disabled]="!form!.valid || !canReserve"
+          [disabled]="form!.invalid || !canReserve || notUniqueStudents"
           (click)="confirm()">
           {{ 'Button.Approve' | translate }}
         </button>

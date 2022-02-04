@@ -104,6 +104,11 @@ export class ThesesService {
       .pipe(tap(() => this.invalidateReservations()));
   }
 
+  public abandonReservation(memberId: IdType): Observable<ReservationMember> {
+    return this.thesesApiService.abandonReservation(memberId)
+      .pipe(tap(() => this.invalidateReservations()));
+  }
+
   public createReservation(payload: object): Observable<Reservation> {
     return this.thesesApiService.createReservation(payload)
       .pipe(tap(() => this.invalidateReservations()));
