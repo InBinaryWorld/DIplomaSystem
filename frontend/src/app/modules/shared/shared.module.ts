@@ -13,6 +13,7 @@ import {
   ClarificationRequestDetailsComponent
 } from './components/clarification-details/clarification-request-details.component';
 import { ChangeRequestDetailsComponent } from './components/change-details/change-request-details.component';
+import { WarningAlertComponent } from './components/alerts/warning/warning-alert.component';
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import { ChangeRequestDetailsComponent } from './components/change-details/chang
     ThesisDetailsComponent,
     ReservationDetailsComponent,
     ClarificationRequestDetailsComponent,
-    ChangeRequestDetailsComponent
+    ChangeRequestDetailsComponent,
+    WarningAlertComponent
   ],
   imports: [
     CommonModule,
@@ -46,7 +48,8 @@ import { ChangeRequestDetailsComponent } from './components/change-details/chang
     ThesisDetailsComponent,
     ReservationDetailsComponent,
     ClarificationRequestDetailsComponent,
-    ChangeRequestDetailsComponent
+    ChangeRequestDetailsComponent,
+    WarningAlertComponent
   ]
 })
 export class SharedModule {

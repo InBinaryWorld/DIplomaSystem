@@ -61,7 +61,7 @@ export class StudentReservationsComponent extends RoleComponent implements OnIni
       this.userRoleSource.pipe(
         switchMap(userRole => this.userService.getStudentForId(userRole.id)),
         switchMap(student => this.deadlinesService
-          .canReserveThesisWithDiplomaSessionId(student.id, student.fieldOfStudy.activeDiplomaSessionId))
+          .canStudentReserveThesisFromDiplomaSession(student, student.fieldOfStudy.activeDiplomaSessionId))
       ).subscribe(canCreateNew => {
         this.canCreateNew = canCreateNew;
         this.markForCheck();
@@ -73,9 +73,9 @@ export class StudentReservationsComponent extends RoleComponent implements OnIni
     return this.userRoleSource.pipe(
       switchMap(userRole => this.userService.getStudentForId(userRole.id)),
       switchMap(student => combineLatest([
-          this.thesesService.getThesesToReserveForActiveSession(student),
+          this.thesesService.getApprovedThesesForActiveSession(student),
           this.thesesService.getStudentReservations(student.id),
-          this.thesesService.getConfirmedStudentReservationOnNotRejectedThesisForActiveSession(student)
+          this.thesesService.getConfirmedStudentReservationInActiveSession(student)
         ]).pipe(map(([t, r, cr]) => ([student, t, r, cr] as
           [Student, Thesis[], Reservation[], Reservation | undefined])))
       )

@@ -81,13 +81,14 @@
   "Student.TopicChangeDetails.Header": "Wniosek o Zmianę Tematu Pracy Dyplomowej",
   "Student.TopicChangeCreate.Header": "Złóż Wniosek o Zmianę Tematu",
   "Student.CreateThesis.Header": "Zgłoś Propozycję Pracy Dyplomowej",
+  "Student.CreateReservation.Header": "Składanie rezerwacji",
   "ReservationDetails.Header": "Szczegóły rezerwacji",
   "ThesisDetails.Header": "Szczegóły pracy dyplomowej",
   "Button.Add": "Dodaj",
   "Button.Approve": "Zatwierdź",
   "Button.Cancel": "Anuluj",
   "Button.Correct": "Popraw",
-  "Button.Create": "Stwórz",
+  "Button.Create": "Utwórz",
   "Button.Details": "Szczegóły",
   "Button.Edit": "Edytuj",
   "Button.Manage": "Zarządzaj",
@@ -149,5 +150,6 @@
   "ThesisStatus.TO_CORRECT": "Do poprawy",
   "ThesisStatus.REJECTED_BY_COMMITTEE": "Odrzucony przez komisję",
   "ThesisStatus.APPROVED_BY_COMMITTEE": "Zatwierdzony przez komisję",
-  "Alert.Error.GenericError": "Ups.. ! Coś poszło nie tak \uD83D\uDE22"
+  "Alert.Error.GenericError": "Ups.. ! Coś poszło nie tak \uD83D\uDE22",
+  "Alert.Warning.CannotCreateReservation": "Nie możesz zarezerwować tej pracy. Możliwe przyczyny: \n • Posiadasz juz potwierdzona rezerwacje \n • Harmonogram nie pozwala na rezerwację w tym momencie \n • Temat nie został zaakceptowany przez komisję programową"
 }

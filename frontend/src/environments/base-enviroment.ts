@@ -18,6 +18,7 @@ export const baseEnvironment = {
       [ApiLabel.CREATE_CLARIFICATION_REQUEST]: 'TODO',
       [ApiLabel.CREATE_CHANGE_REQUEST]: 'TODO',
       [ApiLabel.CREATE_THESIS]: 'TODO',
+      [ApiLabel.CREATE_RESERVATION]: 'TODO',
       [ApiLabel.GET_CHANGE_REQUEST]: 'TODO',
       [ApiLabel.GET_CHANGE_REQUESTS]: 'TODO',
       [ApiLabel.GET_CLARIFICATION_REQUEST]: 'TODO',
@@ -41,7 +42,6 @@ export const baseEnvironment = {
       [ApiLabel.GET_TIMETABLES]: 'TODO',
       [ApiLabel.GET_USER]: 'TODO',
       [ApiLabel.REJECT_CLARIFICATION_REQUEST]: 'TODO'
-
     }
   }
 };

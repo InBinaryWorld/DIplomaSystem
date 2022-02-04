@@ -84,8 +84,8 @@ const thesis: Thesis = {
   diplomaSessionId: diplomaSessionId,
   topic: 'Predykcja zachowań ludzi podczas lockdownu',
   description: 'Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu',
-  numberOfStudents: 1,
-  status: ThesisStatus.REJECTED_BY_COORDINATOR,
+  numberOfStudents: 3,
+  status: ThesisStatus.APPROVED_BY_COORDINATOR,
   reportedByStudent: false,
   submissionDate: new Date(),
   supervisor: lecturer
@@ -180,10 +180,13 @@ const lecturers: Employee[] = [
   lecturer,
   lecturer,
   lecturer,
+  lecturer,
+  lecturer,
   lecturer
 ];
 
 const students: Student[] = [
+  student,
   student,
   student,
   student,
@@ -196,10 +199,16 @@ const theses: Thesis[] = [
   thesis,
   thesis,
   thesis,
+  thesis,
+  thesis,
   thesis
 ];
 
 const reservations: Reservation[] = [
+  reservation,
+  reservation,
+  reservation,
+  reservation,
   reservation,
   reservation,
   reservation,
@@ -212,10 +221,18 @@ const clarificationRequests: ClarificationRequest[] = [
   clarificationRequest,
   clarificationRequest,
   clarificationRequest,
+  clarificationRequest,
+  clarificationRequest,
+  clarificationRequest,
+  clarificationRequest,
+  clarificationRequest,
   clarificationRequest
 ];
 
 const changeRequests: ChangeRequest[] = [
+  changeRequest,
+  changeRequest,
+  changeRequest,
   changeRequest,
   changeRequest,
   changeRequest,
@@ -232,6 +249,7 @@ const responseByApiKey: Dictionary<any> = {
   [ApiLabel.CREATE_CLARIFICATION_REQUEST]: clarificationRequest,
   [ApiLabel.CREATE_CHANGE_REQUEST]: changeRequest,
   [ApiLabel.CREATE_THESIS]: thesis,
+  [ApiLabel.CREATE_RESERVATION]: reservation,
   [ApiLabel.GET_USER]: user,
   [ApiLabel.GET_CHANGE_REQUEST]: changeRequest,
   [ApiLabel.GET_CHANGE_REQUESTS]: changeRequests,

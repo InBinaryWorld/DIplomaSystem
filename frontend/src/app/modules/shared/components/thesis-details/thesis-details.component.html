@@ -1,30 +1,35 @@
 <div class="container">
-  <div class="row mt-4 mb-2">
+  <div class="row my-4">
     <h1 class="display-6">{{ 'ThesisDetails.Header' | translate }}</h1>
   </div>
 
-  <div *ngIf="form && thesis" class="row py-3">
+  <div *ngIf="form && thesis" class="row mb-3">
+    <app-warning-alert *ngIf="isStudentWarningVisible()" class="my-2"
+                       messageKey="Alert.Warning.CannotCreateReservation">
+    </app-warning-alert>
     <form [formGroup]="form">
       <fieldset disabled>
         <div class="mb-3">
           <label for="topic" class="form-label">{{ 'Form.Label.ThesisTopic' | translate }}</label>
           <input type="text" formControlName="topic" id="topic" class="form-control">
         </div>
-        <div class="mb-3">
-          <label for="supervisorName" class="form-label">{{ 'Form.Label.Supervisor' | translate }}</label>
-          <input type="text" formControlName="supervisorName" id="supervisorName" class="form-control">
+        <div class="row mb-3">
+          <div class="col-7">
+            <label for="supervisorName" class="form-label">{{ 'Form.Label.Supervisor' | translate }}</label>
+            <input type="text" formControlName="supervisorName" id="supervisorName" class="form-control">
+          </div>
+          <div class="col-5">
+            <label for="numberOfStudents" class="form-label">{{ 'Form.Label.NumberOfStudents' | translate }}</label>
+            <input type="number" formControlName="numberOfStudents" id="numberOfStudents" class="form-control">
+          </div>
         </div>
         <div class="mb-3">
           <label for="diplomaSession" class="form-label">{{ 'Form.Label.DiplomaSession' | translate }}</label>
           <input type="text" formControlName="diplomaSession" id="diplomaSession" class="form-control">
         </div>
-        <div class="mb-3">
-          <label for="numberOfStudents" class="form-label">{{ 'Form.Label.NumberOfStudents' | translate }}</label>
-          <input type="number" formControlName="numberOfStudents" id="numberOfStudents" class="form-control">
-        </div>
         <div class="mb-4">
           <label for="description" class="form-label">{{ 'Form.Label.Description' | translate }}</label>
-          <textarea formControlName="description" id="description" class="form-control"></textarea>
+          <textarea rows="5" formControlName="description" id="description" class="form-control"></textarea>
         </div>
       </fieldset>
       <div class="gap-2 d-flex">

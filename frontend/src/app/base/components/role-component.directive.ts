@@ -8,7 +8,7 @@ import { SessionService } from '../services/session.service';
 import { filterExists } from '../../core/tools/filter-exists';
 import { isEmpty } from 'lodash-es';
 import { ActivatedRoute } from '@angular/router';
-import { FormGroup, ValidationErrors } from '@angular/forms';
+import { FormArray, FormGroup, ValidationErrors } from '@angular/forms';
 
 @Directive()
 export abstract class RoleComponent extends BaseComponent {
@@ -25,6 +25,11 @@ export abstract class RoleComponent extends BaseComponent {
       ? filterExists() : filterRoles(this.roles);
     return this.sessionService.selectContextRole()
       .pipe(filter, distinctUntilChanged());
+  }
+
+  public getErrorsFromArray(form: FormArray, index: number): ValidationErrors | null {
+    const control = form!.controls[index]!;
+    return (control.dirty || control.touched) ? control.errors : null;
   }
 
   public getErrors(form: FormGroup, controlName: string): ValidationErrors | null {

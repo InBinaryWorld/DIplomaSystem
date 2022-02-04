@@ -1,5 +1,5 @@
 <div class="container">
-  <div class="row mt-4 mb-2">
+  <div class="row my-4">
     <h1 class="display-6">{{ 'Student.TopicClarificationDetails.Header' | translate }}</h1>
   </div>
 
@@ -14,7 +14,8 @@
         <div class="mb-4">
           <label for="currentDescription"
                  class="form-label">{{ 'Form.Label.CurrentDescription' | translate }}</label>
-          <textarea formControlName="currentDescription" id="currentDescription" class="form-control"></textarea>
+          <textarea rows="5" formControlName="currentDescription" id="currentDescription"
+                    class="form-control"></textarea>
         </div>
         <div class="mb-3">
           <label for="newThesisTopic"
@@ -24,7 +25,7 @@
         <div class="mb-4">
           <label for="newDescription"
                  class="form-label">{{ 'Form.Label.NewDescription' | translate }}</label>
-          <textarea formControlName="newDescription" id="newDescription" class="form-control"></textarea>
+          <textarea rows="5" formControlName="newDescription" id="newDescription" class="form-control"></textarea>
         </div>
       </fieldset>
       <div class="gap-2 d-flex">

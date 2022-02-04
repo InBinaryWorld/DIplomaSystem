@@ -23,7 +23,7 @@ import { ReservationMember } from '../models/dto/reservation-member.model';
 })
 export class ThesesService {
 
-  private inactiveThesisStates: ThesisStatus[] = [
+  public inactiveThesisStates: ThesisStatus[] = [
     ThesisStatus.REJECTED_BY_LECTURER,
     ThesisStatus.REJECTED_BY_COORDINATOR,
     ThesisStatus.REJECTED_BY_COMMITTEE
@@ -41,9 +41,9 @@ export class ThesesService {
     this.thesesStoreService.invalidateStoreForType(ThesesStateKey.RESERVATIONS);
   }
 
-  public getThesesToReserveForActiveSession(student: Student): Observable<Thesis[]> {
+  public getApprovedThesesForActiveSession(student: Student): Observable<Thesis[]> {
     const diplomaSessionId = student.fieldOfStudy.activeDiplomaSessionId;
-    const options = LoadThesisActionOptions.availableToReserveForStudent(student.id, diplomaSessionId);
+    const options = LoadThesisActionOptions.forStudent(student.id, diplomaSessionId, ThesisStatus.APPROVED_BY_COMMITTEE);
     return this.thesesStoreService.getTheses(options);
   }
 
@@ -65,25 +65,24 @@ export class ThesesService {
     return this.thesesStoreService.getReservationForId(reservationId);
   }
 
-  public getConfirmedStudentReservationOnNotRejectedThesisForActiveSession(student: Student): Observable<Reservation | undefined> {
-    return this.getConfirmedStudentReservationsOnNotRejectedThesisForDiplomaSessionId(student.id, student.fieldOfStudy.activeDiplomaSessionId)
+  public getConfirmedStudentReservationInActiveSession(student: Student): Observable<Reservation | undefined> {
+    return this.getConfirmedStudentReservationsForDiplomaSessionId(student.id, student.fieldOfStudy.activeDiplomaSessionId)
       .pipe(map(i => firstItem(i)));
   }
 
-  public getConfirmedStudentReservationsOnNotRejectedThesisForDiplomaSessionId(studentId: IdType, diplomaSessionId: IdType): Observable<Reservation[]> {
+  public getConfirmedStudentReservationsForDiplomaSessionId(studentId: IdType, diplomaSessionId: IdType): Observable<Reservation[]> {
     return this.getStudentReservations(studentId).pipe(
       map(reservations => reservations.filter(r => {
         const isConfirmed = r.status === ReservationStatus.CONFIRMED;
         const isSessionMatch = r.thesis.diplomaSessionId === diplomaSessionId;
-        const isActive = !this.inactiveThesisStates.includes(r.thesis.status);
-        return isConfirmed && isSessionMatch && isActive;
+        return isConfirmed && isSessionMatch;
       })),
       shareReplay(1)
     );
   }
 
-  public getActiveReservedThesisForStudent(student: Student): Observable<Thesis | undefined> {
-    return this.getConfirmedStudentReservationOnNotRejectedThesisForActiveSession(student).pipe(
+  public getThesisForStudentConfirmedReservationInActiveSession(student: Student): Observable<Thesis | undefined> {
+    return this.getConfirmedStudentReservationInActiveSession(student).pipe(
       switchMap(r => isNil(r) ? of(undefined) : this.getThesisForId(r.thesisId))
     );
   }
@@ -102,6 +101,11 @@ export class ThesesService {
   // on WILLING state
   public confirmMemberReservationInReservation(memberId: IdType): Observable<ReservationMember> {
     return this.thesesApiService.confirmMemberReservation(memberId)
+      .pipe(tap(() => this.invalidateReservations()));
+  }
+
+  public createReservation(payload: object): Observable<Reservation> {
+    return this.thesesApiService.createReservation(payload)
       .pipe(tap(() => this.invalidateReservations()));
   }
 

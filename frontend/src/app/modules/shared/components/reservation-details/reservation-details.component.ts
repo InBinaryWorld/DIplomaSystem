@@ -130,7 +130,6 @@ export class ReservationDetailsComponent extends RoleComponent implements OnInit
   }
 
   private reload(): void {
-    console.log('clicked');
     this.isErrorVisible = false;
     this.reloadTrigger.next(true);
   }

@@ -67,10 +67,18 @@ export const loadUserFailedAction = createAction(
 
 
 export class LoadStudentsActionOptions {
+  diplomaSessionId?: IdType;
+
+  static forParticipateInReservation(diplomaSessionId: IdType): LoadStudentsActionOptions {
+    const options = new LoadStudentsActionOptions();
+    options.diplomaSessionId = diplomaSessionId;
+    return options;
+  }
 
   toKey(): string {
     return [
-      'LoadStudentsActionOptions'
+      'LoadStudentsActionOptions',
+      'DSI_' + this.diplomaSessionId
     ].join('$');
   }
 }

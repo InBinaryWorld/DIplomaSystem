@@ -52,3 +52,11 @@ div.table-body td.action-col button {
   margin-left: 4px;
   margin-bottom: 1px;
 }
+
+.icon {
+  font-size: 1.6rem;
+}
+
+.translation-white-spaces {
+  white-space: pre-wrap;
+}

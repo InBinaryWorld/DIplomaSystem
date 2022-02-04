@@ -19,9 +19,10 @@ export class ThesesApiService {
 
   public getThesesForUserRole(options: LoadThesisActionOptions): Observable<Thesis[]> {
     const queryParams = new RequestParams();
-    queryParams.addIfValueExists('proposedBy', options.proposedByStudentId);
+    queryParams.addIfValueExists('state', options.state);
     queryParams.addIfValueExists('diplomaSessionId', options.diplomaSessionId);
-    queryParams.addIfValueExists('availableToReserveForStudentId', options.availableToReserveForStudentId);
+    queryParams.addIfValueExists('proposedByStudentId', options.proposedByStudentId);
+    queryParams.addIfValueExists('proposedByStudentOnly', options.proposedByStudentOnly);
     return this.http.getWithLabel(ApiLabel.GET_THESES, undefined, queryParams);
   }
 
@@ -61,6 +62,11 @@ export class ThesesApiService {
   public confirmMemberReservation(memberId: IdType): Observable<ReservationMember> {
     const payload = { memberId };
     return this.http.postWithLabel(ApiLabel.CONFIRM_MEMBER_RESERVATION, payload);
+  }
+
+  //TODO:
+  public createReservation(payload: object): Observable<Reservation> {
+    return this.http.postWithLabel(ApiLabel.CREATE_RESERVATION, payload);
   }
 
 }

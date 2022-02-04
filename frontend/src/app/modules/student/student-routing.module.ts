@@ -58,7 +58,7 @@ const routes: Routes = [
             component: ThesisDetailsComponent
           },
           {
-            path: 'create/:id',
+            path: 'create/:thesisId',
             component: StudentCreateReservationComponent
           }
         ]

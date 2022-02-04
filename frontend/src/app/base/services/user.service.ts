@@ -9,7 +9,7 @@ import { IdType } from '../models/dto/id.model';
 import { filterExists } from '../../core/tools/filter-exists';
 import { UserStateKey } from '../store/user/user.state';
 import { Student } from '../models/dto/student.model';
-import { LoadEmployeesActionOptions } from '../store/user/user.actions';
+import { LoadEmployeesActionOptions, LoadStudentsActionOptions } from '../store/user/user.actions';
 import { Employee } from '../models/dto/employee.model';
 
 @Injectable({
@@ -44,6 +44,11 @@ export class UserService {
   public getAvailableSupervisors(diplomaSessionId: IdType): Observable<Employee[]> {
     const options = LoadEmployeesActionOptions.forSupervisingInDiplomaSession(diplomaSessionId);
     return this.userStoreService.getEmployees(options).pipe(filterExists());
+  }
+
+  public getStudentsToParticipantInReservation(diplomaSessionId: IdType): Observable<Student[]> {
+    const options = LoadStudentsActionOptions.forParticipateInReservation(diplomaSessionId);
+    return this.userStoreService.getStudents(options).pipe(filterExists());
   }
 
   public getEmployeeForId(id: IdType): Observable<Employee> {

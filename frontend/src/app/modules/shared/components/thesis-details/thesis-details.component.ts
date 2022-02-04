@@ -13,6 +13,7 @@ import { GeneralResourcesService } from '../../../../base/services/general-resou
 import { DiplomaSession } from '../../../../base/models/dto/diploma-session.model';
 import { LabelBuilder } from '../../../../base/utils/label-builder.utils';
 import { DeadlinesService } from '../../../../base/services/deadlines.service';
+import { isNotNil } from '../../../../core/tools/is-not-nil';
 
 @Component({
   selector: 'app-thesis-details',
@@ -50,6 +51,11 @@ export class ThesisDetailsComponent extends RoleComponent implements OnInit {
   get thesisIdSource(): Observable<string> {
     return this.getPathParam(this.activatedRoute, 'thesisId');
   }
+
+  isStudentWarningVisible(): boolean {
+    return this.userRole?.role === Role.STUDENT && isNotNil(this.canReserve) && !this.canReserve;
+  }
+
 
   ngOnInit(): void {
     this.initForm();
@@ -92,7 +98,7 @@ export class ThesisDetailsComponent extends RoleComponent implements OnInit {
   private checkButtonAvailability(): void {
     this.addSubscription(
       combineLatest([this.userRoleSource, this.thesisIdSource, this.reloadTrigger]).pipe(
-        switchMap(([userRole, thesisId]) => this.deadlinesService.canReserveThesisForId(userRole.id, thesisId))
+        switchMap(([userRole, thesisId]) => this.deadlinesService.canReserveThesisWithId(userRole.id, thesisId))
       ).subscribe(canReserve => {
         this.canReserve = canReserve;
         this.markForCheck();

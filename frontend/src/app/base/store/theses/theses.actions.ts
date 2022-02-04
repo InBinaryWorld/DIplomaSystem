@@ -1,6 +1,7 @@
 import { createAction, props } from '@ngrx/store';
 import { ThesesStateKey, ThesesStoreType } from './theses.state';
 import { IdType } from '../../models/dto/id.model';
+import { ThesisStatus } from '../../models/dto/topic-status.model';
 
 export const loadStudentReservationsAction = createAction(
   '[THESES] Load student reservations',
@@ -59,19 +60,22 @@ export const loadThesesFailedAction = createAction(
 
 export class LoadThesisActionOptions {
   proposedByStudentId?: string;
+  proposedByStudentOnly?: boolean;
   diplomaSessionId?: string;
-  availableToReserveForStudentId?: string;
+  state?: string;
 
   static proposedByStudent(studentId: IdType): LoadThesisActionOptions {
     const options = new LoadThesisActionOptions();
     options.proposedByStudentId = studentId;
+    options.proposedByStudentOnly = true;
     return options;
   }
 
-  static availableToReserveForStudent(studentId: IdType, diplomaSessionId: IdType): LoadThesisActionOptions {
+  static forStudent(studentId: IdType, diplomaSessionId: IdType, state: ThesisStatus): LoadThesisActionOptions {
     const options = new LoadThesisActionOptions();
-    options.availableToReserveForStudentId = studentId;
+    options.proposedByStudentId = studentId;
     options.diplomaSessionId = diplomaSessionId;
+    options.state = state;
     return options;
   }
 
@@ -79,8 +83,9 @@ export class LoadThesisActionOptions {
     return [
       'LoadThesisActionOptions',
       'PBSI_' + this.proposedByStudentId,
-      'ATRFS_' + this.availableToReserveForStudentId,
-      'DSI_' + this.diplomaSessionId
+      'PBSO_' + this.proposedByStudentOnly,
+      'DSI_' + this.diplomaSessionId,
+      'S_' + this.state
     ].join('$');
   }
 }

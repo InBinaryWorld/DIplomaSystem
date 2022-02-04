@@ -10,38 +10,37 @@ import { GeneralResourcesService } from './general-resources.service';
 import { UserService } from './user.service';
 import { isNotNil } from '../../core/tools/is-not-nil';
 import { Student } from '../models/dto/student.model';
+import { ThesisStatus } from '../models/dto/topic-status.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DeadlinesService {
 
+
   constructor(private readonly generalResourcesService: GeneralResourcesService,
               private readonly thesesService: ThesesService,
               private readonly userService: UserService) {
   }
 
-  public canReserveThesisForId(studentId: IdType, thesisId: IdType): Observable<boolean> {
+  public canReserveThesisWithId(studentId: IdType, thesisId: IdType): Observable<boolean> {
     return combineLatest([
       this.thesesService.getThesisForId(thesisId),
       this.userService.getStudentForId(studentId)
-    ]).pipe(switchMap(([thesis, student]) => this.canStudentReserveThesis(student, thesis.diplomaSessionId)));
+    ]).pipe(switchMap(([thesis, student]) => thesis.status !== ThesisStatus.APPROVED_BY_COMMITTEE
+      ? of(false)
+      : this.canStudentReserveThesisFromDiplomaSession(student, thesis.diplomaSessionId)
+    ));
   }
 
-  public canReserveThesisWithDiplomaSessionId(studentId: IdType, thesisDiplomaSessionId: IdType): Observable<boolean> {
-    return this.userService.getStudentForId(studentId).pipe(
-      switchMap(student => this.canStudentReserveThesis(student, thesisDiplomaSessionId))
-    );
-  }
-
-  private canStudentReserveThesis(student: Student, thesisDiplomaSessionId: IdType): Observable<boolean> {
+  public canStudentReserveThesisFromDiplomaSession(student: Student, thesisDiplomaSessionId: IdType): Observable<boolean> {
     return combineLatest([
       this.generalResourcesService.getDiplomaSessionForId(thesisDiplomaSessionId),
-      this.thesesService.getConfirmedStudentReservationsOnNotRejectedThesisForDiplomaSessionId(student.id, thesisDiplomaSessionId)
+      this.thesesService.getConfirmedStudentReservationsForDiplomaSessionId(student.id, thesisDiplomaSessionId)
     ]).pipe(switchMap(([thesisDiplomaSession, blockers]) =>
       this.verifyDeadline(thesisDiplomaSession.timetableId, t => t.selectingThesis).pipe(
         map((isTimetableOk) => {
-          const fieldOfStudyMatch = student.fieldOfStudy.id == thesisDiplomaSession.fieldOfStudyId;
+          const fieldOfStudyMatch = student.fieldOfStudyId == thesisDiplomaSession.fieldOfStudyId;
           return isEmpty(blockers) && isTimetableOk && fieldOfStudyMatch;
         })
       )
@@ -49,31 +48,27 @@ export class DeadlinesService {
   }
 
 
-  public canCreateThesisProposition(studentId: IdType): Observable<boolean> {
-    return this.checkForStudentWithoutReservation(studentId, t => t.submittingThesis);
-  }
-
-  private checkForStudentWithoutReservation(studentId: IdType, deadlineSelector: (timetable: Timetable) => Date): Observable<boolean> {
+  public canCreateThesisPropositionInActiveSession(studentId: IdType): Observable<boolean> {
     return this.userService.getStudentForId(studentId).pipe(
-      switchMap(student => this.thesesService.getConfirmedStudentReservationOnNotRejectedThesisForActiveSession(student).pipe(
+      switchMap(student => this.thesesService.getConfirmedStudentReservationInActiveSession(student).pipe(
         switchMap(thesis => isNotNil(thesis) ? of(false)
-          : this.verifyDeadlineForDiplomaSessionId(student.fieldOfStudy.activeDiplomaSessionId, deadlineSelector)
+          : this.verifyDeadlineForDiplomaSessionId(student.fieldOfStudy.activeDiplomaSessionId, t => t.submittingThesis)
         )
       ))
     );
   }
 
   public canCreateClarificationRequest(studentId: IdType): Observable<boolean> {
-    return this.checkForCurrentSessionWithActiveReservedThesis(studentId, t => t.clarificationThesis);
+    return this.checkForStudentWithConfirmedReservation(studentId, t => t.clarificationThesis);
   }
 
   public canCreateChangeRequest(studentId: IdType): Observable<boolean> {
-    return this.checkForCurrentSessionWithActiveReservedThesis(studentId, t => t.changingThesis);
+    return this.checkForStudentWithConfirmedReservation(studentId, t => t.changingThesis);
   }
 
-  private checkForCurrentSessionWithActiveReservedThesis(studentId: IdType, deadlineSelector: (timetable: Timetable) => Date): Observable<boolean> {
+  private checkForStudentWithConfirmedReservation(studentId: IdType, deadlineSelector: (timetable: Timetable) => Date): Observable<boolean> {
     return this.userService.getStudentForId(studentId).pipe(
-      switchMap(student => this.thesesService.getConfirmedStudentReservationOnNotRejectedThesisForActiveSession(student)),
+      switchMap(student => this.thesesService.getConfirmedStudentReservationInActiveSession(student)),
       switchMap(reservation => isNil(reservation)
         ? of(false)
         : this.verifyDeadlineForDiplomaSessionId(

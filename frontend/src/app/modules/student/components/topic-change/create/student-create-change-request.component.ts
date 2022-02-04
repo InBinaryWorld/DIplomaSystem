@@ -89,7 +89,7 @@ export class StudentCreateChangeRequestComponent extends RoleComponent implement
   }
 
   private getBaseThesis(student: Student): Observable<Thesis> {
-    return this.thesesService.getActiveReservedThesisForStudent(student)
+    return this.thesesService.getThesisForStudentConfirmedReservationInActiveSession(student)
       .pipe(filterExists(), first());
   }
 
