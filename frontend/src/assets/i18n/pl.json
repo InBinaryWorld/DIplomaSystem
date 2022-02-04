@@ -98,6 +98,7 @@
   "Button.Reserve": "Zarezerwuj",
   "Button.Review": "Zrecenzuj",
   "Button.Show": "Pokaż",
+  "Button.RequestForCorrections": "Poproś o poprawę",
   "Button.ConfirmParticipation": "Potwierdź udział",
   "Button.ConfirmReservation": "Potwierdź rezerwacje",
   "Table.Actions": "Akcje",
@@ -115,6 +116,7 @@
   "Table.Year": "Rok",
   "Form.Label.ThesisTopic": "Temat pracy",
   "Form.Label.Description": "Opis",
+  "Form.Label.CoordinatorComment": "Komentarz koordynatora",
   "Form.Label.Supervisor": "Opiekun pracy",
   "Form.Label.CurrentThesisTopic": "Obecny temat",
   "Form.Label.CurrentDescription": "Obecny opis",
@@ -154,6 +156,7 @@
   "Alert.Error.GenericError": "Ups.. ! Coś poszło nie tak \uD83D\uDE22",
   "Alert.Error.NotUniqueStudents": "Nie można wybrać wielokrotnie tego samego studenta.",
   "Alert.Warning.CannotCreateProposition": "Nie możesz złożyć propozycji nowej pracy dypomowej. Możliwe przyczyny: \n • Posiadasz potwierdzoną rezerwację \n • Harmonogram nie pozwala na złożenie propozycji w tym momencie",
-  "Alert.Warning.CannotCreateRequest": "Nie możesz złożyć wniosku. Możliwe przyczyny: \n • Nie posiadasz potwierdzonej rezerwacji \n • Harmonogram nie pozwala na złożenie wniosku w tym momencie",
-  "Alert.Warning.CannotCreateReservation": "Nie możesz zarezerwować tej pracy. Możliwe przyczyny: \n • Posiadasz juz potwierdzoną rezerwacją \n • Harmonogram nie pozwala na rezerwację w tym momencie \n • Temat nie został zaakceptowany przez komisję programową"
+  "Alert.Warning.Student.CannotCreateRequest": "Nie możesz złożyć wniosku. Możliwe przyczyny: \n • Nie posiadasz potwierdzonej rezerwacji \n • Harmonogram nie pozwala na złożenie wniosku w tym momencie",
+  "Alert.Warning.Student.CannotCreateReservation": "Nie możesz zarezerwować tej pracy. Możliwe przyczyny: \n • Posiadasz juz potwierdzoną rezerwacją \n • Harmonogram nie pozwala na rezerwację w tym momencie \n • Temat nie został zaakceptowany przez komisję programową",
+  "Alert.Warning.Coordinator.CannotConsiderThesis": "Nie możesz zrecenzować tej pracy. Możliwe przyczyny:\n • Harmonogram nie pozwala na tą operację w tym momencie\n • Praca nie jest gotowa na twoją ocenę\n • Praca została juz przez Ciebie oceniona"
 }

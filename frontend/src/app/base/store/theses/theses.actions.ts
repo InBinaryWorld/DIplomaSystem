@@ -62,7 +62,8 @@ export class LoadThesisActionOptions {
   proposedByStudentId?: string;
   proposedByStudentOnly?: boolean;
   diplomaSessionId?: string;
-  state?: string;
+  departmentId?: string;
+  status?: string;
 
   static proposedByStudent(studentId: IdType): LoadThesisActionOptions {
     const options = new LoadThesisActionOptions();
@@ -71,11 +72,18 @@ export class LoadThesisActionOptions {
     return options;
   }
 
-  static forStudent(studentId: IdType, diplomaSessionId: IdType, state: ThesisStatus): LoadThesisActionOptions {
+  static forStatusAndDepartment(departmentId: IdType, status: ThesisStatus): LoadThesisActionOptions {
+    const options = new LoadThesisActionOptions();
+    options.departmentId = departmentId;
+    options.status = status;
+    return options;
+  }
+
+  static forStudent(studentId: IdType, diplomaSessionId: IdType, status: ThesisStatus): LoadThesisActionOptions {
     const options = new LoadThesisActionOptions();
     options.proposedByStudentId = studentId;
     options.diplomaSessionId = diplomaSessionId;
-    options.state = state;
+    options.status = status;
     return options;
   }
 
@@ -85,7 +93,7 @@ export class LoadThesisActionOptions {
       'PBSI_' + this.proposedByStudentId,
       'PBSO_' + this.proposedByStudentOnly,
       'DSI_' + this.diplomaSessionId,
-      'S_' + this.state
+      'S_' + this.status
     ].join('$');
   }
 }

@@ -13,6 +13,9 @@ import { Student } from '../models/dto/student.model';
 import { ThesisStatus } from '../models/dto/topic-status.model';
 import { RequestsService } from './requests.service';
 import { RequestStatus } from '../models/dto/request-status.model';
+import { Employee } from '../models/dto/employee.model';
+
+export type DeadlineSelector = (timetable: Timetable) => Date;
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +27,24 @@ export class PermissionsService {
               private readonly requestsService: RequestsService,
               private readonly thesesService: ThesesService,
               private readonly userService: UserService) {
+  }
+
+  // Coordinator
+  public canCoordinatorConsiderThesis(coordinatorId: IdType, thesisId: IdType): Observable<boolean> {
+    return this.canEmployeeActOnThesis(coordinatorId, thesisId,
+      t => t.approvingThesisByCoordinator, ThesisStatus.WAITING);
+  }
+
+  // Lecturer
+  public canLecturerAcceptProposedThesis(coordinatorId: IdType, thesisId: IdType): Observable<boolean> {
+    return combineLatest([
+      this.userService.getEmployeeForId(coordinatorId),
+      this.thesesService.getThesisForId(thesisId)
+    ]).pipe(switchMap(([employee, thesis]) =>
+      thesis.status !== ThesisStatus.PROPOSED_BY_STUDENT || thesis.supervisorId !== employee.id
+        ? of(false)
+        : this.verifyDeadlineForDiplomaSessionId(thesis.diplomaSessionId, t => t.submittingThesis)
+    ));
   }
 
   // Dean
@@ -45,16 +66,46 @@ export class PermissionsService {
   //   ]).pipe(switchMap(([dean, request]) =>
   //     dean.id !== request.employeeId || request.status !== RequestStatus.WAITING
   //       ? of(false)
-  //       : combineLatest([
-  //         this.generalResourcesService.getFieldsOfStudyForDepartmentId(dean.departmentId),
-  //         this.generalResourcesService.getDiplomaSessionForId(request.baseThesis.diplomaSessionId)
-  //       ]).pipe(switchMap(([deanFields, requestSession]) =>
-  //         !deanFields.some(f => f.id === requestSession.fieldOfStudyId)
-  //           ? of(false)
-  //           : this.verifyDeadline(requestSession.timetableId, t => t.clarificationThesis)
-  //       ))
+  //       : this.checkEmployeeAccess(dean, request.baseThesis.diplomaSessionId, t => t.clarificationThesis)
   //   ));
   // }
+
+
+  // Committee
+  public canCommitteeConsiderChangeRequest(committeeId: IdType, requestId: IdType): Observable<boolean> {
+    return combineLatest([
+      this.userService.getEmployeeForId(committeeId),
+      this.requestsService.getChangeRequestForId(requestId)
+    ]).pipe(switchMap(([committee, request]) =>
+      committee.id !== request.employeeId || request.status !== RequestStatus.WAITING
+        ? of(false)
+        : this.verifyDeadlineForDiplomaSessionId(request.newThesis.diplomaSessionId, t => t.changingThesis)
+    ));
+  }
+
+  //Employee
+  public canEmployeeActOnThesis(employeeId: IdType, thesisId: IdType, selector: DeadlineSelector, thesisStatus?: ThesisStatus): Observable<boolean> {
+    return combineLatest([
+      this.userService.getEmployeeForId(employeeId),
+      this.thesesService.getThesisForId(thesisId)
+    ]).pipe(switchMap(([employee, thesis]) =>
+      isNotNil(thesisStatus) && thesis.status !== thesisStatus
+        ? of(false)
+        : this.checkEmployeeAccess(employee, thesis.diplomaSessionId, selector)
+    ));
+  }
+
+  public checkEmployeeAccess(employee: Employee, targetDiplomaSessionId: IdType, selector: DeadlineSelector): Observable<boolean> {
+    return this.generalResourcesService.getDiplomaSessionForId(targetDiplomaSessionId).pipe(
+      switchMap(ds => this.verifyDeadline(ds.timetableId, selector).pipe(
+        switchMap(isTimetableOk => !isTimetableOk ? of(false)
+          : this.generalResourcesService.getFieldsOfStudyForId(ds.fieldOfStudyId).pipe(
+            map(thesisFieldOfStudy => thesisFieldOfStudy.departmentId === employee.departmentId)
+          )
+        ))
+      )
+    );
+  }
 
 
   // Students
@@ -101,7 +152,7 @@ export class PermissionsService {
     return this.checkForStudentWithConfirmedReservation(studentId, t => t.changingThesis);
   }
 
-  private checkForStudentWithConfirmedReservation(studentId: IdType, deadlineSelector: (timetable: Timetable) => Date): Observable<boolean> {
+  private checkForStudentWithConfirmedReservation(studentId: IdType, deadlineSelector: DeadlineSelector): Observable<boolean> {
     return this.userService.getStudentForId(studentId).pipe(
       switchMap(student => this.thesesService.getConfirmedStudentReservationInActiveSession(student)),
       switchMap(reservation => isNil(reservation)
@@ -116,13 +167,13 @@ export class PermissionsService {
 
   // General
 
-  public verifyDeadlineForDiplomaSessionId(diplomaSessionId: IdType, deadlineSelector: (timetable: Timetable) => Date): Observable<boolean> {
+  public verifyDeadlineForDiplomaSessionId(diplomaSessionId: IdType, deadlineSelector: DeadlineSelector): Observable<boolean> {
     return this.generalResourcesService.getDiplomaSessionForId(diplomaSessionId).pipe(
       filterExists(), switchMap(ds => this.verifyDeadline(ds.timetableId, deadlineSelector))
     );
   }
 
-  public verifyDeadline(timetableId: IdType, deadlineSelector: (timetable: Timetable) => Date): Observable<boolean> {
+  public verifyDeadline(timetableId: IdType, deadlineSelector: DeadlineSelector): Observable<boolean> {
     return this.generalResourcesService.getTimetableForId(timetableId).pipe(
       filterExists(), map(timetable => this.checkDate(deadlineSelector(timetable)))
     );

@@ -19,7 +19,8 @@ export class ThesesApiService {
 
   public getThesesForUserRole(options: LoadThesisActionOptions): Observable<Thesis[]> {
     const queryParams = new RequestParams();
-    queryParams.addIfValueExists('state', options.state);
+    queryParams.addIfValueExists('status', options.status);
+    queryParams.addIfValueExists('departmentId', options.departmentId);
     queryParams.addIfValueExists('diplomaSessionId', options.diplomaSessionId);
     queryParams.addIfValueExists('proposedByStudentId', options.proposedByStudentId);
     queryParams.addIfValueExists('proposedByStudentOnly', options.proposedByStudentOnly);
@@ -72,6 +73,18 @@ export class ThesesApiService {
   //TODO:
   public createReservation(payload: object): Observable<Reservation> {
     return this.http.postWithLabel(ApiLabel.CREATE_RESERVATION, payload);
+  }
+
+  public requestForThesisCorrectionsWithCoordinator(coordinatorId: IdType, payload: object): Observable<Thesis> {
+    return this.http.postWithLabel(ApiLabel.REQUEST_THESIS_CORRECTIONS, payload);
+  }
+
+  public rejectThesisWithCoordinator(coordinatorId: IdType, payload: object): Observable<Thesis> {
+    return this.http.postWithLabel(ApiLabel.REJECT_THESIS_WITH_COORDINATOR, payload);
+  }
+
+  public approveThesisWithCoordinator(payload: object): Observable<Thesis> {
+    return this.http.postWithLabel(ApiLabel.APPROVE_THESIS_WITH_COORDINATOR, payload);
   }
 
 }

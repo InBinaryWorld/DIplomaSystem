@@ -5,7 +5,8 @@
 
   <div *ngIf="form && thesis" class="row py-3">
     <app-error-alert *ngIf="isErrorVisible" class="mb-2"></app-error-alert>
-    <app-warning-alert *ngIf="!(canReserve ?? true)" class="mb-2" messageKey="Alert.Warning.CannotCreateReservation">
+    <app-warning-alert *ngIf="!(canReserve ?? true)" class="mb-2"
+                       messageKey="Alert.Warning.Student.CannotCreateReservation">
     </app-warning-alert>
     <form [formGroup]="form">
       <div class="mb-3">

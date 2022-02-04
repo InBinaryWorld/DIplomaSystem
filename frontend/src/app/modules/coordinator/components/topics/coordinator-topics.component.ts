@@ -1,7 +1,13 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Thesis } from '../../../../base/models/dto/thesis.model';
 import { Router } from '@angular/router';
-import { FakeData } from '../../../../../fakes/fake.data';
+import { PermissionsService } from '../../../../base/services/permissions.service';
+import { SessionService } from '../../../../base/services/session.service';
+import { Role } from '../../../../base/models/dto/role.model';
+import { switchMap } from 'rxjs';
+import { RoleComponent } from '../../../../base/components/role-component.directive';
+import { ThesesService } from '../../../../base/services/theses.service';
+import { UserService } from '../../../../base/services/user.service';
 
 @Component({
   selector: 'app-topic-change-requests',
@@ -9,22 +15,37 @@ import { FakeData } from '../../../../../fakes/fake.data';
   styleUrls: ['./coordinator-topics.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CoordinatorTopicsComponent {
-  private topic: Thesis = FakeData.thesis;
+export class CoordinatorTopicsComponent extends RoleComponent implements OnInit {
 
-  public topics: Thesis[] = [
-    this.topic,
-    this.topic,
-    this.topic,
-    this.topic,
-    this.topic,
-    this.topic,
-    this.topic,
-    this.topic
-  ];
+  thesesToConsider?: Thesis[];
 
+  constructor(private readonly deadlinesService: PermissionsService,
+              private readonly thesesService: ThesesService,
+              private readonly userService: UserService,
+              private readonly router: Router,
+              sessionService: SessionService,
+              changeDetector: ChangeDetectorRef) {
+    super(sessionService, changeDetector);
+  }
 
-  constructor(private readonly router: Router) {
+  get roles(): Role[] {
+    return [Role.COORDINATOR];
+  }
+
+  ngOnInit(): void {
+    this.initTheses();
+  }
+
+  private initTheses(): void {
+    this.addSubscription(
+      this.userRoleSource.pipe(
+        switchMap(userRole => this.userService.getEmployeeForId(userRole.id)),
+        switchMap(coordinator => this.thesesService.getWaitingThesis(coordinator.departmentId))
+      ).subscribe(thesesToConsider => {
+        this.thesesToConsider = thesesToConsider;
+        this.markForCheck();
+      })
+    );
   }
 
   public reviewTopic(topic: Thesis): void {

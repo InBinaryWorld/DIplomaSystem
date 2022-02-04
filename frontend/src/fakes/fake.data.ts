@@ -134,9 +134,10 @@ const thesis: Thesis = {
   topic: 'Predykcja zachowań ludzi podczas lockdownu',
   description: 'Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu',
   numberOfStudents: 3,
-  status: ThesisStatus.APPROVED_BY_COORDINATOR,
+  status: ThesisStatus.WAITING,
   reportedByStudent: false,
   submissionDate: new Date(),
+  coordinatorComment: 'Całość do poprawy',
   supervisor: lecturer
 };
 
@@ -298,6 +299,7 @@ const employees = [
 const responseByApiKey: Dictionary<any> = {
   [ApiLabel.ABANDON_MEMBER_RESERVATION]: reservationMember,
   [ApiLabel.APPROVE_CLARIFICATION_REQUEST]: clarificationRequest,
+  [ApiLabel.APPROVE_THESIS_WITH_COORDINATOR]: thesis,
   [ApiLabel.CONFIRM_MEMBER_RESERVATION]: reservationMember,
   [ApiLabel.CONFIRM_PARTICIPATION_IN_RESERVATION]: reservationMember,
   [ApiLabel.CREATE_CLARIFICATION_REQUEST]: clarificationRequest,
@@ -310,13 +312,16 @@ const responseByApiKey: Dictionary<any> = {
   [ApiLabel.GET_CLARIFICATION_REQUEST]: clarificationRequest,
   [ApiLabel.GET_CLARIFICATION_REQUESTS]: clarificationRequests,
   [ApiLabel.GET_DIPLOMA_SESSION]: diplomaSession,
+  [ApiLabel.GET_FIELD_OF_STUDY]: fieldOfStudy,
   [ApiLabel.GET_RESERVATION]: reservation,
   [ApiLabel.GET_RESERVATIONS]: reservations,
   [ApiLabel.GET_STUDENTS]: students,
   [ApiLabel.GET_TIMETABLE]: timetable,
   [ApiLabel.GET_THESIS]: thesis,
   [ApiLabel.GET_THESES]: theses,
-  [ApiLabel.REJECT_CLARIFICATION_REQUEST]: clarificationRequest
+  [ApiLabel.REJECT_CLARIFICATION_REQUEST]: clarificationRequest,
+  [ApiLabel.REJECT_THESIS_WITH_COORDINATOR]: thesis,
+  [ApiLabel.REQUEST_THESIS_CORRECTIONS]: thesis
 };
 
 function generateAuthData(): AuthData {

@@ -19,6 +19,10 @@ export class AppValidators {
     return AppValidators.compose(Validators.required, Validators.maxLength(1000));
   }
 
+  public static get coordinatorComment(): ValidatorFn {
+    return AppValidators.compose(Validators.required, Validators.maxLength(1000));
+  }
+
   private static integerValidator(): ValidatorFn {
     return Validators.pattern(/^-?[0-9]+$/);
   }

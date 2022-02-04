@@ -6,7 +6,9 @@
   </div>
 
   <div *ngIf="clarificationRequests" class="row mt-3 mb-5">
-    <app-warning-alert *ngIf="!(canCreateNew ?? true)" messageKey="Alert.Warning.CannotCreateRequest">
+    <app-warning-alert *ngIf="!(canCreateNew ?? true)" messageKey="Alert.Warning.Student.CannotCreateRequest">
+    </app-warning-alert>
+    <app-warning-alert *ngIf="!(canCreateNew ?? true)" messageKey="Alert.Warning.Student.CannotCreateRequest">
     </app-warning-alert>
 
     <div class="col-8">

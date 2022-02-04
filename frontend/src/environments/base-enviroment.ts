@@ -15,6 +15,7 @@ export const baseEnvironment = {
       [ApiLabel.REFRESH]: 'TODO',
       [ApiLabel.ABANDON_MEMBER_RESERVATION]: 'TODO',
       [ApiLabel.APPROVE_CLARIFICATION_REQUEST]: 'TODO',
+      [ApiLabel.APPROVE_THESIS_WITH_COORDINATOR]: 'TODO',
       [ApiLabel.CONFIRM_MEMBER_RESERVATION]: 'TODO',
       [ApiLabel.CONFIRM_PARTICIPATION_IN_RESERVATION]: 'TODO',
       [ApiLabel.CREATE_CLARIFICATION_REQUEST]: 'TODO',
@@ -43,7 +44,9 @@ export const baseEnvironment = {
       [ApiLabel.GET_TIMETABLE]: 'TODO',
       [ApiLabel.GET_TIMETABLES]: 'TODO',
       [ApiLabel.GET_USER]: 'TODO',
-      [ApiLabel.REJECT_CLARIFICATION_REQUEST]: 'TODO'
+      [ApiLabel.REJECT_CLARIFICATION_REQUEST]: 'TODO',
+      [ApiLabel.REJECT_THESIS_WITH_COORDINATOR]: 'TODO',
+      [ApiLabel.REQUEST_THESIS_CORRECTIONS]: 'TODO'
     }
   }
 };

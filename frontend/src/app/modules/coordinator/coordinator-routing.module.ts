@@ -5,7 +5,7 @@ import { CoordinatorComponent } from './components/coordinator/coordinator.compo
 import { AuthGuard } from '../../core/guards/auth.guard';
 import { RoleGuard } from '../../core/guards/role.guard';
 import { Role } from '../../base/models/dto/role.model';
-import { CoordinatorTopicReviewComponent } from './components/topics/review/coordinator-topic-review.component';
+import { ThesisDetailsComponent } from '../shared/components/thesis-details/thesis-details.component';
 
 
 const routes: Routes = [
@@ -30,9 +30,9 @@ const routes: Routes = [
             component: CoordinatorTopicsComponent
           },
           {
-            path: ':id',
+            path: ':thesisId',
             pathMatch: 'full',
-            component: CoordinatorTopicReviewComponent
+            component: ThesisDetailsComponent
           }
         ]
       }

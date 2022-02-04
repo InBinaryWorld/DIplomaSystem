@@ -31,6 +31,10 @@ export class GeneralResourcesService {
     return this.generalResourcesStoreService.getFieldsOfStudy(options, ifNeededOnly);
   }
 
+  public getFieldsOfStudyForId(id: IdType, ifNeededOnly = true): Observable<FieldOfStudy> {
+    return this.generalResourcesStoreService.getFieldOfStudyForId(id, ifNeededOnly);
+  }
+
   public getTimetableForId(id: IdType, ifNeededOnly = true): Observable<Timetable> {
     return this.generalResourcesStoreService.getTimetableForId(id, ifNeededOnly);
   }
