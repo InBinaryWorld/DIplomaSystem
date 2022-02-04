@@ -129,6 +129,14 @@ export class ReservationDetailsComponent extends RoleComponent implements OnInit
     });
   }
 
+  public abandonReservation(): void {
+    this.thesesService.confirmMemberReservationInReservation(this.studentMember!.id).subscribe({
+      next: () => this.reload(),
+      error: () => this.isErrorVisible = true
+    });
+
+  }
+
   private reload(): void {
     this.isErrorVisible = false;
     this.reloadTrigger.next(true);

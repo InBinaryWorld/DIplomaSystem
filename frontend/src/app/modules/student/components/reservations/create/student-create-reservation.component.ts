@@ -14,6 +14,8 @@ import { GeneralResourcesService } from '../../../../../base/services/general-re
 import { DiplomaSession } from '../../../../../base/models/dto/diploma-session.model';
 import { IdType } from '../../../../../base/models/dto/id.model';
 import { DeadlinesService } from '../../../../../base/services/deadlines.service';
+import { keyBy } from 'lodash-es';
+import { isNotNil } from '../../../../../core/tools/is-not-nil';
 
 @Component({
   selector: 'app-student-create-reservation',
@@ -31,6 +33,7 @@ export class StudentCreateReservationComponent extends RoleComponent implements 
 
   canReserve = false;
   isErrorVisible = false;
+  notUniqueStudents = false;
 
   constructor(private readonly router: Router,
               private readonly formBuilder: FormBuilder,
@@ -112,6 +115,15 @@ export class StudentCreateReservationComponent extends RoleComponent implements 
       students: this.formBuilder.array([]),
       description: [{ value: thesis.description, disabled: true }]
     });
+    this.addSubscription(
+      (this.form.get('students') as FormArray).valueChanges.subscribe(studentIdList => {
+        const allParticipants = [this.student!.id, ...studentIdList].filter(item => isNotNil(item));
+        const unique = Object.keys(keyBy(allParticipants, i => i));
+        this.notUniqueStudents = unique.length !== allParticipants.length;
+      })
+    );
+
+
     this.markForCheck();
   }
 

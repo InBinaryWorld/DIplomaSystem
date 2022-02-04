@@ -18,7 +18,7 @@ import { UserService } from '../../../../base/services/user.service';
 export class StudentTopicPropositionsComponent extends RoleComponent implements OnInit {
 
   proposedTheses?: Thesis[];
-  canCreateNew = false;
+  canCreateNew?: boolean;
 
   constructor(private readonly deadlinesService: DeadlinesService,
               private readonly thesesService: ThesesService,
