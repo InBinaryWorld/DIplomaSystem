@@ -22,6 +22,8 @@ import { StudyDegree } from '../app/base/models/dto/study-degree.model';
 import { Student } from '../app/base/models/dto/student.model';
 import { ReservationMember } from '../app/base/models/dto/reservation-member.model';
 import { ReservationMemberStatus } from '../app/base/models/dto/reservation-member-status.model';
+import { RequestParams } from '../app/core/models/request-param.model';
+import { isNotNil } from '../app/core/tools/is-not-nil';
 
 const userId: IdType = '1';
 
@@ -46,6 +48,9 @@ const changeRequestId: IdType = '116';
 const clarificationRequestId: IdType = '583';
 
 
+// additional
+const student2Id: IdType = '1482';
+
 const deadline = new Date(2023, 1);
 
 const userPerson: UserPerson = {
@@ -67,16 +72,60 @@ const user: User = {
   ]
 };
 
+const admin: Employee = {
+  id: adminId,
+  userId: userId,
+  departmentId: departmentId,
+  employeeRole: EmployeeRole.ADMIN,
+  title: 'Admin',
+  user: userPerson
+};
+
 // Is also supervisor supervisors
 const lecturer: Employee = {
   id: lecturerId,
   userId: userId,
   departmentId: departmentId,
   employeeRole: EmployeeRole.LECTURER,
-  title: 'Prof.',
+  title: 'Lecturer',
   user: userPerson
 };
 
+const dean: Employee = {
+  id: deanId,
+  userId: userId,
+  departmentId: departmentId,
+  employeeRole: EmployeeRole.DEAN,
+  title: 'Dean',
+  user: userPerson
+};
+
+const coordinator: Employee = {
+  id: coordinatorId,
+  userId: userId,
+  departmentId: departmentId,
+  employeeRole: EmployeeRole.COORDINATOR,
+  title: 'Coordinator',
+  user: userPerson
+};
+
+const committeeMember: Employee = {
+  id: programCommitteeMemberId,
+  userId: userId,
+  departmentId: departmentId,
+  employeeRole: EmployeeRole.PROGRAM_COMMITTEE_MEMBER,
+  title: 'Committee member',
+  user: userPerson
+};
+
+const diplomaSectionMember: Employee = {
+  id: programCommitteeMemberId,
+  userId: userId,
+  departmentId: departmentId,
+  employeeRole: EmployeeRole.DIPLOMA_SECTION_MEMBER,
+  title: 'Diploma section member',
+  user: userPerson
+};
 
 const thesis: Thesis = {
   id: thesisId,
@@ -104,6 +153,15 @@ const student: Student = {
   userId: userId,
   fieldOfStudyId: fieldOfStudyId,
   indexNumber: '249013',
+  fieldOfStudy: fieldOfStudy,
+  user: userPerson
+};
+
+const student2: Student = {
+  id: student2Id,
+  userId: userId,
+  fieldOfStudyId: fieldOfStudyId,
+  indexNumber: '249041',
   fieldOfStudy: fieldOfStudy,
   user: userPerson
 };
@@ -137,8 +195,8 @@ const clarificationRequest: ClarificationRequest = {
   status: RequestStatus.WAITING,
   newTopic: 'nowy temat pracy',
   newDescription: 'nowy opis pracy',
-  supervisor: lecturer,
-  baseThesis: thesis
+  baseThesis: thesis,
+  student: student
 };
 
 const changeRequest: ChangeRequest = {
@@ -151,7 +209,8 @@ const changeRequest: ChangeRequest = {
   oldThesisId: thesisId,
   supervisor: lecturer,
   newThesis: thesis,
-  previousThesis: thesis
+  previousThesis: thesis,
+  student: student
 };
 
 
@@ -174,24 +233,9 @@ const diplomaSession: DiplomaSession = {
   fieldOfStudy: fieldOfStudy
 };
 
-
-const lecturers: Employee[] = [
-  lecturer,
-  lecturer,
-  lecturer,
-  lecturer,
-  lecturer,
-  lecturer,
-  lecturer
-];
-
 const students: Student[] = [
   student,
-  student,
-  student,
-  student,
-  student,
-  student
+  student2
 ];
 
 const theses: Thesis[] = [
@@ -242,9 +286,18 @@ const changeRequests: ChangeRequest[] = [
   changeRequest
 ];
 
+const employees = [
+  dean,
+  admin,
+  coordinator,
+  committeeMember,
+  diplomaSectionMember
+];
+
 
 const responseByApiKey: Dictionary<any> = {
   [ApiLabel.ABANDON_MEMBER_RESERVATION]: reservationMember,
+  [ApiLabel.APPROVE_CLARIFICATION_REQUEST]: clarificationRequest,
   [ApiLabel.CONFIRM_MEMBER_RESERVATION]: reservationMember,
   [ApiLabel.CONFIRM_PARTICIPATION_IN_RESERVATION]: reservationMember,
   [ApiLabel.CREATE_CLARIFICATION_REQUEST]: clarificationRequest,
@@ -257,14 +310,13 @@ const responseByApiKey: Dictionary<any> = {
   [ApiLabel.GET_CLARIFICATION_REQUEST]: clarificationRequest,
   [ApiLabel.GET_CLARIFICATION_REQUESTS]: clarificationRequests,
   [ApiLabel.GET_DIPLOMA_SESSION]: diplomaSession,
-  [ApiLabel.GET_EMPLOYEES]: lecturers,
   [ApiLabel.GET_RESERVATION]: reservation,
   [ApiLabel.GET_RESERVATIONS]: reservations,
-  [ApiLabel.GET_STUDENT]: student,
   [ApiLabel.GET_STUDENTS]: students,
   [ApiLabel.GET_TIMETABLE]: timetable,
   [ApiLabel.GET_THESIS]: thesis,
-  [ApiLabel.GET_THESES]: theses
+  [ApiLabel.GET_THESES]: theses,
+  [ApiLabel.REJECT_CLARIFICATION_REQUEST]: clarificationRequest
 };
 
 function generateAuthData(): AuthData {
@@ -275,19 +327,55 @@ function generateAuthData(): AuthData {
   };
 }
 
-function handleLabel(apiLabel: ApiLabel): NonNullable<any> {
+function getStudent(query: RequestParams): Student {
+  const id = query.getAll().find(p => p.name === 'id')!.value;
+  return students.find(s => s.id === id)!;
+}
+
+function getEmployee(query: RequestParams): Employee {
+  const id = query.getAll().find(p => p.name === 'id')!.value;
+  return employees.find(e => e.id === id)!;
+}
+
+function getEmployees(query?: RequestParams): Employee[] {
+  let response = employees;
+  const role = query?.getAll().find(p => p.name === 'role')?.value;
+  if (isNotNil(role)) {
+    response = response.filter(f => f.employeeRole === role);
+  }
+  return response;
+}
+
+function getFieldsOfStudy(query?: RequestParams): Employee[] {
+  let response = employees;
+  const departmentId = query?.getAll().find(p => p.name === 'departmentId')?.value;
+  if (isNotNil(departmentId)) {
+    response = response.filter(f => f.departmentId === departmentId);
+  }
+  return response;
+}
+
+function handleLabel(apiLabel: ApiLabel, query?: RequestParams): NonNullable<any> {
   switch (apiLabel) {
     case ApiLabel.LOGIN:
     case ApiLabel.REFRESH:
       return generateAuthData();
+    case ApiLabel.GET_STUDENT:
+      return getStudent(query!);
+    case ApiLabel.GET_EMPLOYEE:
+      return getEmployee(query!);
+    case ApiLabel.GET_EMPLOYEES:
+      return getEmployees(query);
+    case ApiLabel.GET_FIELDS_OF_STUDY:
+      return getFieldsOfStudy(query);
     default:
       return responseByApiKey[apiLabel];
   }
 }
 
 export const FakeData = {
-  handleApiLabel(apiLabel: ApiLabel): NonNullable<any> {
-    const response = handleLabel(apiLabel);
+  handleApiLabel(apiLabel: ApiLabel, query?: RequestParams): NonNullable<any> {
+    const response = handleLabel(apiLabel, query);
     if (isNil(response)) {
       throw new Error('FAKES: Unhandled Api Label: ' + apiLabel);
     }
@@ -298,6 +386,5 @@ export const FakeData = {
   changeRequest,
   clarificationRequest,
   timetable,
-  supervisors: lecturers,
   diplomaSession
 };

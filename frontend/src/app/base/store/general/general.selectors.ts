@@ -1,13 +1,12 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { generalFeatureName } from './general.reducer';
-import { GeneralResourcesStateKey, GeneralResourceType, GeneralState } from './general.state';
+import { GeneralResourcesStateKey, GeneralState } from './general.state';
 import { AppState } from '../app-state.model';
 import { forIdSelector, forKeySelector, StoreResource } from '../../../core/store/base-store-state.model';
 import { Department } from '../../models/dto/department.model';
 import { DiplomaSession } from '../../models/dto/diploma-session.model';
 import { FieldOfStudy } from '../../models/dto/field-of-study.model';
 import { Timetable } from '../../models/dto/timetable.model';
-import { IdType } from '../../models/dto/id.model';
 
 
 export const selectGeneralState = createFeatureSelector<GeneralState>(generalFeatureName);
@@ -44,13 +43,4 @@ export const selectTimetablesForKey = createSelector<AppState, string, StoreReso
 );
 export const selectTimetableForId = createSelector<AppState, string, StoreResource<Timetable>, Timetable | undefined>(
   selectTimetablesStoreResource, forIdSelector
-);
-
-
-// For Effect
-export const selectGeneralResourcesForTypeAndId = createSelector<AppState, { resourceType: GeneralResourcesStateKey, id: IdType }, GeneralState, GeneralResourceType | undefined>(
-  selectGeneralState, (state, { resourceType, id }) => state[resourceType].cachedById[id]
-);
-export const selectGeneralResourceIdsForTypeAndKey = createSelector<AppState, { resourceType: GeneralResourcesStateKey, key: string }, GeneralState, string[] | undefined>(
-  selectGeneralState, (state, { resourceType, key }) => state[resourceType].idsByKey[key]
 );

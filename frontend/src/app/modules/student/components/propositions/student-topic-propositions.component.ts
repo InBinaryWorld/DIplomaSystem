@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { DeadlinesService } from '../../../../base/services/deadlines.service';
+import { PermissionsService } from '../../../../base/services/permissions.service';
 import { SessionService } from '../../../../base/services/session.service';
 import { Role } from '../../../../base/models/dto/role.model';
 import { Observable, switchMap } from 'rxjs';
@@ -20,7 +20,7 @@ export class StudentTopicPropositionsComponent extends RoleComponent implements 
   proposedTheses?: Thesis[];
   canCreateNew?: boolean;
 
-  constructor(private readonly deadlinesService: DeadlinesService,
+  constructor(private readonly deadlinesService: PermissionsService,
               private readonly thesesService: ThesesService,
               private readonly userService: UserService,
               private readonly router: Router,

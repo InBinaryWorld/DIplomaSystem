@@ -11,18 +11,53 @@ import { UserService } from './user.service';
 import { isNotNil } from '../../core/tools/is-not-nil';
 import { Student } from '../models/dto/student.model';
 import { ThesisStatus } from '../models/dto/topic-status.model';
+import { RequestsService } from './requests.service';
+import { RequestStatus } from '../models/dto/request-status.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class DeadlinesService {
+export class PermissionsService {
 
 
   constructor(private readonly generalResourcesService: GeneralResourcesService,
+              private readonly requestsService: RequestsService,
               private readonly thesesService: ThesesService,
               private readonly userService: UserService) {
   }
 
+  // Dean
+  public canDeanConsiderClarificationRequest(deanId: IdType, requestId: IdType): Observable<boolean> {
+    return combineLatest([
+      this.userService.getEmployeeForId(deanId),
+      this.requestsService.getClarificationRequestForId(requestId)
+    ]).pipe(switchMap(([dean, request]) =>
+      dean.id !== request.employeeId || request.status !== RequestStatus.WAITING
+        ? of(false)
+        : this.verifyDeadlineForDiplomaSessionId(request.baseThesis.diplomaSessionId, t => t.clarificationThesis)
+    ));
+  }
+
+  // public canDeanConsiderClarificationRequest(deanId: IdType, requestId: IdType): Observable<boolean> {
+  //   return combineLatest([
+  //     this.userService.getEmployeeForId(deanId),
+  //     this.requestsService.getClarificationRequestForId(requestId)
+  //   ]).pipe(switchMap(([dean, request]) =>
+  //     dean.id !== request.employeeId || request.status !== RequestStatus.WAITING
+  //       ? of(false)
+  //       : combineLatest([
+  //         this.generalResourcesService.getFieldsOfStudyForDepartmentId(dean.departmentId),
+  //         this.generalResourcesService.getDiplomaSessionForId(request.baseThesis.diplomaSessionId)
+  //       ]).pipe(switchMap(([deanFields, requestSession]) =>
+  //         !deanFields.some(f => f.id === requestSession.fieldOfStudyId)
+  //           ? of(false)
+  //           : this.verifyDeadline(requestSession.timetableId, t => t.clarificationThesis)
+  //       ))
+  //   ));
+  // }
+
+
+  // Students
   public canReserveThesisWithId(studentId: IdType, thesisId: IdType): Observable<boolean> {
     return combineLatest([
       this.thesesService.getThesisForId(thesisId),
@@ -77,6 +112,9 @@ export class DeadlinesService {
       )
     );
   }
+
+
+  // General
 
   public verifyDeadlineForDiplomaSessionId(diplomaSessionId: IdType, deadlineSelector: (timetable: Timetable) => Date): Observable<boolean> {
     return this.generalResourcesService.getDiplomaSessionForId(diplomaSessionId).pipe(

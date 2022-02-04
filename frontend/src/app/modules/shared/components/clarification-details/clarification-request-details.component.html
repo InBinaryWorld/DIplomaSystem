@@ -33,12 +33,18 @@
           {{ 'Form.Label.Status' | translate }}:
           <b>{{ TranslationKeys.forRequestStatus(request.status) | translate }}</b>
         </h6>
-        <!--        <button type="submit"-->
-        <!--                class="btn btn-outline-danger"-->
-        <!--                [class.disabled]="isRejectPossible(request)"-->
-        <!--                (click)="rejectRequest(request)">-->
-        <!--          {{ 'Button.Reject' | translate }}-->
-        <!--        </button>-->
+        <ng-container *ngIf="userRole?.role === Role.DEAN">
+          <button type="submit" class="btn btn-outline-danger"
+                  [class.disabled]="!canDeanConsiderRequest"
+                  (click)="rejectRequest()">
+            {{ 'Button.Reject' | translate }}
+          </button>
+          <button type="submit" class="btn btn-success"
+                  [class.disabled]="!canDeanConsiderRequest"
+                  (click)="approveRequest()">
+            {{ 'Button.Approve' | translate }}
+          </button>
+        </ng-container>
       </div>
     </form>
   </div>

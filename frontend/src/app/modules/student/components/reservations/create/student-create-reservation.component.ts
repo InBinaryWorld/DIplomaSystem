@@ -13,7 +13,7 @@ import { LabelBuilder } from '../../../../../base/utils/label-builder.utils';
 import { GeneralResourcesService } from '../../../../../base/services/general-resources.service';
 import { DiplomaSession } from '../../../../../base/models/dto/diploma-session.model';
 import { IdType } from '../../../../../base/models/dto/id.model';
-import { DeadlinesService } from '../../../../../base/services/deadlines.service';
+import { PermissionsService } from '../../../../../base/services/permissions.service';
 import { keyBy } from 'lodash-es';
 import { isNotNil } from '../../../../../core/tools/is-not-nil';
 
@@ -40,7 +40,7 @@ export class StudentCreateReservationComponent extends RoleComponent implements 
               private readonly userService: UserService,
               private readonly thesesService: ThesesService,
               private readonly activatedRoute: ActivatedRoute,
-              private readonly deadlinesService: DeadlinesService,
+              private readonly deadlinesService: PermissionsService,
               private readonly generalResourcesService: GeneralResourcesService,
               sessionService: SessionService,
               changeDetector: ChangeDetectorRef) {

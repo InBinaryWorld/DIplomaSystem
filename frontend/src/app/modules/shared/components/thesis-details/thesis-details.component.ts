@@ -12,7 +12,7 @@ import { IdType } from '../../../../base/models/dto/id.model';
 import { GeneralResourcesService } from '../../../../base/services/general-resources.service';
 import { DiplomaSession } from '../../../../base/models/dto/diploma-session.model';
 import { LabelBuilder } from '../../../../base/utils/label-builder.utils';
-import { DeadlinesService } from '../../../../base/services/deadlines.service';
+import { PermissionsService } from '../../../../base/services/permissions.service';
 import { isNotNil } from '../../../../core/tools/is-not-nil';
 
 @Component({
@@ -35,7 +35,7 @@ export class ThesisDetailsComponent extends RoleComponent implements OnInit {
 
   constructor(private readonly router: Router,
               private readonly formBuilder: FormBuilder,
-              private readonly deadlinesService: DeadlinesService,
+              private readonly deadlinesService: PermissionsService,
               private readonly thesesService: ThesesService,
               private readonly generalResourcesService: GeneralResourcesService,
               private readonly activatedRoute: ActivatedRoute,

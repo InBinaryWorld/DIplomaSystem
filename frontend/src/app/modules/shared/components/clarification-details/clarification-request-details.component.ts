@@ -10,6 +10,8 @@ import { RequestsService } from '../../../../base/services/requests.service';
 import { SessionService } from '../../../../base/services/session.service';
 import { IdType } from '../../../../base/models/dto/id.model';
 import { UserRole } from '../../../../base/models/dto/user-role.model';
+import { PermissionsService } from '../../../../base/services/permissions.service';
+import { filterRoles } from '../../../../core/tools/filter-roles';
 
 @Component({
   selector: 'app-clarification-request-details',
@@ -23,12 +25,16 @@ export class ClarificationRequestDetailsComponent extends RoleComponent implemen
 
   userRole?: UserRole;
   request?: ClarificationRequest;
+  canDeanConsiderRequest?: boolean;
+
+  isErrorVisible = false;
 
   private reloadTrigger = new BehaviorSubject<boolean>(true);
 
   constructor(private readonly formBuilder: FormBuilder,
               private readonly activatedRoute: ActivatedRoute,
               private readonly requestsService: RequestsService,
+              private readonly deadlinesService: PermissionsService,
               sessionService: SessionService,
               changeDetector: ChangeDetectorRef) {
     super(sessionService, changeDetector);
@@ -42,9 +48,11 @@ export class ClarificationRequestDetailsComponent extends RoleComponent implemen
     return this.getPathParam(this.activatedRoute, 'requestId');
   }
 
+
   ngOnInit(): void {
     this.initForm();
     this.loadRequest();
+    this.checkButtonsAvailability();
   }
 
   private initForm(): void {
@@ -89,20 +97,42 @@ export class ClarificationRequestDetailsComponent extends RoleComponent implemen
     this.markForCheck();
   }
 
-  // private reload(): void {
-  //   this.reloadTrigger.next(true);
-  // }
-  //
-  // rejectRequest(request: ClarificationRequest) {
-  //   this.addSubscription(
-  //     this.userRole.pipe(first(), switchMap(userRole =>
-  //       this.requestsStoreService.rejectClarificationRequest(userRole, request.id)
-  //     )).subscribe(() => this.reload())
-  //   );
-  // }
-  //
-  // isRejectPossible(request: ClarificationRequest): any {
-  //   return request.status == RequestStatus.WAITING;
-  // }
+  private checkButtonsAvailability(): void {
+    this.addSubscription(
+      combineLatest([
+        this.userRoleSource.pipe(filterRoles([Role.DEAN])),
+        this.requestId,
+        this.reloadTrigger
+      ]).pipe(switchMap(([deanUserRole, id]) =>
+        this.deadlinesService.canDeanConsiderClarificationRequest(deanUserRole.id, id)
+      )).subscribe(canDeanConsiderRequest => {
+        this.canDeanConsiderRequest = canDeanConsiderRequest;
+        this.markForCheck();
+      })
+    );
+  }
+
+  public rejectRequest(): void {
+    this.addSubscription(
+      this.requestsService.rejectClarificationRequestWithDean(this.userRole!.id, this.request!.id).subscribe({
+        next: () => this.reload(),
+        error: () => this.isErrorVisible = true
+      })
+    );
+  }
+
+  public approveRequest(): void {
+    this.addSubscription(
+      this.requestsService.approveClarificationRequestWithDean(this.userRole!.id, this.request!.id).subscribe({
+        next: () => this.reload(),
+        error: () => this.isErrorVisible = true
+      })
+    );
+  }
+
+  private reload(): void {
+    this.isErrorVisible = false;
+    this.reloadTrigger.next(true);
+  }
 
 }

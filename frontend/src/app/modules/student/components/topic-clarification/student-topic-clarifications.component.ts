@@ -6,7 +6,7 @@ import { filterExists } from '../../../../core/tools/filter-exists';
 import { RoleComponent } from '../../../../base/components/role-component.directive';
 import { Role } from '../../../../base/models/dto/role.model';
 import { RequestsService } from '../../../../base/services/requests.service';
-import { DeadlinesService } from '../../../../base/services/deadlines.service';
+import { PermissionsService } from '../../../../base/services/permissions.service';
 import { SessionService } from '../../../../base/services/session.service';
 
 @Component({
@@ -20,7 +20,7 @@ export class StudentTopicClarificationsComponent extends RoleComponent implement
   clarificationRequests?: ClarificationRequest[];
   canCreateNew = false;
 
-  constructor(private readonly deadlinesService: DeadlinesService,
+  constructor(private readonly deadlinesService: PermissionsService,
               private readonly requestsService: RequestsService,
               private readonly router: Router,
               sessionService: SessionService,

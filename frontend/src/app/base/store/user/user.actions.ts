@@ -2,6 +2,7 @@ import { createAction, props } from '@ngrx/store';
 import { User } from '../../models/dto/user-ext.model';
 import { IdType } from '../../models/dto/id.model';
 import { UserStateKey, UserStoreType } from './user.state';
+import { EmployeeRole } from '../../models/dto/employee-role.model';
 
 
 export const loadCurrentUserAction = createAction('[USER] Load current user');
@@ -85,12 +86,14 @@ export class LoadStudentsActionOptions {
 
 export class LoadEmployeesActionOptions {
   diplomaSessionId?: IdType;
-  onlyAvailableSupervisors?: boolean;
+  role?: EmployeeRole;
+  supervisorsOnly?: boolean;
 
   public static forSupervisingInDiplomaSession(diplomaSessionId: IdType): LoadEmployeesActionOptions {
     const options = new LoadEmployeesActionOptions();
     options.diplomaSessionId = diplomaSessionId;
-    options.onlyAvailableSupervisors = true;
+    options.role = EmployeeRole.LECTURER;
+    options.supervisorsOnly = true;
     return options;
   }
 
@@ -98,7 +101,8 @@ export class LoadEmployeesActionOptions {
     return [
       'LoadEmployeesActionOptions',
       'DSI_' + this.diplomaSessionId,
-      'OAS_' + this.onlyAvailableSupervisors
+      'R_' + this.role,
+      'SO_' + this.supervisorsOnly
     ].join('$');
   }
 }

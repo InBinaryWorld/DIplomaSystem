@@ -32,11 +32,6 @@ export class UserService {
     this.userStoreService.invalidateStoreForType(UserStateKey.EMPLOYEE);
   }
 
-  // public getStudents(): Observable<Student[]> {
-  //   const options = LoadStudentsActionOptions;
-  //   return this.userStoreService.getStudents(options);
-  // }
-
   public getStudentForId(id: IdType): Observable<Student> {
     return this.userStoreService.getStudentForId(id);
   }
