@@ -2,8 +2,7 @@ package pwr.diplomaproject.controller
 
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.http.ResponseEntity
-import org.springframework.http.ResponseEntity.notFound
-import org.springframework.http.ResponseEntity.ok
+import org.springframework.http.ResponseEntity.*
 import org.springframework.web.bind.annotation.*
 import pwr.diplomaproject.model.dto.StudentReservationDto
 import pwr.diplomaproject.model.form.StudentReservationForm
@@ -36,11 +35,19 @@ class StudentReservationController(
         @RequestParam studentId: Long,
         @PathVariable reservationId: Long
     ): ResponseEntity<Unit> =
-        if (studentReservationService.approveReservation(studentId, reservationId)) ok().build() else notFound().build()
+        if (studentReservationService.approveReservation(studentId, reservationId))
+            ok().build()
+        else badRequest().build()
 
     @Operation(summary = "Odrzucenie rezerwacji")
-    @GetMapping("/cancel/{id}")
-    fun cancelReservation(@PathVariable id: Long): Unit = TODO()
+    @GetMapping("/cancel/{reservationId}")
+    fun cancelReservation(
+        @RequestParam studentId: Long,
+        @PathVariable reservationId: Long
+    ): ResponseEntity<Unit> =
+        if (studentReservationService.cancelReservation(studentId, reservationId))
+            ok().build()
+        else badRequest().build()
 
     @Operation(summary = "Rezerwacja tematu (i zgłoszenie grupy)")
     @PostMapping

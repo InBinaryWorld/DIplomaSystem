@@ -39,9 +39,16 @@ class StudentReservationService(
 
         if (groupMember != null && groupMember.status != MemberStatus.CONFIRMED) {
 
+            // SUGGESTED -> WILLING
             if (groupMember.status == MemberStatus.SUGGESTED) {
+                if (reservation.status != ReservationStatus.WAITING) {
+                    return false
+                }
                 groupMember.status = MemberStatus.WILLING
-            } else if (groupMember.status == MemberStatus.WILLING) {
+            }
+
+            // WILLING -> ACCEPTED
+            else if (groupMember.status == MemberStatus.WILLING) {
                 if (reservation.status != ReservationStatus.ACCEPTED) {
                     return false
                 }
@@ -50,12 +57,12 @@ class StudentReservationService(
 
             val memberStatusList = reservation.groupMembers.map { it.status }
 
-            // change reservation status to registered
+            // all MemberStatus.WILLING  =>  ReservationStatus.REGISTERED
             if (memberStatusList.all { it == MemberStatus.WILLING }) {
                 reservation.status = ReservationStatus.REGISTERED
             }
 
-            // change reservation status to confirmed
+            // all MemberStatus.CONFIRMED  =>  ReservationStatus.CONFIRMED
             else if (memberStatusList.all { it == MemberStatus.CONFIRMED }) {
                 reservation.status = ReservationStatus.CONFIRMED
             }
@@ -63,6 +70,29 @@ class StudentReservationService(
             groupMemberRepository.save(groupMember)
             reservationRepository.save(reservation)
 
+            return true
+        }
+
+        return false
+    }
+
+    fun cancelReservation(studentId: Long, reservationId: Long): Boolean {
+        val reservation: Reservation? = reservationRepository.findAllByStudentId(studentId).firstOrNull {
+            it.id == reservationId
+        }
+        val groupMember: GroupMember? = reservation?.groupMembers?.firstOrNull {
+            it.student.id == studentId
+        }
+
+        if (reservation != null
+            && groupMember != null
+            && reservation.status != ReservationStatus.CONFIRMED
+            && groupMember.status != MemberStatus.CONFIRMED
+        ) {
+            groupMember.status = MemberStatus.REJECTED
+            reservation.status = ReservationStatus.REJECTED_BY_STUDENT
+            groupMemberRepository.save(groupMember)
+            reservationRepository.save(reservation)
             return true
         }
 
