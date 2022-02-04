@@ -8,6 +8,5 @@ data class User(
     @Id
     val id: Long,
     val firstName: String,
-    val lastName: String,
-    val password: String
+    val lastName: String
 )

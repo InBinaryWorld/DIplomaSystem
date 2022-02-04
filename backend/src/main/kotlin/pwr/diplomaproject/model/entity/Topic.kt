@@ -7,6 +7,7 @@ import javax.persistence.*
 @Entity
 data class Topic(
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long,
     @ManyToOne
     val lecturer: Employee,
@@ -14,9 +15,9 @@ data class Topic(
     val student: Student?,
     @ManyToOne
     val graduation: Graduation,
-    val topic: String,
-    val description: String,
-    val studentCount: Int,
+    var topic: String,
+    var description: String,
+    var studentCount: Int,
     @Enumerated(EnumType.STRING)
     var status: TopicStatus,
     var coordinatorComments: String?,

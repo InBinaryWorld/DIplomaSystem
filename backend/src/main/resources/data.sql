@@ -1,12 +1,12 @@
 -- Table: app_user
-insert into app_user (id, first_name, last_name, password)
-values (1, 'Jacek', 'Werek', 'password');
-insert into app_user (id, first_name, last_name, password)
-values (2, 'Krzysztof', 'Szarfa', 'password');
-insert into app_user (id, first_name, last_name, password)
-values (3, 'Łukasz', 'Tomcio', 'password');
-insert into app_user (id, first_name, last_name, password)
-values (4, 'Kamil', 'Kolanko', 'password');
+insert into app_user (id, first_name, last_name)
+values (1, 'Jacek', 'Werek');
+insert into app_user (id, first_name, last_name)
+values (2, 'Krzysztof', 'Szarfa');
+insert into app_user (id, first_name, last_name)
+values (3, 'Łukasz', 'Tomcio');
+insert into app_user (id, first_name, last_name)
+values (4, 'Kamil', 'Kolanko');
 
 
 -- Table: faculty
@@ -41,14 +41,22 @@ values
 insert into graduation (id, graduation_year, course_of_study_id)
 values (1, 2021, 1);
 
+-- Table: schedule
+insert into schedule (id, topic_change_deadline, topic_commission_approval_deadline, topic_coordinator_approval_deadline, topic_correction_deadline, topic_registration_deadline, topic_selection_deadline, graduation_id)
+values (1, '2023-01-01', '2023-01-01', '2023-01-01', '2023-01-01', '2023-01-01', '2023-01-01', 1);
+
 
 -- Table: topic
-insert into topic (id, coordinator_comments, created_by_student, creation_date, description, status, student_count,
+insert into topic (coordinator_comments, created_by_student, creation_date, description, status, student_count,
                    topic, graduation_id, student_id, lecturer_id)
-values (1, 'Lorem ipsum', false, '2022-02-09', 'Lorem ipsum', 'WAITING', 1,
+values ('Lorem ipsum', false, '2022-02-09', 'Lorem ipsum', 'WAITING', 1,
         'Predykcja zachowań ludzi podczas lockdownu', 1, null, 1),
-       (2, 'Lorem ipsum', false, '2022-02-04', 'Lorem ipsum', 'WAITING', 2,
-        'Aplikacja z przepisami kucharskimi', 1, null, 1);
+       ('Lorem ipsum', false, '2022-02-04', 'Lorem ipsum', 'WAITING', 2,
+        'Aplikacja z przepisami kucharskimi', 1, null, 1),
+       ('Lorem ipsum', false, '2022-02-04', 'Lorem ipsum', 'NEEDS_CORRECTION', 2,
+        'Aplikacja z przepisami kucharskimi', 1, null, 1),
+       ('Lorem ipsum', true, '2022-02-04', 'Lorem ipsum', 'PROPOSED_BY_STUDENT', 2,
+        'Aplikacja z przepisami kucharskimi', 1, 2, 1);
 
 
 -- Table: reservation
