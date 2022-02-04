@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*
 import pwr.diplomaproject.model.dto.StudentReservationDto
 import pwr.diplomaproject.model.form.StudentReservationForm
 import pwr.diplomaproject.service.StudentReservationService
-import java.security.Principal
 
 @RestController
 @RequestMapping("/student/reservation")
@@ -22,20 +21,22 @@ class StudentReservationController(
         ok(studentReservationService.getReservations(studentId))
 
     @Operation(summary = "Dane rezerwacji studenta")
-    @GetMapping("/{id}")
+    @GetMapping("/{reservationId}")
     fun getReservation(
-        principal: Principal?,
         @RequestParam studentId: Long,
-        @PathVariable id: Long
+        @PathVariable reservationId: Long
     ): ResponseEntity<StudentReservationDto> {
-        val dto = studentReservationService.getReservation(studentId, id)
+        val dto = studentReservationService.getReservation(studentId, reservationId)
         return if (dto == null) notFound().build() else ok(dto)
     }
 
-
     @Operation(summary = "Potwierdzenie rezerwacji przez studenta (wstępne lub ostateczne)")
-    @GetMapping("/approve/{id}")
-    fun approveReservation(@PathVariable id: Long): Unit = TODO()
+    @GetMapping("/approve/{reservationId}")
+    fun approveReservation(
+        @RequestParam studentId: Long,
+        @PathVariable reservationId: Long
+    ): ResponseEntity<Unit> =
+        if (studentReservationService.approveReservation(studentId, reservationId)) ok().build() else notFound().build()
 
     @Operation(summary = "Odrzucenie rezerwacji")
     @GetMapping("/cancel/{id}")

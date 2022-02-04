@@ -11,6 +11,8 @@ data class Reservation(
     @ManyToOne
     val topic: Topic,
     @Enumerated(EnumType.STRING)
-    val status: ReservationStatus,
-    val creationDate: LocalDate
+    var status: ReservationStatus,
+    val creationDate: LocalDate,
+    @OneToMany(mappedBy = "reservation")
+    val groupMembers: List<GroupMember>
 )

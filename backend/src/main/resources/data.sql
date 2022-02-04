@@ -48,4 +48,4 @@ values (1, '2022-02-10', 'WAITING', 1);
 
 -- Table: group_member
 insert into group_member (id, status, reservation_id, student_id)
-values (1, 'WILLING', 1, 1);
+values (1, 'SUGGESTED', 1, 1);

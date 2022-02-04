@@ -11,7 +11,7 @@ class StudentReservationDtoFactory {
             return StudentReservationDto(
                 reservation.id,
                 reservation.topic.topic,
-                supervisorUser.firstName + supervisorUser.lastName,
+                "${supervisorUser.firstName} ${supervisorUser.lastName}",
                 reservation.status
             )
         }

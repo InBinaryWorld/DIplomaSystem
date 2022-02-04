@@ -12,5 +12,5 @@ data class GroupMember(
     @ManyToOne
     val student: Student,
     @Enumerated(EnumType.STRING)
-    val status: MemberStatus
+    var status: MemberStatus
 )
