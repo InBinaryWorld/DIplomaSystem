@@ -230,7 +230,8 @@ const diplomaSession: DiplomaSession = {
   timetableId: timetableId,
   fieldOfStudyId: fieldOfStudyId,
   year: '2022/2023',
-  fieldOfStudy: fieldOfStudy
+  fieldOfStudy: fieldOfStudy,
+  timetable: timetable
 };
 
 const students: Student[] = [

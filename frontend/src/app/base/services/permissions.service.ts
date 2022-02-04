@@ -103,12 +103,10 @@ export class PermissionsService {
 
   public checkEmployeeAccess(employee: Employee, targetDiplomaSessionId: IdType, selector: DeadlineSelector): Observable<boolean> {
     return this.generalResourcesService.getDiplomaSessionForId(targetDiplomaSessionId).pipe(
-      switchMap(ds => this.verifyDeadline(ds.timetableId, selector).pipe(
-        switchMap(isTimetableOk => !isTimetableOk ? of(false)
-          : this.generalResourcesService.getFieldsOfStudyForId(ds.fieldOfStudyId).pipe(
-            map(thesisFieldOfStudy => thesisFieldOfStudy.departmentId === employee.departmentId)
-          )
-        ))
+      switchMap(ds => !this.verifyDeadline(ds.timetable, selector) ? of(false)
+        : this.generalResourcesService.getFieldsOfStudyForId(ds.fieldOfStudyId).pipe(
+          map(thesisFieldOfStudy => thesisFieldOfStudy.departmentId === employee.departmentId)
+        )
       )
     );
   }
@@ -129,13 +127,10 @@ export class PermissionsService {
     return combineLatest([
       this.generalResourcesService.getDiplomaSessionForId(thesisDiplomaSessionId),
       this.thesesService.getConfirmedStudentReservationsForDiplomaSessionId(student.id, thesisDiplomaSessionId)
-    ]).pipe(switchMap(([thesisDiplomaSession, blockers]) =>
-      this.verifyDeadline(thesisDiplomaSession.timetableId, t => t.selectingThesis).pipe(
-        map((isTimetableOk) => {
-          const fieldOfStudyMatch = student.fieldOfStudyId == thesisDiplomaSession.fieldOfStudyId;
-          return isEmpty(blockers) && isTimetableOk && fieldOfStudyMatch;
-        })
-      )
+    ]).pipe(map(([thesisDiplomaSession, blockers]) =>
+      this.verifyDeadline(thesisDiplomaSession.timetable, t => t.selectingThesis)
+      && student.fieldOfStudyId == thesisDiplomaSession.fieldOfStudyId
+      && isEmpty(blockers)
     ));
   }
 
@@ -175,18 +170,12 @@ export class PermissionsService {
 
   public verifyDeadlineForDiplomaSessionId(diplomaSessionId: IdType, deadlineSelector: DeadlineSelector): Observable<boolean> {
     return this.generalResourcesService.getDiplomaSessionForId(diplomaSessionId).pipe(
-      filterExists(), switchMap(ds => this.verifyDeadline(ds.timetableId, deadlineSelector))
+      filterExists(), map(ds => this.verifyDeadline(ds.timetable, deadlineSelector))
     );
   }
 
-  public verifyDeadline(timetableId: IdType, deadlineSelector: DeadlineSelector): Observable<boolean> {
-    return this.generalResourcesService.getTimetableForId(timetableId).pipe(
-      filterExists(), map(timetable => this.checkDate(deadlineSelector(timetable)))
-    );
-  }
-
-  private checkDate(endDate: Date): boolean {
-    return new Date() < endDate;
+  public verifyDeadline(timetable: Timetable, deadlineSelector: DeadlineSelector): boolean {
+    return new Date() < deadlineSelector(timetable);
   }
 
 }
