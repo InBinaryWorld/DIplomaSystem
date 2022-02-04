@@ -4,6 +4,6 @@ data class SubjectDetailsDto(
     val id: Long,
     val topic: String,
     val lecturerName: String,
-    val numberOfStudents: String,
+    val numberOfStudents: Int,
     val description: String
 )

@@ -18,8 +18,8 @@ data class Topic(
     val description: String,
     val studentCount: Int,
     @Enumerated(EnumType.STRING)
-    val status: TopicStatus,
-    val coordinatorComments: String,
+    var status: TopicStatus,
+    var coordinatorComments: String?,
     val createdByStudent: Boolean,
     val creationDate: LocalDate
 )

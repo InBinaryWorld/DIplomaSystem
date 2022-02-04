@@ -17,6 +17,6 @@ class GraduationScheduleController {
     @Operation(summary = "Zwraca archiwalne harmonogramy")
     @GetMapping("/archival")
     fun archivalSchedules(): List<GraduationScheduleDto> = TODO()
-    
+
     // TODO endpointy do wyświetlenia, edycji i dodawania harmonogramów
 }
