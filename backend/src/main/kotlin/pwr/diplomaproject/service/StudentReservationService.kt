@@ -1,9 +1,10 @@
 package pwr.diplomaproject.service
 
-import org.springframework.http.ResponseEntity
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import pwr.diplomaproject.model.dto.StudentReservationDto
 import pwr.diplomaproject.model.dto.factory.StudentReservationDtoFactory
+import pwr.diplomaproject.model.entity.Reservation
 import pwr.diplomaproject.repository.ReservationRepository
 import pwr.diplomaproject.repository.StudentRepository
 
@@ -13,14 +14,18 @@ class StudentReservationService(
     private val studentRepository: StudentRepository
 ) {
     fun getReservations(studentId: Long): List<StudentReservationDto> =
-        reservationRepository.findByStudentId(studentId)
+        reservationRepository.findAllByStudentId(studentId)
             .map { StudentReservationDtoFactory.create(it) }
 
     fun getReservation(
         studentId: Long,
         reservationId: Long
-    ): ResponseEntity<StudentReservationDto> {
-//        val student: Any = studentRepository.findById(studentId).map { it.groupMembers }
-        return ResponseEntity.ok(null)
+    ): StudentReservationDto? {
+        val reservation: Reservation? =
+            studentRepository.findByIdOrNull(studentId)?.groupMembers?.map { it.reservation }
+                ?.firstOrNull { reservation ->
+                    reservation.id == reservationId
+                }
+        return if (reservation == null) null else StudentReservationDtoFactory.create(reservation)
     }
 }

@@ -2,6 +2,7 @@ package pwr.diplomaproject.controller
 
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.http.ResponseEntity
+import org.springframework.http.ResponseEntity.notFound
 import org.springframework.http.ResponseEntity.ok
 import org.springframework.web.bind.annotation.*
 import pwr.diplomaproject.model.dto.StudentReservationDto
@@ -21,13 +22,16 @@ class StudentReservationController(
         ok(studentReservationService.getReservations(studentId))
 
     @Operation(summary = "Dane rezerwacji studenta")
-    @GetMapping("/{reservationId}")
+    @GetMapping("/{id}")
     fun getReservation(
         principal: Principal?,
         @RequestParam studentId: Long,
-        @PathVariable reservationId: Long
-    ): ResponseEntity<StudentReservationDto> =
-        studentReservationService.getReservation(studentId, reservationId)
+        @PathVariable id: Long
+    ): ResponseEntity<StudentReservationDto> {
+        val dto = studentReservationService.getReservation(studentId, id)
+        return if (dto == null) notFound().build() else ok(dto)
+    }
+
 
     @Operation(summary = "Potwierdzenie rezerwacji przez studenta (wstępne lub ostateczne)")
     @GetMapping("/approve/{id}")
@@ -41,5 +45,6 @@ class StudentReservationController(
     @PostMapping
     fun makeReservation(
         @RequestParam studentId: Long,
-        @RequestBody form: StudentReservationForm): Unit = TODO()
+        @RequestBody form: StudentReservationForm
+    ): Unit = TODO()
 }
