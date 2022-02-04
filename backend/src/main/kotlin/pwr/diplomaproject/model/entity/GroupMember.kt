@@ -4,7 +4,7 @@ import pwr.diplomaproject.model.enum.MemberStatus
 import javax.persistence.*
 
 @Entity
-data class GroupMember(
+class GroupMember(
     @Id
     val id: Long,
     @ManyToOne

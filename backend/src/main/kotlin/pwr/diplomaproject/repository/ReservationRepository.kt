@@ -9,4 +9,7 @@ import pwr.diplomaproject.model.entity.Reservation
 interface ReservationRepository : JpaRepository<Reservation, Long> {
     @Query("select g.reservation from GroupMember g where g.student.id = :studentId")
     fun findAllByStudentId(studentId: Long): List<Reservation>
+
+    @Query(value = "select max(r.id) + 1 from Reservation r")
+    fun getNextId(): Long
 }

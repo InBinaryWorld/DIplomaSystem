@@ -1,21 +1,27 @@
 package pwr.diplomaproject.service
 
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import pwr.diplomaproject.model.dto.StudentReservationDto
 import pwr.diplomaproject.model.dto.factory.StudentReservationDtoFactory
 import pwr.diplomaproject.model.entity.GroupMember
 import pwr.diplomaproject.model.entity.Reservation
+import pwr.diplomaproject.model.entity.Topic
 import pwr.diplomaproject.model.enum.MemberStatus
 import pwr.diplomaproject.model.enum.ReservationStatus
+import pwr.diplomaproject.model.form.StudentReservationForm
 import pwr.diplomaproject.repository.GroupMemberRepository
 import pwr.diplomaproject.repository.ReservationRepository
 import pwr.diplomaproject.repository.StudentRepository
+import pwr.diplomaproject.repository.TopicRepository
+import java.time.LocalDate
 
 @Service
 class StudentReservationService(
     private val reservationRepository: ReservationRepository,
+    private val groupMemberRepository: GroupMemberRepository,
     private val studentRepository: StudentRepository,
-    private val groupMemberRepository: GroupMemberRepository
+    private val topicRepository: TopicRepository
 ) {
     fun getReservations(studentId: Long): List<StudentReservationDto> =
         reservationRepository.findAllByStudentId(studentId).map { StudentReservationDtoFactory.create(it) }
@@ -97,5 +103,40 @@ class StudentReservationService(
         }
 
         return false
+    }
+
+    fun makeReservation(studentId: Long, form: StudentReservationForm): Boolean {
+        val topic: Topic = topicRepository.findByIdOrNull(form.subjectId) ?: return false
+
+        val newReservation = Reservation(
+            id = reservationRepository.getNextId(),
+            topic = topic,
+            status = ReservationStatus.WAITING,
+            creationDate = LocalDate.now(),
+        )
+
+        val newGroupMembers = mutableListOf<GroupMember>()
+
+        var nextGroupMemberId = groupMemberRepository.getNextId()
+        for (suggestedStudentId in form.studentIds) {
+            val student = studentRepository.findByIdOrNull(suggestedStudentId)
+            if (student == null) {
+                return false
+            } else {
+                val newGroupMember = GroupMember(
+                    id = nextGroupMemberId++,
+                    reservation = newReservation,
+                    student = student,
+                    status = if (student.id == studentId) MemberStatus.WILLING else MemberStatus.SUGGESTED
+                )
+                newGroupMembers.add(newGroupMember)
+            }
+        }
+
+        reservationRepository.save(newReservation)
+        for (newGroupMember in newGroupMembers) {
+            groupMemberRepository.save(newGroupMember)
+        }
+        return true
     }
 }

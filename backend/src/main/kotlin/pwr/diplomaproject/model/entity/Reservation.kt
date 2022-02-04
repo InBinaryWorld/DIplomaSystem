@@ -5,7 +5,7 @@ import java.time.LocalDate
 import javax.persistence.*
 
 @Entity
-data class Reservation(
+class Reservation(
     @Id
     val id: Long,
     @ManyToOne
@@ -14,5 +14,5 @@ data class Reservation(
     var status: ReservationStatus,
     val creationDate: LocalDate,
     @OneToMany(mappedBy = "reservation")
-    val groupMembers: List<GroupMember>
+    val groupMembers: List<GroupMember> = emptyList()
 )

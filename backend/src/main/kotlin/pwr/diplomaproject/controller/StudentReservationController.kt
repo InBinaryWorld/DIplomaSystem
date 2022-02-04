@@ -54,5 +54,8 @@ class StudentReservationController(
     fun makeReservation(
         @RequestParam studentId: Long,
         @RequestBody form: StudentReservationForm
-    ): Unit = TODO()
+    ): ResponseEntity<Unit> =
+        if (studentReservationService.makeReservation(studentId, form))
+            ok().build()
+        else badRequest().build()
 }
