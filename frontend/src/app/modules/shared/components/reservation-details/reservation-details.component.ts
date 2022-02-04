@@ -125,25 +125,25 @@ export class ReservationDetailsComponent extends RoleComponent implements OnInit
   }
 
   public confirmParticipation(): void {
-    this.thesesService.confirmParticipationInReservation(this.studentMember!.id).subscribe({
-      next: () => this.reload(),
-      error: () => this.isErrorVisible = true
-    });
+    const actionSource = this.thesesService.confirmParticipationInReservation(this.studentMember!.id);
+    this.handleAction(actionSource);
   }
 
   public confirmMemberReservation(): void {
-    this.thesesService.confirmMemberReservationInReservation(this.studentMember!.id).subscribe({
-      next: () => this.reload(),
-      error: () => this.isErrorVisible = true
-    });
+    const actionSource = this.thesesService.confirmMemberReservationInReservation(this.studentMember!.id);
+    this.handleAction(actionSource);
   }
 
   public abandonReservation(): void {
-    this.thesesService.confirmMemberReservationInReservation(this.studentMember!.id).subscribe({
+    const actionSource = this.thesesService.abandonReservation(this.studentMember!.id);
+    this.handleAction(actionSource);
+  }
+
+  private handleAction<T>(actionSource: Observable<T>): void {
+    this.addSubscription(actionSource.subscribe({
       next: () => this.reload(),
       error: () => this.isErrorVisible = true
-    });
-
+    }));
   }
 
   private reload(): void {

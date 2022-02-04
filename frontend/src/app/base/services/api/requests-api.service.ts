@@ -60,6 +60,16 @@ export class RequestsApiService extends BaseApiService {
     return this.http.postWithLabel(ApiLabel.CREATE_CLARIFICATION_REQUEST, payload);
   }
 
+  rejectChangeRequestWithCommitteeMember(committeeMemberId: IdType, requestId: IdType): Observable<void> {
+    const payload = { requestId, role: Role.PROGRAM_COMMITTEE_MEMBER, roleId: committeeMemberId };
+    return this.http.postWithLabel(ApiLabel.REJECT_CHANGE_REQUEST, payload);
+  }
+
+  approveChangeRequestWithCommitteeMember(committeeMemberId: IdType, requestId: IdType): Observable<void> {
+    const payload = { requestId, role: Role.PROGRAM_COMMITTEE_MEMBER, roleId: committeeMemberId };
+    return this.http.postWithLabel(ApiLabel.APPROVE_CHANGE_REQUEST, payload);
+  }
+
   createChangeRequest(thesisId: IdType, payload: any): Observable<ChangeRequest> {
     return this.http.postWithLabel(ApiLabel.CREATE_CHANGE_REQUEST, payload);
   }

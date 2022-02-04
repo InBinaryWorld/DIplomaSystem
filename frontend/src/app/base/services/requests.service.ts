@@ -58,6 +58,16 @@ export class RequestsService {
       .pipe(tap(() => this.invalidateClarificationRequests()));
   }
 
+  public rejectChangeRequestWithCommitteeMember(committeeMemberId: IdType, requestId: IdType): Observable<void> {
+    return this.requestsApiService.rejectChangeRequestWithCommitteeMember(committeeMemberId, requestId)
+      .pipe(tap(() => this.invalidateClarificationRequests()));
+  }
+
+  public approveChangeRequestWithCommitteeMember(committeeMemberId: IdType, requestId: IdType): Observable<void> {
+    return this.requestsApiService.approveChangeRequestWithCommitteeMember(committeeMemberId, requestId)
+      .pipe(tap(() => this.invalidateClarificationRequests()));
+  }
+
   public createChangeRequest(thesisId: IdType, request: any): Observable<ChangeRequest> {
     return this.requestsApiService.createChangeRequest(thesisId, request)
       .pipe(tap(() => this.invalidateChangeRequests()));

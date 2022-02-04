@@ -98,36 +98,31 @@ export class ClarificationRequestDetailsComponent extends RoleComponent implemen
   }
 
   private checkButtonsAvailability(): void {
-    this.addSubscription(
-      combineLatest([
-        this.userRoleSource.pipe(filterRoles([Role.DEAN])),
-        this.requestId,
-        this.reloadTrigger
-      ]).pipe(switchMap(([deanUserRole, id]) =>
-        this.deadlinesService.canDeanConsiderClarificationRequest(deanUserRole.id, id)
-      )).subscribe(canDeanConsiderRequest => {
-        this.canDeanConsiderRequest = canDeanConsiderRequest;
-        this.markForCheck();
-      })
-    );
+    this.addSubscription(combineLatest([
+      this.userRoleSource.pipe(filterRoles([Role.DEAN])), this.requestId, this.reloadTrigger
+    ]).pipe(switchMap(([deanUserRole, id]) =>
+      this.deadlinesService.canDeanConsiderClarificationRequest(deanUserRole.id, id)
+    )).subscribe(canDeanConsiderRequest => {
+      this.canDeanConsiderRequest = canDeanConsiderRequest;
+      this.markForCheck();
+    }));
   }
 
   public rejectRequest(): void {
-    this.addSubscription(
-      this.requestsService.rejectClarificationRequestWithDean(this.userRole!.id, this.request!.id).subscribe({
-        next: () => this.reload(),
-        error: () => this.isErrorVisible = true
-      })
-    );
+    const actionSource = this.requestsService.rejectClarificationRequestWithDean(this.userRole!.id, this.request!.id);
+    this.handleAction(actionSource);
   }
 
   public approveRequest(): void {
-    this.addSubscription(
-      this.requestsService.approveClarificationRequestWithDean(this.userRole!.id, this.request!.id).subscribe({
-        next: () => this.reload(),
-        error: () => this.isErrorVisible = true
-      })
-    );
+    const actionSource = this.requestsService.approveClarificationRequestWithDean(this.userRole!.id, this.request!.id);
+    this.handleAction(actionSource);
+  }
+
+  private handleAction<T>(actionSource: Observable<T>): void {
+    this.addSubscription(actionSource.subscribe({
+      next: () => this.reload(),
+      error: () => this.isErrorVisible = true
+    }));
   }
 
   private reload(): void {

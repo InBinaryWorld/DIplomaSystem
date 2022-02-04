@@ -15,6 +15,7 @@ export const baseEnvironment = {
       [ApiLabel.REFRESH]: 'TODO',
       [ApiLabel.ABANDON_MEMBER_RESERVATION]: 'TODO',
       [ApiLabel.APPROVE_CLARIFICATION_REQUEST]: 'TODO',
+      [ApiLabel.APPROVE_CHANGE_REQUEST]: 'TODO',
       [ApiLabel.APPROVE_THESIS_WITH_COORDINATOR]: 'TODO',
       [ApiLabel.APPROVE_THESIS_WITH_COMMITTEE_MEMBER]: 'TODO',
       [ApiLabel.CONFIRM_MEMBER_RESERVATION]: 'TODO',
@@ -46,6 +47,7 @@ export const baseEnvironment = {
       [ApiLabel.GET_TIMETABLES]: 'TODO',
       [ApiLabel.GET_USER]: 'TODO',
       [ApiLabel.REJECT_CLARIFICATION_REQUEST]: 'TODO',
+      [ApiLabel.REJECT_CHANGE_REQUEST]: 'TODO',
       [ApiLabel.REJECT_THESIS_WITH_COORDINATOR]: 'TODO',
       [ApiLabel.REJECT_THESIS_WITH_COMMITTEE_MEMBER]: 'TODO',
       [ApiLabel.REQUEST_THESIS_CORRECTIONS]: 'TODO'

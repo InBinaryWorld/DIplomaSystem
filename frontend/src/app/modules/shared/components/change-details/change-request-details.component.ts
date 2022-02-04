@@ -3,14 +3,16 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { BehaviorSubject, combineLatest, map, Observable, switchMap } from 'rxjs';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Role } from '../../../../base/models/dto/role.model';
-import { filterExists } from '../../../../core/tools/filter-exists';
 import { RoleComponent } from '../../../../base/components/role-component.directive';
 import { RequestsService } from '../../../../base/services/requests.service';
 import { SessionService } from '../../../../base/services/session.service';
 import { ChangeRequest } from '../../../../base/models/dto/change-request.model';
-import { IdType } from '../../../../base/models/dto/id.model';
 import { UserRole } from '../../../../base/models/dto/user-role.model';
 import { LabelBuilder } from '../../../../base/utils/label-builder.utils';
+import { GeneralResourcesService } from '../../../../base/services/general-resources.service';
+import { DiplomaSession } from '../../../../base/models/dto/diploma-session.model';
+import { filterRoles } from '../../../../core/tools/filter-roles';
+import { PermissionsService } from '../../../../base/services/permissions.service';
 
 @Component({
   selector: 'app-change-request-details',
@@ -24,12 +26,17 @@ export class ChangeRequestDetailsComponent extends RoleComponent implements OnIn
 
   userRole?: UserRole;
   request?: ChangeRequest;
+  diplomaSession?: DiplomaSession;
+  isErrorVisible = false;
 
+  canProgramCommitteeConsiderRequest?: boolean;
   reloadTrigger = new BehaviorSubject<boolean>(true);
 
   constructor(private readonly formBuilder: FormBuilder,
               private readonly activatedRoute: ActivatedRoute,
               private readonly requestsService: RequestsService,
+              private readonly permissionsService: PermissionsService,
+              private readonly generalResourcesService: GeneralResourcesService,
               sessionService: SessionService,
               changeDetector: ChangeDetectorRef) {
     super(sessionService, changeDetector);
@@ -44,47 +51,76 @@ export class ChangeRequestDetailsComponent extends RoleComponent implements OnIn
   }
 
   ngOnInit(): void {
-    this.initForm();
     this.loadRequest();
-  }
-
-  private initForm(): void {
-    this.form = this.formBuilder.group({
-      topic: [],
-      description: [],
-      supervisorName: []
-    });
+    this.checkButtonsAvailability();
   }
 
   private loadRequest(): void {
     this.addSubscription(
-      this.getDataSource().subscribe(([userRole, request]) => {
-        this.userRole = userRole;
+      this.getDataSource().subscribe(([userRole, request, diplomaSession]) => {
         this.request = request;
-        this.setFormData(request);
+        this.userRole = userRole;
+        this.diplomaSession = diplomaSession;
+        this.initFormData(request, diplomaSession);
       })
     );
   }
 
-  private getDataSource(): Observable<[UserRole, ChangeRequest]> {
+  private getDataSource(): Observable<[UserRole, ChangeRequest, DiplomaSession]> {
     return combineLatest([this.userRoleSource, this.requestId, this.reloadTrigger]).pipe(
-      switchMap(([userRole, id]) => this.getRequest(id).pipe(
-        map(request => ([userRole, request] as [UserRole, ChangeRequest]))
+      switchMap(([userRole, id]) => this.requestsService.getChangeRequestForId(id).pipe(
+        switchMap(request => this.generalResourcesService.getDiplomaSessionForId(request.newThesis.diplomaSessionId).pipe(
+          map(diplomaSession => ([userRole, request, diplomaSession] as [UserRole, ChangeRequest, DiplomaSession]))
+        ))
       ))
     );
   }
 
-  private getRequest(requestId: IdType): Observable<ChangeRequest> {
-    return this.requestsService.getChangeRequestForId(requestId).pipe(filterExists());
+  private checkButtonsAvailability(): void {
+    this.addSubscription(combineLatest([
+      this.userRoleSource.pipe(filterRoles([Role.PROGRAM_COMMITTEE_MEMBER])), this.requestId, this.reloadTrigger
+    ]).pipe(switchMap(([deanUserRole, id]) =>
+      this.permissionsService.canCommitteeConsiderChangeRequest(deanUserRole.id, id)
+    )).subscribe(canConsiderRequest => {
+      this.canProgramCommitteeConsiderRequest = canConsiderRequest;
+      this.markForCheck();
+    }));
   }
 
-  private setFormData(request: ChangeRequest): void {
-    this.form!.setValue({
-      topic: request.newThesis.topic,
-      description: request.newThesis.description,
-      supervisorName: LabelBuilder.forEmployee(request.supervisor)
+  private initFormData(request: ChangeRequest, diplomaSession: DiplomaSession): void {
+    this.form = this.formBuilder.group({
+      diplomaSession: [LabelBuilder.forDiplomaSession(diplomaSession)],
+      numberOfStudents: [request.newThesis.numberOfStudents],
+      previousTopic: [request.newThesis.topic],
+      previousDescription: [request.newThesis.description],
+      previousSupervisor: [LabelBuilder.forEmployee(request.newThesis.supervisor)],
+      newTopic: [request.newThesis.topic],
+      newDescription: [request.newThesis.description],
+      newSupervisor: [LabelBuilder.forEmployee(request.newThesis.supervisor)]
     });
     this.markForCheck();
+  }
+
+  public rejectRequest(): void {
+    const actionSource = this.requestsService.rejectChangeRequestWithCommitteeMember(this.userRole!.id, this.request!.id);
+    this.handleAction(actionSource);
+  }
+
+  public approveRequest(): void {
+    const actionSource = this.requestsService.approveChangeRequestWithCommitteeMember(this.userRole!.id, this.request!.id);
+    this.handleAction(actionSource);
+  }
+
+  private handleAction<T>(actionSource: Observable<T>): void {
+    this.addSubscription(actionSource.subscribe({
+      next: () => this.reload(),
+      error: () => this.isErrorVisible = true
+    }));
+  }
+
+  public reload(): void {
+    this.isErrorVisible = false;
+    this.reloadTrigger.next(true);
   }
 
 }

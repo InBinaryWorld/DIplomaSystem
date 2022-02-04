@@ -6,8 +6,8 @@ import {
   loadCurrentUserSuccessAction,
   loadEmployeeForIdAction,
   loadEmployeesAction,
+  loadStudentForIdAction,
   loadStudentsAction,
-  loadStudentsIfNeededAction,
   loadUserFailedAction,
   loadUserStoreCollectionSuccessAction,
   loadUserStoreInstanceSuccessAction
@@ -34,7 +34,7 @@ export const userReducer = createReducer(
   on(invalidateCurrentUserAction, (state) => successReducerFn(state, { currentUser: undefined })),
 
   on(loadStudentsAction, startProgressReducer()),
-  on(loadStudentsIfNeededAction, startProgressReducer()),
+  on(loadStudentForIdAction, startProgressReducer()),
   on(loadEmployeesAction, startProgressReducer()),
   on(loadEmployeeForIdAction, startProgressReducer()),
 

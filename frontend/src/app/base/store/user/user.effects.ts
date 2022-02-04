@@ -63,13 +63,12 @@ export class UserEffects {
 
   loadStudentsAction = createEffect(() => this.actions.pipe(
     ofType(loadStudentsAction),
-    mergeMap(({ key, options }) =>
-      this.userService.getStudents(options).pipe(
-        map(collection => loadUserStoreCollectionSuccessAction(
-          { resourceType: UserStateKey.STUDENT, collection, key }
-        )),
-        catchError(error => of(loadUserFailedAction({ error })))
-      ))
+    mergeMap(({ key, options }) => this.userService.getStudents(options).pipe(
+      map(collection => loadUserStoreCollectionSuccessAction(
+        { resourceType: UserStateKey.STUDENT, collection, key }
+      )),
+      catchError(error => of(loadUserFailedAction({ error })))
+    ))
   ));
 
   loadStudentForIdIfNeededAction = createEffect(() => this.actions.pipe(

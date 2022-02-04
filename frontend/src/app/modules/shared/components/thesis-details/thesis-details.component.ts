@@ -213,12 +213,10 @@ export class ThesisDetailsComponent extends RoleComponent implements OnInit {
   }
 
   private handleAction<T>(actionSource: Observable<T>): void {
-    this.addSubscription(
-      actionSource.subscribe({
-        next: () => this.reload(),
-        error: () => this.isErrorVisible = true
-      })
-    );
+    this.addSubscription(actionSource.subscribe({
+      next: () => this.reload(),
+      error: () => this.isErrorVisible = true
+    }));
   }
 
   public reserveTopic(): void {

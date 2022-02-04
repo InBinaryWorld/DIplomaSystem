@@ -1,8 +1,15 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { Thesis } from '../../../../base/models/dto/thesis.model';
-import { ChangeRequest } from '../../../../base/models/dto/change-request.model';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { FakeData } from '../../../../../fakes/fake.data';
+import { PermissionsService } from '../../../../base/services/permissions.service';
+import { RequestsService } from '../../../../base/services/requests.service';
+import { SessionService } from '../../../../base/services/session.service';
+import { Role } from '../../../../base/models/dto/role.model';
+import { switchMap } from 'rxjs';
+import { filterExists } from '../../../../core/tools/filter-exists';
+import { partition } from 'lodash-es';
+import { RequestStatus } from '../../../../base/models/dto/request-status.model';
+import { RoleComponent } from '../../../../base/components/role-component.directive';
+import { ChangeRequest } from '../../../../base/models/dto/change-request.model';
 
 @Component({
   selector: 'app-program-committee-topic-change',
@@ -10,26 +17,42 @@ import { FakeData } from '../../../../../fakes/fake.data';
   styleUrls: ['./program-committee-topic-change.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ProgramCommitteeTopicChangeComponent {
+export class ProgramCommitteeTopicChangeComponent extends RoleComponent implements OnInit {
 
-  topic: Thesis = FakeData.thesis;
+  requestsToConsider?: ChangeRequest[];
+  requestsConsidered?: ChangeRequest[];
 
-  application: ChangeRequest = FakeData.changeRequest;
+  constructor(private readonly deadlinesService: PermissionsService,
+              private readonly requestsService: RequestsService,
+              private readonly router: Router,
+              sessionService: SessionService,
+              changeDetector: ChangeDetectorRef) {
+    super(sessionService, changeDetector);
+  }
 
-  applications: ChangeRequest[] = [
-    this.application,
-    this.application,
-    this.application,
-    this.application,
-    this.application,
-    this.application,
-    this.application
-  ];
+  get roles(): Role[] {
+    return [Role.PROGRAM_COMMITTEE_MEMBER];
+  }
 
-  constructor(private readonly router: Router) {
+  ngOnInit(): void {
+    this.initRequests();
+  }
+
+  private initRequests(): void {
+    this.addSubscription(
+      this.userRoleSource.pipe(
+        switchMap(userRole => this.requestsService.getChangeRequestsForRole(userRole)),
+        filterExists()
+      ).subscribe(requests => {
+        const parts = partition(requests, r => r.status === RequestStatus.WAITING);
+        this.requestsToConsider = parts[0];
+        this.requestsConsidered = parts[1];
+        this.markForCheck();
+      })
+    );
   }
 
   showDetails(application: ChangeRequest): void {
-    this.router.navigate(['/diploma-section/change-requests/', application.id]);
+    this.router.navigate(['/program-committee/change-requests/', application.id]);
   }
 }

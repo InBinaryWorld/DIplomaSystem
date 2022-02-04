@@ -9,9 +9,7 @@ import { ThesisDetailsComponent } from '../shared/components/thesis-details/thes
 import {
   ProgramCommitteeTopicChangeComponent
 } from './components/topic-changes/program-committee-topic-change.component';
-import {
-  ProgramCommitteeTopicChangeDetailsComponent
-} from './components/topic-changes/details/program-committee-topic-change-details.component';
+import { ChangeRequestDetailsComponent } from '../shared/components/change-details/change-request-details.component';
 
 
 const routes: Routes = [
@@ -54,7 +52,7 @@ const routes: Routes = [
           },
           {
             path: ':requestId',
-            component: ProgramCommitteeTopicChangeDetailsComponent
+            component: ChangeRequestDetailsComponent
           }
         ]
       }

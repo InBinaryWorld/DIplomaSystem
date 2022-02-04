@@ -7,17 +7,13 @@ import { ProgramCommitteeComponent } from './components/program-committee/progra
 import {
   ProgramCommitteeTopicChangeComponent
 } from './components/topic-changes/program-committee-topic-change.component';
-import {
-  ProgramCommitteeTopicChangeDetailsComponent
-} from './components/topic-changes/details/program-committee-topic-change-details.component';
 
 
 @NgModule({
   declarations: [
     ProgramCommitteeComponent,
     ProgramCommitteeTopicsComponent,
-    ProgramCommitteeTopicChangeComponent,
-    ProgramCommitteeTopicChangeDetailsComponent
+    ProgramCommitteeTopicChangeComponent
   ],
   imports: [
     SharedModule,

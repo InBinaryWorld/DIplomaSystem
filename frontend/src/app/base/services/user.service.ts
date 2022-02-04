@@ -6,7 +6,6 @@ import { map } from 'rxjs/operators';
 import { UserStoreService } from './store/user-store.service';
 import { User } from '../models/dto/user-ext.model';
 import { IdType } from '../models/dto/id.model';
-import { filterExists } from '../../core/tools/filter-exists';
 import { UserStateKey } from '../store/user/user.state';
 import { Student } from '../models/dto/student.model';
 import { LoadEmployeesActionOptions, LoadStudentsActionOptions } from '../store/user/user.actions';
@@ -38,12 +37,12 @@ export class UserService {
 
   public getAvailableSupervisors(diplomaSessionId: IdType): Observable<Employee[]> {
     const options = LoadEmployeesActionOptions.forSupervisingInDiplomaSession(diplomaSessionId);
-    return this.userStoreService.getEmployees(options).pipe(filterExists());
+    return this.userStoreService.getEmployees(options);
   }
 
   public getStudentsToParticipantInReservation(diplomaSessionId: IdType): Observable<Student[]> {
     const options = LoadStudentsActionOptions.forParticipateInReservation(diplomaSessionId);
-    return this.userStoreService.getStudents(options).pipe(filterExists());
+    return this.userStoreService.getStudents(options);
   }
 
   public getEmployeeForId(id: IdType): Observable<Employee> {

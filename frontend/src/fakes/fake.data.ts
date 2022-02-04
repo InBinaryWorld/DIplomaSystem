@@ -208,7 +208,6 @@ const changeRequest: ChangeRequest = {
   status: RequestStatus.WAITING,
   newThesisId: thesisId,
   oldThesisId: thesisId,
-  supervisor: lecturer,
   newThesis: thesis,
   previousThesis: thesis,
   student: student
@@ -298,6 +297,7 @@ const employees = [
 
 const responseByApiKey: Dictionary<any> = {
   [ApiLabel.ABANDON_MEMBER_RESERVATION]: reservationMember,
+  [ApiLabel.APPROVE_CHANGE_REQUEST]: changeRequest,
   [ApiLabel.APPROVE_CLARIFICATION_REQUEST]: clarificationRequest,
   [ApiLabel.APPROVE_THESIS_WITH_COORDINATOR]: thesis,
   [ApiLabel.APPROVE_THESIS_WITH_COMMITTEE_MEMBER]: thesis,
@@ -322,6 +322,7 @@ const responseByApiKey: Dictionary<any> = {
   [ApiLabel.GET_THESES]: theses,
   [ApiLabel.REJECT_CLARIFICATION_REQUEST]: clarificationRequest,
   [ApiLabel.REJECT_THESIS_WITH_COMMITTEE_MEMBER]: clarificationRequest,
+  [ApiLabel.REJECT_CHANGE_REQUEST]: changeRequest,
   [ApiLabel.REJECT_THESIS_WITH_COORDINATOR]: thesis,
   [ApiLabel.REQUEST_THESIS_CORRECTIONS]: thesis
 };
