@@ -32,4 +32,15 @@ interface SubjectRepository : JpaRepository<Topic, Long> {
         GROUP BY t
     """)
     fun getLecturerReservationDetails(lecturerId: Long): List<LecturerSubjectReservationDto>
+
+    @Query("""
+        SELECT t 
+        FROM TopicCorrectionRequest tcr
+        JOIN Student s ON tcr.student = s
+        JOIN GroupMember g ON g.student = s
+        JOIN Reservation r ON g.reservation = r
+        JOIN Topic t ON r.topic = t
+        WHERE r.status = 'CONFIRMED' AND tcr.id = :requestId
+    """)
+    fun getByCorrectionRequestId(requestId: Long): Topic
 }

@@ -2,9 +2,7 @@ package pwr.diplomaproject.model.entity
 
 import pwr.diplomaproject.model.enum.RequestResult
 import java.time.LocalDate
-import javax.persistence.Entity
-import javax.persistence.Id
-import javax.persistence.ManyToOne
+import javax.persistence.*
 
 @Entity
 data class TopicChangeRequest(
@@ -18,6 +16,7 @@ data class TopicChangeRequest(
     val oldTopic: Topic,
     @ManyToOne
     val newTopic: Topic,
+    @Enumerated(EnumType.STRING)
     val result: RequestResult,
     val requestDate: LocalDate,
 )

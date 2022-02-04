@@ -20,9 +20,9 @@ values (1, 'Informatyka stosowana', 'ENGINEERS', 1);
 
 
 -- Table: employee
--- jacek
 insert into employee (id, title, type, faculty_id, user_id)
-values (1, 'mgr inż.', 'LECTURER', 1, 1);
+values (1, 'mgr inż.', 'LECTURER', 1, 1),
+    (2, 'prof.', 'DEAN', 1, 1);
 
 
 -- Table: student
@@ -60,7 +60,9 @@ values (1, 'Lorem ipsum', false, '2022-02-09', 'Lorem ipsum', 'WAITING', 1,
        (5, 'Lorem ipsum', true, '2022-02-04', 'Lorem ipsum', 'ACCEPTED_BY_COMMISSION', 2,
         'Aplikacja z przepisami kucharskimi', 1, 2, 1),
        (6, 'Lorem ipsum', true, '2022-02-04', 'Lorem ipsum', 'ACCEPTED_BY_COMMISSION', 2,
-        'Aplikacja z przepisami kucharskimi', 1, 2, 1);
+        'Aplikacja z przepisami kucharskimi', 1, 2, 1),
+       (7, 'Lorem ipsum', true, '2022-02-04', 'Lorem ipsum', 'ACCEPTED_BY_COMMISSION', 1,
+        'Wniosek o doprecyzowanie', 1, 2, 1);
 
 
 -- Table: reservation
@@ -68,7 +70,8 @@ insert into reservation (id, creation_date, status, topic_id)
 values (1, '2022-02-10', 'WAITING', 1),
        (2, '2022-02-10', 'REGISTERED', 6),
        (3, '2022-02-10', 'REGISTERED', 6),
-       (4, '2022-02-10', 'REJECTED_BY_LECTURER', 5);
+       (4, '2022-02-10', 'REJECTED_BY_LECTURER', 5),
+       (5, '2022-02-10', 'CONFIRMED', 7);
 
 
 -- Table: group_member
@@ -79,4 +82,9 @@ values (1, 'SUGGESTED', 1, 1),
        (4, 'WILLING', 3, 3),
        (5, 'WILLING', 4, 1),
        (6, 'WILLING', 4, 2),
-       (7, 'WILLING', 4, 3);
+       (7, 'WILLING', 4, 3),
+       (8, 'CONFIRMED', 5, 3);
+
+-- Table: topic_correction_request
+insert into topic_correction_request (id, new_description, new_topic, request_date, result, employee_id, student_id)
+values (1, 'nowy opis', 'nowy temat', '2022-02-04', 'WAITING', null, 3);
