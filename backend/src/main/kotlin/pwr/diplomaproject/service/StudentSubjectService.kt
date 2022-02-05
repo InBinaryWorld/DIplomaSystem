@@ -22,8 +22,8 @@ class StudentSubjectService @Autowired constructor(
     private val studentRepository: StudentRepository,
     private val graduationRepository: GraduationRepository,
 ) {
-    fun getAvailableSubjects(studentId: Long): List<SubjectDto> =
-        topicRepository.findAllAvailableForStudent(studentId).map {
+    fun getAvailableSubjects(studentId: Long, graduationId: Long): List<SubjectDto> =
+        topicRepository.findAllByGraduationAvailableForStudent(studentId, graduationId).map {
             SubjectDtoFactory.create(it)
         }
 
@@ -53,8 +53,8 @@ class StudentSubjectService @Autowired constructor(
         subjectRepository.save(newSubject)
     }
 
-    fun deleteProposedSubject(studentId: Long, graduationId: Long, id: Long) {
-        val subject = topicRepository.findByIndexAndStudentAndGraduation(id, studentId, graduationId)
+    fun deleteProposedSubject(studentId: Long, id: Long) {
+        val subject = topicRepository.findByIndexAndStudent(id, studentId)
         if (subject.status == TopicStatus.WAITING) {
             topicRepository.delete(subject)
         }

@@ -13,12 +13,15 @@ class StudentSubjectController(
     private val studentSubjectService: StudentSubjectService
 ) {
 
-    @Operation(summary = "Dostępne tematy do zarezerwowania przez zalogowanego studenta")
+    @Operation(summary = "Dostępne tematy do zarezerwowania przez zalogowanego studenta w podanej sesji dyplomowania")
     @GetMapping("/available")
-    fun getAvailableSubjects(@RequestParam studentId: Long): List<SubjectDto> =
-        studentSubjectService.getAvailableSubjects(studentId)
+    fun getAvailableSubjects(
+        @RequestParam studentId: Long,
+        @RequestParam diplomaSessionId: Long,
+    ): List<SubjectDto> =
+        studentSubjectService.getAvailableSubjects(studentId, diplomaSessionId)
 
-    @Operation(summary = "Propozycje tematów złożone przez zalogowanego studenta")
+    @Operation(summary = "Propozycje tematów złożone przez zalogowanego studenta w podanej sesji dyplomowania")
     @GetMapping("/proposed")
     fun getProposedSubjects(
         @RequestParam studentId: Long,
@@ -31,7 +34,7 @@ class StudentSubjectController(
     fun getSubject(@PathVariable id: Long): StudentSubjectDetailsDto =
         studentSubjectService.getSubject(id)
 
-    @Operation(summary = "Dodanie propozycji tematu przez studenta")
+    @Operation(summary = "Dodanie propozycji tematu przez studenta w podanej sesji dyplomowania")
     @PostMapping("/propose")
     fun proposeSubject(
         @RequestParam studentId: Long,
@@ -44,8 +47,7 @@ class StudentSubjectController(
     @DeleteMapping("/proposed/{id}")
     fun deleteProposedSubject(
         @RequestParam studentId: Long,
-        @RequestParam diplomaSessionId: Long,
         @PathVariable id: Long
     ): Unit =
-        studentSubjectService.deleteProposedSubject(studentId, diplomaSessionId, id)
+        studentSubjectService.deleteProposedSubject(studentId, id)
 }

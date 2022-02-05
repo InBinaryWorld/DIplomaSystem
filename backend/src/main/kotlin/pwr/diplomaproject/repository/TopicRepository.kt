@@ -14,12 +14,12 @@ interface TopicRepository : JpaRepository<Topic, Long> {
         LEFT JOIN Reservation r ON r.topic = t
         LEFT JOIN GroupMember g ON g.reservation = r
         LEFT JOIN Student s ON g.student = s
-        WHERE t.status = 'ACCEPTED_BY_COMMISSION' and s.id <> :studentId
+        WHERE t.status = 'ACCEPTED_BY_COMMISSION' and s.id <> :studentId and t.graduation.id = :graduationId
         GROUP BY t
         HAVING sum(case r.status when 'CONFIRMED' then 1 else 0 end) = 0
     """
     )
-    fun findAllAvailableForStudent(studentId: Long): List<Topic>
+    fun findAllByGraduationAvailableForStudent(studentId: Long, graduationId: Long): List<Topic>
 
     @Query(
         """
@@ -32,8 +32,8 @@ interface TopicRepository : JpaRepository<Topic, Long> {
     @Query(
         """
         FROM Topic t
-        WHERE t.id = :id and t.createdByStudent = true and t.student.id = :studentId and t.graduation.id = :graduationId 
+        WHERE t.id = :id and t.createdByStudent = true and t.student.id = :studentId
     """
     )
-    fun findByIndexAndStudentAndGraduation(id: Long, studentId: Long, graduationId: Long): Topic
+    fun findByIndexAndStudent(id: Long, studentId: Long): Topic
 }
