@@ -20,8 +20,11 @@ class StudentSubjectController(
 
     @Operation(summary = "Propozycje tematów złożone przez zalogowanego studenta")
     @GetMapping("/proposed")
-    fun getProposedSubjects(@RequestParam studentId: Long): List<SubjectDto> =
-        studentSubjectService.getProposedSubjects(studentId)
+    fun getProposedSubjects(
+        @RequestParam studentId: Long,
+        @RequestParam diplomaSessionId: Long,
+    ): List<SubjectDto> =
+        studentSubjectService.getProposedSubjects(studentId, diplomaSessionId)
 
     @Operation(summary = "Szczegóły tematu")
     @GetMapping("/{id}")
@@ -39,5 +42,10 @@ class StudentSubjectController(
 
     @Operation(summary = "Usunięcie propozycji tematu studenta")
     @DeleteMapping("/proposed/{id}")
-    fun deleteProposedSubject(@PathVariable id: Long): Unit = TODO()
+    fun deleteProposedSubject(
+        @RequestParam studentId: Long,
+        @RequestParam diplomaSessionId: Long,
+        @PathVariable id: Long
+    ): Unit =
+        studentSubjectService.deleteProposedSubject(studentId, diplomaSessionId, id)
 }

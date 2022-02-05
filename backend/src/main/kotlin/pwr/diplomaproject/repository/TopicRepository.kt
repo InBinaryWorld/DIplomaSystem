@@ -24,8 +24,16 @@ interface TopicRepository : JpaRepository<Topic, Long> {
     @Query(
         """
         FROM Topic t
-        WHERE t.createdByStudent = true and t.student.id = :studentId 
+        WHERE t.createdByStudent = true and t.student.id = :studentId and t.graduation.id = :graduationId 
     """
     )
-    fun findAllProposedByStudent(studentId: Long): List<Topic>
+    fun findAllByStudentAndGraduation(studentId: Long, graduationId: Long): List<Topic>
+
+    @Query(
+        """
+        FROM Topic t
+        WHERE t.id = :id and t.createdByStudent = true and t.student.id = :studentId and t.graduation.id = :graduationId 
+    """
+    )
+    fun findByIndexAndStudentAndGraduation(id: Long, studentId: Long, graduationId: Long): Topic
 }
