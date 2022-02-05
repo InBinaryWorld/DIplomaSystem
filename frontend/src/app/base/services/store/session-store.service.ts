@@ -5,19 +5,19 @@ import { AppState } from '../../store/app-state.model';
 import { UserRole } from '../../models/dto/user-role.model';
 import { CleanableStoreService } from '../../../core/services/cleanable-store.service';
 import {
+  selectSessionContext,
+  selectSessionContextDiplomaSession,
   selectSessionContextRole,
   selectSessionLanguage,
   selectSessionStateError,
   selectSessionStateInProgress
 } from '../../store/session/session.selectors';
-import {
-  setContextRoleAction,
-  setLanguageAction,
-  setLanguageIfNeededAction
-} from '../../store/session/session.actions';
+import { setContext, setLanguageAction, setLanguageIfNeededAction } from '../../store/session/session.actions';
 import { AppLanguage } from '../../../core/models/app-language.model';
 import { filterExists } from '../../../core/tools/filter-exists';
 import { SettingsService } from '../../../core/services/settings.service';
+import { Context } from '../../models/context.model';
+import { DiplomaSession } from '../../models/dto/diploma-session.model';
 
 @Injectable({
   providedIn: 'root'
@@ -36,8 +36,8 @@ export class SessionStoreService extends CleanableStoreService {
   }
 
 
-  public setContextRole(role?: UserRole): void {
-    this.store.dispatch(setContextRoleAction({ contextRole: role }));
+  public setContext(context?: Context): void {
+    this.store.dispatch(setContext({ context: context }));
   }
 
   public setLanguageIfNeeded(language: AppLanguage): void {
@@ -48,8 +48,16 @@ export class SessionStoreService extends CleanableStoreService {
     this.store.dispatch(setLanguageAction({ language }));
   }
 
+  public selectSessionContext(): Observable<Context | undefined> {
+    return this.store.select(selectSessionContext);
+  }
+
   public selectSessionContextRole(): Observable<UserRole | undefined> {
     return this.store.select(selectSessionContextRole);
+  }
+
+  public selectSessionContextDiplomaSession(): Observable<DiplomaSession | undefined> {
+    return this.store.select(selectSessionContextDiplomaSession);
   }
 
   public selectSessionLanguage(): Observable<AppLanguage | undefined> {

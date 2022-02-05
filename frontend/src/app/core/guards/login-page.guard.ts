@@ -5,7 +5,7 @@ import { Role } from '../../base/models/dto/role.model';
 import { Injectable } from '@angular/core';
 import { AuthStoreService } from '../../base/services/store/auth-store.service';
 import { ContextRoutingService } from '../services/context-routing.service';
-import { SessionStoreService } from '../../base/services/store/session-store.service';
+import { SessionService } from '../../base/services/session.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +13,7 @@ import { SessionStoreService } from '../../base/services/store/session-store.ser
 export class LoginPageGuard implements CanActivate {
 
   protected constructor(private readonly authStoreService: AuthStoreService,
-                        private readonly sessionStoreService: SessionStoreService,
+                        private readonly sessionService: SessionService,
                         private readonly contextRoutingService: ContextRoutingService) {
   }
 
@@ -32,7 +32,7 @@ export class LoginPageGuard implements CanActivate {
 
   private redirectWithContext(): Observable<boolean> {
     return this.contextRoutingService.calculateNewUserRole()
-      .pipe(tap(role => this.sessionStoreService.setContextRole(role)), map(() => false));
+      .pipe(tap(role => this.sessionService.setContextRole(role)), map(() => false));
   }
 
 }

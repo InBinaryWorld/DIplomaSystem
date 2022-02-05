@@ -3,9 +3,17 @@
     <img src="assets/img/logo.png" class="ms-2 header-logo">
     <span class="ms-3 h4 my-auto me-auto">{{ 'App.Name' | translate | uppercase }}</span>
 
-    <div *ngIf="user" class=" me-3">
+    <div *ngIf="diplomaSessions" class=" me-3">
+      <select [formControl]="diplomaSessionContextControl" class="d-flex form-select">
+        <option *ngFor="let item of diplomaSessions" [ngValue]="item.id">
+          {{ LabelBuilder.forDiplomaSession(item) }}
+        </option>
+      </select>
+    </div>
+    
+    <div *ngIf="userRoles" class=" me-3">
       <select [formControl]="roleContextControl" class="d-flex form-select">
-        <option *ngFor="let role of user.roles" [ngValue]="roleToId(role)">
+        <option *ngFor="let role of userRoles" [ngValue]="roleToId(role)">
           {{ TranslationKeys.forRole(role.role) | translate }} {{ '(' + role.id + ')' }}
         </option>
       </select>

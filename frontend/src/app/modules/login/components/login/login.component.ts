@@ -8,7 +8,7 @@ import { Store } from '@ngrx/store';
 import { ContextRoutingService } from '../../../../core/services/context-routing.service';
 import { filter, switchMap } from 'rxjs';
 import { UserStoreService } from '../../../../base/services/store/user-store.service';
-import { SessionStoreService } from '../../../../base/services/store/session-store.service';
+import { SessionService } from '../../../../base/services/session.service';
 
 @Component({
   selector: 'app-login',
@@ -26,10 +26,10 @@ export class LoginComponent extends BaseComponent implements OnInit {
   constructor(private readonly store: Store,
               private readonly formBuilder: FormBuilder,
               private readonly spinnerService: SpinnerService,
+              private readonly sessionService: SessionService,
               private readonly contextRoutingService: ContextRoutingService,
               private readonly userStoreService: UserStoreService,
               private readonly authStoreService: AuthStoreService,
-              private readonly sessionStoreService: SessionStoreService,
               changeDetector: ChangeDetectorRef) {
     super(changeDetector);
   }
@@ -62,7 +62,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
       this.authStoreService.isUserLoggedIn().pipe(
         filter(isLogged => isLogged),
         switchMap(() => this.contextRoutingService.calculateNewUserRole())
-      ).subscribe(role => this.sessionStoreService.setContextRole(role))
+      ).subscribe(role => this.sessionService.setContextRole(role))
     );
   }
 

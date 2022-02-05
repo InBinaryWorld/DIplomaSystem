@@ -30,6 +30,9 @@ export class GeneralResourcesApiService extends BaseApiService {
   }
 
   public getDiplomaSessions(options: LoadDiplomaSessionsActionOptions): Observable<DiplomaSession[]> {
+    const queryParams = new RequestParams();
+    queryParams.addIfValueExists('departmentId', options.departmentId);
+    queryParams.addIfValueExists('fieldOfStudyId', options.fieldOfStudyId);
     return this.http.getWithLabel(ApiLabel.GET_DIPLOMA_SESSIONS);
   }
 

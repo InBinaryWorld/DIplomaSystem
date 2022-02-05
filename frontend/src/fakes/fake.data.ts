@@ -119,7 +119,7 @@ const committeeMember: Employee = {
 };
 
 const diplomaSectionMember: Employee = {
-  id: programCommitteeMemberId,
+  id: diplomaSectionMemberId,
   userId: userId,
   departmentId: departmentId,
   employeeRole: EmployeeRole.DIPLOMA_SECTION_MEMBER,
@@ -239,6 +239,12 @@ const students: Student[] = [
   student2
 ];
 
+const diplomaSessions: DiplomaSession[] = [
+  diplomaSession,
+  diplomaSession
+];
+
+
 const theses: Thesis[] = [
   thesis,
   thesis,
@@ -290,6 +296,7 @@ const changeRequests: ChangeRequest[] = [
 const employees = [
   dean,
   admin,
+  lecturer,
   coordinator,
   committeeMember,
   diplomaSectionMember
@@ -314,6 +321,7 @@ const responseByApiKey: Dictionary<any> = {
   [ApiLabel.GET_CLARIFICATION_REQUEST]: clarificationRequest,
   [ApiLabel.GET_CLARIFICATION_REQUESTS]: clarificationRequests,
   [ApiLabel.GET_DIPLOMA_SESSION]: diplomaSession,
+  [ApiLabel.GET_DIPLOMA_SESSIONS]: diplomaSessions,
   [ApiLabel.GET_FIELD_OF_STUDY]: fieldOfStudy,
   [ApiLabel.GET_RESERVATION]: reservation,
   [ApiLabel.GET_RESERVATIONS]: reservations,
@@ -342,6 +350,7 @@ function getStudent(query: RequestParams): Student {
 }
 
 function getEmployee(query: RequestParams): Employee {
+  console.log(query);
   const id = query.getAll().find(p => p.name === 'id')!.value;
   return employees.find(e => e.id === id)!;
 }

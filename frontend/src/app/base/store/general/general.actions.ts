@@ -125,9 +125,26 @@ export class LoadFieldsOfStudyActionOptions {
 }
 
 export class LoadDiplomaSessionsActionOptions {
+  fieldOfStudyId?: IdType;
+  departmentId?: IdType;
+
+  static forFieldOfStudy(fieldOfStudyId: IdType): LoadDiplomaSessionsActionOptions {
+    const options = new LoadDiplomaSessionsActionOptions();
+    options.fieldOfStudyId = fieldOfStudyId;
+    return options;
+  }
+
+  static forDepartmentId(departmentId: IdType): LoadDiplomaSessionsActionOptions {
+    const options = new LoadDiplomaSessionsActionOptions();
+    options.departmentId = departmentId;
+    return options;
+  }
+
   toKey(): string {
     return [
-      'LoadDiplomaSessionsActionOptions'
+      'LoadDiplomaSessionsActionOptions',
+      'FOSI_' + this.fieldOfStudyId,
+      'DI_' + this.departmentId
     ].join('$');
   }
 }

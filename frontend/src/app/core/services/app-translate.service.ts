@@ -10,7 +10,7 @@ import { SessionService } from '../../base/services/session.service';
 @Injectable({
   providedIn: 'root'
 })
-export class AppTranslateService extends CleanableService {
+export class AppTranslateService implements CleanableService {
 
   private localesByLang: Dictionary<string> = {
     [AppLanguage.POLISH]: 'pl',
@@ -20,7 +20,6 @@ export class AppTranslateService extends CleanableService {
   constructor(private readonly settingsService: SettingsService,
               private readonly translateService: TranslateService,
               private readonly sessionService: SessionService) {
-    super();
   }
 
   get defaultLanguage(): AppLanguage {

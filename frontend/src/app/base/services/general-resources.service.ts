@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { DiplomaSession } from '../models/dto/diploma-session.model';
 import { Timetable } from '../models/dto/timetable.model';
 import { FieldOfStudy } from '../models/dto/field-of-study.model';
-import { LoadFieldsOfStudyActionOptions } from '../store/general/general.actions';
+import { LoadDiplomaSessionsActionOptions, LoadFieldsOfStudyActionOptions } from '../store/general/general.actions';
 
 @Injectable({
   providedIn: 'root'
@@ -37,6 +37,11 @@ export class GeneralResourcesService {
 
   public getTimetableForId(id: IdType, ifNeededOnly = true): Observable<Timetable> {
     return this.generalResourcesStoreService.getTimetableForId(id, ifNeededOnly);
+  }
+
+  getDiplomaSessionsFieldOfStudy(fieldOfStudyId: IdType): Observable<DiplomaSession[]> {
+    const options = LoadDiplomaSessionsActionOptions.forFieldOfStudy(fieldOfStudyId);
+    return this.generalResourcesStoreService.getDiplomaSessionsForKey(options);
   }
 
   getDiplomaSessionForId(id: IdType): Observable<DiplomaSession> {

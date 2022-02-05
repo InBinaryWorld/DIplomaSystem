@@ -13,6 +13,7 @@ import { UserStoreService } from '../../../base/services/store/user-store.servic
 import { RequestsStoreService } from '../../../base/services/store/requests-store.service';
 import { ThesesStoreService } from '../../../base/services/store/theses-store.service';
 import { skip } from 'rxjs';
+import { SessionService } from '../../../base/services/session.service';
 
 @Component({
   selector: 'app-root',
@@ -30,6 +31,7 @@ export class AppComponent extends BaseComponent implements OnInit {
               private readonly sessionStoreService: SessionStoreService,
               private readonly authStoreService: AuthStoreService,
               private readonly userStoreService: UserStoreService,
+              private readonly sessionService: SessionService,
               private readonly spinnerService: SpinnerService,
               private readonly store: Store<AppState>,
               changeDetector: ChangeDetectorRef) {
@@ -43,6 +45,7 @@ export class AppComponent extends BaseComponent implements OnInit {
 
   protected initServices(): void {
     const services: CleanableService[] = [
+      this.sessionService,
       this.contextRoutingService,
       this.translationsService
     ];
