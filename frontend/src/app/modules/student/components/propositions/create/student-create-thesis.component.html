@@ -3,7 +3,7 @@
     <h1 class="display-6">{{ 'Student.CreateThesis.Header' | translate }}</h1>
   </div>
 
-  <div *ngIf="form && student" class="row py-3">
+  <div *ngIf="form && context" class="row py-3">
     <app-error-alert *ngIf="errorVisible"></app-error-alert>
     <form *ngIf="form" [formGroup]="form">
       <div class="mb-3">

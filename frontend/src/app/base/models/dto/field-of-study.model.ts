@@ -5,6 +5,4 @@ export interface FieldOfStudy extends WithId {
   departmentId: IdType,
   name: string,
   degree: StudyDegree,
-  // additional
-  activeDiplomaSessionId: IdType
 }

@@ -8,9 +8,9 @@ import { Thesis } from '../../../../../base/models/dto/thesis.model';
 import { Role } from '../../../../../base/models/dto/role.model';
 import { RoleComponent } from '../../../../../base/components/role-component.directive';
 import { SessionService } from '../../../../../base/services/session.service';
-import { Student } from '../../../../../base/models/dto/student.model';
 import { Employee } from '../../../../../base/models/dto/employee.model';
 import { UserService } from '../../../../../base/services/user.service';
+import { Context } from '../../../../../base/models/context.model';
 
 @Component({
   selector: 'app-student-create-thesis',
@@ -23,7 +23,7 @@ export class StudentCreateThesisComponent extends RoleComponent implements OnIni
   form?: FormGroup;
 
   supervisors?: any[];
-  student?: Student;
+  context?: Context;
 
   errorVisible = false;
 
@@ -38,7 +38,7 @@ export class StudentCreateThesisComponent extends RoleComponent implements OnIni
 
   confirm() {
     const formData = this.form?.value;
-    const payload = this.prepareCreatePayload(this.student!, formData);
+    const payload = this.prepareCreatePayload(this.context!, formData);
     this.thesesService.createThesis(payload).subscribe({
       next: () => this.redirectOnSuccess(),
       error: () => this.errorVisible = true
@@ -62,30 +62,26 @@ export class StudentCreateThesisComponent extends RoleComponent implements OnIni
 
   private initData(): void {
     this.addSubscription(this.getDataSource()
-      .subscribe(([student, supervisors]) => {
-        this.student = student;
+      .subscribe(([context, supervisors]) => {
+        this.context = context;
         this.supervisors = supervisors;
-        this.setFormData(student);
+        this.setFormData(context);
         this.markForCheck();
       })
     );
   }
 
-  private getDataSource(): Observable<[Student, Employee[]]> {
-    return this.userRoleSource.pipe(
-      switchMap(userRole => this.userService.getStudentForId(userRole.id).pipe(
-        switchMap(student => this.userService.getAvailableSupervisors(
-          student.fieldOfStudy.activeDiplomaSessionId
-        ).pipe(
-          map(supervisors => ([student, supervisors] as [Student, Employee[]]))
-        ))
+  private getDataSource(): Observable<[Context, Employee[]]> {
+    return this.contextSource.pipe(
+      switchMap(context => this.userService.getAvailableSupervisors(context.diplomaSession!.id).pipe(
+        map(supervisors => ([context, supervisors] as [Context, Employee[]]))
       ))
     );
   }
 
-  private setFormData(student: Student): void {
+  private setFormData(context: Context): void {
     this.form?.patchValue({
-      fieldOfStudy: student.fieldOfStudy.name
+      fieldOfStudy: context.fieldOfStudy!.name
     });
   }
 
@@ -93,15 +89,15 @@ export class StudentCreateThesisComponent extends RoleComponent implements OnIni
     return [Role.STUDENT];
   }
 
-  private prepareCreatePayload(student: Student, formData: any): Partial<Thesis> {
+  private prepareCreatePayload(context: Context, formData: any): Partial<Thesis> {
     return {
       topic: formData.topic,
       supervisorId: formData.supervisorId,
-      authorStudentId: student.id,
+      authorStudentId: context.userRole.id,
       numberOfStudents: formData.numberOfStudents,
       description: formData.description,
       reportedByStudent: true,
-      diplomaSessionId: student.fieldOfStudy.activeDiplomaSessionId
+      diplomaSessionId: context.diplomaSession!.id
     };
   }
 

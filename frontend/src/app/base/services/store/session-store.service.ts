@@ -35,7 +35,6 @@ export class SessionStoreService extends CleanableStoreService {
     return this.selectSessionLanguage().pipe(filterExists());
   }
 
-
   public setContext(context?: Context): void {
     this.store.dispatch(setContext({ context: context }));
   }

@@ -15,7 +15,7 @@
              [value]="activeReservation?.thesis?.topic">
     </div>
     <div class="col-auto">
-      <button *ngIf="activeReservation" class="btn btn-dark">
+      <button *ngIf="activeReservation" class="btn btn-dark" (click)="reservationDetails(activeReservation)">
         {{ 'Button.Details' | translate }}
       </button>
     </div>

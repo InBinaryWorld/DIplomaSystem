@@ -55,10 +55,9 @@ export class StudentReservationsComponent extends RoleComponent implements OnIni
 
   initButtonsAvailability(): void {
     this.addSubscription(
-      this.userRoleSource.pipe(
-        switchMap(userRole => this.userService.getStudentForId(userRole.id)),
-        switchMap(student => this.deadlinesService
-          .canStudentReserveThesisFromDiplomaSession(student, student.fieldOfStudy.activeDiplomaSessionId))
+      this.contextSource.pipe(
+        switchMap(context => this.deadlinesService
+          .canStudentReserveThesisFromSameDiplomaSession(context.userRole.id, context.diplomaSession!))
       ).subscribe(canCreateNew => {
         this.canCreateNew = canCreateNew;
         this.markForCheck();

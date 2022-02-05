@@ -9,12 +9,12 @@ import { IdType } from '../models/dto/id.model';
 import { GeneralResourcesService } from './general-resources.service';
 import { UserService } from './user.service';
 import { isNotNil } from '../../core/tools/is-not-nil';
-import { Student } from '../models/dto/student.model';
 import { ThesisStatus } from '../models/dto/topic-status.model';
 import { RequestsService } from './requests.service';
 import { RequestStatus } from '../models/dto/request-status.model';
 import { Employee } from '../models/dto/employee.model';
 import { DiplomaSession } from '../models/dto/diploma-session.model';
+import { Context } from '../models/context.model';
 
 export type DeadlineSelector = (timetable: Timetable) => Date;
 
@@ -114,27 +114,22 @@ export class PermissionsService {
 
 
   // Students
-  public canReserveThesisWithId(studentId: IdType, thesisId: IdType): Observable<boolean> {
-    return combineLatest([
-      this.thesesService.getThesisForId(thesisId),
-      this.userService.getStudentForId(studentId)
-    ]).pipe(switchMap(([thesis, student]) => thesis.status !== ThesisStatus.APPROVED_BY_COMMITTEE
-      ? of(false)
-      : this.canStudentReserveThesisFromDiplomaSession(student, thesis.diplomaSessionId)
-    ));
+  public canReserveThesisWithId(studentContext: Context, thesisId: IdType): Observable<boolean> {
+    return this.thesesService.getThesisForId(thesisId).pipe(
+      switchMap(thesis => thesis.status !== ThesisStatus.APPROVED_BY_COMMITTEE
+        || thesis.diplomaSessionId !== studentContext.diplomaSession!.id
+        || !this.verifyDeadline(studentContext.diplomaSession!.timetable, t => t.selectingThesis)
+          ? of(false)
+          : this.thesesService.hasConfirmedStudentReservation(studentContext.userRole.id, studentContext.diplomaSession!.id)
+            .pipe(map(has => !has))
+      ));
   }
 
-  public canStudentReserveThesisFromDiplomaSession(student: Student, thesisDiplomaSessionId: IdType): Observable<boolean> {
-    return combineLatest([
-      this.generalResourcesService.getDiplomaSessionForId(thesisDiplomaSessionId),
-      this.thesesService.getConfirmedStudentReservations(student.id, thesisDiplomaSessionId)
-    ]).pipe(map(([thesisDiplomaSession, blockers]) =>
-      this.verifyDeadline(thesisDiplomaSession.timetable, t => t.selectingThesis)
-      && student.fieldOfStudyId == thesisDiplomaSession.fieldOfStudyId
-      && isEmpty(blockers)
-    ));
+  public canStudentReserveThesisFromSameDiplomaSession(studentId: IdType, diplomaSession: DiplomaSession): Observable<boolean> {
+    return this.thesesService.getConfirmedStudentReservations(studentId, diplomaSession.id).pipe(
+      map(blockers => isEmpty(blockers) && this.verifyDeadline(diplomaSession.timetable, t => t.selectingThesis))
+    );
   }
-
 
   public canCreateThesisProposition(studentId: IdType, diplomaSession: DiplomaSession): Observable<boolean> {
     return !this.verifyDeadline(diplomaSession.timetable, t => t.submittingThesis) ? of(false)

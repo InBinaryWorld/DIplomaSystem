@@ -72,8 +72,8 @@ export class StudentCreateReservationComponent extends RoleComponent implements 
 
   private checkButtonAvailability(): void {
     this.addSubscription(
-      combineLatest([this.userRoleSource, this.thesisIdSource]).pipe(
-        switchMap(([userRole, thesisId]) => this.deadlinesService.canReserveThesisWithId(userRole.id, thesisId))
+      combineLatest([this.contextSource, this.thesisIdSource]).pipe(
+        switchMap(([context, thesisId]) => this.deadlinesService.canReserveThesisWithId(context, thesisId))
       ).subscribe(canReserve => {
         this.canReserve = canReserve;
         this.markForCheck();

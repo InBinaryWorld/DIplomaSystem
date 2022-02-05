@@ -28,16 +28,30 @@ import { firstItem } from '../app/core/tools/first-item';
 
 const userId: IdType = '1';
 
-const adminId: IdType = '2';
+const studentId: IdType = '1400';
+const student2Id: IdType = '1491';
+
+const adminId: IdType = '110';
 const deanId: IdType = '63';
-const studentId: IdType = '1482';
-const lecturerId: IdType = '1';
+const lecturerId: IdType = '24';
 const coordinatorId: IdType = '185';
 const dsMemberId: IdType = '140';
 const pcMemberId: IdType = '176';
 
-const thesisId: IdType = '7';
-const reservationId: IdType = '32';
+const thesis1Id: IdType = '1';
+const thesis2Id: IdType = '2';
+const thesis3Id: IdType = '3';
+const thesis4Id: IdType = '4';
+const thesis5Id: IdType = '5';
+const thesis6Id: IdType = '6';
+const thesis7Id: IdType = '7';
+const thesis8Id: IdType = '8';
+const reservation1Id: IdType = '32';
+const reservation2Id: IdType = '33';
+const reservation3Id: IdType = '34';
+const reservation4Id: IdType = '35';
+const reservation5Id: IdType = '36';
+const reservation6Id: IdType = '37';
 
 const departmentId: IdType = '4';
 const fieldOfStudyId: IdType = '2';
@@ -45,25 +59,17 @@ const fieldOfStudy2Id: IdType = '4';
 
 const timetableId: IdType = '14';
 const timetable2Id: IdType = '15';
-const timetable3Id: IdType = '16';
-const timetable4Id: IdType = '17';
 const diplomaSessionId: IdType = '14';
 const diplomaSession2Id: IdType = '15';
-const diplomaSession3Id: IdType = '16';
-const diplomaSession4Id: IdType = '17';
 
 
-const chRequestId: IdType = '116';
-const clRequestId: IdType = '583';
+const chRequest1Id: IdType = '116';
+const chRequest2Id: IdType = '117';
+const chRequest3Id: IdType = '118';
+const clRequest1Id: IdType = '583';
+const clRequest2Id: IdType = '584';
+const clRequest3Id: IdType = '585';
 
-
-// additional
-const student2Id: IdType = '1482';
-
-const deadline = new Date(2022, 1);
-const deadline2 = new Date(2023, 1);
-const deadline3 = new Date(2022, 1);
-const deadline4 = new Date(2023, 1);
 
 const userPerson: UserPerson = {
   id: userId,
@@ -75,6 +81,7 @@ const user: User = {
   ...userPerson,
   roles: [
     { id: studentId, role: Role.STUDENT },
+    { id: student2Id, role: Role.STUDENT },
     { id: adminId, role: Role.ADMIN },
     { id: deanId, role: Role.DEAN },
     { id: coordinatorId, role: Role.COORDINATOR },
@@ -111,7 +118,6 @@ function createFieldOfStudy(id: IdType, departmentId: IdType, dsId: IdType, name
   return {
     id: id,
     departmentId: departmentId,
-    activeDiplomaSessionId: dsId,
     degree: StudyDegree.MASTERS,
     name: name
   };
@@ -136,12 +142,10 @@ function createTimetable(id: IdType, dsId: IdType, date: Date): Timetable {
   };
 }
 
-const timetable: Timetable = createTimetable(timetableId, diplomaSessionId, deadline);
-const timetable2: Timetable = createTimetable(timetable2Id, diplomaSession2Id, deadline2);
-const timetable3: Timetable = createTimetable(timetable3Id, diplomaSession3Id, deadline3);
-const timetable4: Timetable = createTimetable(timetable4Id, diplomaSession4Id, deadline4);
+const timetable: Timetable = createTimetable(timetableId, diplomaSessionId, new Date(2022, 1));
+const timetable2: Timetable = createTimetable(timetable2Id, diplomaSession2Id, new Date(2023, 1));
 
-const timetables: Timetable[] = [timetable, timetable2, timetable3, timetable4];
+const timetables: Timetable[] = [timetable, timetable2];
 
 function createDiplomaSession(id: IdType, tt: Timetable, fos: FieldOfStudy, year: string): DiplomaSession {
   return {
@@ -156,18 +160,14 @@ function createDiplomaSession(id: IdType, tt: Timetable, fos: FieldOfStudy, year
 
 const diplomaSession: DiplomaSession = createDiplomaSession(diplomaSessionId, timetable, fieldOfStudy, '2021/2022');
 const diplomaSession2: DiplomaSession = createDiplomaSession(diplomaSession2Id, timetable2, fieldOfStudy, '2022/2023');
-const diplomaSession3: DiplomaSession = createDiplomaSession(diplomaSession3Id, timetable3, fieldOfStudy2, '2021/2022');
-const diplomaSession4: DiplomaSession = createDiplomaSession(diplomaSession4Id, timetable4, fieldOfStudy2, '2022/2023');
 
 const diplomaSessions: DiplomaSession[] = [
   diplomaSession,
-  diplomaSession2,
-  diplomaSession3,
-  diplomaSession4
+  diplomaSession2
 ];
 
 
-function createThesis(id: IdType, diplomaSession: DiplomaSession): Thesis {
+function createThesis(id: IdType, diplomaSession: DiplomaSession, status: ThesisStatus): Thesis {
   const dId = diplomaSession.fieldOfStudy.departmentId;
   const supervisor = employees.find(e => e.departmentId === dId && e.employeeRole === EmployeeRole.LECTURER)!;
   return {
@@ -185,9 +185,15 @@ function createThesis(id: IdType, diplomaSession: DiplomaSession): Thesis {
   };
 }
 
-const thesis: Thesis = createThesis(thesisId, diplomaSession);
+const thesis1: Thesis = createThesis(thesis1Id, diplomaSession2, ThesisStatus.PROPOSED_BY_STUDENT);
+const thesis2: Thesis = createThesis(thesis2Id, diplomaSession2, ThesisStatus.WAITING);
+const thesis3: Thesis = createThesis(thesis3Id, diplomaSession2, ThesisStatus.APPROVED_BY_COORDINATOR);
+const thesis4: Thesis = createThesis(thesis4Id, diplomaSession2, ThesisStatus.APPROVED_BY_COMMITTEE);
+const thesis5: Thesis = createThesis(thesis5Id, diplomaSession2, ThesisStatus.TO_CORRECT);
+const thesis6: Thesis = createThesis(thesis6Id, diplomaSession2, ThesisStatus.REJECTED_BY_COORDINATOR);
+const thesis7: Thesis = createThesis(thesis7Id, diplomaSession2, ThesisStatus.REJECTED_BY_COMMITTEE);
 
-const theses: Thesis[] = [thesis];
+const theses: Thesis[] = [thesis1, thesis2, thesis3, thesis4, thesis5, thesis6, thesis7];
 
 function createStudent(id: IdType, userPerson: UserPerson, fieldOfStudy: FieldOfStudy, idx: string): Student {
   return {
@@ -200,7 +206,7 @@ function createStudent(id: IdType, userPerson: UserPerson, fieldOfStudy: FieldOf
   };
 }
 
-const student: Student = createStudent(studentId, userPerson, fieldOfStudy, '249013');
+const student: Student = createStudent(studentId, userPerson, fieldOfStudy, '249025');
 const student2: Student = createStudent(student2Id, userPerson, fieldOfStudy, '249041');
 
 const students: Student[] = [student, student2];
@@ -217,12 +223,9 @@ function createReservationMember(resMemId: IdType, resId: IdType, student: Stude
 }
 
 function createReservation(resId: IdType, thesis: Thesis, status: ReservationStatus): { reservation: Reservation, resMem: ReservationMember[] } {
-  const ds = diplomaSessions.find(ds => ds.id = thesis.diplomaSessionId)!;
+  const ds = diplomaSessions.find(ds => ds.id === thesis.diplomaSessionId)!;
   const stud = students.filter(s => s.fieldOfStudyId === ds.fieldOfStudyId).slice(0, thesis.numberOfStudents);
-  const resMem = new Array(stud.length).map((_, idx) => {
-    const id = resId + idx;
-    return createReservationMember(id, resId, stud[idx], ReservationMemberStatus.WILLING);
-  });
+  const resMem = stud.map((s, i) => createReservationMember(resId + i, resId, stud[i], ReservationMemberStatus.WILLING));
 
   const res = {
     id: resId,
@@ -236,10 +239,23 @@ function createReservation(resId: IdType, thesis: Thesis, status: ReservationSta
 }
 
 const { reservation: reservation1, resMem: reservationMembers1 } =
-  createReservation(reservationId, thesis, ReservationStatus.SUBMITTED);
+  createReservation(reservation1Id, thesis4, ReservationStatus.WAITING);
+const { reservation: reservation2, resMem: reservationMembers2 } =
+  createReservation(reservation2Id, thesis4, ReservationStatus.SUBMITTED);
+const { reservation: reservation3, resMem: reservationMembers3 } =
+  createReservation(reservation3Id, thesis4, ReservationStatus.ACCEPTED);
+const { reservation: reservation4, resMem: reservationMembers4 } =
+  createReservation(reservation4Id, thesis4, ReservationStatus.CONFIRMED);
+const { reservation: reservation5, resMem: reservationMembers5 } =
+  createReservation(reservation5Id, thesis4, ReservationStatus.REJECTED_BY_STUDENT);
+const { reservation: reservation6, resMem: reservationMembers6 } =
+  createReservation(reservation6Id, thesis4, ReservationStatus.REJECTED_BY_LECTURER);
 
-const reservations: Reservation[] = [reservation1];
-const reservationMembers: ReservationMember[] = [...reservationMembers1];
+const reservations: Reservation[] = [reservation1, reservation2, reservation3, reservation4, reservation5, reservation6];
+const reservationMembers: ReservationMember[] = [
+  ...reservationMembers1, ...reservationMembers2, ...reservationMembers3,
+  ...reservationMembers4, ...reservationMembers5, ...reservationMembers6
+];
 
 
 function createClRequest(clRequestId: IdType, applicant: Student, thesis: Thesis, deanId: IdType, state: RequestStatus): ClarificationRequest {
@@ -257,9 +273,11 @@ function createClRequest(clRequestId: IdType, applicant: Student, thesis: Thesis
   };
 }
 
-const clarificationRequest: ClarificationRequest = createClRequest(clRequestId, student, thesis, deanId, RequestStatus.WAITING);
+const clarification1Request: ClarificationRequest = createClRequest(clRequest1Id, student, thesis4, deanId, RequestStatus.WAITING);
+const clarification2Request: ClarificationRequest = createClRequest(clRequest2Id, student, thesis4, deanId, RequestStatus.APPROVED);
+const clarification3Request: ClarificationRequest = createClRequest(clRequest3Id, student, thesis4, deanId, RequestStatus.DISMISSED);
 
-const clarificationRequests: ClarificationRequest[] = [clarificationRequest];
+const clarificationRequests: ClarificationRequest[] = [clarification1Request, clarification2Request, clarification3Request];
 
 
 function createChRequest(chRequestId: IdType, applicant: Student, oldThesis: Thesis, newThesis: Thesis, pcmId: IdType, state: RequestStatus): ChangeRequest {
@@ -277,27 +295,29 @@ function createChRequest(chRequestId: IdType, applicant: Student, oldThesis: The
   };
 }
 
-const changeRequest: ChangeRequest = createChRequest(chRequestId, student, thesis, thesis, pcMemberId, RequestStatus.WAITING);
+const changeRequest1: ChangeRequest = createChRequest(chRequest1Id, student, thesis4, thesis1, pcMemberId, RequestStatus.WAITING);
+const changeRequest2: ChangeRequest = createChRequest(chRequest2Id, student, thesis4, thesis1, pcMemberId, RequestStatus.APPROVED);
+const changeRequest3: ChangeRequest = createChRequest(chRequest3Id, student, thesis4, thesis1, pcMemberId, RequestStatus.DISMISSED);
 
-const changeRequests: ChangeRequest[] = [changeRequest];
+const changeRequests: ChangeRequest[] = [changeRequest1, changeRequest2, changeRequest3];
 
 
 const responseByApiKey: Dictionary<any> = {
   [ApiLabel.ABANDON_MEMBER_RESERVATION]: firstItem(reservationMembers),
-  [ApiLabel.APPROVE_CHANGE_REQUEST]: changeRequest,
-  [ApiLabel.APPROVE_CLARIFICATION_REQUEST]: clarificationRequest,
-  [ApiLabel.APPROVE_THESIS_WITH_COORDINATOR]: thesis,
-  [ApiLabel.APPROVE_THESIS_WITH_COMMITTEE_MEMBER]: thesis,
+  [ApiLabel.APPROVE_CHANGE_REQUEST]: firstItem(changeRequests),
+  [ApiLabel.APPROVE_CLARIFICATION_REQUEST]: firstItem(clarificationRequests),
+  [ApiLabel.APPROVE_THESIS_WITH_COORDINATOR]: thesis1,
+  [ApiLabel.APPROVE_THESIS_WITH_COMMITTEE_MEMBER]: thesis1,
   [ApiLabel.CONFIRM_MEMBER_RESERVATION]: firstItem(reservationMembers),
   [ApiLabel.CONFIRM_PARTICIPATION_IN_RESERVATION]: firstItem(reservationMembers),
-  [ApiLabel.CREATE_CLARIFICATION_REQUEST]: clarificationRequest,
-  [ApiLabel.CREATE_CHANGE_REQUEST]: changeRequest,
-  [ApiLabel.CREATE_THESIS]: thesis,
+  [ApiLabel.CREATE_CLARIFICATION_REQUEST]: firstItem(clarificationRequests),
+  [ApiLabel.CREATE_CHANGE_REQUEST]: firstItem(changeRequests),
+  [ApiLabel.CREATE_THESIS]: thesis1,
   [ApiLabel.CREATE_RESERVATION]: firstItem(reservations),
   [ApiLabel.GET_USER]: user,
-  [ApiLabel.GET_CHANGE_REQUEST]: changeRequest,
+  [ApiLabel.GET_CHANGE_REQUEST]: firstItem(changeRequests),
   [ApiLabel.GET_CHANGE_REQUESTS]: changeRequests,
-  [ApiLabel.GET_CLARIFICATION_REQUEST]: clarificationRequest,
+  [ApiLabel.GET_CLARIFICATION_REQUEST]: firstItem(clarificationRequests),
   [ApiLabel.GET_CLARIFICATION_REQUESTS]: clarificationRequests,
   [ApiLabel.GET_DIPLOMA_SESSION]: diplomaSession,
   [ApiLabel.GET_DIPLOMA_SESSIONS]: diplomaSessions,
@@ -306,13 +326,13 @@ const responseByApiKey: Dictionary<any> = {
   [ApiLabel.GET_RESERVATIONS]: reservations,
   [ApiLabel.GET_STUDENTS]: students,
   [ApiLabel.GET_TIMETABLE]: timetable,
-  [ApiLabel.GET_THESIS]: thesis,
+  [ApiLabel.GET_THESIS]: thesis1,
   [ApiLabel.GET_THESES]: theses,
-  [ApiLabel.REJECT_CLARIFICATION_REQUEST]: clarificationRequest,
-  [ApiLabel.REJECT_THESIS_WITH_COMMITTEE_MEMBER]: clarificationRequest,
-  [ApiLabel.REJECT_CHANGE_REQUEST]: changeRequest,
-  [ApiLabel.REJECT_THESIS_WITH_COORDINATOR]: thesis,
-  [ApiLabel.REQUEST_THESIS_CORRECTIONS]: thesis
+  [ApiLabel.REJECT_CLARIFICATION_REQUEST]: firstItem(clarificationRequests),
+  [ApiLabel.REJECT_THESIS_WITH_COMMITTEE_MEMBER]: firstItem(clarificationRequests),
+  [ApiLabel.REJECT_CHANGE_REQUEST]: firstItem(changeRequests),
+  [ApiLabel.REJECT_THESIS_WITH_COORDINATOR]: thesis1,
+  [ApiLabel.REQUEST_THESIS_CORRECTIONS]: thesis1
 };
 
 function generateAuthData(): AuthData {
@@ -364,6 +384,42 @@ function getDiplomaSessions(query?: RequestParams): DiplomaSession[] {
   return response;
 }
 
+
+function getTheses(query?: RequestParams): Thesis[] {
+  let response = theses;
+  const proposedByStudentId = query?.getAll().find(p => p.name === 'proposedByStudentId')?.value;
+  const proposedByStudentOnly = query?.getAll().find(p => p.name === 'proposedByStudentOnly')?.value;
+  const diplomaSessionId = query?.getAll().find(p => p.name === 'diplomaSessionId')?.value;
+  const departmentId = query?.getAll().find(p => p.name === 'departmentId')?.value;
+  if (isNotNil(departmentId)) {
+    response = response.filter(t => {
+      const ds = diplomaSessions.find(ds => ds.id === t.diplomaSessionId)!;
+      return ds.fieldOfStudy.departmentId === departmentId;
+    });
+  }
+  if (isNotNil(diplomaSessionId)) {
+    response = response.filter(t => t.diplomaSessionId === diplomaSessionId);
+  }
+  if (isNotNil(proposedByStudentOnly) && isNotNil(proposedByStudentId)) {
+    response = response.filter(t => t.authorStudentId === proposedByStudentId);
+  }
+  return response;
+}
+
+
+function getReservations(query?: RequestParams): Reservation[] {
+  let response = reservations;
+  const studentId = query?.getAll().find(p => p.name === 'studentId')?.value;
+  const diplomaSessionId = query?.getAll().find(p => p.name === 'diplomaSessionId')?.value;
+  if (isNotNil(studentId)) {
+    response = response.filter(r => r.reservationMembers.some(rm => rm.studentId === studentId));
+  }
+  if (isNotNil(diplomaSessionId)) {
+    response = response.filter(r => r.thesis.diplomaSessionId === diplomaSessionId);
+  }
+  return response;
+}
+
 function handleLabel(apiLabel: ApiLabel, query?: RequestParams): NonNullable<any> {
   switch (apiLabel) {
     case ApiLabel.LOGIN:
@@ -373,12 +429,16 @@ function handleLabel(apiLabel: ApiLabel, query?: RequestParams): NonNullable<any
       return getStudent(query!);
     case ApiLabel.GET_EMPLOYEE:
       return getEmployee(query!);
-    case ApiLabel.GET_EMPLOYEES:
-      return getEmployees(query);
-    case ApiLabel.GET_FIELDS_OF_STUDY:
-      return getFieldsOfStudy(query);
+    // case ApiLabel.GET_EMPLOYEES:
+    //   return getEmployees(query);
+    // case ApiLabel.GET_FIELDS_OF_STUDY:
+    //   return getFieldsOfStudy(query);
     case ApiLabel.GET_DIPLOMA_SESSIONS:
       return getDiplomaSessions(query);
+    case ApiLabel.GET_THESES:
+      return getTheses(query);
+    case ApiLabel.GET_RESERVATIONS:
+      return getReservations(query);
     default:
       return responseByApiKey[apiLabel];
   }
@@ -392,5 +452,5 @@ export const FakeData = {
     }
     return response;
   },
-  thesis
+  thesis: thesis1
 };

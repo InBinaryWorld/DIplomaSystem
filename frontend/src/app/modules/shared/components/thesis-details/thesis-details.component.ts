@@ -18,6 +18,7 @@ import { ThesisStatus } from '../../../../base/models/dto/topic-status.model';
 import { EmployeeRole } from '../../../../base/models/dto/employee-role.model';
 import { Dictionary } from '../../../../core/models/dictionary.model';
 import { AppValidators } from '../../../../base/utils/validators.utils';
+import { Context } from '../../../../base/models/context.model';
 
 @Component({
   selector: 'app-thesis-details',
@@ -96,15 +97,15 @@ export class ThesisDetailsComponent extends RoleComponent implements OnInit {
 
   private checkButtonAvailability(): void {
     this.addSubscription(
-      combineLatest([this.userRoleSource, this.thesisIdSource, this.reloadTrigger]).pipe(
-        switchMap(([userRole, thesisId]) => {
-          switch (userRole.role) {
+      combineLatest([this.contextSource, this.thesisIdSource, this.reloadTrigger]).pipe(
+        switchMap(([contextSource, thesisId]) => {
+          switch (contextSource.userRole.role) {
             case Role.STUDENT :
-              return this.checkForStudent(userRole.id, thesisId);
+              return this.checkForStudent(contextSource, thesisId);
             case Role.COORDINATOR :
-              return this.checkForCoordinator(userRole.id, thesisId);
+              return this.checkForCoordinator(contextSource.userRole.id, thesisId);
             case Role.PROGRAM_COMMITTEE_MEMBER :
-              return this.checkForCommitteeMember(userRole.id, thesisId);
+              return this.checkForCommitteeMember(contextSource.userRole.id, thesisId);
           }
           return NEVER;
         })
@@ -112,8 +113,8 @@ export class ThesisDetailsComponent extends RoleComponent implements OnInit {
     );
   }
 
-  checkForStudent(studentId: IdType, thesisId: IdType): Observable<void> {
-    return this.deadlinesService.canReserveThesisWithId(studentId, thesisId).pipe(
+  checkForStudent(studentContext: Context, thesisId: IdType): Observable<void> {
+    return this.deadlinesService.canReserveThesisWithId(studentContext, thesisId).pipe(
       map(canReserve => {
         this.canStudentReserve = canReserve;
         this.markForCheck();
