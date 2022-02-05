@@ -7,7 +7,7 @@ import { AppState } from '../app-state.model';
 import {
   loadReservationForIdAction,
   loadReservationForIdIfNeededAction,
-  loadStudentReservationsAction,
+  loadReservationsAction,
   loadStudentReservationsIfNeededAction,
   loadThesesAction,
   loadThesesFailedAction,
@@ -18,7 +18,12 @@ import {
   loadThesisStoreInstanceSuccessAction
 } from './theses.actions';
 import { mergeIfNil } from '../../../core/tools/If-needed-only-functions';
-import { selectThesesDataForTypeAndId, selectThesesDataIdsForTypeAndKey } from './theses.selectors';
+import {
+  selectReservationForId,
+  selectReservationsForKey,
+  selectThesesForKey,
+  selectThesisForId
+} from './theses.selectors';
 import { ThesesStateKey } from './theses.state';
 import { ThesesApiService } from '../../services/api/theses-api.service';
 
@@ -28,9 +33,7 @@ export class ThesesEffects {
 
   loadThesesIfNeededAction = createEffect(() => this.actions.pipe(
     ofType(loadThesesIfNeededAction),
-    mergeIfNil(({ key }) => this.store.select(
-      selectThesesDataIdsForTypeAndKey, { resourceType: ThesesStateKey.THESES, key }
-    )),
+    mergeIfNil(({ key }) => this.store.select(selectThesesForKey, key)),
     map(({ options, key }) => loadThesesAction({ options, key }))
   ));
 
@@ -46,9 +49,7 @@ export class ThesesEffects {
 
   loadThesisForIdIfNeededAction = createEffect(() => this.actions.pipe(
     ofType(loadThesisForIdIfNeededAction),
-    mergeIfNil(({ id }) => this.store.select(
-      selectThesesDataForTypeAndId, { resourceType: ThesesStateKey.THESES, id }
-    )),
+    mergeIfNil(({ id }) => this.store.select(selectThesisForId, id)),
     map(({ id }) => loadThesisForIdAction({ id }))
   ));
 
@@ -64,16 +65,14 @@ export class ThesesEffects {
 
   loadStudentReservationsIfNeededAction = createEffect(() => this.actions.pipe(
     ofType(loadStudentReservationsIfNeededAction),
-    mergeIfNil(({ key, studentId }) => this.store.select(
-      selectThesesDataIdsForTypeAndKey, { resourceType: ThesesStateKey.RESERVATIONS, key })
-    ),
-    map(({ key, studentId }) => loadStudentReservationsAction({ key, studentId }))
+    mergeIfNil(({ key }) => this.store.select(selectReservationsForKey, key)),
+    map(({ key, options }) => loadReservationsAction({ key, options }))
   ));
 
   loadRequestsAction = createEffect(() => this.actions.pipe(
-    ofType(loadStudentReservationsAction),
-    mergeMap(({ key, studentId }) =>
-      this.thesesApiService.getStudentReservations(studentId).pipe(
+    ofType(loadReservationsAction),
+    mergeMap(({ key, options }) =>
+      this.thesesApiService.getStudentReservations(options).pipe(
         map(collection => loadThesesStoreCollectionSuccessAction(
           { resourceType: ThesesStateKey.RESERVATIONS, collection, key }
         )),
@@ -83,9 +82,7 @@ export class ThesesEffects {
 
   loadReservationForIdIfNeededAction = createEffect(() => this.actions.pipe(
     ofType(loadReservationForIdIfNeededAction),
-    mergeIfNil(({ id }) => this.store.select(
-      selectThesesDataForTypeAndId, { resourceType: ThesesStateKey.RESERVATIONS, id }
-    )),
+    mergeIfNil(({ id }) => this.store.select(selectReservationForId, id)),
     map(({ id }) => loadReservationForIdAction({ id }))
   ));
 

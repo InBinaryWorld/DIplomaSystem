@@ -3,13 +3,13 @@ import { ThesesStateKey, ThesesStoreType } from './theses.state';
 import { IdType } from '../../models/dto/id.model';
 import { ThesisStatus } from '../../models/dto/topic-status.model';
 
-export const loadStudentReservationsAction = createAction(
-  '[THESES] Load student reservations',
-  props<{ studentId: IdType, key: string }>()
+export const loadReservationsAction = createAction(
+  '[THESES] Load reservations',
+  props<{ options: LoadReservationsActionOptions, key: string }>()
 );
 export const loadStudentReservationsIfNeededAction = createAction(
   '[THESES] Load student reservations if needed',
-  props<{ studentId: IdType, key: string }>()
+  props<{ options: LoadReservationsActionOptions, key: string }>()
 );
 export const loadReservationForIdAction = createAction(
   '[THESES] Load reservation for id',
@@ -57,6 +57,27 @@ export const loadThesesFailedAction = createAction(
   '[THESES] Load failed',
   props<{ error: any }>()
 );
+
+export class LoadReservationsActionOptions {
+  studentId?: IdType;
+  diplomaSessionId?: IdType;
+
+  static for(studentId: IdType, diplomaSessionId: IdType): LoadReservationsActionOptions {
+    const options = new LoadReservationsActionOptions();
+    options.studentId = studentId;
+    options.diplomaSessionId = diplomaSessionId;
+    return options;
+  }
+
+  toKey(): string {
+    return [
+      'LoadReservationsActionOptions',
+      'SI_' + this.studentId,
+      'DSI_' + this.diplomaSessionId
+    ].join('$');
+  }
+}
+
 
 export class LoadThesisActionOptions {
   proposedByStudentId?: string;

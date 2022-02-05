@@ -6,7 +6,7 @@ import { Reservation } from '../../models/dto/reservation.model';
 import { ReservationMember } from '../../models/dto/reservation-member.model';
 import { RequestParams } from '../../../core/models/request-param.model';
 import { Thesis } from '../../models/dto/thesis.model';
-import { LoadThesisActionOptions } from '../../store/theses/theses.actions';
+import { LoadReservationsActionOptions, LoadThesisActionOptions } from '../../store/theses/theses.actions';
 import { IdType } from '../../models/dto/id.model';
 
 @Injectable({
@@ -33,10 +33,11 @@ export class ThesesApiService {
     return this.http.getWithLabel(ApiLabel.GET_THESIS, undefined, queryParams);
   }
 
-  public getStudentReservations(studentId: IdType): Observable<Reservation[]> {
+  public getStudentReservations(options: LoadReservationsActionOptions): Observable<Reservation[]> {
     const query = new RequestParams();
-    query.addIfValueExists('studentId', studentId);
-    return this.http.getWithLabel(ApiLabel.GET_RESERVATIONS);
+    query.addIfValueExists('studentId', options.studentId);
+    query.addIfValueExists('diplomaSessionId', options.diplomaSessionId);
+    return this.http.getWithLabel(ApiLabel.GET_RESERVATIONS, undefined, query);
   }
 
   public getReservationForId(reservationId: IdType): Observable<Reservation> {

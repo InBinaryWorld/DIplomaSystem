@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Directive } from '@angular/core';
 import { BaseComponent } from '../../core/components/base-component.directive';
 import { Role } from '../models/dto/role.model';
-import { distinctUntilChanged, map, Observable, OperatorFunction } from 'rxjs';
+import { distinctUntilChanged, filter, map, Observable, OperatorFunction } from 'rxjs';
 import { filterRoles, filterRolesWitSelector } from '../../core/tools/filter-roles';
 import { UserRole } from '../models/dto/user-role.model';
 import { SessionService } from '../services/session.service';
@@ -10,6 +10,7 @@ import { isEmpty } from 'lodash-es';
 import { ActivatedRoute } from '@angular/router';
 import { FormArray, FormGroup, ValidationErrors } from '@angular/forms';
 import { Context } from '../models/context.model';
+import { isNotNil } from '../../core/tools/is-not-nil';
 
 @Directive()
 export abstract class RoleComponent extends BaseComponent {
@@ -29,10 +30,10 @@ export abstract class RoleComponent extends BaseComponent {
   }
 
   get contextSource(): Observable<Context> {
-    const filter: OperatorFunction<Context | undefined, Context> = isEmpty(this.roles)
+    const filter1: OperatorFunction<Context | undefined, Context> = isEmpty(this.roles)
       ? filterExists() : filterRolesWitSelector<Context | undefined>(this.roles, c => c?.userRole);
     return this.sessionService.selectContext()
-      .pipe(filter, distinctUntilChanged());
+      .pipe(filter1, filter(c => isNotNil(c.diplomaSession)), distinctUntilChanged());
   }
 
   public getErrorsFromArray(form: FormArray, index: number): ValidationErrors | null {

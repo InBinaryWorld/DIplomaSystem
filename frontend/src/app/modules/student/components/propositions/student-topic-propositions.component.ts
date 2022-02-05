@@ -49,8 +49,9 @@ export class StudentTopicPropositionsComponent extends RoleComponent implements 
 
   initButtonsAvailability(): void {
     this.addSubscription(
-      this.userRoleSource.pipe(
-        switchMap(userRole => this.deadlinesService.canCreateThesisPropositionInActiveSession(userRole.id))
+      this.contextSource.pipe(
+        switchMap(context => this.deadlinesService
+          .canCreateThesisProposition(context!.userRole.id, context.diplomaSession!))
       ).subscribe(canCreateNew => {
         this.canCreateNew = canCreateNew;
         this.markForCheck();

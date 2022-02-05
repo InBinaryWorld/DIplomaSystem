@@ -49,8 +49,8 @@ export class StudentChangeRequestsComponent extends RoleComponent implements OnI
 
   initButtonsAvailability(): void {
     this.addSubscription(
-      this.userRoleSource.pipe(switchMap(userRole =>
-        this.deadlinesService.canCreateChangeRequest(userRole.id)
+      this.contextSource.pipe(switchMap(context =>
+        this.deadlinesService.canCreateChangeRequest(context.userRole.id, context.diplomaSession!)
       )).subscribe(canCreateNew => {
         this.canCreateNew = canCreateNew;
         this.markForCheck();

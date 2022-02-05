@@ -9,7 +9,6 @@ import { Role } from '../../../../base/models/dto/role.model';
 import { combineLatest, map, Observable, switchMap } from 'rxjs';
 import { RoleComponent } from '../../../../base/components/role-component.directive';
 import { UserService } from '../../../../base/services/user.service';
-import { Student } from '../../../../base/models/dto/student.model';
 
 @Component({
   selector: 'app-student-reservations',
@@ -19,7 +18,6 @@ import { Student } from '../../../../base/models/dto/student.model';
 })
 export class StudentReservationsComponent extends RoleComponent implements OnInit {
 
-  student?: Student;
   theses?: Thesis[];
   reservations?: Reservation[];
   activeReservation?: Reservation;
@@ -46,8 +44,7 @@ export class StudentReservationsComponent extends RoleComponent implements OnIni
 
   private initReservations(): void {
     this.addSubscription(
-      this.getDataSource().subscribe(([student, theses, reservations, activeReservation]) => {
-        this.student = student;
+      this.getDataSource().subscribe(([theses, reservations, activeReservation]) => {
         this.theses = theses;
         this.reservations = reservations;
         this.activeReservation = activeReservation;
@@ -69,15 +66,13 @@ export class StudentReservationsComponent extends RoleComponent implements OnIni
     );
   }
 
-  private getDataSource(): Observable<[Student, Thesis[], Reservation[], Reservation | undefined]> {
-    return this.userRoleSource.pipe(
-      switchMap(userRole => this.userService.getStudentForId(userRole.id)),
-      switchMap(student => combineLatest([
-          this.thesesService.getApprovedThesesForActiveSession(student),
-          this.thesesService.getStudentReservations(student.id),
-          this.thesesService.getConfirmedStudentReservationInActiveSession(student)
-        ]).pipe(map(([t, r, cr]) => ([student, t, r, cr] as
-          [Student, Thesis[], Reservation[], Reservation | undefined])))
+  private getDataSource(): Observable<[Thesis[], Reservation[], Reservation | undefined]> {
+    return this.contextSource.pipe(
+      switchMap(context => combineLatest([
+          this.thesesService.getApprovedTheses(context.userRole.id, context.diplomaSession!.id),
+          this.thesesService.getStudentReservations(context.userRole.id, context.diplomaSession!.id),
+          this.thesesService.getConfirmedStudentReservation(context.userRole.id, context.diplomaSession!.id)
+        ]).pipe(map(([t, r, cr]) => ([t, r, cr] as [Thesis[], Reservation[], Reservation | undefined])))
       )
     );
   }

@@ -78,9 +78,11 @@ export class ChangeRequestDetailsComponent extends RoleComponent implements OnIn
 
   private checkButtonsAvailability(): void {
     this.addSubscription(combineLatest([
-      this.userRoleSource.pipe(filterRoles([Role.PROGRAM_COMMITTEE_MEMBER])), this.requestId, this.reloadTrigger
-    ]).pipe(switchMap(([deanUserRole, id]) =>
-      this.permissionsService.canCommitteeConsiderChangeRequest(deanUserRole.id, id)
+      this.userRoleSource.pipe(filterRoles([Role.PROGRAM_COMMITTEE_MEMBER])),
+      this.requestId,
+      this.reloadTrigger
+    ]).pipe(switchMap(([userRole, id]) =>
+      this.permissionsService.canCommitteeConsiderChangeRequest(userRole.id, id)
     )).subscribe(canConsiderRequest => {
       this.canProgramCommitteeConsiderRequest = canConsiderRequest;
       this.markForCheck();

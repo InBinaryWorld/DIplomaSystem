@@ -4,7 +4,7 @@ import { Timetable } from '../models/dto/timetable.model';
 import { map } from 'rxjs/operators';
 import { filterExists } from '../../core/tools/filter-exists';
 import { ThesesService } from './theses.service';
-import { isEmpty, isNil } from 'lodash-es';
+import { isEmpty } from 'lodash-es';
 import { IdType } from '../models/dto/id.model';
 import { GeneralResourcesService } from './general-resources.service';
 import { UserService } from './user.service';
@@ -14,6 +14,7 @@ import { ThesisStatus } from '../models/dto/topic-status.model';
 import { RequestsService } from './requests.service';
 import { RequestStatus } from '../models/dto/request-status.model';
 import { Employee } from '../models/dto/employee.model';
+import { DiplomaSession } from '../models/dto/diploma-session.model';
 
 export type DeadlineSelector = (timetable: Timetable) => Date;
 
@@ -126,7 +127,7 @@ export class PermissionsService {
   public canStudentReserveThesisFromDiplomaSession(student: Student, thesisDiplomaSessionId: IdType): Observable<boolean> {
     return combineLatest([
       this.generalResourcesService.getDiplomaSessionForId(thesisDiplomaSessionId),
-      this.thesesService.getConfirmedStudentReservationsForDiplomaSessionId(student.id, thesisDiplomaSessionId)
+      this.thesesService.getConfirmedStudentReservations(student.id, thesisDiplomaSessionId)
     ]).pipe(map(([thesisDiplomaSession, blockers]) =>
       this.verifyDeadline(thesisDiplomaSession.timetable, t => t.selectingThesis)
       && student.fieldOfStudyId == thesisDiplomaSession.fieldOfStudyId
@@ -135,39 +136,26 @@ export class PermissionsService {
   }
 
 
-  public canCreateThesisPropositionInActiveSession(studentId: IdType): Observable<boolean> {
-    return this.userService.getStudentForId(studentId).pipe(
-      switchMap(student => this.thesesService.getConfirmedStudentReservationInActiveSession(student).pipe(
-        switchMap(thesis => isNotNil(thesis) ? of(false)
-          : this.verifyDeadlineForDiplomaSessionId(student.fieldOfStudy.activeDiplomaSessionId, t => t.submittingThesis)
-        )
-      ))
-    );
+  public canCreateThesisProposition(studentId: IdType, diplomaSession: DiplomaSession): Observable<boolean> {
+    return !this.verifyDeadline(diplomaSession.timetable, t => t.submittingThesis) ? of(false)
+      : this.thesesService.hasConfirmedStudentReservation(studentId, diplomaSession.id)
+        .pipe(map(has => !has));
   }
 
-  public canCreateClarificationRequest(studentId: IdType): Observable<boolean> {
-    return this.checkForStudentWithConfirmedReservation(studentId, t => t.clarificationThesis);
+  public canCreateClarificationRequest(studentId: IdType, diplomaSession: DiplomaSession): Observable<boolean> {
+    return this.checkForStudentWithConfirmedReservation(studentId, diplomaSession, t => t.clarificationThesis);
   }
 
-  public canCreateChangeRequest(studentId: IdType): Observable<boolean> {
-    return this.checkForStudentWithConfirmedReservation(studentId, t => t.changingThesis);
+  public canCreateChangeRequest(studentId: IdType, diplomaSession: DiplomaSession): Observable<boolean> {
+    return this.checkForStudentWithConfirmedReservation(studentId, diplomaSession, t => t.changingThesis);
   }
 
-  private checkForStudentWithConfirmedReservation(studentId: IdType, deadlineSelector: DeadlineSelector): Observable<boolean> {
-    return this.userService.getStudentForId(studentId).pipe(
-      switchMap(student => this.thesesService.getConfirmedStudentReservationInActiveSession(student)),
-      switchMap(reservation => isNil(reservation)
-        ? of(false)
-        : this.verifyDeadlineForDiplomaSessionId(
-          reservation.thesis.diplomaSessionId, deadlineSelector
-        )
-      )
-    );
+  private checkForStudentWithConfirmedReservation(studentId: IdType, diplomaSession: DiplomaSession, deadlineSelector: DeadlineSelector): Observable<boolean> {
+    return !this.verifyDeadline(diplomaSession.timetable, deadlineSelector) ? of(false)
+      : this.thesesService.hasConfirmedStudentReservation(studentId, diplomaSession.id);
   }
-
 
   // General
-
   public verifyDeadlineForDiplomaSessionId(diplomaSessionId: IdType, deadlineSelector: DeadlineSelector): Observable<boolean> {
     return this.generalResourcesService.getDiplomaSessionForId(diplomaSessionId).pipe(
       filterExists(), map(ds => this.verifyDeadline(ds.timetable, deadlineSelector))

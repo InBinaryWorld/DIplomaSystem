@@ -9,7 +9,8 @@ import {
   invalidateThesesDataAction,
   loadReservationForIdAction,
   loadReservationForIdIfNeededAction,
-  loadStudentReservationsAction,
+  loadReservationsAction,
+  LoadReservationsActionOptions,
   loadStudentReservationsIfNeededAction,
   loadThesesAction,
   loadThesesIfNeededAction,
@@ -49,8 +50,9 @@ export class ThesesStoreService extends CleanableStoreService {
     return this.selectThesisForId(thesisId).pipe(filterExists());
   }
 
-  public getStudentReservations(studentId: IdType, key: string, ifNeededOnly = true): Observable<Reservation[]> {
-    this.loadStudentReservations(studentId, key, ifNeededOnly);
+  public getStudentReservations(options: LoadReservationsActionOptions, ifNeededOnly = true): Observable<Reservation[]> {
+    const key = options.toKey();
+    this.loadStudentReservations(options, key, ifNeededOnly);
     return this.selectReservationsForKey(key).pipe(filterExists());
   }
 
@@ -73,10 +75,10 @@ export class ThesesStoreService extends CleanableStoreService {
     this.store.dispatch(action);
   }
 
-  public loadStudentReservations(studentId: IdType, key: string, ifNeededOnly = true): void {
+  public loadStudentReservations(options: LoadReservationsActionOptions, key: string, ifNeededOnly = true): void {
     const action = ifNeededOnly
-      ? loadStudentReservationsIfNeededAction({ studentId, key })
-      : loadStudentReservationsAction({ studentId, key });
+      ? loadStudentReservationsIfNeededAction({ options, key })
+      : loadReservationsAction({ options, key });
     this.store.dispatch(action);
   }
 

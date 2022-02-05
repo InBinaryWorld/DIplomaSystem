@@ -51,8 +51,8 @@ export class StudentTopicClarificationsComponent extends RoleComponent implement
 
   initButtonsAvailability(): void {
     this.addSubscription(
-      this.userRoleSource.pipe(switchMap(userRole =>
-        this.deadlinesService.canCreateClarificationRequest(userRole.id)
+      this.contextSource.pipe(switchMap(context =>
+        this.deadlinesService.canCreateClarificationRequest(context.userRole.id, context.diplomaSession!)
       )).subscribe(canCreateClarification => {
         this.canCreateNew = canCreateClarification;
         this.markForCheck();

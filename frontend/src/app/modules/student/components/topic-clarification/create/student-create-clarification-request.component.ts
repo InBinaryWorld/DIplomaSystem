@@ -7,12 +7,10 @@ import { ThesesService } from '../../../../../base/services/theses.service';
 import { RequestsService } from '../../../../../base/services/requests.service';
 import { RoleComponent } from '../../../../../base/components/role-component.directive';
 import { SessionService } from '../../../../../base/services/session.service';
-import { map, Observable, switchMap } from 'rxjs';
+import { combineLatest, Observable, switchMap } from 'rxjs';
 import { Thesis } from '../../../../../base/models/dto/thesis.model';
 import { Role } from '../../../../../base/models/dto/role.model';
 import { isNil } from 'lodash-es';
-import { filterExists } from '../../../../../core/tools/filter-exists';
-import { first } from 'rxjs/operators';
 import { IdType } from '../../../../../base/models/dto/id.model';
 import { UserService } from '../../../../../base/services/user.service';
 import { Student } from '../../../../../base/models/dto/student.model';
@@ -81,19 +79,13 @@ export class StudentCreateClarificationRequestComponent extends RoleComponent im
   }
 
   private getDataSource(): Observable<[Student, Thesis]> {
-    return this.userRoleSource.pipe(
-      switchMap(userRole => this.userService.getStudentForId(userRole.id)),
-      switchMap(student => this.getBaseThesis(student).pipe(
-        map(thesis => ([student, thesis] as [Student, Thesis])))
-      )
+    return this.contextSource.pipe(
+      switchMap(context => combineLatest([
+        this.userService.getStudentForId(context.userRole.id),
+        this.thesesService.getThesisForStudentConfirmedReservation(context.userRole.id, context.diplomaSession!.id)
+      ]))
     );
   }
-
-  private getBaseThesis(student: Student): Observable<Thesis> {
-    return this.thesesService.getThesisForStudentConfirmedReservationInActiveSession(student)
-      .pipe(filterExists(), first());
-  }
-
 
   private setCurrentFormData(thesis?: Thesis): void {
     if (isNil(thesis)) {

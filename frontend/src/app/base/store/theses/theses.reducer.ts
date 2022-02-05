@@ -11,7 +11,7 @@ import { ThesesState } from './theses.state';
 import {
   invalidateThesesDataAction,
   loadReservationForIdAction,
-  loadStudentReservationsAction,
+  loadReservationsAction,
   loadThesesAction,
   loadThesesFailedAction,
   loadThesesStoreCollectionSuccessAction,
@@ -25,7 +25,7 @@ export const initialState = new ThesesState();
 
 export const thesesReducer = createReducer(
   initialState,
-  on(loadStudentReservationsAction, startProgressReducer()),
+  on(loadReservationsAction, startProgressReducer()),
   on(loadReservationForIdAction, startProgressReducer()),
   on(loadThesesAction, startProgressReducer()),
   on(loadThesisForIdAction, startProgressReducer()),
