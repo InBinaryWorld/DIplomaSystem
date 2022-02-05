@@ -5,14 +5,12 @@ import { RoleGuard } from '../../core/guards/role.guard';
 import { Role } from '../../base/models/dto/role.model';
 import { LecturerTopicsComponent } from './components/topics/lecturer-topics.component';
 import { LecturerComponent } from './components/lecturer/lecturer.component';
-import { LecturerTopicReviewComponent } from './components/topics/review/lecturer-topic-review.component';
-import { LecturerTopicManageComponent } from './components/topics/manage/lecturer-topic-manage.component';
 import { LecturerTopicCreateComponent } from './components/topics/create/lecturer-topic-create.component';
-import { LecturerTopicCorrectComponent } from './components/topics/correct/lecturer-topic-correct.component';
 import { LecturerReservationsComponent } from './components/reservations/lecturer-reservations.component';
 import {
   LecturerReservationsManageComponent
 } from './components/reservations/manage/lecturer-reservations-manage.component';
+import { ThesisDetailsComponent } from '../shared/components/thesis-details/thesis-details.component';
 
 
 const routes: Routes = [
@@ -41,16 +39,16 @@ const routes: Routes = [
             component: LecturerTopicCreateComponent
           },
           {
-            path: 'manage/:id',
-            component: LecturerTopicManageComponent
+            path: 'details/:thesisId',
+            component: ThesisDetailsComponent
           },
           {
-            path: 'review/:id',
-            component: LecturerTopicReviewComponent
+            path: 'review/:thesisId',
+            component: ThesisDetailsComponent
           },
           {
-            path: 'correct/:id',
-            component: LecturerTopicCorrectComponent
+            path: 'correct/:thesisId',
+            component: ThesisDetailsComponent
           }
         ]
       },

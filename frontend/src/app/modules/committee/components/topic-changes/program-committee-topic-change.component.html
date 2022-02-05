@@ -69,7 +69,7 @@
             <th style="width: 5%" scope="row">{{ item.id }}</th>
             <td style="width: 30%">{{ LabelBuilder.forStudent(item.student) }}</td>
             <td style="width: 30%">{{ item.submissionDate | localDate }}</td>
-            <td style="width: 20%">{{ TranslationKeys.forRequestStatus(item.status) }}</td>
+            <td style="width: 20%">{{ TranslationKeys.forRequestStatus(item.status) | translate }}</td>
             <td style="width: auto" class="action-col">
               <button type="button" class="btn btn-primary" (click)="showDetails(item)">
                 {{ 'Button.Details' | translate }}

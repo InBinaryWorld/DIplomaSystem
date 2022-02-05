@@ -83,6 +83,7 @@ export class LoadThesisActionOptions {
   proposedByStudentId?: string;
   proposedByStudentOnly?: boolean;
   diplomaSessionId?: string;
+  supervisorId?: string;
   departmentId?: string;
   status?: string;
 
@@ -90,13 +91,6 @@ export class LoadThesisActionOptions {
     const options = new LoadThesisActionOptions();
     options.proposedByStudentId = studentId;
     options.proposedByStudentOnly = true;
-    return options;
-  }
-
-  static forStatusAndDepartment(departmentId: IdType, status: ThesisStatus): LoadThesisActionOptions {
-    const options = new LoadThesisActionOptions();
-    options.departmentId = departmentId;
-    options.status = status;
     return options;
   }
 
@@ -108,13 +102,29 @@ export class LoadThesisActionOptions {
     return options;
   }
 
+  static forStatusAndDepartment(departmentId: IdType, status: ThesisStatus): LoadThesisActionOptions {
+    const options = new LoadThesisActionOptions();
+    options.departmentId = departmentId;
+    options.status = status;
+    return options;
+  }
+
+  static forLecturerAndDiplomaSession(supervisorId: IdType, diplomaSessionId: IdType): LoadThesisActionOptions {
+    const options = new LoadThesisActionOptions();
+    options.diplomaSessionId = diplomaSessionId;
+    options.supervisorId = supervisorId;
+    return options;
+  }
+
+
   toKey(): string {
     return [
       'LoadThesisActionOptions',
       'PBSI_' + this.proposedByStudentId,
       'PBSO_' + this.proposedByStudentOnly,
       'DSI_' + this.diplomaSessionId,
-      'S_' + this.status
+      'S_' + this.status,
+      'SI_' + this.supervisorId
     ].join('$');
   }
 }

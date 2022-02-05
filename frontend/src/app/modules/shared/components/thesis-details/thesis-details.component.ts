@@ -1,6 +1,6 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { BehaviorSubject, combineLatest, map, NEVER, Observable, switchMap } from 'rxjs';
+import { BehaviorSubject, combineLatest, map, NEVER, Observable, of, switchMap } from 'rxjs';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Role } from '../../../../base/models/dto/role.model';
 import { RoleComponent } from '../../../../base/components/role-component.directive';
@@ -28,6 +28,8 @@ import { Context } from '../../../../base/models/context.model';
 })
 export class ThesisDetailsComponent extends RoleComponent implements OnInit {
 
+  ThesisStatus = ThesisStatus;
+
   static HEADER_KEY = 'headerKey';
   headerKey = 'ThesisDetails.Header';
 
@@ -37,6 +39,7 @@ export class ThesisDetailsComponent extends RoleComponent implements OnInit {
   userRole?: UserRole;
   diplomaSession?: DiplomaSession;
 
+  canLecturerSubmit?: boolean;
   canStudentReserve?: boolean;
   canCoordinatorConsiderThesis?: boolean;
   canCommitteeMemberConsiderThesis?: boolean;
@@ -56,7 +59,7 @@ export class ThesisDetailsComponent extends RoleComponent implements OnInit {
   }
 
   get roles(): Role[] {
-    return [Role.STUDENT, Role.COORDINATOR, Role.PROGRAM_COMMITTEE_MEMBER];
+    return [Role.STUDENT, Role.COORDINATOR, Role.PROGRAM_COMMITTEE_MEMBER, Role.LECTURER];
   }
 
   get thesisIdSource(): Observable<string> {
@@ -89,9 +92,8 @@ export class ThesisDetailsComponent extends RoleComponent implements OnInit {
   private getDataSource(userRole: UserRole, requestId: IdType): Observable<[UserRole, Thesis, DiplomaSession]> {
     return this.thesesService.getThesisForId(requestId).pipe(
       switchMap(thesis => this.generalResourcesService.getDiplomaSessionForId(thesis.diplomaSessionId).pipe(
-          map(diplomaSession => [userRole, thesis, diplomaSession] as [UserRole, Thesis, DiplomaSession])
-        )
-      )
+        map(diplomaSession => [userRole, thesis, diplomaSession] as [UserRole, Thesis, DiplomaSession])
+      ))
     );
   }
 
@@ -106,6 +108,8 @@ export class ThesisDetailsComponent extends RoleComponent implements OnInit {
               return this.checkForCoordinator(contextSource.userRole.id, thesisId);
             case Role.PROGRAM_COMMITTEE_MEMBER :
               return this.checkForCommitteeMember(contextSource.userRole.id, thesisId);
+            case Role.LECTURER :
+              return this.checkForLecturer(contextSource);
           }
           return NEVER;
         })
@@ -140,6 +144,12 @@ export class ThesisDetailsComponent extends RoleComponent implements OnInit {
     );
   }
 
+  checkForLecturer(context: Context): Observable<void> {
+    this.canLecturerSubmit = this.deadlinesService.canLectureSubmitThesisWithSameDiplomaSessionId(context.diplomaSession!);
+    this.markForCheck();
+    return of();
+  }
+
   private setFormData(userRole: UserRole, thesis: Thesis, diplomaSession: DiplomaSession): void {
     const group = this.getGroupForRole(userRole, thesis, diplomaSession);
     this.form = this.formBuilder.group(group);
@@ -150,6 +160,8 @@ export class ThesisDetailsComponent extends RoleComponent implements OnInit {
     switch (userRole.role) {
       case EmployeeRole.COORDINATOR:
         return this.getGroupForCoordinator(thesis, diplomaSession);
+      case EmployeeRole.LECTURER:
+        return this.getGroupForLecturer(thesis, diplomaSession);
       default:
         return this.getDisabledGroup(thesis, diplomaSession);
     }
@@ -167,6 +179,21 @@ export class ThesisDetailsComponent extends RoleComponent implements OnInit {
         { value: thesis.coordinatorComment, disabled: isCommentDisabled },
         AppValidators.coordinatorComment
       ]
+    };
+  }
+
+  getGroupForLecturer(thesis: Thesis, diplomaSession: DiplomaSession): Dictionary<any> {
+    const isCorrectionMode = thesis.status === ThesisStatus.TO_CORRECT || thesis.status === ThesisStatus.WAITING;
+    return {
+      topic: [{ value: thesis.topic, disabled: !isCorrectionMode }, AppValidators.topicValidator],
+      supervisorName: [{ value: LabelBuilder.forEmployee(thesis.supervisor), disabled: true }],
+      diplomaSession: [{ value: LabelBuilder.forDiplomaSession(diplomaSession), disabled: true }],
+      numberOfStudents: [{
+        value: thesis.numberOfStudents,
+        disabled: !isCorrectionMode
+      }, AppValidators.numberOfStudentsValidator],
+      description: [{ value: thesis.description, disabled: !isCorrectionMode }, AppValidators.descriptionValidator],
+      coordinatorComment: [{ value: thesis.coordinatorComment, disabled: true }]
     };
   }
 
@@ -211,6 +238,21 @@ export class ThesisDetailsComponent extends RoleComponent implements OnInit {
     const payload = { thesisId: this.thesis!.id };
     const actionSource = this.thesesService.approveThesisWithCommitteeMember(this.userRole!.id, payload);
     this.handleAction(actionSource);
+  }
+
+  correctThesisWithLecturer(): void {
+    const formData = this.form!.value;
+    const payload = { changes: formData, thesisId: this.thesis!.id };
+    const actionSource = this.thesesService.rejectThesisWithCoordinator(this.userRole!.id, payload);
+    this.handleAction(actionSource);
+  }
+
+  rejectThesisWithLecturer(): void {
+
+  }
+
+  acceptThesisWithLecturer(): void {
+
   }
 
   private handleAction<T>(actionSource: Observable<T>): void {

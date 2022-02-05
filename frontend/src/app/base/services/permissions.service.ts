@@ -54,6 +54,11 @@ export class PermissionsService {
     ));
   }
 
+  public canLectureSubmitThesisWithSameDiplomaSessionId(diplomaSession: DiplomaSession): boolean {
+    return this.verifyDeadline(diplomaSession.timetable, t => t.selectingThesis);
+  }
+
+
   // Dean
   public canDeanConsiderClarificationRequest(deanId: IdType, requestId: IdType): Observable<boolean> {
     return combineLatest([

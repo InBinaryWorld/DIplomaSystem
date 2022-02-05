@@ -96,4 +96,16 @@ export class ThesesApiService {
     return this.http.postWithLabel(ApiLabel.APPROVE_THESIS_WITH_COMMITTEE_MEMBER, payload);
   }
 
+  public rejectThesisWithLecturer(payload: object): Observable<Thesis> {
+    return this.http.postWithLabel(ApiLabel.REJECT_THESIS_WITH_LECTURER, payload);
+  }
+
+  public correctThesisWithLecturer(payload: object): Observable<Thesis> {
+    return this.http.postWithLabel(ApiLabel.CORRECT_THESIS_WITH_LECTURER, payload);
+  }
+
+  public acceptThesisWithLecturer(payload: object): Observable<Thesis> {
+    return this.http.postWithLabel(ApiLabel.ACCEPT_THESIS_WITH_LECTURER, payload);
+  }
+
 }

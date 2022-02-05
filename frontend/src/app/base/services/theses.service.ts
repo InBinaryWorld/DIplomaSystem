@@ -37,6 +37,11 @@ export class ThesesService {
     this.thesesStoreService.invalidateStoreForType(ThesesStateKey.RESERVATIONS);
   }
 
+  public getThesisForLecturerAndDiplomaSession(lecturerId: IdType, diplomaSessionId: IdType): Observable<Thesis[]> {
+    const options = LoadThesisActionOptions.forLecturerAndDiplomaSession(lecturerId, diplomaSessionId);
+    return this.thesesStoreService.getTheses(options);
+  }
+
   public getThesisWithStatusForDepartment(departmentId: IdType, status: ThesisStatus): Observable<Thesis[]> {
     const options = LoadThesisActionOptions.forStatusAndDepartment(departmentId, status);
     return this.thesesStoreService.getTheses(options);
@@ -136,6 +141,21 @@ export class ThesesService {
 
   public approveThesisWithCommitteeMember(committeeMemberId: IdType, payload: object): Observable<Thesis> {
     return this.thesesApiService.approveThesisWithCommitteeMember(payload)
+      .pipe(tap(() => this.invalidateTheses()));
+  }
+
+  public rejectThesisWithLecturer(payload: object): Observable<Thesis> {
+    return this.thesesApiService.rejectThesisWithLecturer(payload)
+      .pipe(tap(() => this.invalidateTheses()));
+  }
+
+  public correctThesisWithLecturer(payload: object): Observable<Thesis> {
+    return this.thesesApiService.correctThesisWithLecturer(payload)
+      .pipe(tap(() => this.invalidateTheses()));
+  }
+
+  public acceptThesisWithLecturer(committeeMemberId: IdType, payload: object): Observable<Thesis> {
+    return this.thesesApiService.acceptThesisWithLecturer(payload)
       .pipe(tap(() => this.invalidateTheses()));
   }
 

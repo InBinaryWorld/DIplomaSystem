@@ -45,7 +45,6 @@ const thesis4Id: IdType = '4';
 const thesis5Id: IdType = '5';
 const thesis6Id: IdType = '6';
 const thesis7Id: IdType = '7';
-const thesis8Id: IdType = '8';
 const reservation1Id: IdType = '32';
 const reservation2Id: IdType = '33';
 const reservation3Id: IdType = '34';
@@ -177,7 +176,7 @@ function createThesis(id: IdType, diplomaSession: DiplomaSession, status: Thesis
     topic: 'Predykcja zachowań ludzi podczas lockdownu',
     description: 'Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu',
     numberOfStudents: 3,
-    status: ThesisStatus.WAITING,
+    status: status,
     reportedByStudent: false,
     submissionDate: new Date(),
     coordinatorComment: 'Całość do poprawy',
@@ -303,16 +302,19 @@ const changeRequests: ChangeRequest[] = [changeRequest1, changeRequest2, changeR
 
 
 const responseByApiKey: Dictionary<any> = {
+  [ApiLabel.ACCEPT_THESIS_WITH_LECTURER]: firstItem(theses),
+  [ApiLabel.CORRECT_THESIS_WITH_LECTURER]: firstItem(theses),
+  [ApiLabel.REJECT_THESIS_WITH_LECTURER]: firstItem(theses),
   [ApiLabel.ABANDON_MEMBER_RESERVATION]: firstItem(reservationMembers),
   [ApiLabel.APPROVE_CHANGE_REQUEST]: firstItem(changeRequests),
   [ApiLabel.APPROVE_CLARIFICATION_REQUEST]: firstItem(clarificationRequests),
-  [ApiLabel.APPROVE_THESIS_WITH_COORDINATOR]: thesis1,
-  [ApiLabel.APPROVE_THESIS_WITH_COMMITTEE_MEMBER]: thesis1,
+  [ApiLabel.APPROVE_THESIS_WITH_COORDINATOR]: firstItem(theses),
+  [ApiLabel.APPROVE_THESIS_WITH_COMMITTEE_MEMBER]: firstItem(theses),
   [ApiLabel.CONFIRM_MEMBER_RESERVATION]: firstItem(reservationMembers),
   [ApiLabel.CONFIRM_PARTICIPATION_IN_RESERVATION]: firstItem(reservationMembers),
   [ApiLabel.CREATE_CLARIFICATION_REQUEST]: firstItem(clarificationRequests),
   [ApiLabel.CREATE_CHANGE_REQUEST]: firstItem(changeRequests),
-  [ApiLabel.CREATE_THESIS]: thesis1,
+  [ApiLabel.CREATE_THESIS]: firstItem(theses),
   [ApiLabel.CREATE_RESERVATION]: firstItem(reservations),
   [ApiLabel.GET_USER]: user,
   [ApiLabel.GET_CHANGE_REQUEST]: firstItem(changeRequests),
@@ -331,8 +333,8 @@ const responseByApiKey: Dictionary<any> = {
   [ApiLabel.REJECT_CLARIFICATION_REQUEST]: firstItem(clarificationRequests),
   [ApiLabel.REJECT_THESIS_WITH_COMMITTEE_MEMBER]: firstItem(clarificationRequests),
   [ApiLabel.REJECT_CHANGE_REQUEST]: firstItem(changeRequests),
-  [ApiLabel.REJECT_THESIS_WITH_COORDINATOR]: thesis1,
-  [ApiLabel.REQUEST_THESIS_CORRECTIONS]: thesis1
+  [ApiLabel.REJECT_THESIS_WITH_COORDINATOR]: firstItem(theses),
+  [ApiLabel.REQUEST_THESIS_CORRECTIONS]: firstItem(theses)
 };
 
 function generateAuthData(): AuthData {
@@ -384,6 +386,9 @@ function getDiplomaSessions(query?: RequestParams): DiplomaSession[] {
   return response;
 }
 
+function getThesis(query?: RequestParams): Thesis {
+  return theses.find(t => t.id === query?.getAll().find(p => p.name === 'id')?.value)!;
+}
 
 function getTheses(query?: RequestParams): Thesis[] {
   let response = theses;
@@ -429,14 +434,16 @@ function handleLabel(apiLabel: ApiLabel, query?: RequestParams): NonNullable<any
       return getStudent(query!);
     case ApiLabel.GET_EMPLOYEE:
       return getEmployee(query!);
-    // case ApiLabel.GET_EMPLOYEES:
-    //   return getEmployees(query);
-    // case ApiLabel.GET_FIELDS_OF_STUDY:
-    //   return getFieldsOfStudy(query);
+    case ApiLabel.GET_EMPLOYEES:
+      return getEmployees(query);
+    case ApiLabel.GET_FIELDS_OF_STUDY:
+      return getFieldsOfStudy(query);
     case ApiLabel.GET_DIPLOMA_SESSIONS:
       return getDiplomaSessions(query);
     case ApiLabel.GET_THESES:
       return getTheses(query);
+    case ApiLabel.GET_THESIS:
+      return getThesis(query);
     case ApiLabel.GET_RESERVATIONS:
       return getReservations(query);
     default:
@@ -446,7 +453,9 @@ function handleLabel(apiLabel: ApiLabel, query?: RequestParams): NonNullable<any
 
 export const FakeData = {
   handleApiLabel(apiLabel: ApiLabel, query?: RequestParams): NonNullable<any> {
+    // console.log(apiLabel, query);
     const response = handleLabel(apiLabel, query);
+    // console.log(response);
     if (isNil(response)) {
       throw new Error('FAKES: Unhandled Api Label: ' + apiLabel);
     }
