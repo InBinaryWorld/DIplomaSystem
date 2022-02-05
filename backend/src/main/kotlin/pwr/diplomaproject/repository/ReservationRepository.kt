@@ -10,7 +10,7 @@ interface ReservationRepository : JpaRepository<Reservation, Long> {
     @Query(value = "select max(r.id) + 1 from Reservation r")
     fun getNextId(): Long
 
-    @Query("select g.reservation from GroupMember g where g.student.id = :studentId and g.reservation.topic.graduation = :graduationId")
+    @Query("select g.reservation from GroupMember g where g.student.id = :studentId and g.reservation.topic.graduation.id = :graduationId")
     fun findAllByStudentAndGraduation(studentId: Long, graduationId: Long): List<Reservation>
 
     @Query("select g.reservation from GroupMember g where g.student.id = :studentId and g.reservation.id = :id")

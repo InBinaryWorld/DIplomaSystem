@@ -47,7 +47,7 @@ class StudentReservationService(
                 groupMember.status = MemberStatus.WILLING
             }
 
-            // WILLING -> ACCEPTED
+            // WILLING -> CONFIRMED
             else if (groupMember.status == MemberStatus.WILLING) {
                 if (reservation.status != ReservationStatus.ACCEPTED) {
                     return
