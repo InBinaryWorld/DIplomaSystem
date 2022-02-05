@@ -68,7 +68,7 @@ export class StudentReservationsComponent extends RoleComponent implements OnIni
   private getDataSource(): Observable<[Thesis[], Reservation[], Reservation | undefined]> {
     return this.contextSource.pipe(
       switchMap(context => combineLatest([
-          this.thesesService.getApprovedTheses(context.userRole.id, context.diplomaSession!.id),
+          this.thesesService.getApprovedTheses(context.diplomaSession!.id),
           this.thesesService.getStudentReservations(context.userRole.id, context.diplomaSession!.id),
           this.thesesService.getConfirmedStudentReservation(context.userRole.id, context.diplomaSession!.id)
         ]).pipe(map(([t, r, cr]) => ([t, r, cr] as [Thesis[], Reservation[], Reservation | undefined])))

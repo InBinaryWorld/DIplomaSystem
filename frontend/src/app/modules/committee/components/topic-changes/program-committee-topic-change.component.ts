@@ -40,8 +40,7 @@ export class ProgramCommitteeTopicChangeComponent extends RoleComponent implemen
 
   private initRequests(): void {
     this.addSubscription(
-      this.userRoleSource.pipe(
-        switchMap(userRole => this.requestsService.getChangeRequestsForRole(userRole)),
+      this.contextSource.pipe(switchMap(context => this.requestsService.getChangeRequestsForCommittee(context.diplomaSession!.id, context.userRole.id)),
         filterExists()
       ).subscribe(requests => {
         const parts = partition(requests, r => r.status === RequestStatus.WAITING);

@@ -27,6 +27,7 @@ export class AppHeaderComponent extends BaseComponent implements OnInit {
   AppLanguage = AppLanguage;
 
   selectedFosId?: IdType;
+  selectedUserRole?: UserRole;
 
   userRoles?: UserRole[];
   fieldsOfStudy?: FieldOfStudy[];
@@ -80,6 +81,7 @@ export class AppHeaderComponent extends BaseComponent implements OnInit {
     this.addSubscription(
       this.sessionService.selectContext().subscribe(context => {
         this.selectedFosId = context?.fieldOfStudy?.id;
+        this.selectedUserRole = context?.userRole;
         this.roleContextControl.setValue(this.roleToId(context?.userRole), { emitEvent: false });
         this.diplomaSessionContextControl.setValue(context?.diplomaSession?.id, { emitEvent: false });
         this.fieldOfStudyContextControl.setValue(context?.fieldOfStudy?.id, { emitEvent: false });

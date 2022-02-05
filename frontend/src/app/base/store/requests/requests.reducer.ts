@@ -10,8 +10,10 @@ import { clearStoreAction } from '../../../core/store/clear-store.reducer';
 import { RequestsState } from './requests.state';
 import {
   invalidateRequestsDataAction,
-  loadRequestForIdAction,
-  loadRequestsAction,
+  loadChangeRequestForIdAction,
+  loadChangeRequestsAction,
+  loadClarificationRequestForIdAction,
+  loadClarificationRequestsAction,
   loadRequestsFailedAction,
   loadRequestsSuccessAction,
   loadRequestSuccessAction
@@ -23,8 +25,10 @@ export const initialState = new RequestsState();
 
 export const requestsReducer = createReducer(
   initialState,
-  on(loadRequestsAction, startProgressReducer()),
-  on(loadRequestForIdAction, startProgressReducer()),
+  on(loadClarificationRequestsAction, startProgressReducer()),
+  on(loadClarificationRequestForIdAction, startProgressReducer()),
+  on(loadChangeRequestsAction, startProgressReducer()),
+  on(loadChangeRequestForIdAction, startProgressReducer()),
   on(loadRequestsFailedAction, failedReducer()),
   on(loadRequestSuccessAction, resourceSuccessReducer()),
   on(loadRequestsSuccessAction, resourcesSuccessReducer()),

@@ -4,10 +4,7 @@ import { AuthGuard } from '../../core/guards/auth.guard';
 import { RoleGuard } from '../../core/guards/role.guard';
 import { Role } from '../../base/models/dto/role.model';
 import { DiplomaSectionComponent } from './components/diploma-section/diploma-section.component';
-import { TimetablesComponent } from './components/timetable/timetables.component';
-import { EditTimetableComponent } from './components/timetable/edit/edit-timetable.component';
-import { CreateTimetableComponent } from './components/timetable/create/create-timetable.component';
-import { ShowTimetableComponent } from './components/timetable/show/show-timetable.component';
+import { EditTimetableComponent } from './components/timetable/edit-timetable.component';
 
 
 const routes: Routes = [
@@ -25,25 +22,7 @@ const routes: Routes = [
       },
       {
         path: 'timetable',
-        children: [
-          {
-            path: '',
-            pathMatch: 'full',
-            component: TimetablesComponent
-          },
-          {
-            path: 'edit/:id',
-            component: EditTimetableComponent
-          },
-          {
-            path: 'show/:id',
-            component: ShowTimetableComponent
-          },
-          {
-            path: 'create',
-            component: CreateTimetableComponent
-          }
-        ]
+        component: EditTimetableComponent
       }
     ]
   }

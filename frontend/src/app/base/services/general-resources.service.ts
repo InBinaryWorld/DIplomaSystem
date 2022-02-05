@@ -7,6 +7,8 @@ import { DiplomaSession } from '../models/dto/diploma-session.model';
 import { Timetable } from '../models/dto/timetable.model';
 import { FieldOfStudy } from '../models/dto/field-of-study.model';
 import { LoadDiplomaSessionsActionOptions, LoadFieldsOfStudyActionOptions } from '../store/general/general.actions';
+import { GeneralResourcesApiService } from './api/general-api.service';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +18,8 @@ export class GeneralResourcesService {
   private publicKey = 'PUBLIC';
 
 
-  constructor(private readonly generalResourcesStoreService: GeneralResourcesStoreService) {
+  constructor(private readonly generalResourcesStoreService: GeneralResourcesStoreService,
+              private readonly generalResourcesApiService: GeneralResourcesApiService) {
   }
 
   public invalidateAllGeneralResources(): void {
@@ -45,12 +48,21 @@ export class GeneralResourcesService {
   }
 
   getDiplomaSessionsForDepartment(departmentId: IdType): Observable<DiplomaSession[]> {
-    const options = LoadDiplomaSessionsActionOptions.forDepartmentId(departmentId);
+    const options = LoadDiplomaSessionsActionOptions.forDepartment(departmentId);
     return this.generalResourcesStoreService.getDiplomaSessionsForKey(options);
   }
 
   getDiplomaSessionForId(id: IdType): Observable<DiplomaSession> {
     return this.generalResourcesStoreService.getDiplomaSessionForId(id);
+  }
+
+  modifyTimetable(timetableId: IdType, payload: Partial<Timetable>): Observable<DiplomaSession> {
+    return this.generalResourcesApiService.modifyTimetable(timetableId, payload).pipe(
+      tap(() => {
+        this.generalResourcesStoreService.invalidateStoreForKey(GeneralResourcesStateKey.TIMETABLES);
+        this.generalResourcesStoreService.invalidateStoreForKey(GeneralResourcesStateKey.DIPLOMA_SESSIONS);
+      })
+    );
   }
 
 

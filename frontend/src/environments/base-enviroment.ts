@@ -12,7 +12,7 @@ export const baseEnvironment = {
     api: {
       [ApiLabel.LOGIN]: 'TODO',
       [ApiLabel.REFRESH]: 'TODO',
-      [ApiLabel.REFRESH]: 'TODO',
+      [ApiLabel.MODIFY_TIMETABLE]: 'TODO',
       [ApiLabel.ACCEPT_THESIS_WITH_LECTURER]: 'TODO',
       [ApiLabel.CORRECT_THESIS_WITH_LECTURER]: 'TODO',
       [ApiLabel.REJECT_THESIS_WITH_LECTURER]: 'TODO',

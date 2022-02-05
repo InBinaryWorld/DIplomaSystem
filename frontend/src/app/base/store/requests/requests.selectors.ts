@@ -1,11 +1,10 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { requestsFeatureName } from './requests.reducer';
-import { RequestsState, RequestsStateKey, RequestType } from './requests.state';
+import { RequestsState, RequestsStateKey } from './requests.state';
 import { AppState } from '../app-state.model';
 import { forIdSelector, forKeySelector, StoreResource } from '../../../core/store/base-store-state.model';
 import { ClarificationRequest } from '../../models/dto/clarification-request.model';
 import { ChangeRequest } from '../../models/dto/change-request.model';
-import { IdType } from '../../models/dto/id.model';
 
 export const selectRequestsState = createFeatureSelector<RequestsState>(requestsFeatureName);
 export const selectRequestsStateInProgress = createSelector(selectRequestsState, state => state.isInProgress);
@@ -25,13 +24,4 @@ export const selectChangeRequestsForKey = createSelector<AppState, string, Store
 );
 export const selectChangeRequestForId = createSelector<AppState, string, StoreResource<ChangeRequest>, ChangeRequest | undefined>(
   selectChangeRequestsStoreResource, forIdSelector
-);
-
-
-// For Effect
-export const selectRequestForTypeAndId = createSelector<AppState, { resourceType: RequestsStateKey, id: IdType }, RequestsState, RequestType | undefined>(
-  selectRequestsState, (state, { resourceType, id }) => state[resourceType].cachedById[id]
-);
-export const selectRequestsIdsForTypeAndKey = createSelector<AppState, { resourceType: RequestsStateKey, key: string }, RequestsState, string[] | undefined>(
-  selectRequestsState, (state, { resourceType, key }) => state[resourceType].idsByKey[key]
 );

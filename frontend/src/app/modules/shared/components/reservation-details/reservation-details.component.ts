@@ -82,9 +82,8 @@ export class ReservationDetailsComponent extends RoleComponent implements OnInit
   private getDataSource(userRole: UserRole, reservationId: IdType): Observable<[UserRole, Reservation, DiplomaSession]> {
     return this.thesesService.getReservationForId(reservationId).pipe(
       switchMap(reservation => this.generalResourcesService.getDiplomaSessionForId(reservation.thesis.diplomaSessionId).pipe(
-          map(diplomaSession => [userRole, reservation, diplomaSession] as [UserRole, Reservation, DiplomaSession])
-        )
-      )
+        map(diplomaSession => [userRole, reservation, diplomaSession] as [UserRole, Reservation, DiplomaSession])
+      ))
     );
   }
 

@@ -2,12 +2,11 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@
 import { Router } from '@angular/router';
 import { ChangeRequest } from '../../../../base/models/dto/change-request.model';
 import { Role } from '../../../../base/models/dto/role.model';
-import { Observable, switchMap } from 'rxjs';
+import { switchMap } from 'rxjs';
 import { PermissionsService } from '../../../../base/services/permissions.service';
 import { RequestsService } from '../../../../base/services/requests.service';
 import { SessionService } from '../../../../base/services/session.service';
 import { RoleComponent } from '../../../../base/components/role-component.directive';
-import { UserRole } from '../../../../base/models/dto/user-role.model';
 
 @Component({
   selector: 'app-student-change-requests',
@@ -38,8 +37,8 @@ export class StudentChangeRequestsComponent extends RoleComponent implements OnI
   }
 
   private initChangeRequests(): void {
-    this.addSubscription(this.userRoleSource.pipe(
-        switchMap(ur => this.getChangeRequestsSource(ur))
+    this.addSubscription(
+      this.contextSource.pipe(switchMap(context => this.requestsService.getChangeRequestsForStudent(context.diplomaSession!.id, context.userRole.id))
       ).subscribe(requests => {
         this.changeRequests = requests!;
         this.markForCheck();
@@ -57,11 +56,6 @@ export class StudentChangeRequestsComponent extends RoleComponent implements OnI
       })
     );
   }
-
-  private getChangeRequestsSource(userRole: UserRole): Observable<ChangeRequest[]> {
-    return this.requestsService.getChangeRequestsForRole(userRole);
-  }
-
 
   public requestDetails(request: ChangeRequest): void {
     this.router.navigate(['/student/change-requests/details', request.id]).then();

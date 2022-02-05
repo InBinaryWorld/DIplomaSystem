@@ -15,7 +15,7 @@ import { isNil } from 'lodash-es';
 import { DiplomaSession } from '../app/base/models/dto/diploma-session.model';
 import { Employee } from '../app/base/models/dto/employee.model';
 import { EmployeeRole } from '../app/base/models/dto/employee-role.model';
-import { IdType } from '../app/base/models/dto/id.model';
+import { IdType, WithId } from '../app/base/models/dto/id.model';
 import { UserPerson } from '../app/base/models/dto/user-person.model';
 import { FieldOfStudy } from '../app/base/models/dto/field-of-study.model';
 import { StudyDegree } from '../app/base/models/dto/study-degree.model';
@@ -166,6 +166,23 @@ const diplomaSessions: DiplomaSession[] = [
 ];
 
 
+function createStudent(id: IdType, userPerson: UserPerson, fieldOfStudy: FieldOfStudy, idx: string): Student {
+  return {
+    id: id,
+    userId: userPerson.id,
+    fieldOfStudyId: fieldOfStudy.id,
+    indexNumber: idx,
+    fieldOfStudy: fieldOfStudy,
+    user: userPerson
+  };
+}
+
+const student: Student = createStudent(studentId, userPerson, fieldOfStudy, '249025');
+const student2: Student = createStudent(student2Id, userPerson, fieldOfStudy, '249041');
+
+const students: Student[] = [student, student2];
+
+
 function createThesis(id: IdType, diplomaSession: DiplomaSession, status: ThesisStatus): Thesis {
   const dId = diplomaSession.fieldOfStudy.departmentId;
   const supervisor = employees.find(e => e.departmentId === dId && e.employeeRole === EmployeeRole.LECTURER)!;
@@ -176,6 +193,7 @@ function createThesis(id: IdType, diplomaSession: DiplomaSession, status: Thesis
     topic: 'Predykcja zachowań ludzi podczas lockdownu',
     description: 'Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu',
     numberOfStudents: 3,
+    authorStudentId: students.find(s => s.fieldOfStudyId === diplomaSession.fieldOfStudyId)?.id,
     status: status,
     reportedByStudent: false,
     submissionDate: new Date(),
@@ -193,22 +211,6 @@ const thesis6: Thesis = createThesis(thesis6Id, diplomaSession2, ThesisStatus.RE
 const thesis7: Thesis = createThesis(thesis7Id, diplomaSession2, ThesisStatus.REJECTED_BY_COMMITTEE);
 
 const theses: Thesis[] = [thesis1, thesis2, thesis3, thesis4, thesis5, thesis6, thesis7];
-
-function createStudent(id: IdType, userPerson: UserPerson, fieldOfStudy: FieldOfStudy, idx: string): Student {
-  return {
-    id: id,
-    userId: userPerson.id,
-    fieldOfStudyId: fieldOfStudy.id,
-    indexNumber: idx,
-    fieldOfStudy: fieldOfStudy,
-    user: userPerson
-  };
-}
-
-const student: Student = createStudent(studentId, userPerson, fieldOfStudy, '249025');
-const student2: Student = createStudent(student2Id, userPerson, fieldOfStudy, '249041');
-
-const students: Student[] = [student, student2];
 
 
 function createReservationMember(resMemId: IdType, resId: IdType, student: Student, status: ReservationMemberStatus): ReservationMember {
@@ -302,6 +304,7 @@ const changeRequests: ChangeRequest[] = [changeRequest1, changeRequest2, changeR
 
 
 const responseByApiKey: Dictionary<any> = {
+  [ApiLabel.MODIFY_TIMETABLE]: firstItem(timetables),
   [ApiLabel.ACCEPT_THESIS_WITH_LECTURER]: firstItem(theses),
   [ApiLabel.CORRECT_THESIS_WITH_LECTURER]: firstItem(theses),
   [ApiLabel.REJECT_THESIS_WITH_LECTURER]: firstItem(theses),
@@ -319,19 +322,7 @@ const responseByApiKey: Dictionary<any> = {
   [ApiLabel.CREATE_THESIS]: firstItem(theses),
   [ApiLabel.CREATE_RESERVATION]: firstItem(reservations),
   [ApiLabel.GET_USER]: user,
-  [ApiLabel.GET_CHANGE_REQUEST]: firstItem(changeRequests),
-  [ApiLabel.GET_CHANGE_REQUESTS]: changeRequests,
-  [ApiLabel.GET_CLARIFICATION_REQUEST]: firstItem(clarificationRequests),
-  [ApiLabel.GET_CLARIFICATION_REQUESTS]: clarificationRequests,
-  [ApiLabel.GET_DIPLOMA_SESSION]: diplomaSession,
-  [ApiLabel.GET_DIPLOMA_SESSIONS]: diplomaSessions,
-  [ApiLabel.GET_FIELD_OF_STUDY]: fieldOfStudy,
-  [ApiLabel.GET_RESERVATION]: firstItem(reservations),
-  [ApiLabel.GET_RESERVATIONS]: reservations,
   [ApiLabel.GET_STUDENTS]: students,
-  [ApiLabel.GET_TIMETABLE]: timetable,
-  [ApiLabel.GET_THESIS]: thesis1,
-  [ApiLabel.GET_THESES]: theses,
   [ApiLabel.REJECT_CLARIFICATION_REQUEST]: firstItem(clarificationRequests),
   [ApiLabel.REJECT_THESIS_WITH_COMMITTEE_MEMBER]: firstItem(clarificationRequests),
   [ApiLabel.REJECT_CHANGE_REQUEST]: firstItem(changeRequests),
@@ -347,25 +338,22 @@ function generateAuthData(): AuthData {
   };
 }
 
-function getStudent(query: RequestParams): Student {
-  const id = query.getAll().find(p => p.name === 'id')!.value;
-  return students.find(s => s.id === id)!;
-}
-
-function getEmployee(query: RequestParams): Employee {
-  const id = query.getAll().find(p => p.name === 'id')!.value;
-  return employees.find(e => e.id === id)!;
-}
-
+// LoadEmployeesActionOptions
 function getEmployees(query?: RequestParams): Employee[] {
   let response = employees;
   const role = query?.getAll().find(p => p.name === 'role')?.value;
+  const dsId = query?.getAll().find(p => p.name === 'diplomaSessionId')?.value;
   if (isNotNil(role)) {
     response = response.filter(f => f.employeeRole === role);
+  }
+  if (isNotNil(dsId)) {
+    const ds = diplomaSessions.find(d => d.id === dsId)!;
+    response = response.filter(f => f.departmentId === ds.fieldOfStudy.departmentId);
   }
   return response;
 }
 
+// LoadFieldsOfStudyActionOptions
 function getFieldsOfStudy(query?: RequestParams): FieldOfStudy[] {
   let response = fieldsOfStudy;
   const departmentId = query?.getAll().find(p => p.name === 'departmentId')?.value;
@@ -375,6 +363,7 @@ function getFieldsOfStudy(query?: RequestParams): FieldOfStudy[] {
   return response;
 }
 
+// LoadDiplomaSessionsActionOptions
 function getDiplomaSessions(query?: RequestParams): DiplomaSession[] {
   let response = diplomaSessions;
   const departmentId = query?.getAll().find(p => p.name === 'departmentId')?.value;
@@ -388,39 +377,33 @@ function getDiplomaSessions(query?: RequestParams): DiplomaSession[] {
   return response;
 }
 
-function getThesis(query?: RequestParams): Thesis {
-  return theses.find(t => t.id === query?.getAll().find(p => p.name === 'id')?.value)!;
-}
-
+// LoadThesesActionOptions
 function getTheses(query?: RequestParams): Thesis[] {
   let response = theses;
   const proposedByStudentId = query?.getAll().find(p => p.name === 'proposedByStudentId')?.value;
-  const proposedByStudentOnly = query?.getAll().find(p => p.name === 'proposedByStudentOnly')?.value;
   const diplomaSessionId = query?.getAll().find(p => p.name === 'diplomaSessionId')?.value;
-  const departmentId = query?.getAll().find(p => p.name === 'departmentId')?.value;
-  if (isNotNil(departmentId)) {
-    response = response.filter(t => {
-      const ds = diplomaSessions.find(ds => ds.id === t.diplomaSessionId)!;
-      return ds.fieldOfStudy.departmentId === departmentId;
-    });
+  const supervisorId = query?.getAll().find(p => p.name === 'supervisorId')?.value;
+  const status = query?.getAll().find(p => p.name === 'status')?.value;
+  if (isNotNil(proposedByStudentId)) {
+    response = response.filter(t => t.authorStudentId === proposedByStudentId);
   }
   if (isNotNil(diplomaSessionId)) {
     response = response.filter(t => t.diplomaSessionId === diplomaSessionId);
   }
-  if (isNotNil(proposedByStudentOnly) && isNotNil(proposedByStudentId)) {
-    response = response.filter(t => t.authorStudentId === proposedByStudentId);
+  if (isNotNil(supervisorId)) {
+    response = response.filter(t => t.supervisorId === supervisorId);
+  }
+  if (isNotNil(status)) {
+    response = response.filter(t => t.status === status);
   }
   return response;
 }
 
-
-function getReservation(query?: RequestParams): Reservation {
-  return reservations.find(t => t.id === query?.getAll().find(p => p.name === 'id')?.value)!;
-}
-
+// LoadReservationsActionOptions
 function getReservations(query?: RequestParams): Reservation[] {
   let response = reservations;
   const studentId = query?.getAll().find(p => p.name === 'studentId')?.value;
+  const supervisorId = query?.getAll().find(p => p.name === 'supervisorId')?.value;
   const diplomaSessionId = query?.getAll().find(p => p.name === 'diplomaSessionId')?.value;
   if (isNotNil(studentId)) {
     response = response.filter(r => r.reservationMembers.some(rm => rm.studentId === studentId));
@@ -428,32 +411,87 @@ function getReservations(query?: RequestParams): Reservation[] {
   if (isNotNil(diplomaSessionId)) {
     response = response.filter(r => r.thesis.diplomaSessionId === diplomaSessionId);
   }
+  if (isNotNil(supervisorId)) {
+    response = response.filter(r => r.thesis.supervisorId === supervisorId);
+  }
   return response;
 }
 
+// LoadClarificationRequestsActionOptions
+function getClarificationRequests(query?: RequestParams): ClarificationRequest[] {
+  let response = clarificationRequests;
+  const deanId = query?.getAll().find(p => p.name === 'deanId')?.value;
+  const studentId = query?.getAll().find(p => p.name === 'studentId')?.value;
+  const diplomaSessionId = query?.getAll().find(p => p.name === 'diplomaSessionId')?.value;
+  if (isNotNil(studentId)) {
+    response = response.filter(r => r.studentId === studentId);
+  }
+  if (isNotNil(diplomaSessionId)) {
+    response = response.filter(r => r.baseThesis.diplomaSessionId === diplomaSessionId);
+  }
+  if (isNotNil(deanId)) {
+    response = response.filter(r => r.employeeId === deanId);
+  }
+  return response;
+}
+
+// LoadChangeRequestsActionOptions
+function getChangeRequests(query?: RequestParams): ChangeRequest[] {
+  let response = changeRequests;
+  const studentId = query?.getAll().find(p => p.name === 'studentId')?.value;
+  const committeeId = query?.getAll().find(p => p.name === 'committeeId')?.value;
+  const diplomaSessionId = query?.getAll().find(p => p.name === 'diplomaSessionId')?.value;
+  if (isNotNil(studentId)) {
+    response = response.filter(r => r.studentId === studentId);
+  }
+  if (isNotNil(diplomaSessionId)) {
+    response = response.filter(r => r.newThesis.diplomaSessionId === diplomaSessionId);
+  }
+  if (isNotNil(committeeId)) {
+    response = response.filter(r => r.employeeId === committeeId);
+  }
+  return response;
+}
+
+function getForId<T extends WithId>(resource: T[], query: RequestParams): T {
+  const id = query.getAll().find(p => p.name === 'id')!.value;
+  return resource.find(e => e.id === id)!;
+}
+
+const resByApi: Dictionary<any[]> = {
+  [ApiLabel.GET_CLARIFICATION_REQUEST]: clarificationRequests,
+  [ApiLabel.GET_CHANGE_REQUEST]: changeRequests,
+  [ApiLabel.GET_DIPLOMA_SESSION]: diplomaSessions,
+  [ApiLabel.GET_FIELD_OF_STUDY]: fieldsOfStudy,
+  [ApiLabel.GET_RESERVATION]: reservations,
+  [ApiLabel.GET_TIMETABLE]: timetables,
+  [ApiLabel.GET_THESIS]: theses,
+  [ApiLabel.GET_STUDENT]: students,
+  [ApiLabel.GET_EMPLOYEE]: employees
+};
+
+
 function handleLabel(apiLabel: ApiLabel, query?: RequestParams): NonNullable<any> {
-  switch (apiLabel) {
-    case ApiLabel.LOGIN:
-    case ApiLabel.REFRESH:
+  switch (true) {
+    case ApiLabel.LOGIN === apiLabel:
+    case ApiLabel.REFRESH === apiLabel:
       return generateAuthData();
-    case ApiLabel.GET_STUDENT:
-      return getStudent(query!);
-    case ApiLabel.GET_EMPLOYEE:
-      return getEmployee(query!);
-    case ApiLabel.GET_EMPLOYEES:
+    case isNotNil(resByApi[apiLabel]):
+      return getForId(resByApi[apiLabel], query!);
+    case ApiLabel.GET_EMPLOYEES === apiLabel:
       return getEmployees(query);
-    case ApiLabel.GET_FIELDS_OF_STUDY:
+    case ApiLabel.GET_FIELDS_OF_STUDY === apiLabel:
       return getFieldsOfStudy(query);
-    case ApiLabel.GET_DIPLOMA_SESSIONS:
+    case ApiLabel.GET_DIPLOMA_SESSIONS === apiLabel:
       return getDiplomaSessions(query);
-    case ApiLabel.GET_THESES:
+    case ApiLabel.GET_THESES === apiLabel:
       return getTheses(query);
-    case ApiLabel.GET_THESIS:
-      return getThesis(query);
-    case ApiLabel.GET_RESERVATIONS:
+    case ApiLabel.GET_RESERVATIONS === apiLabel:
       return getReservations(query);
-    case ApiLabel.GET_RESERVATION:
-      return getReservation(query);
+    case ApiLabel.GET_CLARIFICATION_REQUESTS === apiLabel:
+      return getClarificationRequests(query);
+    case ApiLabel.GET_CHANGE_REQUESTS === apiLabel:
+      return getChangeRequests(query);
     default:
       return responseByApiKey[apiLabel];
   }

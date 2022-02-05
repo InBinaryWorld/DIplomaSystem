@@ -22,7 +22,9 @@ export class UserApiService {
   }
 
   getStudents(options: LoadStudentsActionOptions): Observable<Student[]> {
-    return this.http.getWithLabel(ApiLabel.GET_STUDENTS);
+    const query = new RequestParams();
+    query.addIfValueExists('diplomaSessionId', options.diplomaSessionId);
+    return this.http.getWithLabel(ApiLabel.GET_STUDENTS, undefined, query);
   }
 
   getStudentForId(id: IdType): Observable<Student> {
@@ -35,7 +37,6 @@ export class UserApiService {
     const query = new RequestParams();
     query.addIfValueExists('role', options.role);
     query.addIfValueExists('diplomaSessionId', options.diplomaSessionId);
-    query.addIfValueExists('supervisorsOnly', options.supervisorsOnly);
     return this.http.getWithLabel(ApiLabel.GET_EMPLOYEES, undefined, query);
   }
 

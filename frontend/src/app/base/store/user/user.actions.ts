@@ -87,13 +87,11 @@ export class LoadStudentsActionOptions {
 export class LoadEmployeesActionOptions {
   diplomaSessionId?: IdType;
   role?: EmployeeRole;
-  supervisorsOnly?: boolean;
 
   public static forSupervisingInDiplomaSession(diplomaSessionId: IdType): LoadEmployeesActionOptions {
     const options = new LoadEmployeesActionOptions();
     options.diplomaSessionId = diplomaSessionId;
     options.role = EmployeeRole.LECTURER;
-    options.supervisorsOnly = true;
     return options;
   }
 
@@ -101,8 +99,7 @@ export class LoadEmployeesActionOptions {
     return [
       'LoadEmployeesActionOptions',
       'DSI_' + this.diplomaSessionId,
-      'R_' + this.role,
-      'SO_' + this.supervisorsOnly
+      'R_' + this.role
     ].join('$');
   }
 }

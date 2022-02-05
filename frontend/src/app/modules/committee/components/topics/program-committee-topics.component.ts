@@ -39,10 +39,9 @@ export class ProgramCommitteeTopicsComponent extends RoleComponent implements On
 
   private initTheses(): void {
     this.addSubscription(
-      this.userRoleSource.pipe(
-        switchMap(userRole => this.userService.getEmployeeForId(userRole.id)),
-        switchMap(committeeMember => this.thesesService
-          .getThesisWithStatusForDepartment(committeeMember.departmentId, ThesisStatus.APPROVED_BY_COORDINATOR))
+      this.contextSource.pipe(
+        switchMap(context => this.thesesService
+          .getThesisWithStatus(context.diplomaSession?.id!, ThesisStatus.APPROVED_BY_COORDINATOR))
       ).subscribe(thesesToConsider => {
         this.thesesToConsider = thesesToConsider;
         this.markForCheck();

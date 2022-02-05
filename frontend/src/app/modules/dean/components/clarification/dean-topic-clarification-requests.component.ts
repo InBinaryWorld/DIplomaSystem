@@ -40,8 +40,8 @@ export class DeanTopicClarificationRequestsComponent extends RoleComponent imple
 
   private initClarificationRequests(): void {
     this.addSubscription(
-      this.userRoleSource.pipe(
-        switchMap(userRole => this.requestsService.getClarificationRequestsForRole(userRole)),
+      this.contextSource.pipe(switchMap(context =>
+          this.requestsService.getClarificationRequestsForDean(context.diplomaSession!.id, context.userRole.id)),
         filterExists()
       ).subscribe(requests => {
         const parts = partition(requests, r => r.status === RequestStatus.WAITING);

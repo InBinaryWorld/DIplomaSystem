@@ -2,15 +2,18 @@ import { Injectable } from '@angular/core';
 import { ServerHttpService } from '../../../core/services/server-http.service';
 import { Observable } from 'rxjs';
 import { ApiLabel } from '../../../core/models/api-route.model';
-import { UserRole } from '../../models/dto/user-role.model';
 import { RequestParams } from '../../../core/models/request-param.model';
 import { Dictionary } from '../../../core/models/dictionary.model';
-import { RequestsStateKey, RequestType } from '../../store/requests/requests.state';
+import { RequestsStateKey } from '../../store/requests/requests.state';
 import { BaseApiService } from './base-api.service';
 import { ClarificationRequest } from '../../models/dto/clarification-request.model';
 import { ChangeRequest } from '../../models/dto/change-request.model';
 import { IdType } from '../../models/dto/id.model';
 import { Role } from '../../models/dto/role.model';
+import {
+  LoadChangeRequestsActionOptions,
+  LoadClarificationRequestsActionOptions
+} from '../../store/requests/requests.actions';
 
 @Injectable({
   providedIn: 'root'
@@ -29,22 +32,34 @@ export class RequestsApiService extends BaseApiService {
     super();
   }
 
-  getRequestsForUserRole(resourceType: RequestsStateKey, userRole: UserRole): Observable<RequestType[]> {
-    const apiLabel = this.getApiLabel(this.requestsApiLabelMap, resourceType);
-
+  getClarificationRequests(options: LoadClarificationRequestsActionOptions): Observable<ClarificationRequest[]> {
     const queryParams = new RequestParams();
-    queryParams.addIfValueExists('role', userRole.role);
-    queryParams.addIfValueExists('roleId', userRole.id);
-    return this.http.getWithLabel(apiLabel, undefined, queryParams);
+    queryParams.addIfValueExists('diplomaSessionId', options.diplomaSessionId);
+    queryParams.addIfValueExists('studentId', options.studentId);
+    queryParams.addIfValueExists('deanId', options.deanId);
+    return this.http.getWithLabel(ApiLabel.GET_CLARIFICATION_REQUESTS, undefined, queryParams);
   }
 
-  getRequestForId(resourceType: RequestsStateKey, id: IdType): Observable<RequestType> {
-    const apiLabel = this.getApiLabel(this.requestApiLabelMap, resourceType);
+  getChangeRequests(options: LoadChangeRequestsActionOptions): Observable<ChangeRequest[]> {
+    const queryParams = new RequestParams();
+    queryParams.addIfValueExists('diplomaSessionId', options.diplomaSessionId);
+    queryParams.addIfValueExists('studentId', options.studentId);
+    queryParams.addIfValueExists('committeeId', options.committeeId);
+    return this.http.getWithLabel(ApiLabel.GET_CHANGE_REQUESTS, undefined, queryParams);
+  }
 
+  getClarificationRequestForId(id: IdType): Observable<ClarificationRequest> {
     const query = new RequestParams();
     query.addIfValueExists('id', id);
-    return this.http.getWithLabel(apiLabel, undefined, query);
+    return this.http.getWithLabel(ApiLabel.GET_CLARIFICATION_REQUEST, undefined, query);
   }
+
+  getChangeRequestForId(id: IdType): Observable<ChangeRequest> {
+    const query = new RequestParams();
+    query.addIfValueExists('id', id);
+    return this.http.getWithLabel(ApiLabel.GET_CHANGE_REQUESTS, undefined, query);
+  }
+
 
   rejectClarificationRequestWithDean(deanId: IdType, requestId: IdType): Observable<void> {
     const payload = { requestId, role: Role.DEAN, roleId: deanId };

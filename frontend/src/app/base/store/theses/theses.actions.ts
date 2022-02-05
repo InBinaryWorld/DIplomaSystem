@@ -23,11 +23,11 @@ export const loadReservationForIdIfNeededAction = createAction(
 
 export const loadThesesAction = createAction(
   '[THESES] Load theses',
-  props<{ options: LoadThesisActionOptions, key: string }>()
+  props<{ options: LoadThesesActionOptions, key: string }>()
 );
 export const loadThesesIfNeededAction = createAction(
   '[THESES] Load theses if needed',
-  props<{ options: LoadThesisActionOptions, key: string }>()
+  props<{ options: LoadThesesActionOptions, key: string }>()
 );
 export const loadThesisForIdAction = createAction(
   '[THESES] Load thesis for id',
@@ -88,38 +88,28 @@ export class LoadReservationsActionOptions {
 }
 
 
-export class LoadThesisActionOptions {
+export class LoadThesesActionOptions {
   proposedByStudentId?: string;
-  proposedByStudentOnly?: boolean;
   diplomaSessionId?: string;
   supervisorId?: string;
-  departmentId?: string;
   status?: string;
 
-  static proposedByStudent(studentId: IdType): LoadThesisActionOptions {
-    const options = new LoadThesisActionOptions();
+  static proposedByStudent(diplomaSessionId: IdType, studentId: IdType): LoadThesesActionOptions {
+    const options = new LoadThesesActionOptions();
+    options.diplomaSessionId = diplomaSessionId;
     options.proposedByStudentId = studentId;
-    options.proposedByStudentOnly = true;
     return options;
   }
 
-  static forStudent(studentId: IdType, diplomaSessionId: IdType, status: ThesisStatus): LoadThesisActionOptions {
-    const options = new LoadThesisActionOptions();
-    options.proposedByStudentId = studentId;
+  static forStatus(diplomaSessionId: IdType, status: ThesisStatus): LoadThesesActionOptions {
+    const options = new LoadThesesActionOptions();
     options.diplomaSessionId = diplomaSessionId;
     options.status = status;
     return options;
   }
 
-  static forStatusAndDepartment(departmentId: IdType, status: ThesisStatus): LoadThesisActionOptions {
-    const options = new LoadThesisActionOptions();
-    options.departmentId = departmentId;
-    options.status = status;
-    return options;
-  }
-
-  static forLecturerAndDiplomaSession(supervisorId: IdType, diplomaSessionId: IdType): LoadThesisActionOptions {
-    const options = new LoadThesisActionOptions();
+  static forLecturer(diplomaSessionId: IdType, supervisorId: IdType): LoadThesesActionOptions {
+    const options = new LoadThesesActionOptions();
     options.diplomaSessionId = diplomaSessionId;
     options.supervisorId = supervisorId;
     return options;
@@ -130,10 +120,9 @@ export class LoadThesisActionOptions {
     return [
       'LoadThesisActionOptions',
       'PBSI_' + this.proposedByStudentId,
-      'PBSO_' + this.proposedByStudentOnly,
       'DSI_' + this.diplomaSessionId,
-      'S_' + this.status,
-      'SI_' + this.supervisorId
+      'SI_' + this.supervisorId,
+      'S_' + this.status
     ].join('$');
   }
 }

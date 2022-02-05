@@ -60,8 +60,8 @@ export class StudentTopicPropositionsComponent extends RoleComponent implements 
   }
 
   private getDataSource(): Observable<Thesis[]> {
-    return this.userRoleSource.pipe(
-      switchMap(userRole => this.thesesService.getProposedByStudentTheses(userRole.id))
+    return this.contextSource.pipe(switchMap(context =>
+      this.thesesService.getProposedByStudentTheses(context.diplomaSession!.id, context.userRole.id))
     );
   }
 

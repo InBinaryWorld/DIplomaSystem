@@ -7,7 +7,7 @@ import { map, tap } from 'rxjs/operators';
 import { ReservationStatus } from '../models/dto/reservation-status.model';
 import { firstItem } from '../../core/tools/first-item';
 import { isEmpty, isNil } from 'lodash-es';
-import { LoadReservationsActionOptions, LoadThesisActionOptions } from '../store/theses/theses.actions';
+import { LoadReservationsActionOptions, LoadThesesActionOptions } from '../store/theses/theses.actions';
 import { ThesesApiService } from './api/theses-api.service';
 import { ThesesStateKey } from '../store/theses/theses.state';
 import { IdType } from '../models/dto/id.model';
@@ -38,22 +38,22 @@ export class ThesesService {
   }
 
   public getThesisForLecturerAndDiplomaSession(lecturerId: IdType, diplomaSessionId: IdType): Observable<Thesis[]> {
-    const options = LoadThesisActionOptions.forLecturerAndDiplomaSession(lecturerId, diplomaSessionId);
+    const options = LoadThesesActionOptions.forLecturer(diplomaSessionId, lecturerId);
     return this.thesesStoreService.getTheses(options);
   }
 
-  public getThesisWithStatusForDepartment(departmentId: IdType, status: ThesisStatus): Observable<Thesis[]> {
-    const options = LoadThesisActionOptions.forStatusAndDepartment(departmentId, status);
+  public getThesisWithStatus(diplomaSessionId: IdType, status: ThesisStatus): Observable<Thesis[]> {
+    const options = LoadThesesActionOptions.forStatus(diplomaSessionId, status);
     return this.thesesStoreService.getTheses(options);
   }
 
-  public getApprovedTheses(studentId: IdType, diplomaSessionId: IdType): Observable<Thesis[]> {
-    const options = LoadThesisActionOptions.forStudent(studentId, diplomaSessionId, ThesisStatus.APPROVED_BY_COMMITTEE);
+  public getApprovedTheses(diplomaSessionId: IdType): Observable<Thesis[]> {
+    const options = LoadThesesActionOptions.forStatus(diplomaSessionId, ThesisStatus.APPROVED_BY_COMMITTEE);
     return this.thesesStoreService.getTheses(options);
   }
 
-  public getProposedByStudentTheses(studentId: IdType): Observable<Thesis[]> {
-    const options = LoadThesisActionOptions.proposedByStudent(studentId);
+  public getProposedByStudentTheses(diplomaSessionId: IdType, studentId: IdType): Observable<Thesis[]> {
+    const options = LoadThesesActionOptions.proposedByStudent(diplomaSessionId, studentId);
     return this.thesesStoreService.getTheses(options);
   }
 

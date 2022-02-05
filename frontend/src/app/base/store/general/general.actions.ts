@@ -134,7 +134,7 @@ export class LoadDiplomaSessionsActionOptions {
     return options;
   }
 
-  static forDepartmentId(departmentId: IdType): LoadDiplomaSessionsActionOptions {
+  static forDepartment(departmentId: IdType): LoadDiplomaSessionsActionOptions {
     const options = new LoadDiplomaSessionsActionOptions();
     options.departmentId = departmentId;
     return options;

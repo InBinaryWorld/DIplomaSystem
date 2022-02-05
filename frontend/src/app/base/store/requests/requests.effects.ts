@@ -5,54 +5,98 @@ import { of } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { AppState } from '../app-state.model';
 import {
-  loadRequestForIdAction,
-  loadRequestForIdIfNeededAction,
-  loadRequestsAction,
+  loadChangeRequestForIdAction,
+  loadChangeRequestForIdIfNeededAction,
+  loadChangeRequestsAction,
+  loadChangeRequestsIfNeededAction,
+  loadClarificationRequestForIdAction,
+  loadClarificationRequestForIdIfNeededAction,
+  loadClarificationRequestsAction,
+  loadClarificationRequestsIfNeededAction,
   loadRequestsFailedAction,
-  loadRequestsIfNeededAction,
   loadRequestsSuccessAction,
   loadRequestSuccessAction
 } from './requests.actions';
 import { mergeIfNil } from '../../../core/tools/If-needed-only-functions';
 import { RequestsApiService } from '../../services/api/requests-api.service';
-import { selectRequestForTypeAndId, selectRequestsIdsForTypeAndKey } from './requests.selectors';
+import {
+  selectChangeRequestForId,
+  selectChangeRequestsForKey,
+  selectClarificationRequestForId,
+  selectClarificationRequestsForKey
+} from './requests.selectors';
+import { RequestsStateKey } from './requests.state';
 
 
 @Injectable()
 export class RequestsEffects {
 
-  loadRequestsIfNeededAction = createEffect(() => this.actions.pipe(
-    ofType(loadRequestsIfNeededAction),
-    mergeIfNil(({ resourceType, key }) => this.store.select(selectRequestsIdsForTypeAndKey, { resourceType, key })),
-    map(({ resourceType, userRole, key }) => loadRequestsAction({ resourceType, userRole, key }))
+  loadClarificationRequestsIfNeededAction = createEffect(() => this.actions.pipe(
+    ofType(loadClarificationRequestsIfNeededAction),
+    mergeIfNil(({ key }) => this.store.select(selectClarificationRequestsForKey, key)),
+    map(({ key, options }) => loadClarificationRequestsAction({ key, options }))
   ));
 
-  loadRequestsAction = createEffect(() => this.actions.pipe(
-    ofType(loadRequestsAction),
-    mergeMap(({ resourceType, userRole, key }) =>
-      this.requestsService.getRequestsForUserRole(resourceType, userRole).pipe(
-        map(collection => loadRequestsSuccessAction({ resourceType, collection, key })),
+  loadClarificationRequestsAction = createEffect(() => this.actions.pipe(
+    ofType(loadClarificationRequestsAction),
+    mergeMap(({ key, options }) =>
+      this.requestsApiService.getClarificationRequests(options).pipe(
+        map(collection => loadRequestsSuccessAction(
+          { resourceType: RequestsStateKey.CLARIFICATION, collection, key })),
         catchError(error => of(loadRequestsFailedAction({ error })))
       ))
   ));
 
-  loadRequestsForIdIfNeededAction = createEffect(() => this.actions.pipe(
-    ofType(loadRequestForIdIfNeededAction),
-    mergeIfNil(({ resourceType, id }) => this.store.select(selectRequestForTypeAndId, { resourceType, id })),
-    map(({ resourceType, id }) => loadRequestForIdAction({ resourceType, id }))
+  loadClarificationRequestForIdIfNeededAction = createEffect(() => this.actions.pipe(
+    ofType(loadClarificationRequestForIdIfNeededAction),
+    mergeIfNil(({ id }) => this.store.select(selectClarificationRequestForId, id)),
+    map(({ id }) => loadClarificationRequestForIdAction({ id }))
   ));
 
-  loadRequestsForIdAction = createEffect(() => this.actions.pipe(
-    ofType(loadRequestForIdAction),
-    mergeMap(({ resourceType, id }) => this.requestsService.getRequestForId(resourceType, id).pipe(
-      map(instance => loadRequestSuccessAction({ resourceType, instance })),
+  loadClarificationRequestForIdAction = createEffect(() => this.actions.pipe(
+    ofType(loadClarificationRequestForIdAction),
+    mergeMap(({ id }) => this.requestsApiService.getClarificationRequestForId(id).pipe(
+      map(instance => loadRequestSuccessAction(
+        { resourceType: RequestsStateKey.CLARIFICATION, instance })),
+      catchError(error => of(loadRequestsFailedAction({ error })))
+    ))
+  ));
+
+
+  loadChangeRequestsIfNeededAction = createEffect(() => this.actions.pipe(
+    ofType(loadChangeRequestsIfNeededAction),
+    mergeIfNil(({ key }) => this.store.select(selectChangeRequestsForKey, key)),
+    map(({ key, options }) => loadChangeRequestsAction({ key, options }))
+  ));
+
+  loadChangeRequestsAction = createEffect(() => this.actions.pipe(
+    ofType(loadChangeRequestsAction),
+    mergeMap(({ key, options }) =>
+      this.requestsApiService.getChangeRequests(options).pipe(
+        map(collection => loadRequestsSuccessAction(
+          { resourceType: RequestsStateKey.CHANGE, collection, key })),
+        catchError(error => of(loadRequestsFailedAction({ error })))
+      ))
+  ));
+
+  loadChangeRequestForIdIfNeededAction = createEffect(() => this.actions.pipe(
+    ofType(loadChangeRequestForIdIfNeededAction),
+    mergeIfNil(({ id }) => this.store.select(selectChangeRequestForId, id)),
+    map(({ id }) => loadClarificationRequestForIdAction({ id }))
+  ));
+
+  loadChangeRequestForIdAction = createEffect(() => this.actions.pipe(
+    ofType(loadChangeRequestForIdAction),
+    mergeMap(({ id }) => this.requestsApiService.getChangeRequestForId(id).pipe(
+      map(instance => loadRequestSuccessAction(
+        { resourceType: RequestsStateKey.CHANGE, instance })),
       catchError(error => of(loadRequestsFailedAction({ error })))
     ))
   ));
 
   constructor(private readonly actions: Actions,
               private readonly store: Store<AppState>,
-              private readonly requestsService: RequestsApiService) {
+              private readonly requestsApiService: RequestsApiService) {
   }
 
 }

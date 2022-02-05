@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { UserRole } from '../models/dto/user-role.model';
 import { tap } from 'rxjs/operators';
 import { RequestsStateKey } from '../store/requests/requests.state';
 import { RequestsStoreService } from './store/requests-store.service';
@@ -9,6 +8,10 @@ import { ClarificationRequest } from '../models/dto/clarification-request.model'
 import { ThesesStoreService } from './store/theses-store.service';
 import { ChangeRequest } from '../models/dto/change-request.model';
 import { IdType } from '../models/dto/id.model';
+import {
+  LoadChangeRequestsActionOptions,
+  LoadClarificationRequestsActionOptions
+} from '../store/requests/requests.actions';
 
 @Injectable({
   providedIn: 'root'
@@ -19,16 +22,28 @@ export class RequestsService {
               private readonly thesesStoreService: ThesesStoreService) {
   }
 
-  public getChangeRequestsForRole(userRole: UserRole, ifNeededOnly = true): Observable<ChangeRequest[]> {
-    return this.requestsStoreService.getChangeRequestsForRole(userRole, ifNeededOnly);
+  public getChangeRequestsForStudent(diplomaSessionId: IdType, studentId: IdType, ifNeededOnly = true): Observable<ChangeRequest[]> {
+    const options = LoadChangeRequestsActionOptions.forStudent(diplomaSessionId, studentId);
+    return this.requestsStoreService.getChangeRequests(options, ifNeededOnly);
+  }
+
+  public getChangeRequestsForCommittee(diplomaSessionId: IdType, committeeId: IdType, ifNeededOnly = true): Observable<ChangeRequest[]> {
+    const options = LoadChangeRequestsActionOptions.forCommittee(diplomaSessionId, committeeId);
+    return this.requestsStoreService.getChangeRequests(options, ifNeededOnly);
   }
 
   public getChangeRequestForId(requestId: IdType, ifNeededOnly = true): Observable<ChangeRequest> {
     return this.requestsStoreService.getChangeRequestForId(requestId, ifNeededOnly);
   }
 
-  public getClarificationRequestsForRole(userRole: UserRole, ifNeededOnly = true): Observable<ClarificationRequest[]> {
-    return this.requestsStoreService.getClarificationRequestsForRole(userRole, ifNeededOnly);
+  public getClarificationRequestsForStudent(diplomaSessionId: IdType, studentId: IdType, ifNeededOnly = true): Observable<ClarificationRequest[]> {
+    const options = LoadClarificationRequestsActionOptions.forStudent(diplomaSessionId, studentId);
+    return this.requestsStoreService.getClarificationRequests(options, ifNeededOnly);
+  }
+
+  public getClarificationRequestsForDean(diplomaSessionId: IdType, deanId: IdType, ifNeededOnly = true): Observable<ClarificationRequest[]> {
+    const options = LoadClarificationRequestsActionOptions.forDean(diplomaSessionId, deanId);
+    return this.requestsStoreService.getClarificationRequests(options, ifNeededOnly);
   }
 
   public getClarificationRequestForId(requestId: IdType, ifNeededOnly = true): Observable<ClarificationRequest> {

@@ -5,10 +5,16 @@ import { AppState } from '../../store/app-state.model';
 import { CleanableStoreService } from '../../../core/services/cleanable-store.service';
 import {
   invalidateRequestsDataAction,
-  loadRequestForIdAction,
-  loadRequestForIdIfNeededAction,
-  loadRequestsAction,
-  loadRequestsIfNeededAction
+  loadChangeRequestForIdAction,
+  loadChangeRequestForIdIfNeededAction,
+  loadChangeRequestsAction,
+  LoadChangeRequestsActionOptions,
+  loadChangeRequestsIfNeededAction,
+  loadClarificationRequestForIdAction,
+  loadClarificationRequestForIdIfNeededAction,
+  loadClarificationRequestsAction,
+  LoadClarificationRequestsActionOptions,
+  loadClarificationRequestsIfNeededAction
 } from '../../store/requests/requests.actions';
 import {
   selectChangeRequestForId,
@@ -20,9 +26,7 @@ import {
 } from '../../store/requests/requests.selectors';
 import { RequestsStateKey } from '../../store/requests/requests.state';
 import { ClarificationRequest } from '../../models/dto/clarification-request.model';
-import { UserRole } from '../../models/dto/user-role.model';
 import { ChangeRequest } from '../../models/dto/change-request.model';
-import { StoreKeys } from '../../utils/store-keys.utils';
 import { filterExists } from '../../../core/tools/filter-exists';
 import { IdType } from '../../models/dto/id.model';
 
@@ -35,45 +39,57 @@ export class RequestsStoreService extends CleanableStoreService {
     super(store);
   }
 
-  public getChangeRequestsForRole(userRole: UserRole, ifNeededOnly = true)
+  public getChangeRequests(options: LoadChangeRequestsActionOptions, ifNeededOnly = true)
     : Observable<ChangeRequest[]> {
-    const key = StoreKeys.forUserRole(userRole);
-    this.loadRequests(RequestsStateKey.CHANGE, userRole, key, ifNeededOnly);
+    const key = options.toKey();
+    this.loadChangeRequests(options, key, ifNeededOnly);
     return this.selectChangeRequestsForKey(key).pipe(filterExists());
+  }
+
+  public getClarificationRequests(options: LoadClarificationRequestsActionOptions, ifNeededOnly = true)
+    : Observable<ClarificationRequest[]> {
+    const key = options.toKey();
+    this.loadClarificationRequests(options, key, ifNeededOnly);
+    return this.selectClarificationRequestsForKey(key).pipe(filterExists());
   }
 
   public getChangeRequestForId(requestId: IdType, ifNeededOnly = true)
     : Observable<ChangeRequest> {
-    this.loadRequestForId(RequestsStateKey.CHANGE, requestId, ifNeededOnly);
+    this.loadChangeRequestForId(requestId, ifNeededOnly);
     return this.selectChangeRequestForId(requestId).pipe(filterExists());
-
-  }
-
-
-  public getClarificationRequestsForRole(userRole: UserRole, ifNeededOnly = true)
-    : Observable<ClarificationRequest[]> {
-    const key = StoreKeys.forUserRole(userRole);
-    this.loadRequests(RequestsStateKey.CLARIFICATION, userRole, key, ifNeededOnly);
-    return this.selectClarificationRequestsForKey(key).pipe(filterExists());
   }
 
   public getClarificationRequestForId(requestId: IdType, ifNeededOnly = true)
     : Observable<ClarificationRequest> {
-    this.loadRequestForId(RequestsStateKey.CLARIFICATION, requestId, ifNeededOnly);
+    this.loadClarificationRequestForId(requestId, ifNeededOnly);
     return this.selectClarificationRequestForId(requestId).pipe(filterExists());
   }
 
-  public loadRequests(resourceType: RequestsStateKey, userRole: UserRole, key: string, ifNeededOnly = true): void {
+  public loadClarificationRequests(options: LoadClarificationRequestsActionOptions, key: string, ifNeededOnly = true): void {
     const action = ifNeededOnly
-      ? loadRequestsIfNeededAction({ resourceType, userRole, key })
-      : loadRequestsAction({ resourceType, userRole, key });
+      ? loadClarificationRequestsIfNeededAction({ options, key })
+      : loadClarificationRequestsAction({ options, key });
     this.store.dispatch(action);
   }
 
-  public loadRequestForId(resourceType: RequestsStateKey, id: IdType, ifNeededOnly = true): void {
+  public loadChangeRequests(options: LoadChangeRequestsActionOptions, key: string, ifNeededOnly = true): void {
     const action = ifNeededOnly
-      ? loadRequestForIdIfNeededAction({ resourceType, id })
-      : loadRequestForIdAction({ resourceType, id });
+      ? loadChangeRequestsIfNeededAction({ options, key })
+      : loadChangeRequestsAction({ options, key });
+    this.store.dispatch(action);
+  }
+
+  public loadClarificationRequestForId(id: IdType, ifNeededOnly = true): void {
+    const action = ifNeededOnly
+      ? loadClarificationRequestForIdIfNeededAction({ id })
+      : loadClarificationRequestForIdAction({ id });
+    this.store.dispatch(action);
+  }
+
+  public loadChangeRequestForId(id: IdType, ifNeededOnly = true): void {
+    const action = ifNeededOnly
+      ? loadChangeRequestForIdIfNeededAction({ id })
+      : loadChangeRequestForIdAction({ id });
     this.store.dispatch(action);
   }
 

@@ -6,7 +6,7 @@ import { Reservation } from '../../models/dto/reservation.model';
 import { ReservationMember } from '../../models/dto/reservation-member.model';
 import { RequestParams } from '../../../core/models/request-param.model';
 import { Thesis } from '../../models/dto/thesis.model';
-import { LoadReservationsActionOptions, LoadThesisActionOptions } from '../../store/theses/theses.actions';
+import { LoadReservationsActionOptions, LoadThesesActionOptions } from '../../store/theses/theses.actions';
 import { IdType } from '../../models/dto/id.model';
 
 @Injectable({
@@ -17,13 +17,11 @@ export class ThesesApiService {
   constructor(private readonly http: ServerHttpService) {
   }
 
-  public getThesesForUserRole(options: LoadThesisActionOptions): Observable<Thesis[]> {
+  public getThesesForUserRole(options: LoadThesesActionOptions): Observable<Thesis[]> {
     const queryParams = new RequestParams();
     queryParams.addIfValueExists('status', options.status);
-    queryParams.addIfValueExists('departmentId', options.departmentId);
     queryParams.addIfValueExists('diplomaSessionId', options.diplomaSessionId);
     queryParams.addIfValueExists('proposedByStudentId', options.proposedByStudentId);
-    queryParams.addIfValueExists('proposedByStudentOnly', options.proposedByStudentOnly);
     return this.http.getWithLabel(ApiLabel.GET_THESES, undefined, queryParams);
   }
 
@@ -36,6 +34,7 @@ export class ThesesApiService {
   public getStudentReservations(options: LoadReservationsActionOptions): Observable<Reservation[]> {
     const query = new RequestParams();
     query.addIfValueExists('studentId', options.studentId);
+    query.addIfValueExists('supervisorId', options.supervisorId);
     query.addIfValueExists('diplomaSessionId', options.diplomaSessionId);
     return this.http.getWithLabel(ApiLabel.GET_RESERVATIONS, undefined, query);
   }

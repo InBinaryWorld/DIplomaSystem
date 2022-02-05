@@ -39,10 +39,9 @@ export class CoordinatorTopicsComponent extends RoleComponent implements OnInit 
 
   private initTheses(): void {
     this.addSubscription(
-      this.userRoleSource.pipe(
-        switchMap(userRole => this.userService.getEmployeeForId(userRole.id)),
-        switchMap(coordinator => this.thesesService
-          .getThesisWithStatusForDepartment(coordinator.departmentId, ThesisStatus.WAITING))
+      this.contextSource.pipe(
+        switchMap(context => this.thesesService
+          .getThesisWithStatus(context.diplomaSession?.id!, ThesisStatus.WAITING))
       ).subscribe(thesesToConsider => {
         this.thesesToConsider = thesesToConsider;
         this.markForCheck();

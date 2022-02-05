@@ -3,21 +3,24 @@
     <img src="assets/img/logo.png" class="ms-2 header-logo">
     <span class="ms-3 h4 my-auto me-auto">{{ 'App.Name' | translate | uppercase }}</span>
 
-    <div *ngIf="fieldsOfStudy && diplomaSessions" class=" me-3">
-      <select [formControl]="diplomaSessionContextControl" class="d-flex form-select">
-        <option *ngFor="let item of diplomaSessions" [ngValue]="item.id">
-          {{ fieldsOfStudy.length > 1 ? item.year : LabelBuilder.forDiplomaSession(item) }}
-        </option>
-      </select>
-    </div>
+    <ng-container *ngIf="selectedUserRole?.role !== Role.ADMIN">
 
-    <div *ngIf="fieldsOfStudy && fieldsOfStudy.length > 1" class="me-3">
-      <select [formControl]="fieldOfStudyContextControl" class="d-flex form-select">
-        <option *ngFor="let item of fieldsOfStudy" [ngValue]="item.id">
-          {{ LabelBuilder.forFieldOfStudy(item) }}
-        </option>
-      </select>
-    </div>
+      <div *ngIf="fieldsOfStudy && diplomaSessions" class=" me-3">
+        <select [formControl]="diplomaSessionContextControl" class="d-flex form-select">
+          <option *ngFor="let item of diplomaSessions" [ngValue]="item.id">
+            {{ fieldsOfStudy.length > 1 ? item.year : LabelBuilder.forDiplomaSession(item) }}
+          </option>
+        </select>
+      </div>
+
+      <div *ngIf="fieldsOfStudy && fieldsOfStudy.length > 1" class="me-3">
+        <select [formControl]="fieldOfStudyContextControl" class="d-flex form-select">
+          <option *ngFor="let item of fieldsOfStudy" [ngValue]="item.id">
+            {{ LabelBuilder.forFieldOfStudy(item) }}
+          </option>
+        </select>
+      </div>
+    </ng-container>
 
     <div *ngIf="userRoles" class=" me-3">
       <select [formControl]="roleContextControl" class="d-flex form-select">

@@ -39,8 +39,8 @@ export class StudentTopicClarificationsComponent extends RoleComponent implement
 
   private initClarificationRequests(): void {
     this.addSubscription(
-      this.userRoleSource.pipe(
-        switchMap(userRole => this.requestsService.getClarificationRequestsForRole(userRole)),
+      this.contextSource.pipe(switchMap(context => this.requestsService
+          .getClarificationRequestsForStudent(context.diplomaSession!.id, context.userRole.id)),
         filterExists()
       ).subscribe(requests => {
         this.clarificationRequests = requests!;

@@ -23,6 +23,10 @@ export class AppValidators {
     return AppValidators.compose(Validators.required, Validators.maxLength(1000));
   }
 
+  public static get deadline(): ValidatorFn {
+    return Validators.required;
+  }
+
   private static integerValidator(): ValidatorFn {
     return Validators.pattern(/^-?[0-9]+$/);
   }

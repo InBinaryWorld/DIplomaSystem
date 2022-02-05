@@ -31,8 +31,8 @@ export class GeneralResourcesApiService extends BaseApiService {
 
   public getDiplomaSessions(options: LoadDiplomaSessionsActionOptions): Observable<DiplomaSession[]> {
     const queryParams = new RequestParams();
-    queryParams.addIfValueExists('departmentId', options.departmentId);
     queryParams.addIfValueExists('fieldOfStudyId', options.fieldOfStudyId);
+    queryParams.addIfValueExists('departmentId', options.departmentId);
     return this.http.getWithLabel(ApiLabel.GET_DIPLOMA_SESSIONS, undefined, queryParams);
   }
 
@@ -47,15 +47,15 @@ export class GeneralResourcesApiService extends BaseApiService {
   }
 
   public getTimetableForId(id: IdType): Observable<Timetable> {
-    return this.http.getWithLabel(ApiLabel.GET_TIMETABLE);
+    return this.getResourceForId(ApiLabel.GET_TIMETABLE, id);
   }
 
   public getDiplomaSessionForId(id: IdType): Observable<DiplomaSession> {
-    return this.http.getWithLabel(ApiLabel.GET_DIPLOMA_SESSION);
+    return this.getResourceForId(ApiLabel.GET_DIPLOMA_SESSION, id);
   }
 
   public getDepartmentForId(id: IdType): Observable<Department> {
-    return this.http.getWithLabel(ApiLabel.GET_DEPARTMENT);
+    return this.getResourceForId(ApiLabel.GET_DEPARTMENT, id);
   }
 
   public getFieldOfStudyForId(id: IdType): Observable<FieldOfStudy> {
@@ -66,6 +66,12 @@ export class GeneralResourcesApiService extends BaseApiService {
     const query = new RequestParams();
     query.addIfValueExists('id', id);
     return this.http.getWithLabel(apiLabel, undefined, query);
+  }
+
+  modifyTimetable(timetableId: IdType, payload: Partial<Timetable>): Observable<DiplomaSession> {
+    const query = new RequestParams();
+    query.addIfValueExists('id', timetableId);
+    return this.http.postWithLabel(ApiLabel.MODIFY_TIMETABLE, payload, query);
   }
 
 }

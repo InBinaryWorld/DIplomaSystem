@@ -13,8 +13,8 @@ import {
   LoadReservationsActionOptions,
   loadStudentReservationsIfNeededAction,
   loadThesesAction,
+  LoadThesesActionOptions,
   loadThesesIfNeededAction,
-  LoadThesisActionOptions,
   loadThesisForIdAction,
   loadThesisForIdIfNeededAction
 } from '../../store/theses/theses.actions';
@@ -39,7 +39,7 @@ export class ThesesStoreService extends CleanableStoreService {
     super(store);
   }
 
-  public getTheses(options: LoadThesisActionOptions, ifNeededOnly = true): Observable<Thesis[]> {
+  public getTheses(options: LoadThesesActionOptions, ifNeededOnly = true): Observable<Thesis[]> {
     const key = options.toKey();
     this.loadTheses(options, key, ifNeededOnly);
     return this.selectThesesForKey(key).pipe(filterExists());
@@ -61,7 +61,7 @@ export class ThesesStoreService extends CleanableStoreService {
     return this.selectReservationForId(reservationId).pipe(filterExists());
   }
 
-  public loadTheses(options: LoadThesisActionOptions, key: string, ifNeededOnly = true): void {
+  public loadTheses(options: LoadThesesActionOptions, key: string, ifNeededOnly = true): void {
     const action = ifNeededOnly
       ? loadThesesIfNeededAction({ options, key })
       : loadThesesAction({ options, key });

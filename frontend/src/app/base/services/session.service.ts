@@ -62,7 +62,7 @@ export class SessionService implements CleanableService {
   private buildContextForEmployeeUserRole(userRole: UserRole): Observable<Context> {
     return this.userStoreService.getEmployeeForId(userRole.id).pipe(
       switchMap(employee => {
-        const options = LoadDiplomaSessionsActionOptions.forDepartmentId(employee.departmentId);
+        const options = LoadDiplomaSessionsActionOptions.forDepartment(employee.departmentId);
         // download only one is enough, but we have not api for that
         return this.generalResourcesStoreService.getDiplomaSessionsForKey(options)
           .pipe(map(dss => this.buildContext(userRole, dss)));
