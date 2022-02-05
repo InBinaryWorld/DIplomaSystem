@@ -7,11 +7,15 @@ import { UserService } from '../../../base/services/user.service';
 import { SessionService } from '../../../base/services/session.service';
 import { switchMap, tap } from 'rxjs/operators';
 import { DiplomaSession } from '../../../base/models/dto/diploma-session.model';
-import { filterRoles } from '../../../core/tools/filter-roles';
 import { Role } from '../../../base/models/dto/role.model';
 import { GeneralResourcesService } from '../../../base/services/general-resources.service';
-import { map } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { filterExists } from '../../../core/tools/filter-exists';
+import { FieldOfStudy } from '../../../base/models/dto/field-of-study.model';
+import { groupBy, isNil } from 'lodash-es';
+import { IdType } from '../../../base/models/dto/id.model';
+import { Dictionary } from '../../../core/models/dictionary.model';
+import { firstItem } from '../../../core/tools/first-item';
 
 @Component({
   selector: 'app-header',
@@ -22,11 +26,23 @@ import { filterExists } from '../../../core/tools/filter-exists';
 export class AppHeaderComponent extends BaseComponent implements OnInit {
   AppLanguage = AppLanguage;
 
+  selectedFosId?: IdType;
+
   userRoles?: UserRole[];
-  diplomaSessions?: DiplomaSession[];
+  fieldsOfStudy?: FieldOfStudy[];
+  dsByFosId?: Dictionary<DiplomaSession[]>;
+
   languageControl = new FormControl();
   roleContextControl = new FormControl();
+  fieldOfStudyContextControl = new FormControl();
   diplomaSessionContextControl = new FormControl();
+
+  get diplomaSessions(): DiplomaSession[] | undefined {
+    if (isNil(this.dsByFosId) || isNil(this.selectedFosId)) {
+      return undefined;
+    }
+    return this.dsByFosId[this.selectedFosId];
+  }
 
 
   constructor(private readonly userService: UserService,
@@ -63,8 +79,10 @@ export class AppHeaderComponent extends BaseComponent implements OnInit {
   private initContext() {
     this.addSubscription(
       this.sessionService.selectContext().subscribe(context => {
+        this.selectedFosId = context?.fieldOfStudy?.id;
         this.roleContextControl.setValue(this.roleToId(context?.userRole), { emitEvent: false });
         this.diplomaSessionContextControl.setValue(context?.diplomaSession?.id, { emitEvent: false });
+        this.fieldOfStudyContextControl.setValue(context?.fieldOfStudy?.id, { emitEvent: false });
         this.markForCheck();
       })
     );
@@ -83,13 +101,24 @@ export class AppHeaderComponent extends BaseComponent implements OnInit {
     );
 
     this.addSubscription(
+      this.fieldOfStudyContextControl.valueChanges.pipe(
+        map(fosId => firstItem(this.dsByFosId?.[fosId])), filterExists()
+      ).subscribe(diplomaSession => this.sessionService.setContextDiplomaSession(diplomaSession))
+    );
+
+    this.addSubscription(
       this.sessionService.selectContextRole().pipe(
-        tap(() => this.diplomaSessions = undefined),
-        filterRoles([Role.STUDENT]),
-        switchMap(studentUserRole => this.userService.getStudentForId(studentUserRole.id)),
-        switchMap(student => this.generalResourcesService.getDiplomaSessionsFieldOfStudy(student.fieldOfStudyId))
+        tap(() => {
+          this.fieldsOfStudy = undefined;
+          this.dsByFosId = undefined;
+        }),
+        filterExists(),
+        switchMap(userRole => userRole.role === Role.STUDENT
+          ? this.getDiplomaSessionsForStudent(userRole.id)
+          : this.getDiplomaSessionsForEmployee(userRole.id))
       ).subscribe(diplomaSessions => {
-        this.diplomaSessions = diplomaSessions;
+        this.dsByFosId = groupBy(diplomaSessions, ds => ds.fieldOfStudyId);
+        this.fieldsOfStudy = Object.values(this.dsByFosId).map(dss => firstItem(dss)!.fieldOfStudy);
         this.markForCheck();
       })
     );
@@ -101,5 +130,18 @@ export class AppHeaderComponent extends BaseComponent implements OnInit {
       })
     );
   }
+
+  private getDiplomaSessionsForStudent(studentId: IdType): Observable<DiplomaSession[]> {
+    return this.userService.getStudentForId(studentId).pipe(switchMap(
+      student => this.generalResourcesService.getDiplomaSessionsForFieldOfStudy(student.fieldOfStudyId)
+    ));
+  }
+
+  private getDiplomaSessionsForEmployee(employeeId: IdType): Observable<DiplomaSession[]> {
+    return this.userService.getEmployeeForId(employeeId).pipe(switchMap(
+      employee => this.generalResourcesService.getDiplomaSessionsForDepartment(employee.departmentId)
+    ));
+  }
+
 
 }

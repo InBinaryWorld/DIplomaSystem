@@ -39,8 +39,13 @@ export class GeneralResourcesService {
     return this.generalResourcesStoreService.getTimetableForId(id, ifNeededOnly);
   }
 
-  getDiplomaSessionsFieldOfStudy(fieldOfStudyId: IdType): Observable<DiplomaSession[]> {
+  getDiplomaSessionsForFieldOfStudy(fieldOfStudyId: IdType): Observable<DiplomaSession[]> {
     const options = LoadDiplomaSessionsActionOptions.forFieldOfStudy(fieldOfStudyId);
+    return this.generalResourcesStoreService.getDiplomaSessionsForKey(options);
+  }
+
+  getDiplomaSessionsForDepartment(departmentId: IdType): Observable<DiplomaSession[]> {
+    const options = LoadDiplomaSessionsActionOptions.forDepartmentId(departmentId);
     return this.generalResourcesStoreService.getDiplomaSessionsForKey(options);
   }
 

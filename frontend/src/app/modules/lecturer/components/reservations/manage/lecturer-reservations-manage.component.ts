@@ -27,17 +27,9 @@ export class LecturerReservationsManageComponent implements OnInit {
     ReservationStatus.ACCEPTED
   ];
 
-  private topic: Thesis = FakeData.thesis;
+  topic: Thesis = FakeData.thesis;
 
-  reservations: Reservation[] = [
-    FakeData.reservation,
-    FakeData.reservation,
-    FakeData.reservation,
-    FakeData.reservation,
-    FakeData.reservation,
-    FakeData.reservation,
-    FakeData.reservation
-  ];
+  reservations: Reservation[] = [];
 
   constructor(private readonly formBuilder: FormBuilder,
               private readonly router: Router) {

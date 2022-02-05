@@ -33,7 +33,7 @@ export class GeneralResourcesApiService extends BaseApiService {
     const queryParams = new RequestParams();
     queryParams.addIfValueExists('departmentId', options.departmentId);
     queryParams.addIfValueExists('fieldOfStudyId', options.fieldOfStudyId);
-    return this.http.getWithLabel(ApiLabel.GET_DIPLOMA_SESSIONS);
+    return this.http.getWithLabel(ApiLabel.GET_DIPLOMA_SESSIONS, undefined, queryParams);
   }
 
   public getDepartments(options: LoadDepartmentsActionOptions): Observable<Department[]> {
@@ -41,9 +41,9 @@ export class GeneralResourcesApiService extends BaseApiService {
   }
 
   public getFieldsOfStudy(options: LoadFieldsOfStudyActionOptions): Observable<FieldOfStudy[]> {
-    const queryParams = new RequestParams();
-    queryParams.addIfValueExists('departmentId', options.departmentId);
-    return this.http.getWithLabel(ApiLabel.GET_FIELDS_OF_STUDY, undefined, queryParams);
+    const query = new RequestParams();
+    query.addIfValueExists('departmentId', options.departmentId);
+    return this.http.getWithLabel(ApiLabel.GET_FIELDS_OF_STUDY, undefined, query);
   }
 
   public getTimetableForId(id: IdType): Observable<Timetable> {

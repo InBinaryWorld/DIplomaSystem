@@ -11,18 +11,9 @@ import { FakeData } from '../../../../../fakes/fake.data';
 })
 export class LecturerTopicsComponent {
 
-  private topic: Thesis = FakeData.thesis;
+  topic: Thesis = FakeData.thesis;
 
-  public submittedTopics: Thesis[] = [
-    this.topic,
-    this.topic,
-    this.topic,
-    this.topic,
-    this.topic,
-    this.topic,
-    this.topic,
-    this.topic
-  ];
+  public submittedTopics: Thesis[] = [];
 
 
   constructor(private readonly router: Router) {

@@ -2,11 +2,16 @@ import { DiplomaSession } from '../models/dto/diploma-session.model';
 import { Employee } from '../models/dto/employee.model';
 import { isNotNil } from '../../core/tools/is-not-nil';
 import { Student } from '../models/dto/student.model';
+import { FieldOfStudy } from '../models/dto/field-of-study.model';
 
 export class LabelBuilder {
 
   public static forDiplomaSession(session: DiplomaSession): string {
     return [session.fieldOfStudy.name, session.year].join(', ');
+  }
+
+  public static forFieldOfStudy(fieldOfStudy: FieldOfStudy): string {
+    return fieldOfStudy.name;
   }
 
   public static forEmployee(employee: Employee): string {
