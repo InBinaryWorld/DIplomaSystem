@@ -9,5 +9,5 @@ data class StudentSubjectDetailsDto(
     val numberOfStudents: Int,
     val description: String,
     val status: TopicStatus,
-    val students: List<StudentNameDto>
+//    val students: List<StudentNameDto>
 )

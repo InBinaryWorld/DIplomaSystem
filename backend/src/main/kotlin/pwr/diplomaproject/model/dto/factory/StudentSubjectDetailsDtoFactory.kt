@@ -2,7 +2,6 @@ package pwr.diplomaproject.model.dto.factory
 
 import pwr.diplomaproject.model.dto.StudentSubjectDetailsDto
 import pwr.diplomaproject.model.entity.Topic
-import pwr.diplomaproject.model.enum.ReservationStatus
 
 class StudentSubjectDetailsDtoFactory {
     companion object {
@@ -13,9 +12,9 @@ class StudentSubjectDetailsDtoFactory {
             topic.studentCount,
             topic.description,
             topic.status,
-            topic.reservation.filter { it.status == ReservationStatus.CONFIRMED } //todo upewnić się, że to mają być tylko rezerwacje confirmed
-                .flatMap { it.groupMembers }
-                .map { StudentNameDtoFactory.create(it.student) }
+//            topic.reservation.filter { it.status == ReservationStatus.CONFIRMED } // todo czy ta lista będzie potrzebna?
+//                .flatMap { it.groupMembers }
+//                .map { StudentNameDtoFactory.create(it.student) }
         )
     }
 }
