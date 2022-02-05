@@ -32,8 +32,10 @@ class StudentSubjectController(
     @PostMapping("/propose")
     fun proposeSubject(
         @RequestParam studentId: Long,
+        @RequestParam diplomaSessionId: Long,
         @RequestBody form: StudentSubjectPropositionForm
-    ): Unit = TODO()
+    ): Unit =
+        studentSubjectService.proposeSubject(studentId, diplomaSessionId, form)
 
     @Operation(summary = "Usunięcie propozycji tematu studenta")
     @DeleteMapping("/proposed/{id}")
