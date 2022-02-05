@@ -2,8 +2,8 @@ package pwr.diplomaproject.service
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import pwr.diplomaproject.model.dto.DeanCorrectionRequestDetailsDto
 import pwr.diplomaproject.model.dto.DeanRequestDto
+import pwr.diplomaproject.model.dto.TopicCorrectionRequestDetailsDto
 import pwr.diplomaproject.model.dto.factory.DeanRequestDtoFactory
 import pwr.diplomaproject.model.entity.Employee
 import pwr.diplomaproject.model.enum.EmployeeType
@@ -28,7 +28,7 @@ class DeanCorrectionRequestService @Autowired constructor(
         topicCorrectionRequestRepository.findAllByResultIn(listOf(RequestResult.REJECTED, RequestResult.ACCEPTED))
             .map { DeanRequestDtoFactory.create(it) }
 
-    fun getCorrectionRequest(id: Long): DeanCorrectionRequestDetailsDto =
+    fun getCorrectionRequest(id: Long): TopicCorrectionRequestDetailsDto =
         topicCorrectionRequestRepository.getCorrectionRequestDetails(id)
 
     @Transactional

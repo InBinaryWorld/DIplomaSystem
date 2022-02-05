@@ -62,7 +62,11 @@ values (1, 'Lorem ipsum', false, '2022-02-09', 'Lorem ipsum', 'WAITING', 1,
        (6, 'Lorem ipsum', true, '2022-02-04', 'Lorem ipsum', 'ACCEPTED_BY_COMMISSION', 2,
         'Aplikacja z przepisami kucharskimi', 1, 2, 1),
        (7, 'Lorem ipsum', true, '2022-02-04', 'Lorem ipsum', 'ACCEPTED_BY_COMMISSION', 1,
-        'Wniosek o doprecyzowanie', 1, 2, 1);
+        'Wniosek o doprecyzowanie', 1, 2, 1),
+       (8, 'Lorem ipsum', true, '2022-02-04', 'Lorem ipsum', 'ACCEPTED_BY_COMMISSION', 1,
+        'Wniosek o zmianę tematu - stary temat', 1, 2, 1),
+       (9, 'Lorem ipsum', true, '2022-02-04', 'Lorem ipsum', 'ACCEPTED_BY_COMMISSION', 1,
+        'Wniosek o zmianę tematu - nowy temat', 1, 2, 1);
 
 
 -- Table: reservation
@@ -71,7 +75,8 @@ values (1, '2022-02-10', 'WAITING', 1),
        (2, '2022-02-10', 'REGISTERED', 6),
        (3, '2022-02-10', 'REGISTERED', 6),
        (4, '2022-02-10', 'REJECTED_BY_LECTURER', 5),
-       (5, '2022-02-10', 'CONFIRMED', 7);
+       (5, '2022-02-10', 'CONFIRMED', 7),
+       (6, '2022-02-10', 'CONFIRMED', 8);
 
 
 -- Table: group_member
@@ -83,8 +88,14 @@ values (1, 'SUGGESTED', 1, 1),
        (5, 'WILLING', 4, 1),
        (6, 'WILLING', 4, 2),
        (7, 'WILLING', 4, 3),
-       (8, 'CONFIRMED', 5, 3);
+       (8, 'CONFIRMED', 5, 3),
+       (9, 'CONFIRMED', 6, 2);
 
 -- Table: topic_correction_request
 insert into topic_correction_request (id, new_description, new_topic, request_date, result, employee_id, student_id)
 values (1, 'nowy opis', 'nowy temat', '2022-02-04', 'WAITING', null, 3);
+
+-- Table: topic_change_request
+insert into topic_change_request (id, request_date, result, employee_id, new_topic_id, old_topic_id, student_id)
+
+values (1, '2022-02-05', 'WAITING', null, 9, 8, 2);

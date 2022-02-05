@@ -11,12 +11,12 @@ data class TopicChangeRequest(
     @ManyToOne
     val student: Student,
     @ManyToOne
-    val employee: Employee,
+    var employee: Employee?,
     @ManyToOne
     val oldTopic: Topic,
     @ManyToOne
     val newTopic: Topic,
     @Enumerated(EnumType.STRING)
-    val result: RequestResult,
+    var result: RequestResult,
     val requestDate: LocalDate,
 )

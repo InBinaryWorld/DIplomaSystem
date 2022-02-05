@@ -8,7 +8,7 @@ class SubjectDtoFactory {
         fun create(topic: Topic): SubjectDto = SubjectDto(
             topic.id,
             topic.topic,
-            "${topic.lecturer.title} ${topic.lecturer.user.firstName} ${topic.lecturer.user.lastName}",
+            topic.lecturer.fullName(),
             topic.creationDate,
             topic.studentCount,
             topic.status

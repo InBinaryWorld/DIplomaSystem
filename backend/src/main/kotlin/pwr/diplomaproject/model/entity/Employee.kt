@@ -14,4 +14,7 @@ data class Employee(
     @Enumerated(EnumType.STRING)
     val type: EmployeeType,
     val title: String
-)
+) {
+
+    fun fullName(): String = "$title ${user.firstName} ${user.lastName}"
+}

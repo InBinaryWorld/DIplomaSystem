@@ -7,11 +7,10 @@ class StudentReservationDtoFactory {
 
     companion object {
         fun create(reservation: Reservation): StudentReservationDto {
-            val supervisorUser = reservation.topic.lecturer.user
             return StudentReservationDto(
                 reservation.id,
                 reservation.topic.topic,
-                "${supervisorUser.firstName} ${supervisorUser.lastName}",
+                reservation.topic.lecturer.fullName(),
                 reservation.status
             )
         }

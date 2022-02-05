@@ -18,4 +18,7 @@ interface ReservationRepository : JpaRepository<Reservation, Long> {
 
     @Query("from Reservation r where r.topic.id = :subjectId and r.topic.lecturer.id = :lecturerId")
     fun findAllBySubjectIdAndLecturerId(subjectId: Long, lecturerId: Long): List<Reservation>
+
+    @Query("from Reservation r where r.topic.id = :subjectId")
+    fun findAllBySubjectId(subjectId: Long): List<Reservation>
 }

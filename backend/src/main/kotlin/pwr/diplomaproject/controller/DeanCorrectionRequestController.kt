@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import pwr.diplomaproject.model.dto.DeanCorrectionRequestDetailsDto
 import pwr.diplomaproject.model.dto.DeanRequestDto
+import pwr.diplomaproject.model.dto.TopicCorrectionRequestDetailsDto
 import pwr.diplomaproject.service.DeanCorrectionRequestService
 import pwr.diplomaproject.util.userId
 import java.security.Principal
@@ -30,7 +30,7 @@ class DeanCorrectionRequestController @Autowired constructor(
 
     @Operation(summary = "Szczegóły wniosku o doprecyzowanie tematu")
     @GetMapping("/{id}")
-    fun getCorrectionRequest(@PathVariable id: Long): DeanCorrectionRequestDetailsDto =
+    fun getCorrectionRequest(@PathVariable id: Long): TopicCorrectionRequestDetailsDto =
         deanCorrectionRequestService.getCorrectionRequest(id)
 
     @Operation(summary = "Zaakceptowanie wniosku o doprecyzowanie tematu")

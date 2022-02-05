@@ -14,5 +14,5 @@ class Reservation(
     var status: ReservationStatus,
     val creationDate: LocalDate,
     @OneToMany(mappedBy = "reservation")
-    val groupMembers: List<GroupMember> = emptyList()
+    var groupMembers: List<GroupMember> = emptyList()
 )
