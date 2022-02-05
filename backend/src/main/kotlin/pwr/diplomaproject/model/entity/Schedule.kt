@@ -11,10 +11,10 @@ data class Schedule(
     val id: Long,
     @OneToOne
     val graduation: Graduation,
-    val topicRegistrationDeadline: LocalDate,
-    val topicCoordinatorApprovalDeadline: LocalDate,
-    val topicCommissionApprovalDeadline: LocalDate,
-    val topicSelectionDeadline: LocalDate,
-    val topicCorrectionDeadline: LocalDate,
-    val topicChangeDeadline: LocalDate
+    var topicRegistrationDeadline: LocalDate,
+    var topicCoordinatorApprovalDeadline: LocalDate,
+    var topicCommissionApprovalDeadline: LocalDate,
+    var topicSelectionDeadline: LocalDate,
+    var topicCorrectionDeadline: LocalDate,
+    var topicChangeDeadline: LocalDate
 )
