@@ -1,8 +1,6 @@
 package pwr.diplomaproject.controller
 
 import io.swagger.v3.oas.annotations.Operation
-import org.springframework.http.ResponseEntity
-import org.springframework.http.ResponseEntity.*
 import org.springframework.web.bind.annotation.*
 import pwr.diplomaproject.model.dto.StudentReservationDto
 import pwr.diplomaproject.model.form.StudentReservationForm
@@ -16,46 +14,41 @@ class StudentReservationController(
 
     @Operation(summary = "Złożone rezerwacje zalogowanego studenta")
     @GetMapping
-    fun getReservations(@RequestParam studentId: Long): ResponseEntity<List<StudentReservationDto>> =
-        ok(studentReservationService.getReservations(studentId))
+    fun getReservations(
+        @RequestParam studentId: Long,
+        @RequestParam diplomaSessionId: Long,
+    ): List<StudentReservationDto> =
+        studentReservationService.getReservations(studentId, diplomaSessionId)
 
     @Operation(summary = "Dane rezerwacji studenta")
-    @GetMapping("/{reservationId}")
+    @GetMapping("/{id}")
     fun getReservation(
         @RequestParam studentId: Long,
-        @PathVariable reservationId: Long
-    ): ResponseEntity<StudentReservationDto> {
-        val dto = studentReservationService.getReservation(studentId, reservationId)
-        return if (dto == null) notFound().build() else ok(dto)
-    }
+        @PathVariable id: Long
+    ): StudentReservationDto =
+        studentReservationService.getReservation(studentId, id)
 
     @Operation(summary = "Potwierdzenie rezerwacji przez studenta (wstępne lub ostateczne)")
-    @GetMapping("/approve/{reservationId}")
+    @GetMapping("/approve/{id}")
     fun approveReservation(
         @RequestParam studentId: Long,
-        @PathVariable reservationId: Long
-    ): ResponseEntity<Unit> =
-        if (studentReservationService.approveReservation(studentId, reservationId))
-            ok().build()
-        else badRequest().build()
+        @PathVariable id: Long
+    ): Unit =
+        studentReservationService.approveReservation(studentId, id)
 
     @Operation(summary = "Odrzucenie rezerwacji")
-    @GetMapping("/cancel/{reservationId}")
+    @GetMapping("/cancel/{id}")
     fun cancelReservation(
         @RequestParam studentId: Long,
-        @PathVariable reservationId: Long
-    ): ResponseEntity<Unit> =
-        if (studentReservationService.cancelReservation(studentId, reservationId))
-            ok().build()
-        else badRequest().build()
+        @PathVariable id: Long
+    ): Unit =
+        studentReservationService.cancelReservation(studentId, id)
 
     @Operation(summary = "Rezerwacja tematu (i zgłoszenie grupy)")
     @PostMapping
     fun makeReservation(
         @RequestParam studentId: Long,
         @RequestBody form: StudentReservationForm
-    ): ResponseEntity<Unit> =
-        if (studentReservationService.makeReservation(studentId, form))
-            ok().build()
-        else badRequest().build()
+    ): Unit =
+        studentReservationService.makeReservation(studentId, form)
 }

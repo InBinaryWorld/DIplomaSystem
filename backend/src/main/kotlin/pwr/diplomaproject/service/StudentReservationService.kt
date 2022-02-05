@@ -23,23 +23,17 @@ class StudentReservationService(
     private val studentRepository: StudentRepository,
     private val topicRepository: TopicRepository
 ) {
-    fun getReservations(studentId: Long): List<StudentReservationDto> =
-        reservationRepository.findAllByStudentId(studentId).map { StudentReservationDtoFactory.create(it) }
+    fun getReservations(studentId: Long, graduationId: Long): List<StudentReservationDto> =
+        reservationRepository.findAllByStudentAndGraduation(studentId, graduationId)
+            .map { StudentReservationDtoFactory.create(it) }
 
-    fun getReservation(
-        studentId: Long, reservationId: Long
-    ): StudentReservationDto? {
-        val reservation = reservationRepository.findAllByStudentId(studentId).firstOrNull {
-            it.id == reservationId
-        }
-        return if (reservation == null) null else StudentReservationDtoFactory.create(reservation)
-    }
+    fun getReservation(studentId: Long, id: Long): StudentReservationDto =
+        StudentReservationDtoFactory.create(reservationRepository.findAllByIndexAndStudent(id, studentId))
 
-    fun approveReservation(studentId: Long, reservationId: Long): Boolean {
-        val reservation: Reservation? = reservationRepository.findAllByStudentId(studentId).firstOrNull {
-            it.id == reservationId
-        }
-        val groupMember: GroupMember? = reservation?.groupMembers?.firstOrNull {
+    fun approveReservation(studentId: Long, id: Long) {
+        val reservation: Reservation = reservationRepository.findAllByIndexAndStudent(id, studentId)
+
+        val groupMember: GroupMember? = reservation.groupMembers.firstOrNull {
             it.student.id == studentId
         }
 
@@ -48,7 +42,7 @@ class StudentReservationService(
             // SUGGESTED -> WILLING
             if (groupMember.status == MemberStatus.SUGGESTED) {
                 if (reservation.status != ReservationStatus.WAITING) {
-                    return false
+                    return
                 }
                 groupMember.status = MemberStatus.WILLING
             }
@@ -56,7 +50,7 @@ class StudentReservationService(
             // WILLING -> ACCEPTED
             else if (groupMember.status == MemberStatus.WILLING) {
                 if (reservation.status != ReservationStatus.ACCEPTED) {
-                    return false
+                    return
                 }
                 groupMember.status = MemberStatus.CONFIRMED
             }
@@ -75,23 +69,16 @@ class StudentReservationService(
 
             groupMemberRepository.save(groupMember)
             reservationRepository.save(reservation)
-
-            return true
         }
-
-        return false
     }
 
-    fun cancelReservation(studentId: Long, reservationId: Long): Boolean {
-        val reservation: Reservation? = reservationRepository.findAllByStudentId(studentId).firstOrNull {
-            it.id == reservationId
-        }
-        val groupMember: GroupMember? = reservation?.groupMembers?.firstOrNull {
+    fun cancelReservation(studentId: Long, id: Long) {
+        val reservation: Reservation = reservationRepository.findAllByIndexAndStudent(id, studentId)
+        val groupMember: GroupMember? = reservation.groupMembers.firstOrNull {
             it.student.id == studentId
         }
 
-        if (reservation != null
-            && groupMember != null
+        if (groupMember != null
             && reservation.status != ReservationStatus.CONFIRMED
             && groupMember.status != MemberStatus.CONFIRMED
         ) {
@@ -99,14 +86,11 @@ class StudentReservationService(
             reservation.status = ReservationStatus.REJECTED_BY_STUDENT
             groupMemberRepository.save(groupMember)
             reservationRepository.save(reservation)
-            return true
         }
-
-        return false
     }
 
-    fun makeReservation(studentId: Long, form: StudentReservationForm): Boolean {
-        val topic: Topic = topicRepository.findByIdOrNull(form.subjectId) ?: return false
+    fun makeReservation(studentId: Long, form: StudentReservationForm) {
+        val topic: Topic = topicRepository.findByIdOrNull(form.subjectId) ?: return
 
         val newReservation = Reservation(
             id = reservationRepository.getNextId(),
@@ -121,7 +105,7 @@ class StudentReservationService(
         for (suggestedStudentId in form.studentIds) {
             val student = studentRepository.findByIdOrNull(suggestedStudentId)
             if (student == null) {
-                return false
+                return
             } else {
                 val newGroupMember = GroupMember(
                     id = nextGroupMemberId++,
@@ -137,6 +121,5 @@ class StudentReservationService(
         for (newGroupMember in newGroupMembers) {
             groupMemberRepository.save(newGroupMember)
         }
-        return true
     }
 }

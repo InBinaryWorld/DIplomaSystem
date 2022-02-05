@@ -7,11 +7,14 @@ import pwr.diplomaproject.model.entity.Reservation
 
 @Repository
 interface ReservationRepository : JpaRepository<Reservation, Long> {
-    @Query("select g.reservation from GroupMember g where g.student.id = :studentId")
-    fun findAllByStudentId(studentId: Long): List<Reservation>
-
     @Query(value = "select max(r.id) + 1 from Reservation r")
     fun getNextId(): Long
+
+    @Query("select g.reservation from GroupMember g where g.student.id = :studentId and g.reservation.topic.graduation = :graduationId")
+    fun findAllByStudentAndGraduation(studentId: Long, graduationId: Long): List<Reservation>
+
+    @Query("select g.reservation from GroupMember g where g.student.id = :studentId and g.reservation.id = :id")
+    fun findAllByIndexAndStudent(id: Long, studentId: Long): Reservation
 
     @Query("from Reservation r where r.id = :reservationId and r.topic.lecturer.id = :lecturerId")
     fun getByIdAndLecturerId(reservationId: Long, lecturerId: Long): Reservation
