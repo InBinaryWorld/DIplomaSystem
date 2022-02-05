@@ -21,5 +21,8 @@ data class Topic(
     var status: TopicStatus,
     var coordinatorComments: String?,
     val createdByStudent: Boolean,
-    val creationDate: LocalDate
+    val creationDate: LocalDate,
+
+    @OneToMany(mappedBy = "topic")
+    var reservation: List<Reservation> = emptyList()
 )

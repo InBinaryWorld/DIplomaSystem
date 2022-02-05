@@ -1,8 +1,11 @@
 package pwr.diplomaproject.service
 
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
+import pwr.diplomaproject.model.dto.StudentSubjectDetailsDto
 import pwr.diplomaproject.model.dto.SubjectDto
+import pwr.diplomaproject.model.dto.factory.StudentSubjectDetailsDtoFactory
 import pwr.diplomaproject.model.dto.factory.SubjectDtoFactory
 import pwr.diplomaproject.repository.TopicRepository
 
@@ -19,4 +22,7 @@ class StudentSubjectService @Autowired constructor(
         topicRepository.findAllProposedByStudent(studentId).map {
             SubjectDtoFactory.create(it)
         }
+
+    fun getSubject(id: Long): StudentSubjectDetailsDto =
+        StudentSubjectDetailsDtoFactory.create(topicRepository.findByIdOrNull(id)!!)
 }

@@ -25,7 +25,8 @@ class StudentSubjectController(
 
     @Operation(summary = "Szczegóły tematu")
     @GetMapping("/{id}")
-    fun getSubject(@PathVariable id: Long): StudentSubjectDetailsDto = TODO()
+    fun getSubject(@PathVariable id: Long): StudentSubjectDetailsDto =
+        studentSubjectService.getSubject(id)
 
     @Operation(summary = "Dodanie propozycji tematu przez studenta")
     @PostMapping("/propose")
