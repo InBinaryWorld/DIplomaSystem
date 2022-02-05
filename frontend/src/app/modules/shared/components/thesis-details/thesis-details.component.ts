@@ -145,7 +145,7 @@ export class ThesisDetailsComponent extends RoleComponent implements OnInit {
   }
 
   checkForLecturer(context: Context): Observable<void> {
-    this.canLecturerSubmit = this.deadlinesService.canLectureSubmitThesisWithSameDiplomaSessionId(context.diplomaSession!);
+    this.canLecturerSubmit = this.deadlinesService.canLectureSubmitThesisWithSameDiplomaSession(context.diplomaSession!);
     this.markForCheck();
     return of();
   }

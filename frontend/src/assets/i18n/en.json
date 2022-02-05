@@ -68,6 +68,7 @@
   "Student.TopicChangeCreate.Header": "Create Change Request",
   "Student.CreateThesis.Header": "Create Thesis",
   "Student.CreateReservation.Header": "Create Reservation",
+  "Lecturer.CreateTopic.Header": "Create New Thesis",
   "ReservationDetails.Header": "Reservation Details",
   "ThesisDetails.Header": "Thesis Details",
   "ThesisDetails.Header.TopicReview": "Review",

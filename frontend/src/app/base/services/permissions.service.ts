@@ -43,19 +43,19 @@ export class PermissionsService {
   }
 
   // Lecturer
-  public canLecturerAcceptProposedThesis(coordinatorId: IdType, thesisId: IdType): Observable<boolean> {
-    return combineLatest([
-      this.userService.getEmployeeForId(coordinatorId),
-      this.thesesService.getThesisForId(thesisId)
-    ]).pipe(switchMap(([employee, thesis]) =>
-      thesis.status !== ThesisStatus.PROPOSED_BY_STUDENT || thesis.supervisorId !== employee.id
-        ? of(false)
-        : this.verifyDeadlineForDiplomaSessionId(thesis.diplomaSessionId, t => t.submittingThesis)
-    ));
-  }
+  // public canLecturerAcceptProposedThesis(coordinatorId: IdType, thesisId: IdType): Observable<boolean> {
+  //   return combineLatest([
+  //     this.userService.getEmployeeForId(coordinatorId),
+  //     this.thesesService.getThesisForId(thesisId)
+  //   ]).pipe(switchMap(([employee, thesis]) =>
+  //     thesis.status !== ThesisStatus.PROPOSED_BY_STUDENT || thesis.supervisorId !== employee.id
+  //       ? of(false)
+  //       : this.verifyDeadlineForDiplomaSessionId(thesis.diplomaSessionId, t => t.submittingThesis)
+  //   ));
+  // }
 
-  public canLectureSubmitThesisWithSameDiplomaSessionId(diplomaSession: DiplomaSession): boolean {
-    return this.verifyDeadline(diplomaSession.timetable, t => t.selectingThesis);
+  public canLectureSubmitThesisWithSameDiplomaSession(diplomaSession: DiplomaSession): boolean {
+    return this.verifyDeadline(diplomaSession.timetable, t => t.submittingThesis);
   }
 
 

@@ -11,6 +11,8 @@ import { map, Observable, switchMap } from 'rxjs';
 import { Employee } from '../../../../../base/models/dto/employee.model';
 import { Role } from '../../../../../base/models/dto/role.model';
 import { RoleComponent } from '../../../../../base/components/role-component.directive';
+import { LabelBuilder } from '../../../../../base/utils/label-builder.utils';
+import { PermissionsService } from '../../../../../base/services/permissions.service';
 
 @Component({
   selector: 'app-lecturer-topic-create',
@@ -22,15 +24,17 @@ export class LecturerTopicCreateComponent extends RoleComponent implements OnIni
 
   form?: FormGroup;
 
-  supervisors?: any[];
+  supervisor?: Employee;
   context?: Context;
 
+  canSubmit?: boolean;
   errorVisible = false;
 
   constructor(private readonly router: Router,
               private readonly formBuilder: FormBuilder,
               private readonly userService: UserService,
               private readonly thesesService: ThesesService,
+              private readonly permissionsService: PermissionsService,
               sessionService: SessionService,
               changeDetector: ChangeDetectorRef) {
     super(sessionService, changeDetector);
@@ -46,42 +50,36 @@ export class LecturerTopicCreateComponent extends RoleComponent implements OnIni
   }
 
   ngOnInit(): void {
-    this.initForms();
     this.initData();
-  }
-
-  private initForms(): void {
-    this.form = this.formBuilder.group({
-      topic: [undefined, AppValidators.topicValidator],
-      supervisorId: [undefined, Validators.required],
-      numberOfStudents: [undefined, AppValidators.numberOfStudentsValidator],
-      description: [undefined, AppValidators.descriptionValidator],
-      fieldOfStudy: [{ value: '', disabled: true }]
-    });
+    this.checkPermission();
   }
 
   private initData(): void {
     this.addSubscription(this.getDataSource()
-      .subscribe(([context, supervisors]) => {
+      .subscribe(([context, supervisor]) => {
         this.context = context;
-        this.supervisors = supervisors;
-        this.setFormData(context);
+        this.supervisor = supervisor;
+        this.initForm(context, supervisor);
         this.markForCheck();
       })
     );
   }
 
-  private getDataSource(): Observable<[Context, Employee[]]> {
+  private getDataSource(): Observable<[Context, Employee]> {
     return this.contextSource.pipe(
-      switchMap(context => this.userService.getAvailableSupervisors(context.diplomaSession!.id).pipe(
-        map(supervisors => ([context, supervisors] as [Context, Employee[]]))
+      switchMap(context => this.userService.getEmployeeForId(context.userRole!.id).pipe(
+        map(supervisor => ([context, supervisor] as [Context, Employee]))
       ))
     );
   }
 
-  private setFormData(context: Context): void {
-    this.form?.patchValue({
-      fieldOfStudy: context.fieldOfStudy!.name
+  private initForm(context: Context, lecturer: Employee): void {
+    this.form = this.formBuilder.group({
+      topic: [undefined, AppValidators.topicValidator],
+      supervisorName: [{ value: this.LabelBuilder.forEmployee(lecturer), disabled: true }, Validators.required],
+      numberOfStudents: [undefined, AppValidators.numberOfStudentsValidator],
+      description: [undefined, AppValidators.descriptionValidator],
+      fieldOfStudy: [{ value: LabelBuilder.forDiplomaSession(context.diplomaSession!), disabled: true }]
     });
   }
 
@@ -92,13 +90,20 @@ export class LecturerTopicCreateComponent extends RoleComponent implements OnIni
   private prepareCreatePayload(context: Context, formData: any): Partial<Thesis> {
     return {
       topic: formData.topic,
-      supervisorId: formData.supervisorId,
-      authorStudentId: context.userRole.id,
+      supervisorId: context.userRole.id,
       numberOfStudents: formData.numberOfStudents,
       description: formData.description,
-      reportedByStudent: true,
-      diplomaSessionId: context.diplomaSession!.id
+      diplomaSessionId: context.diplomaSession!.id,
+      reportedByStudent: false
     };
+  }
+
+  private checkPermission(): void {
+    this.addSubscription(
+      this.contextSource.pipe(map(context =>
+        this.permissionsService.canLectureSubmitThesisWithSameDiplomaSession(context.diplomaSession!)
+      )).subscribe(canSubmit => this.canSubmit = canSubmit)
+    );
   }
 
   public redirectOnSuccess(): void {
