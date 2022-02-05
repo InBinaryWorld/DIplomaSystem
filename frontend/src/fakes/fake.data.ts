@@ -313,6 +313,8 @@ const responseByApiKey: Dictionary<any> = {
   [ApiLabel.CONFIRM_MEMBER_RESERVATION]: firstItem(reservationMembers),
   [ApiLabel.CONFIRM_PARTICIPATION_IN_RESERVATION]: firstItem(reservationMembers),
   [ApiLabel.CREATE_CLARIFICATION_REQUEST]: firstItem(clarificationRequests),
+  [ApiLabel.REJECT_RESERVATION]: firstItem(reservations),
+  [ApiLabel.ACCEPT_RESERVATION]: firstItem(reservations),
   [ApiLabel.CREATE_CHANGE_REQUEST]: firstItem(changeRequests),
   [ApiLabel.CREATE_THESIS]: firstItem(theses),
   [ApiLabel.CREATE_RESERVATION]: firstItem(reservations),
@@ -412,6 +414,10 @@ function getTheses(query?: RequestParams): Thesis[] {
 }
 
 
+function getReservation(query?: RequestParams): Reservation {
+  return reservations.find(t => t.id === query?.getAll().find(p => p.name === 'id')?.value)!;
+}
+
 function getReservations(query?: RequestParams): Reservation[] {
   let response = reservations;
   const studentId = query?.getAll().find(p => p.name === 'studentId')?.value;
@@ -446,6 +452,8 @@ function handleLabel(apiLabel: ApiLabel, query?: RequestParams): NonNullable<any
       return getThesis(query);
     case ApiLabel.GET_RESERVATIONS:
       return getReservations(query);
+    case ApiLabel.GET_RESERVATION:
+      return getReservation(query);
     default:
       return responseByApiKey[apiLabel];
   }

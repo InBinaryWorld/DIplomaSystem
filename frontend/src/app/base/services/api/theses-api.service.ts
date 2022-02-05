@@ -43,7 +43,7 @@ export class ThesesApiService {
   public getReservationForId(reservationId: IdType): Observable<Reservation> {
     const query = new RequestParams();
     query.addIfValueExists('id', reservationId);
-    return this.http.getWithLabel(ApiLabel.GET_RESERVATION);
+    return this.http.getWithLabel(ApiLabel.GET_RESERVATION, undefined, query);
   }
 
   public getReservationMembers(reservationId: IdType): Observable<ReservationMember[]> {
@@ -71,9 +71,16 @@ export class ThesesApiService {
     return this.http.postWithLabel(ApiLabel.ABANDON_MEMBER_RESERVATION, payload);
   }
 
-  //TODO:
   public createReservation(payload: object): Observable<Reservation> {
     return this.http.postWithLabel(ApiLabel.CREATE_RESERVATION, payload);
+  }
+
+  public rejectReservation(payload: object): Observable<Reservation> {
+    return this.http.postWithLabel(ApiLabel.REJECT_RESERVATION, payload);
+  }
+
+  public acceptReservation(payload: object): Observable<Reservation> {
+    return this.http.postWithLabel(ApiLabel.ACCEPT_RESERVATION, payload);
   }
 
   public requestForThesisCorrectionsWithCoordinator(coordinatorId: IdType, payload: object): Observable<Thesis> {
