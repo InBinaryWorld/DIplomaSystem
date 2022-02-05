@@ -60,7 +60,7 @@ export class LecturerTopicsComponent extends RoleComponent implements OnInit {
     this.addSubscription(
       this.contextSource.pipe(
         map(context => this.deadlinesService
-          .canLectureSubmitThesisWithSameDiplomaSessionId(context.diplomaSession!))
+          .canLectureSubmitThesisWithSameDiplomaSession(context.diplomaSession!))
       ).subscribe(canSubmit => {
         this.canSubmit = canSubmit;
         this.markForCheck();

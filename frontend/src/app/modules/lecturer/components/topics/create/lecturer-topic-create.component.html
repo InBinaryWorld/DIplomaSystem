@@ -13,11 +13,9 @@
       </div>
       <div class="row mb-3">
         <div class="col-7">
-          <label for="supervisorId" class="form-label">{{ 'Form.Label.Supervisor' | translate }}</label>
-          <select formControlName="supervisorId" id="supervisorId" class="form-control">
-            <option *ngFor="let item of supervisors" [value]="item.id">{{ LabelBuilder.forEmployee(item) }}</option>
-          </select>
-          <app-validation-feedback [errors]="getErrors(form,'supervisorId')"></app-validation-feedback>
+          <label for="supervisorName" class="form-label">{{ 'Form.Label.Supervisor' | translate }}</label>
+          <input type="text" formControlName="supervisorName" id="supervisorName" class="form-control">
+          <app-validation-feedback [errors]="getErrors(form,'supervisorName')"></app-validation-feedback>
         </div>
         <div class="col-5">
           <label for="numberOfStudents" class="form-label">{{ 'Form.Label.NumberOfStudents' | translate }}</label>
@@ -37,7 +35,7 @@
       <div class="gap-2 d-flex justify-content-end">
         <button
           type="submit" class="btn btn-success"
-          [disabled]="!form!.valid"
+          [disabled]="!form!.valid || !canSubmit"
           (click)="confirm()">
           {{ 'Button.Approve' | translate }}
         </button>
