@@ -27,6 +27,8 @@ export const baseEnvironment = {
       [ApiLabel.CREATE_CHANGE_REQUEST]: 'TODO',
       [ApiLabel.CREATE_THESIS]: 'TODO',
       [ApiLabel.CREATE_RESERVATION]: 'TODO',
+      [ApiLabel.REJECT_RESERVATION]: 'TODO',
+      [ApiLabel.ACCEPT_RESERVATION]: 'TODO',
       [ApiLabel.GET_CHANGE_REQUEST]: 'TODO',
       [ApiLabel.GET_CHANGE_REQUESTS]: 'TODO',
       [ApiLabel.GET_CLARIFICATION_REQUEST]: 'TODO',

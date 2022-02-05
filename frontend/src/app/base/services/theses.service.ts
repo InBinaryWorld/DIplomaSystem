@@ -62,7 +62,12 @@ export class ThesesService {
   }
 
   public getStudentReservations(studentId: IdType, diplomaSessionId: IdType): Observable<Reservation[]> {
-    const options = LoadReservationsActionOptions.for(studentId, diplomaSessionId);
+    const options = LoadReservationsActionOptions.forStudent(studentId, diplomaSessionId);
+    return this.thesesStoreService.getStudentReservations(options);
+  }
+
+  public getSupervisorReservations(supervisorId: IdType, diplomaSessionId: IdType): Observable<Reservation[]> {
+    const options = LoadReservationsActionOptions.forSupervisor(supervisorId, diplomaSessionId);
     return this.thesesStoreService.getStudentReservations(options);
   }
 
@@ -115,6 +120,16 @@ export class ThesesService {
 
   public createReservation(payload: object): Observable<Reservation> {
     return this.thesesApiService.createReservation(payload)
+      .pipe(tap(() => this.invalidateReservations()));
+  }
+
+  public rejectReservation(payload: object): Observable<Reservation> {
+    return this.thesesApiService.rejectReservation(payload)
+      .pipe(tap(() => this.invalidateReservations()));
+  }
+
+  public acceptReservation(payload: object): Observable<Reservation> {
+    return this.thesesApiService.acceptReservation(payload)
       .pipe(tap(() => this.invalidateReservations()));
   }
 

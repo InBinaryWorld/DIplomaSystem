@@ -62,6 +62,16 @@
             {{ 'Button.ConfirmReservation' | translate }}
           </button>
         </ng-container>
+        <ng-container *ngIf="userRole?.role === Role.LECTURER && reservation.status === ReservationStatus.SUBMITTED">
+          <button type="button" class="btn btn-outline-danger"
+                  (click)="rejectReservation()">
+            {{ 'Button.Reject' | translate }}
+          </button>
+          <button type="button" class="btn btn-primary"
+                  (click)="acceptReservation()">
+            {{ 'Button.Approve' | translate }}
+          </button>
+        </ng-container>
       </div>
     </form>
   </div>

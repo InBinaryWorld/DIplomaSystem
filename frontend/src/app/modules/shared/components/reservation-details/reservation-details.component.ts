@@ -27,6 +27,7 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ReservationDetailsComponent extends RoleComponent implements OnInit {
+  ReservationStatus = ReservationStatus;
 
   form?: FormGroup;
 
@@ -51,7 +52,7 @@ export class ReservationDetailsComponent extends RoleComponent implements OnInit
   }
 
   get roles(): Role[] {
-    return [Role.STUDENT];
+    return [Role.STUDENT, Role.LECTURER];
   }
 
   get reservationIdSource(): Observable<string> {
@@ -137,6 +138,17 @@ export class ReservationDetailsComponent extends RoleComponent implements OnInit
   public abandonReservation(): void {
     const actionSource = this.thesesService.abandonReservation(this.studentMember!.id);
     this.handleAction(actionSource);
+  }
+
+  rejectReservation(): void {
+    const actionSource = this.thesesService.rejectReservation({ reservationId: this.reservation!.id });
+    this.handleAction(actionSource);
+  }
+
+  acceptReservation(): void {
+    const actionSource = this.thesesService.acceptReservation({ reservationId: this.reservation!.id });
+    this.handleAction(actionSource);
+
   }
 
   private handleAction<T>(actionSource: Observable<T>): void {

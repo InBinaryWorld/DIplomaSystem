@@ -60,11 +60,19 @@ export const loadThesesFailedAction = createAction(
 
 export class LoadReservationsActionOptions {
   studentId?: IdType;
+  supervisorId?: IdType;
   diplomaSessionId?: IdType;
 
-  static for(studentId: IdType, diplomaSessionId: IdType): LoadReservationsActionOptions {
+  static forStudent(studentId: IdType, diplomaSessionId: IdType): LoadReservationsActionOptions {
     const options = new LoadReservationsActionOptions();
     options.studentId = studentId;
+    options.diplomaSessionId = diplomaSessionId;
+    return options;
+  }
+
+  static forSupervisor(supervisorId: IdType, diplomaSessionId: IdType): LoadReservationsActionOptions {
+    const options = new LoadReservationsActionOptions();
+    options.supervisorId = supervisorId;
     options.diplomaSessionId = diplomaSessionId;
     return options;
   }
@@ -73,7 +81,8 @@ export class LoadReservationsActionOptions {
     return [
       'LoadReservationsActionOptions',
       'SI_' + this.studentId,
-      'DSI_' + this.diplomaSessionId
+      'DSI_' + this.diplomaSessionId,
+      'SuI' + this.supervisorId
     ].join('$');
   }
 }
