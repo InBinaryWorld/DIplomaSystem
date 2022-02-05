@@ -20,4 +20,12 @@ interface TopicRepository : JpaRepository<Topic, Long> {
     """
     )
     fun findAllAvailableForStudent(studentId: Long): List<Topic>
+
+    @Query(
+        """
+        FROM Topic t
+        WHERE t.createdByStudent = true and t.student.id = :studentId 
+    """
+    )
+    fun findAllProposedByStudent(studentId: Long): List<Topic>
 }

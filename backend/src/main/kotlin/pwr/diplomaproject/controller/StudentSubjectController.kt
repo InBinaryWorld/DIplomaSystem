@@ -20,7 +20,8 @@ class StudentSubjectController(
 
     @Operation(summary = "Propozycje tematów złożone przez zalogowanego studenta")
     @GetMapping("/proposed")
-    fun getProposedSubjects(@RequestParam studentId: Long): List<SubjectDto> = TODO()
+    fun getProposedSubjects(@RequestParam studentId: Long): List<SubjectDto> =
+        studentSubjectService.getProposedSubjects(studentId)
 
     @Operation(summary = "Szczegóły tematu")
     @GetMapping("/{id}")

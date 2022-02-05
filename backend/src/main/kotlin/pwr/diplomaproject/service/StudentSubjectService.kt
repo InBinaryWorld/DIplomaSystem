@@ -14,4 +14,9 @@ class StudentSubjectService @Autowired constructor(
         topicRepository.findAllAvailableForStudent(studentId).map {
             SubjectDtoFactory.create(it)
         }
+
+    fun getProposedSubjects(studentId: Long): List<SubjectDto> =
+        topicRepository.findAllProposedByStudent(studentId).map {
+            SubjectDtoFactory.create(it)
+        }
 }
