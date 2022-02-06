@@ -18,12 +18,12 @@ class GraduationScheduleService @Autowired constructor(
     fun updateSchedule(scheduleId: Long, form: GraduationScheduleUpdateForm) {
         val schedule = scheduleRepository.getById(scheduleId)
 
-        schedule.topicRegistrationDeadline = form.newTopicRegistrationDeadline
-        schedule.topicCoordinatorApprovalDeadline = form.newTopicCoordinatorApprovalDeadline
-        schedule.topicCommissionApprovalDeadline = form.newTopicCommissionApprovalDeadline
-        schedule.topicSelectionDeadline = form.newTopicSelectionDeadline
-        schedule.topicCorrectionDeadline = form.newTopicCorrectionDeadline
-        schedule.topicChangeDeadline = form.newTopicChangeDeadline
+        schedule.topicRegistrationDeadline = form.submittingThesis
+        schedule.topicCoordinatorApprovalDeadline = form.approvingThesisByCoordinator
+        schedule.topicCommissionApprovalDeadline = form.approvingThesisByCommittee
+        schedule.topicSelectionDeadline = form.selectingThesis
+        schedule.topicCorrectionDeadline = form.clarificationThesis
+        schedule.topicChangeDeadline = form.changingThesis
 
         scheduleRepository.save(schedule)
     }

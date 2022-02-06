@@ -8,9 +8,8 @@ import pwr.diplomaproject.model.dto.SubjectDto
 import pwr.diplomaproject.model.dto.factory.StudentSubjectDetailsDtoFactory
 import pwr.diplomaproject.model.dto.factory.SubjectDtoFactory
 import pwr.diplomaproject.model.entity.Topic
-import pwr.diplomaproject.model.enum.EmployeeType
 import pwr.diplomaproject.model.enum.TopicStatus
-import pwr.diplomaproject.model.form.StudentSubjectPropositionForm
+import pwr.diplomaproject.model.form.NewSubjectForm
 import pwr.diplomaproject.model.notification.SubjectProposedByStudent
 import pwr.diplomaproject.model.notification.SubjectPropositionDeletedByStudent
 import pwr.diplomaproject.repository.*
@@ -37,15 +36,15 @@ class StudentSubjectService @Autowired constructor(
     fun getSubject(id: Long): StudentSubjectDetailsDto =
         StudentSubjectDetailsDtoFactory.create(topicRepository.findByIdOrNull(id)!!)
 
-    fun proposeSubject(studentId: Long, graduationId: Long, form: StudentSubjectPropositionForm) {
-        val student = studentRepository.getById(studentId)
-        val employee = employeeRepository.getEmployeeByUserIdAndType(form.supervisorId, EmployeeType.LECTURER)
+    fun proposeSubject(form: NewSubjectForm) {
+        val student = studentRepository.getById(form.authorStudentId!!)
+        val employee = employeeRepository.getById(form.supervisorId)
 
         val newSubject = Topic(
             subjectRepository.getNextId(),
             employee,
             student,
-            graduationRepository.getById(graduationId),
+            graduationRepository.getById(form.diplomaSessionId),
             form.topic,
             form.description,
             form.numberOfStudents,

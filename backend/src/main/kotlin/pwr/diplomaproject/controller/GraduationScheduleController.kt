@@ -18,12 +18,12 @@ class GraduationScheduleController(
         graduationScheduleService.getSchedule(scheduleId)
 
     @Operation(summary = "Aktualizuje harmonogram")
-    @PutMapping("/{scheduleId}")
+    @PostMapping(params = ["id"])
     fun updateSchedule(
-        @PathVariable scheduleId: Long,
+        @RequestParam id: Long,
         @RequestBody form: GraduationScheduleUpdateForm
     ): Unit =
-        graduationScheduleService.updateSchedule(scheduleId, form)
+        graduationScheduleService.updateSchedule(id, form)
 
     /*TODO: Czy poniższe endpointy są nam potrzebne? Krzysiek mówi, że nie...
 
