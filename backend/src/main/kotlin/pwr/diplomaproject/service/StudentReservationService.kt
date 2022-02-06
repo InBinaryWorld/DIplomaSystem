@@ -73,7 +73,8 @@ class StudentReservationService(
 
             GroupMemberUpdatedByStudent(
                 listOf(reservation.topic.lecturer.user) + reservation.groupMembers.map { gm -> gm.student.user },
-                groupMember
+                groupMember,
+                notificationRepository
             ).send()
         }
     }
@@ -95,7 +96,8 @@ class StudentReservationService(
 
             GroupMemberUpdatedByStudent(
                 listOf(reservation.topic.lecturer.user) + reservation.groupMembers.map { gm -> gm.student.user },
-                groupMember
+                groupMember,
+                notificationRepository
             ).send()
         }
     }

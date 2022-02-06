@@ -107,4 +107,6 @@ insert into notification (id, label, content)
 values (1, 'ReservationCreatedByStudent',
         'Student :STUDENT złożył rezerwację na temat ":TOPIC". Liczba zgłoszonych osób: :MEMBER_COUNT.'),
        (2, 'ReservationResolvedByLecturer',
-        'Prowadzący :LECTURER rozpatrzył rezerwację na temat ":TOPIC". Aktualny status rezerwacji: :RESERVATION_STATUS.')
+        'Prowadzący :LECTURER rozpatrzył rezerwację na temat ":TOPIC". Aktualny status rezerwacji: :RESERVATION_STATUS.'),
+       (3, 'GroupMemberUpdatedByStudent',
+        'Student :STUDENT zaktualizował swój status członka rezerwacji tematu ":TOPIC". Aktualny status członka grupy: :GROUP_MEMBER_STATUS. Aktualny status rezerwacji: $RESERVATION_STATUS.')
