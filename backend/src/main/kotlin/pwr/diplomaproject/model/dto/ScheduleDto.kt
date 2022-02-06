@@ -2,6 +2,9 @@ package pwr.diplomaproject.model.dto
 
 import java.time.LocalDate
 
+/**
+ * `Timetable` on frontend
+ */
 data class ScheduleDto(
     val id: Long,
     val diplomaSessionId: Long,
