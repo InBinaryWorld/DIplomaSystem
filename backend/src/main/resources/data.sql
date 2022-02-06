@@ -103,22 +103,22 @@ insert into topic_change_request (id, request_date, result, employee_id, new_top
 values (1, '2022-02-05', 'WAITING', null, 9, 8, 2);
 
 -- Table: notification
-insert into notification (id, label, content)
-values (1, 'GroupMemberUpdatedByStudent',
+insert into notification (label, content)
+values ('GroupMemberUpdatedByStudent',
         'Student :STUDENT zaktualizował swój status członka rezerwacji tematu ":TOPIC". Aktualny status członka grupy: :GROUP_MEMBER_STATUS. Aktualny status rezerwacji: :RESERVATION_STATUS.'),
-       (2, 'ReservationCreatedByStudent',
+       ('ReservationCreatedByStudent',
         'Student :STUDENT złożył rezerwację na temat ":TOPIC". Liczba zgłoszonych osób: :MEMBER_COUNT.'),
-       (3, 'ReservationResolvedByLecturer',
+       ('ReservationResolvedByLecturer',
         'Prowadzący :LECTURER rozpatrzył rezerwację na temat ":TOPIC". Aktualny status rezerwacji: :RESERVATION_STATUS.'),
-       (4, 'SubjectProposedByStudent',
+       ('SubjectProposedByStudent',
         'Student :STUDENT złożył nową propozycję tematu: ":TOPIC".'),
-       (5, 'SubjectPropositionDeletedByStudent',
+       ('SubjectPropositionDeletedByStudent',
         'Propozycja tematu ":TOPIC" została usunięta przez studenta :STUDENT.'),
-       (6, 'SubjectPropositionResolvedByLecturer',
+       ('SubjectPropositionResolvedByLecturer',
         'Propozycja tematu ":TOPIC" została rozpatrzona :RESULT przez prowadzącego.'),
-       (7, 'SubjectResolvedByCoordinator',
+       ('SubjectResolvedByCoordinator',
         'Temat ":TOPIC" został rozpatrzony przez koordynatora. Aktualny status: :TOPIC_STATUS. Uwagi: :COORDINATOR_COMMENTS.'),
-       (8, 'TopicCorrectionRequestCreatedByStudent',
+       ('TopicCorrectionRequestCreatedByStudent',
         'Student :STUDENT złożył wniosek o doprecyzowanie tematu. Nowy temat: ":NEW_TOPIC".'),
-       (9, 'TopicCorrectionRequestResolvedByDean',
+       ('TopicCorrectionRequestResolvedByDean',
         'Dziekan rozważył wniosek o doprecyzowanie tematu (nowy temat: ":NEW_TOPIC"). Decyzja: :STATUS.')
