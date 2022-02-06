@@ -8,16 +8,28 @@ import org.springframework.security.config.web.servlet.invoke
 @Configuration
 class JwtSecurityConfig : WebSecurityConfigurerAdapter() {
 
+    companion object {
+        private val ADMIN = "ADMIN"
+        private val STUDENT = "STUDENT"
+        private val LECTURER = "LECTURER"
+        private val DEAN = "DEAN"
+        private val COORDINATOR = "COORDINATOR"
+        private val PROGRAM_COMMITTEE_MEMBER = "PROGRAM_COMMITTEE_MEMBER"
+        private val DIPLOMA_SECTION_MEMBER = "DIPLOMA_SECTION_MEMBER"
+    }
+
     override fun configure(http: HttpSecurity?) {
         http!! {
             cors { disable() }
             authorizeRequests {
-                authorize("/public", permitAll)
-                authorize("/private", hasAnyRole("ADMIN"))
-                authorize("/student/reservation", hasAnyRole("STUDENT"))
-                authorize("/admin/*", hasAnyRole("ADMIN"))
-
-                authorize("*", permitAll)
+                authorize("/student/**", hasAnyRole(STUDENT))
+                authorize("/lecturer/**", hasAnyRole(LECTURER))
+                authorize("/dean/**", hasAnyRole(DEAN))
+                authorize("/coordinator/**", hasAnyRole(COORDINATOR))
+                authorize("/commission/**", hasAnyRole(PROGRAM_COMMITTEE_MEMBER))
+                authorize("/graduation/**", hasAnyRole(DIPLOMA_SECTION_MEMBER))
+                authorize("/admin/**", hasAnyRole(ADMIN))
+                authorize("*", authenticated)
             }
         }
         http!!.oauth2ResourceServer { oauth2 -> oauth2.jwt() }
