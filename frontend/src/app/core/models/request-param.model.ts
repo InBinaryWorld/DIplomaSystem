@@ -1,4 +1,4 @@
-import { isNil } from 'lodash-es';
+import { isNotNil } from '../tools/is-not-nil';
 
 export interface RequestParam {
   key: string;
@@ -13,11 +13,9 @@ export class RequestParams {
     return this.params;
   }
 
-  addIfValueExists(key: string, value?: boolean | number | string): RequestParams {
-    if (!isNil(value)) {
+  addIfValueExists(key: string, value?: boolean | number | string): void {
+    if (isNotNil(value)) {
       this.params.push({ key, value: String(value) });
     }
-    return this;
   }
-
 }
