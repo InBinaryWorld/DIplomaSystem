@@ -5,7 +5,6 @@ import { RequestsStateKey } from '../store/requests/requests.state';
 import { RequestsStoreService } from './store/requests-store.service';
 import { RequestsApiService } from './api/requests-api.service';
 import { ClarificationRequest } from '../models/dto/clarification-request.model';
-import { ThesesStoreService } from './store/theses-store.service';
 import { ChangeRequest } from '../models/dto/change-request.model';
 import { IdType } from '../models/dto/id.model';
 import {
@@ -13,14 +12,15 @@ import {
   LoadClarificationRequestsActionOptions
 } from '../store/requests/requests.actions';
 import { RequestStatus } from '../models/dto/request-status.model';
+import { CreateClarificationRequest } from '../models/dto/post/create-clarification-request.model';
+import { CreateChangeRequest } from '../models/dto/post/create-change-request.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RequestsService {
   constructor(private readonly requestsApiService: RequestsApiService,
-              private readonly requestsStoreService: RequestsStoreService,
-              private readonly thesesStoreService: ThesesStoreService) {
+              private readonly requestsStoreService: RequestsStoreService) {
   }
 
   public getChangeRequestsForStudent(diplomaSessionId: IdType, studentId: IdType, ifNeededOnly = true): Observable<ChangeRequest[]> {
@@ -79,7 +79,7 @@ export class RequestsService {
       .pipe(tap(() => this.invalidateClarificationRequests()));
   }
 
-  public createClarificationRequest(thesisId: IdType, request: Partial<ClarificationRequest>): Observable<ClarificationRequest> {
+  public createClarificationRequest(thesisId: IdType, request: CreateClarificationRequest): Observable<ClarificationRequest> {
     return this.requestsApiService.createClarificationRequest(thesisId, request)
       .pipe(tap(() => this.invalidateClarificationRequests()));
   }
@@ -94,7 +94,7 @@ export class RequestsService {
       .pipe(tap(() => this.invalidateClarificationRequests()));
   }
 
-  public createChangeRequest(thesisId: IdType, request: any): Observable<ChangeRequest> {
+  public createChangeRequest(thesisId: IdType, request: CreateChangeRequest): Observable<ChangeRequest> {
     return this.requestsApiService.createChangeRequest(thesisId, request)
       .pipe(tap(() => this.invalidateChangeRequests()));
   }

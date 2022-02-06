@@ -13,6 +13,8 @@ import { ThesesStateKey } from '../store/theses/theses.state';
 import { IdType } from '../models/dto/id.model';
 import { ThesisStatus } from '../models/dto/topic-status.model';
 import { ReservationMember } from '../models/dto/reservation-member.model';
+import { CreateReservation } from '../models/dto/post/create-reservation.model';
+import { CorrectThesis } from '../models/dto/post/correct-thesis.model';
 
 @Injectable({
   providedIn: 'root'
@@ -102,34 +104,34 @@ export class ThesesService {
   }
 
   // on SUGGESTED state
-  public confirmParticipationInReservation(memberId: IdType): Observable<ReservationMember> {
-    return this.thesesApiService.confirmParticipationInReservation(memberId)
+  public confirmParticipationInReservation(studentId: IdType, reservationId: IdType): Observable<ReservationMember> {
+    return this.thesesApiService.confirmParticipationInReservation(studentId, reservationId)
       .pipe(tap(() => this.invalidateReservations()));
   }
 
   // on WILLING state
-  public confirmMemberReservationInReservation(memberId: IdType): Observable<ReservationMember> {
-    return this.thesesApiService.confirmMemberReservation(memberId)
+  public confirmMemberReservationInReservation(studentId: IdType, reservationId: IdType): Observable<ReservationMember> {
+    return this.thesesApiService.confirmMemberReservation(studentId, reservationId)
       .pipe(tap(() => this.invalidateReservations()));
   }
 
-  public abandonReservation(memberId: IdType): Observable<ReservationMember> {
-    return this.thesesApiService.abandonReservation(memberId)
+  public abandonReservationAsMember(studentId: IdType, reservationId: IdType): Observable<ReservationMember> {
+    return this.thesesApiService.abandonReservationAsMember(studentId, reservationId)
       .pipe(tap(() => this.invalidateReservations()));
   }
 
-  public createReservation(payload: object): Observable<Reservation> {
-    return this.thesesApiService.createReservation(payload)
+  public createReservation(studentId: IdType, payload: CreateReservation): Observable<Reservation> {
+    return this.thesesApiService.createReservation(studentId, payload)
       .pipe(tap(() => this.invalidateReservations()));
   }
 
-  public rejectReservation(payload: object): Observable<Reservation> {
-    return this.thesesApiService.rejectReservation(payload)
+  public rejectReservation(reservationId: IdType): Observable<Reservation> {
+    return this.thesesApiService.rejectReservation(reservationId)
       .pipe(tap(() => this.invalidateReservations()));
   }
 
-  public acceptReservation(payload: object): Observable<Reservation> {
-    return this.thesesApiService.acceptReservation(payload)
+  public acceptReservation(reservationId: IdType): Observable<Reservation> {
+    return this.thesesApiService.acceptReservation(reservationId)
       .pipe(tap(() => this.invalidateReservations()));
   }
 
@@ -144,8 +146,7 @@ export class ThesesService {
   }
 
   public approveThesisWithCoordinator(coordinatorId: IdType, thesisId: IdType): Observable<Thesis> {
-    const payload = { coordinatorId, thesisId };
-    return this.thesesApiService.approveThesisWithCoordinator(payload)
+    return this.thesesApiService.approveThesisWithCoordinator(thesisId)
       .pipe(tap(() => this.invalidateTheses()));
   }
 
@@ -154,23 +155,23 @@ export class ThesesService {
       .pipe(tap(() => this.invalidateTheses()));
   }
 
-  public approveThesisWithCommitteeMember(committeeMemberId: IdType, payload: object): Observable<Thesis> {
-    return this.thesesApiService.approveThesisWithCommitteeMember(payload)
+  public approveThesisWithCommitteeMember(committeeMemberId: IdType, thesisId: IdType): Observable<Thesis> {
+    return this.thesesApiService.approveThesisWithCommitteeMember(thesisId)
       .pipe(tap(() => this.invalidateTheses()));
   }
 
-  public rejectThesisWithLecturer(payload: object): Observable<Thesis> {
-    return this.thesesApiService.rejectThesisWithLecturer(payload)
+  public rejectThesisWithLecturer(thesisId: IdType): Observable<Thesis> {
+    return this.thesesApiService.rejectThesisWithLecturer(thesisId)
       .pipe(tap(() => this.invalidateTheses()));
   }
 
-  public correctThesisWithLecturer(payload: object): Observable<Thesis> {
+  public correctThesisWithLecturer(payload: CorrectThesis): Observable<Thesis> {
     return this.thesesApiService.correctThesisWithLecturer(payload)
       .pipe(tap(() => this.invalidateTheses()));
   }
 
-  public acceptThesisWithLecturer(committeeMemberId: IdType, payload: object): Observable<Thesis> {
-    return this.thesesApiService.acceptThesisWithLecturer(payload)
+  public acceptThesisWithLecturer(thesisId: IdType): Observable<Thesis> {
+    return this.thesesApiService.acceptThesisWithLecturer(thesisId)
       .pipe(tap(() => this.invalidateTheses()));
   }
 

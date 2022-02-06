@@ -19,6 +19,17 @@ import { EmployeeRole } from '../../../../base/models/dto/employee-role.model';
 import { Dictionary } from '../../../../core/models/dictionary.model';
 import { AppValidators } from '../../../../base/utils/validators.utils';
 import { Context } from '../../../../base/models/context.model';
+import { CorrectThesis, CorrectThesisChanges } from '../../../../base/models/dto/post/correct-thesis.model';
+
+const FORM_KEY = {
+  TOPIC: 'topic',
+  SUPERVISOR: 'supervisorName',
+  DIPLOMA_SESSION: 'diplomaSession',
+  NUMBER_OF_STUDENTS: 'numberOfStudents',
+  DESCRIPTION: 'description',
+  COORDINATOR_COMMENT: 'coordinatorComment'
+};
+
 
 @Component({
   selector: 'app-thesis-details',
@@ -28,6 +39,7 @@ import { Context } from '../../../../base/models/context.model';
 })
 export class ThesisDetailsComponent extends RoleComponent implements OnInit {
 
+  FORM_KEY = FORM_KEY;
   ThesisStatus = ThesisStatus;
 
   static HEADER_KEY = 'headerKey';
@@ -151,60 +163,72 @@ export class ThesisDetailsComponent extends RoleComponent implements OnInit {
   }
 
   private setFormData(userRole: UserRole, thesis: Thesis, diplomaSession: DiplomaSession): void {
-    const group = this.getGroupForRole(userRole, thesis, diplomaSession);
+    const group = this.getGroupForRole(userRole, thesis);
     this.form = this.formBuilder.group(group);
+    this.form.patchValue(this.prepareDataToPatch(thesis, diplomaSession));
     this.markForCheck();
   }
 
-  private getGroupForRole(userRole: UserRole, thesis: Thesis, diplomaSession: DiplomaSession): Dictionary<any> {
+  private getGroupForRole(userRole: UserRole, thesis: Thesis): Dictionary<any> {
     switch (userRole.role) {
       case EmployeeRole.COORDINATOR:
-        return this.getGroupForCoordinator(thesis, diplomaSession);
+        return this.getGroupForCoordinator(thesis);
       case EmployeeRole.LECTURER:
-        return this.getGroupForLecturer(thesis, diplomaSession);
+        return this.getGroupForLecturer(thesis);
       default:
-        return this.getDisabledGroup(thesis, diplomaSession);
+        return this.getDisabledGroup();
     }
   }
 
-  getGroupForCoordinator(thesis: Thesis, diplomaSession: DiplomaSession): Dictionary<any> {
+  prepareDataToPatch(thesis: Thesis, diplomaSession: DiplomaSession): object {
+    return {
+      [FORM_KEY.TOPIC]: thesis.topic,
+      [FORM_KEY.SUPERVISOR]: LabelBuilder.forEmployee(thesis.supervisor),
+      [FORM_KEY.DIPLOMA_SESSION]: LabelBuilder.forDiplomaSession(diplomaSession),
+      [FORM_KEY.NUMBER_OF_STUDENTS]: thesis.numberOfStudents,
+      [FORM_KEY.DESCRIPTION]: thesis.description,
+      [FORM_KEY.COORDINATOR_COMMENT]: thesis.coordinatorComment
+    };
+  }
+
+  getGroupForCoordinator(thesis: Thesis): Dictionary<any> {
     const isCommentDisabled: boolean = thesis.status !== ThesisStatus.WAITING;
     return {
-      topic: [{ value: thesis.topic, disabled: true }],
-      supervisorName: [{ value: LabelBuilder.forEmployee(thesis.supervisor), disabled: true }],
-      diplomaSession: [{ value: LabelBuilder.forDiplomaSession(diplomaSession), disabled: true }],
-      numberOfStudents: [{ value: thesis.numberOfStudents, disabled: true }],
-      description: [{ value: thesis.description, disabled: true }],
-      coordinatorComment: [
-        { value: thesis.coordinatorComment, disabled: isCommentDisabled },
+      [FORM_KEY.TOPIC]: [{ value: undefined, disabled: true }],
+      [FORM_KEY.SUPERVISOR]: [{ value: undefined, disabled: true }],
+      [FORM_KEY.DIPLOMA_SESSION]: [{ value: undefined, disabled: true }],
+      [FORM_KEY.NUMBER_OF_STUDENTS]: [{ value: undefined, disabled: true }],
+      [FORM_KEY.DESCRIPTION]: [{ value: undefined, disabled: true }],
+      [FORM_KEY.COORDINATOR_COMMENT]: [
+        { value: undefined, disabled: isCommentDisabled },
         AppValidators.coordinatorComment
       ]
     };
   }
 
-  getGroupForLecturer(thesis: Thesis, diplomaSession: DiplomaSession): Dictionary<any> {
+  getGroupForLecturer(thesis: Thesis): Dictionary<any> {
     const isCorrectionMode = thesis.status === ThesisStatus.TO_CORRECT || thesis.status === ThesisStatus.WAITING;
     return {
-      topic: [{ value: thesis.topic, disabled: !isCorrectionMode }, AppValidators.topicValidator],
-      supervisorName: [{ value: LabelBuilder.forEmployee(thesis.supervisor), disabled: true }],
-      diplomaSession: [{ value: LabelBuilder.forDiplomaSession(diplomaSession), disabled: true }],
-      numberOfStudents: [{
-        value: thesis.numberOfStudents,
-        disabled: !isCorrectionMode
-      }, AppValidators.numberOfStudentsValidator],
-      description: [{ value: thesis.description, disabled: !isCorrectionMode }, AppValidators.descriptionValidator],
-      coordinatorComment: [{ value: thesis.coordinatorComment, disabled: true }]
+      [FORM_KEY.TOPIC]: [{ value: undefined, disabled: !isCorrectionMode }, AppValidators.topicValidator],
+      [FORM_KEY.SUPERVISOR]: [{ value: undefined, disabled: true }],
+      [FORM_KEY.DIPLOMA_SESSION]: [{ value: undefined, disabled: true }],
+      [FORM_KEY.NUMBER_OF_STUDENTS]: [
+        { value: undefined, disabled: !isCorrectionMode },
+        AppValidators.numberOfStudentsValidator
+      ],
+      [FORM_KEY.DESCRIPTION]: [{ value: undefined, disabled: !isCorrectionMode }, AppValidators.descriptionValidator],
+      [FORM_KEY.COORDINATOR_COMMENT]: [{ value: undefined, disabled: true }]
     };
   }
 
-  getDisabledGroup(thesis: Thesis, diplomaSession: DiplomaSession): Dictionary<any> {
+  getDisabledGroup(): Dictionary<any> {
     return {
-      topic: [{ value: thesis.topic, disabled: true }],
-      supervisorName: [{ value: LabelBuilder.forEmployee(thesis.supervisor), disabled: true }],
-      diplomaSession: [{ value: LabelBuilder.forDiplomaSession(diplomaSession), disabled: true }],
-      numberOfStudents: [{ value: thesis.numberOfStudents, disabled: true }],
-      description: [{ value: thesis.description, disabled: true }],
-      coordinatorComment: [{ value: thesis.coordinatorComment, disabled: true }]
+      [FORM_KEY.TOPIC]: [{ value: undefined, disabled: true }],
+      [FORM_KEY.SUPERVISOR]: [{ value: undefined, disabled: true }],
+      [FORM_KEY.DIPLOMA_SESSION]: [{ value: undefined, disabled: true }],
+      [FORM_KEY.NUMBER_OF_STUDENTS]: [{ value: undefined, disabled: true }],
+      [FORM_KEY.DESCRIPTION]: [{ value: undefined, disabled: true }],
+      [FORM_KEY.COORDINATOR_COMMENT]: [{ value: undefined, disabled: true }]
     };
   }
 
@@ -235,24 +259,31 @@ export class ThesisDetailsComponent extends RoleComponent implements OnInit {
   }
 
   approveThesisWithCommitteeMember(): void {
-    const payload = { thesisId: this.thesis!.id };
-    const actionSource = this.thesesService.approveThesisWithCommitteeMember(this.userRole!.id, payload);
+    const actionSource = this.thesesService.approveThesisWithCommitteeMember(this.userRole!.id, this.thesis!.id);
     this.handleAction(actionSource);
   }
 
   correctThesisWithLecturer(): void {
     const formData = this.form!.value;
-    const payload = { changes: formData, thesisId: this.thesis!.id };
+    const changes = new CorrectThesisChanges();
+    changes.numberOfStudents = formData[FORM_KEY.NUMBER_OF_STUDENTS];
+    changes.topic = formData[FORM_KEY.TOPIC];
+    changes.description = formData[FORM_KEY.DESCRIPTION];
+    const payload = new CorrectThesis();
+    payload.thesisId = this.thesis!.id;
+    payload.changes = changes;
     const actionSource = this.thesesService.correctThesisWithLecturer(payload);
     this.handleAction(actionSource);
   }
 
   rejectThesisWithLecturer(): void {
-
+    const actionSource = this.thesesService.rejectThesisWithLecturer(this.thesis!.id);
+    this.handleAction(actionSource);
   }
 
   acceptThesisWithLecturer(): void {
-
+    const actionSource = this.thesesService.acceptThesisWithLecturer(this.thesis!.id);
+    this.handleAction(actionSource);
   }
 
   private handleAction<T>(actionSource: Observable<T>): void {

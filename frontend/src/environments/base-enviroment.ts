@@ -14,22 +14,22 @@ export const baseEnvironment = {
       [ApiLabel.LOGIN]: '/oauth/token',
       [ApiLabel.REFRESH]: 'TODO REFRESH',
       [ApiLabel.MODIFY_TIMETABLE]: '/graduation/schedule',
-      [ApiLabel.ACCEPT_THESIS_WITH_LECTURER]: '/lecturer/subject/student-propositions/accept', // request param "id" (id tematu)
-      [ApiLabel.CORRECT_THESIS_WITH_LECTURER]: '/lecturer/subject/to-correct', // zakładam że body jest takie: { thesisId: number, changes: { topic: string, description: string, numberOfStudents: number}}
-      [ApiLabel.REJECT_THESIS_WITH_LECTURER]: '/lecturer/subject/student-propositions/reject', // request param "id" (id tematu)
-      [ApiLabel.ABANDON_MEMBER_RESERVATION]: '/student/reservation/cancel', // request param "studentId", "reservationId"
+      [ApiLabel.ACCEPT_THESIS_WITH_LECTURER]: '/lecturer/subject/student-propositions/accept',
+      [ApiLabel.CORRECT_THESIS_WITH_LECTURER]: '/lecturer/subject/to-correct',
+      [ApiLabel.REJECT_THESIS_WITH_LECTURER]: '/lecturer/subject/student-propositions/reject',
+      [ApiLabel.ABANDON_MEMBER_RESERVATION]: '/student/reservation/cancel',
       [ApiLabel.APPROVE_CLARIFICATION_REQUEST]: '/dean/request/correction/accept',
       [ApiLabel.APPROVE_CHANGE_REQUEST]: '/commission/request/change/accept',
-      [ApiLabel.APPROVE_THESIS_WITH_COORDINATOR]: '/coordinator/subject/accept', // request param "id" (id tematu)
-      [ApiLabel.APPROVE_THESIS_WITH_COMMITTEE_MEMBER]: '/commission/subject/accept', // request param "id" (id tematu)
-      [ApiLabel.CONFIRM_MEMBER_RESERVATION]: '/student/reservation/approve', // request param "studentId", "reservationId"
-      [ApiLabel.CONFIRM_PARTICIPATION_IN_RESERVATION]: '/student/reservation/approve', // request param "studentId", "reservationId"
-      [ApiLabel.CREATE_CLARIFICATION_REQUEST]: '/student/request/topic-correction', // body: { topicId: number, studentId: number, newTopic: string, newDescription: string}
-      [ApiLabel.CREATE_CHANGE_REQUEST]: '/student/request/topic-change', // body takie jak jest ok, tylko trzeba dodać pole previousThesisId: number; poza tym zakładam że albo thesisId albo newThesis (jedno z dwóch) będzie nullem - w zależności od tego czy temat istnieje czy nie
+      [ApiLabel.APPROVE_THESIS_WITH_COORDINATOR]: '/coordinator/subject/accept',
+      [ApiLabel.APPROVE_THESIS_WITH_COMMITTEE_MEMBER]: '/commission/subject/accept',
+      [ApiLabel.CONFIRM_MEMBER_RESERVATION]: '/student/reservation/approve',
+      [ApiLabel.CONFIRM_PARTICIPATION_IN_RESERVATION]: '/student/reservation/approve',
+      [ApiLabel.CREATE_CLARIFICATION_REQUEST]: '/student/request/topic-correction',
+      [ApiLabel.CREATE_CHANGE_REQUEST]: '/student/request/topic-change',
       [ApiLabel.CREATE_THESIS]: '/subject',
-      [ApiLabel.CREATE_RESERVATION]: '/student/reservation', // request param: "studentId"; body: { thesisId: number, studentIds: number[] }
-      [ApiLabel.REJECT_RESERVATION]: '/lecturer/reservation/reject', // request param: "id" (id rezerwacji)
-      [ApiLabel.ACCEPT_RESERVATION]: '/lecturer/reservation/reject', // request param: "id" (id rezerwacji)
+      [ApiLabel.CREATE_RESERVATION]: '/student/reservation',
+      [ApiLabel.REJECT_RESERVATION]: '/lecturer/reservation/reject',
+      [ApiLabel.ACCEPT_RESERVATION]: '/lecturer/reservation/reject',
       [ApiLabel.GET_CHANGE_REQUEST]: '/request/change',
       [ApiLabel.GET_CHANGE_REQUESTS]: '/request/change',
       [ApiLabel.GET_CLARIFICATION_REQUEST]: '/request/clarification',
