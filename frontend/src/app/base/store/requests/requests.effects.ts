@@ -33,7 +33,7 @@ import { throttleWithSelector } from '../../../core/tools/throttle';
 export class RequestsEffects {
 
   loadClarificationRequestsIfNeededAction = createEffect(() => this.actions.pipe(
-    ofType(loadClarificationRequestsIfNeededAction), throttleWithSelector(({ options }) => options),
+    ofType(loadClarificationRequestsIfNeededAction), throttleWithSelector(({ key }) => key),
     mergeIfNil(({ key }) => this.store.select(selectClarificationRequestsForKey, key)),
     map(({ key, options }) => loadClarificationRequestsAction({ key, options }))
   ));
@@ -65,7 +65,7 @@ export class RequestsEffects {
 
 
   loadChangeRequestsIfNeededAction = createEffect(() => this.actions.pipe(
-    ofType(loadChangeRequestsIfNeededAction), throttleWithSelector(({ options }) => options),
+    ofType(loadChangeRequestsIfNeededAction), throttleWithSelector(({ key }) => key),
     mergeIfNil(({ key }) => this.store.select(selectChangeRequestsForKey, key)),
     map(({ key, options }) => loadChangeRequestsAction({ key, options }))
   ));

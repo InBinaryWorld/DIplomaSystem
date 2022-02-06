@@ -57,7 +57,7 @@ export class UserEffects {
   ));
 
   loadStudentsIfNeededAction = createEffect(() => this.actions.pipe(
-    ofType(loadStudentsIfNeededAction), throttleWithSelector(({ options }) => options),
+    ofType(loadStudentsIfNeededAction), throttleWithSelector(({ key }) => key),
     mergeIfNil(({ key }) => this.store.select(selectStudentsForKey, key)),
     map(({ key, options }) => loadStudentsAction({ key, options }))
   ));
@@ -89,7 +89,7 @@ export class UserEffects {
   ));
 
   loadEmployeesIfNeededAction = createEffect(() => this.actions.pipe(
-    ofType(loadEmployeesIfNeededAction), throttleWithSelector(({ options }) => options),
+    ofType(loadEmployeesIfNeededAction), throttleWithSelector(({ key }) => key),
     mergeIfNil(({ key }) => this.store.select(selectEmployeesForKey, key)),
     map(({ key, options }) => loadEmployeesAction({ key, options }))
   ));

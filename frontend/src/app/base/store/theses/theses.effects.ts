@@ -33,7 +33,7 @@ import { throttleWithSelector } from '../../../core/tools/throttle';
 export class ThesesEffects {
 
   loadThesesIfNeededAction = createEffect(() => this.actions.pipe(
-    ofType(loadThesesIfNeededAction), throttleWithSelector(({ options }) => options),
+    ofType(loadThesesIfNeededAction), throttleWithSelector(({ key }) => key),
     mergeIfNil(({ key }) => this.store.select(selectThesesForKey, key)),
     map(({ options, key }) => loadThesesAction({ options, key }))
   ));
@@ -65,7 +65,7 @@ export class ThesesEffects {
   ));
 
   loadStudentReservationsIfNeededAction = createEffect(() => this.actions.pipe(
-    ofType(loadStudentReservationsIfNeededAction), throttleWithSelector(({ options }) => options),
+    ofType(loadStudentReservationsIfNeededAction), throttleWithSelector(({ key }) => key),
     mergeIfNil(({ key }) => this.store.select(selectReservationsForKey, key)),
     map(({ key, options }) => loadReservationsAction({ key, options }))
   ));
