@@ -47,14 +47,15 @@ values
 insert into graduation (id, graduation_year, course_of_study_id)
 values (1, 2021, 1),
        (2, 2021, 2),
-       (3, 2022, 1),
-       (4, 2022, 2);
+       (3, 2022, 1);
 
 -- Table: schedule
 insert into schedule (id, topic_change_deadline, topic_commission_approval_deadline,
                       topic_coordinator_approval_deadline, topic_correction_deadline, topic_registration_deadline,
                       topic_selection_deadline, graduation_id)
-values (1, '2023-01-01', '2023-01-01', '2023-01-01', '2023-01-01', '2023-01-01', '2023-01-01', 1);
+values (1, '2023-01-01', '2023-01-01', '2023-01-01', '2023-01-01', '2023-01-01', '2023-01-01', 1),
+        (2, '2023-01-01', '2023-01-01', '2023-01-01', '2023-01-01', '2023-01-01', '2023-01-01', 2),
+        (3, '2023-01-01', '2023-01-01', '2023-01-01', '2023-01-01', '2023-01-01', '2023-01-01', 3);
 
 
 -- Table: topic
