@@ -42,9 +42,9 @@ class StudentRequestController @Autowired constructor(
     @PostMapping("/topic-change")
     fun makeTopicChangeRequest(@RequestBody form: StudentTopicChangeRequestForm) {
         if (form.thesisExists())
-            studentRequestService.makeTopicChangeToNewTopicRequest(form.studentId, form.previousThesisId, form.newThesis!!)
+            studentRequestService.makeTopicChangeToExistingTopicRequest(form.studentId, form.previousThesisId, form.newThesisId!!)
         else
-            studentRequestService.makeTopicChangeToExistingTopicRequest(form.studentId, form.previousThesisId, form.thesisId!!)
+            studentRequestService.makeTopicChangeToNewTopicRequest(form.studentId, form.previousThesisId, form.newThesis!!)
     }
 
     @Operation(summary = "Złożenie wniosku o doprecyzowanie tematu")
