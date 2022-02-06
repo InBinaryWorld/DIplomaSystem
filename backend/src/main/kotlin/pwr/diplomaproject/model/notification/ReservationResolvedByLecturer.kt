@@ -2,9 +2,20 @@ package pwr.diplomaproject.model.notification
 
 import pwr.diplomaproject.model.entity.Reservation
 import pwr.diplomaproject.model.entity.User
+import pwr.diplomaproject.repository.NotificationRepository
 
-class ReservationResolvedByLecturer(recipients: List<User>, reservation: Reservation) :
+class ReservationResolvedByLecturer(
+    recipients: List<User>,
+    reservation: Reservation,
+    notificationRepository: NotificationRepository
+) :
     NotificationAlert(
         recipients,
-        "Prowadzący ${reservation.topic.lecturer.fullName()} rozpatrzył rezerwację na temat \"${reservation.topic.topic}\". Aktualny status rezerwacji: ${reservation.status}."
+        constructContent(
+            notificationRepository.findByLabel("NotificationAlert").content, mapOf(
+                ":LECTURER" to reservation.topic.lecturer.fullName(),
+                ":TOPIC" to reservation.topic.topic,
+                ":RESERVATION_STATUS" to reservation.status.toString(),
+            )
+        )
     )

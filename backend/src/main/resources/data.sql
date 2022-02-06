@@ -105,4 +105,6 @@ values (1, '2022-02-05', 'WAITING', null, 9, 8, 2);
 -- Table: notification
 insert into notification (id, label, content)
 values (1, 'ReservationCreatedByStudent',
-        '"Student :STUDENT złożył rezerwację na temat ":TOPIC". Liczba zgłoszonych osób: :MEMBER_COUNT."')
+        'Student :STUDENT złożył rezerwację na temat ":TOPIC". Liczba zgłoszonych osób: :MEMBER_COUNT.'),
+       (2, 'ReservationResolvedByLecturer',
+        'Prowadzący :LECTURER rozpatrzył rezerwację na temat ":TOPIC". Aktualny status rezerwacji: :RESERVATION_STATUS.')

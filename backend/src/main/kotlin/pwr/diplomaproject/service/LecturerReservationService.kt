@@ -9,6 +9,7 @@ import pwr.diplomaproject.model.enum.EmployeeType
 import pwr.diplomaproject.model.enum.ReservationStatus
 import pwr.diplomaproject.model.notification.ReservationResolvedByLecturer
 import pwr.diplomaproject.repository.EmployeeRepository
+import pwr.diplomaproject.repository.NotificationRepository
 import pwr.diplomaproject.repository.ReservationRepository
 import pwr.diplomaproject.repository.SubjectRepository
 
@@ -16,7 +17,8 @@ import pwr.diplomaproject.repository.SubjectRepository
 class LecturerReservationService @Autowired constructor(
     private val reservationRepository: ReservationRepository,
     private val subjectRepository: SubjectRepository,
-    private val employeeRepository: EmployeeRepository
+    private val employeeRepository: EmployeeRepository,
+    private val notificationRepository: NotificationRepository,
 ) {
 
     fun getSubjects(userId: Long): List<LecturerSubjectReservationDto> =
@@ -33,14 +35,22 @@ class LecturerReservationService @Autowired constructor(
         reservationRepository.getByIdAndLecturerId(id, lecturerId(userId)).let {
             it.status = ReservationStatus.ACCEPTED
             reservationRepository.save(it)
-            ReservationResolvedByLecturer(it.groupMembers.map { gm -> gm.student.user }, it).send()
+            ReservationResolvedByLecturer(
+                it.groupMembers.map { gm -> gm.student.user },
+                it,
+                notificationRepository
+            ).send()
         }
 
     fun rejectReservation(userId: Long, id: Long): Unit =
         reservationRepository.getByIdAndLecturerId(id, lecturerId(userId)).let {
             it.status = ReservationStatus.REJECTED_BY_LECTURER
             reservationRepository.save(it)
-            ReservationResolvedByLecturer(it.groupMembers.map { gm -> gm.student.user }, it).send()
+            ReservationResolvedByLecturer(
+                it.groupMembers.map { gm -> gm.student.user },
+                it,
+                notificationRepository
+            ).send()
         }
 
     private fun lecturerId(userId: Long) =
