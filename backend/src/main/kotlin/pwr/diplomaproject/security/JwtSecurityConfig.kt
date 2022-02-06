@@ -10,6 +10,7 @@ class JwtSecurityConfig : WebSecurityConfigurerAdapter() {
 
     override fun configure(http: HttpSecurity?) {
         http!! {
+            cors { disable() }
             authorizeRequests {
                 authorize("/public", permitAll)
                 authorize("/private", hasAnyRole("ADMIN"))

@@ -12,6 +12,7 @@ class JwkSetEndpointConfiguration : AuthorizationServerSecurityConfiguration() {
 
     override fun configure(http: HttpSecurity?) {
         http!!
+            .cors().disable()
             .requestMatchers()
                 .mvcMatchers(JWKS_PATH)
                 .and()

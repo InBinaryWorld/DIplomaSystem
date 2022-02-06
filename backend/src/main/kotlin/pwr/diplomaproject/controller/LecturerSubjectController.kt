@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.*
 import pwr.diplomaproject.model.dto.LecturerSubjectToCorrectDetailsDto
 import pwr.diplomaproject.model.dto.SubjectDetailsDto
 import pwr.diplomaproject.model.dto.SubjectDto
-import pwr.diplomaproject.model.form.LecturerNewTopicForm
 import pwr.diplomaproject.model.form.LecturerTopicCorrectionForm
 import pwr.diplomaproject.service.LecturerSubjectService
 import pwr.diplomaproject.util.userId
@@ -27,13 +26,6 @@ class LecturerSubjectController @Autowired constructor(
     @GetMapping("/proposed/{id}")
     fun getProposedSubject(@PathVariable id: Long): SubjectDetailsDto =
         lecturerSubjectService.getProposedSubject(id)
-
-    @Operation(summary = "Zgłoszenie tematu pracy przez prowadzącego")
-    @PostMapping
-    fun proposeSubject(
-        principal: Principal,
-        @RequestBody form: LecturerNewTopicForm): Unit =
-        lecturerSubjectService.proposeSubject(principal.userId, form)
 
     @Operation(summary = "Propozycje studentów tematów z udziałem prowadzącego")
     @GetMapping("/student-propositions")
