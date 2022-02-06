@@ -7,6 +7,9 @@ import javax.persistence.Id
 data class User(
     @Id
     val id: Long,
+    val email: String,
     val firstName: String,
     val lastName: String
-)
+) {
+    fun fullName(): String = "$firstName $lastName"
+}

@@ -1,12 +1,12 @@
 -- Table: app_user
-insert into app_user (id, first_name, last_name)
-values (1, 'Jacek', 'Werek');
-insert into app_user (id, first_name, last_name)
-values (2, 'Krzysztof', 'Szarfa');
-insert into app_user (id, first_name, last_name)
-values (3, 'Łukasz', 'Tomcio');
-insert into app_user (id, first_name, last_name)
-values (4, 'Kamil', 'Kolanko');
+insert into app_user (id, email, first_name, last_name)
+values (1, 'jacek.werek@pwr.edu.pl', 'Jacek', 'Werek');
+insert into app_user (id, email, first_name, last_name)
+values (2, 'krzysztof.szarfa@pwr.edu.pl', 'Krzysztof', 'Szarfa');
+insert into app_user (id, email, first_name, last_name)
+values (3, 'lukasz.tomcio@pwr.edu.pl', 'Łukasz', 'Tomcio');
+insert into app_user (id, email, first_name, last_name)
+values (4, 'kamil.kolanko@pwr.edu.pl', 'Kamil', 'Kolanko');
 
 
 -- Table: faculty
@@ -22,7 +22,7 @@ values (1, 'Informatyka stosowana', 'ENGINEERS', 1);
 -- Table: employee
 insert into employee (id, title, type, faculty_id, user_id)
 values (1, 'mgr inż.', 'LECTURER', 1, 1),
-    (2, 'prof.', 'DEAN', 1, 1);
+       (2, 'prof.', 'DEAN', 1, 1);
 
 
 -- Table: student
@@ -42,7 +42,9 @@ insert into graduation (id, graduation_year, course_of_study_id)
 values (1, 2021, 1);
 
 -- Table: schedule
-insert into schedule (id, topic_change_deadline, topic_commission_approval_deadline, topic_coordinator_approval_deadline, topic_correction_deadline, topic_registration_deadline, topic_selection_deadline, graduation_id)
+insert into schedule (id, topic_change_deadline, topic_commission_approval_deadline,
+                      topic_coordinator_approval_deadline, topic_correction_deadline, topic_registration_deadline,
+                      topic_selection_deadline, graduation_id)
 values (1, '2023-01-01', '2023-01-01', '2023-01-01', '2023-01-01', '2023-01-01', '2023-01-01', 1);
 
 

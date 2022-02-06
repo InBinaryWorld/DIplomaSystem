@@ -12,6 +12,7 @@ import pwr.diplomaproject.model.enum.EmployeeType
 import pwr.diplomaproject.model.enum.TopicStatus
 import pwr.diplomaproject.model.form.LecturerNewTopicForm
 import pwr.diplomaproject.model.form.LecturerTopicCorrectionForm
+import pwr.diplomaproject.model.mail.SubjectPropositionResolvedByLecturer
 import pwr.diplomaproject.repository.EmployeeRepository
 import pwr.diplomaproject.repository.GraduationRepository
 import pwr.diplomaproject.repository.SubjectRepository
@@ -33,7 +34,8 @@ class LecturerSubjectService @Autowired constructor(
         subjectService.getDetails(subjectId)
 
     fun proposeSubject(userId: Long, form: LecturerNewTopicForm) {
-        val newSubject = Topic(subjectRepository.getNextId(),
+        val newSubject = Topic(
+            subjectRepository.getNextId(),
             employeeRepository.getEmployeeByUserIdAndType(userId, EmployeeType.LECTURER),
             null,
             graduationRepository.findCurrentGraduationByCourseOfStudyId(form.courseOfStudyId)!!,
@@ -60,12 +62,16 @@ class LecturerSubjectService @Autowired constructor(
         subjectRepository.getByLecturerIdAndSubjectId(lecturerId(userId), subjectId).let {
             it.status = TopicStatus.WAITING
             subjectRepository.save(it)
+            if (it.student != null)
+                SubjectPropositionResolvedByLecturer(listOf(it.student.user), it)
         }
 
     fun rejectProposedSubject(userId: Long, subjectId: Long): Unit =
         subjectRepository.getByLecturerIdAndSubjectId(lecturerId(userId), subjectId).let {
             it.status = TopicStatus.REJECTED_BY_LECTURER
             subjectRepository.save(it)
+            if (it.student != null)
+                SubjectPropositionResolvedByLecturer(listOf(it.student.user), it)
         }
 
     fun getSubjectsToCorrect(userId: Long): List<SubjectDto> =

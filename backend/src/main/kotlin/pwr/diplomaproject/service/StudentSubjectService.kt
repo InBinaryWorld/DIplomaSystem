@@ -11,6 +11,7 @@ import pwr.diplomaproject.model.entity.Topic
 import pwr.diplomaproject.model.enum.EmployeeType
 import pwr.diplomaproject.model.enum.TopicStatus
 import pwr.diplomaproject.model.form.StudentSubjectPropositionForm
+import pwr.diplomaproject.model.mail.SubjectProposedByStudent
 import pwr.diplomaproject.repository.*
 import java.time.LocalDate
 
@@ -36,10 +37,13 @@ class StudentSubjectService @Autowired constructor(
         StudentSubjectDetailsDtoFactory.create(topicRepository.findByIdOrNull(id)!!)
 
     fun proposeSubject(studentId: Long, graduationId: Long, form: StudentSubjectPropositionForm) {
+        val student = studentRepository.getById(studentId)
+        val employee = employeeRepository.getEmployeeByUserIdAndType(form.supervisorId, EmployeeType.LECTURER)
+
         val newSubject = Topic(
             subjectRepository.getNextId(),
-            employeeRepository.getEmployeeByUserIdAndType(form.supervisorId, EmployeeType.LECTURER),
-            studentRepository.getById(studentId),
+            employee,
+            student,
             graduationRepository.getById(graduationId),
             form.topic,
             form.description,
@@ -49,6 +53,12 @@ class StudentSubjectService @Autowired constructor(
             true,
             LocalDate.now()
         )
+
+        SubjectProposedByStudent(
+            listOf(
+                student.user, employee.user
+            ), newSubject
+        ).send()
 
         subjectRepository.save(newSubject)
     }
