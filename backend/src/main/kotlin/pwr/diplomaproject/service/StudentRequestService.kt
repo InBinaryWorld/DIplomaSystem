@@ -28,6 +28,7 @@ class StudentRequestService @Autowired constructor(
     private val studentRepository: StudentRepository,
     private val subjectRepository: SubjectRepository,
     private val employeeRepository: EmployeeRepository,
+    private val notificationRepository: NotificationRepository,
 ) {
 
     fun getTopicChangeRequests(studentId: Long): List<StudentRequestDto> =
@@ -112,7 +113,8 @@ class StudentRequestService @Autowired constructor(
         TopicCorrectionRequestCreatedByStudent(
             listOf(oldTopic.lecturer.user),
             request,
-            student.user
+            student.user,
+            notificationRepository
         ).send()
     }
 
