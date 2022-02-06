@@ -338,11 +338,15 @@ function generateAuthData(): AuthData {
   };
 }
 
+function getQueryParam(key: string, query?: RequestParams): string | undefined {
+  return query?.getAll().find(p => p.key === key)?.value;
+}
+
 // LoadEmployeesActionOptions
 function getEmployees(query?: RequestParams): Employee[] {
   let response = employees;
-  const role = query?.getAll().find(p => p.name === 'role')?.value;
-  const dsId = query?.getAll().find(p => p.name === 'diplomaSessionId')?.value;
+  const role = getQueryParam('role', query);
+  const dsId = getQueryParam('diplomaSessionId', query);
   if (isNotNil(role)) {
     response = response.filter(f => f.employeeRole === role);
   }
@@ -356,7 +360,7 @@ function getEmployees(query?: RequestParams): Employee[] {
 // LoadFieldsOfStudyActionOptions
 function getFieldsOfStudy(query?: RequestParams): FieldOfStudy[] {
   let response = fieldsOfStudy;
-  const departmentId = query?.getAll().find(p => p.name === 'departmentId')?.value;
+  const departmentId = getQueryParam('departmentId', query);
   if (isNotNil(departmentId)) {
     response = response.filter(f => f.departmentId === departmentId);
   }
@@ -366,8 +370,8 @@ function getFieldsOfStudy(query?: RequestParams): FieldOfStudy[] {
 // LoadDiplomaSessionsActionOptions
 function getDiplomaSessions(query?: RequestParams): DiplomaSession[] {
   let response = diplomaSessions;
-  const departmentId = query?.getAll().find(p => p.name === 'departmentId')?.value;
-  const fieldOfStudyId = query?.getAll().find(p => p.name === 'fieldOfStudyId')?.value;
+  const departmentId = getQueryParam('departmentId', query);
+  const fieldOfStudyId = getQueryParam('fieldOfStudyId', query);
   if (isNotNil(departmentId)) {
     response = response.filter(ds => ds.fieldOfStudy.departmentId === departmentId);
   }
@@ -380,10 +384,10 @@ function getDiplomaSessions(query?: RequestParams): DiplomaSession[] {
 // LoadThesesActionOptions
 function getTheses(query?: RequestParams): Thesis[] {
   let response = theses;
-  const proposedByStudentId = query?.getAll().find(p => p.name === 'proposedByStudentId')?.value;
-  const diplomaSessionId = query?.getAll().find(p => p.name === 'diplomaSessionId')?.value;
-  const supervisorId = query?.getAll().find(p => p.name === 'supervisorId')?.value;
-  const status = query?.getAll().find(p => p.name === 'status')?.value;
+  const proposedByStudentId = getQueryParam('proposedByStudentId', query);
+  const diplomaSessionId = getQueryParam('diplomaSessionId', query);
+  const supervisorId = getQueryParam('supervisorId', query);
+  const status = getQueryParam('status', query);
   if (isNotNil(proposedByStudentId)) {
     response = response.filter(t => t.authorStudentId === proposedByStudentId);
   }
@@ -402,9 +406,9 @@ function getTheses(query?: RequestParams): Thesis[] {
 // LoadReservationsActionOptions
 function getReservations(query?: RequestParams): Reservation[] {
   let response = reservations;
-  const studentId = query?.getAll().find(p => p.name === 'studentId')?.value;
-  const supervisorId = query?.getAll().find(p => p.name === 'supervisorId')?.value;
-  const diplomaSessionId = query?.getAll().find(p => p.name === 'diplomaSessionId')?.value;
+  const studentId = getQueryParam('studentId', query);
+  const supervisorId = getQueryParam('supervisorId', query);
+  const diplomaSessionId = getQueryParam('diplomaSessionId', query);
   if (isNotNil(studentId)) {
     response = response.filter(r => r.reservationMembers.some(rm => rm.studentId === studentId));
   }
@@ -420,9 +424,9 @@ function getReservations(query?: RequestParams): Reservation[] {
 // LoadClarificationRequestsActionOptions
 function getClarificationRequests(query?: RequestParams): ClarificationRequest[] {
   let response = clarificationRequests;
-  const deanId = query?.getAll().find(p => p.name === 'deanId')?.value;
-  const studentId = query?.getAll().find(p => p.name === 'studentId')?.value;
-  const diplomaSessionId = query?.getAll().find(p => p.name === 'diplomaSessionId')?.value;
+  const deanId = getQueryParam('deanId', query);
+  const studentId = getQueryParam('studentId', query);
+  const diplomaSessionId = getQueryParam('diplomaSessionId', query);
   if (isNotNil(studentId)) {
     response = response.filter(r => r.studentId === studentId);
   }
@@ -438,9 +442,9 @@ function getClarificationRequests(query?: RequestParams): ClarificationRequest[]
 // LoadChangeRequestsActionOptions
 function getChangeRequests(query?: RequestParams): ChangeRequest[] {
   let response = changeRequests;
-  const studentId = query?.getAll().find(p => p.name === 'studentId')?.value;
-  const committeeId = query?.getAll().find(p => p.name === 'committeeId')?.value;
-  const diplomaSessionId = query?.getAll().find(p => p.name === 'diplomaSessionId')?.value;
+  const studentId = getQueryParam('studentId', query);
+  const committeeId = getQueryParam('diplomaSessionId', query);
+  const diplomaSessionId = getQueryParam('diplomaSessionId', query);
   if (isNotNil(studentId)) {
     response = response.filter(r => r.studentId === studentId);
   }
@@ -454,7 +458,7 @@ function getChangeRequests(query?: RequestParams): ChangeRequest[] {
 }
 
 function getForId<T extends WithId>(resource: T[], query: RequestParams): T {
-  const id = query.getAll().find(p => p.name === 'id')!.value;
+  const id = getQueryParam('id', query);
   return resource.find(e => e.id === id)!;
 }
 

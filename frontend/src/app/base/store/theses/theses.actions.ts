@@ -89,9 +89,9 @@ export class LoadReservationsActionOptions {
 
 
 export class LoadThesesActionOptions {
-  proposedByStudentId?: string;
-  diplomaSessionId?: string;
-  supervisorId?: string;
+  proposedByStudentId?: IdType;
+  diplomaSessionId?: IdType;
+  supervisorId?: IdType;
   status?: string;
 
   static proposedByStudent(diplomaSessionId: IdType, studentId: IdType): LoadThesesActionOptions {

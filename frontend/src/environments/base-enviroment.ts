@@ -44,8 +44,6 @@ export const baseEnvironment = {
       [ApiLabel.GET_FIELDS_OF_STUDY]: '/general/field-of-study',
       [ApiLabel.GET_RESERVATION]: '/student/reservation',
       [ApiLabel.GET_RESERVATIONS]: '/student/reservation',
-      [ApiLabel.GET_RESERVATION_MEMBERS]: 'TODO GET_RESERVATION_MEMBERS', //  !!! DO USUNIĘCIA !!!
-      [ApiLabel.GET_STUDENT]: '/student',
       [ApiLabel.GET_STUDENTS]: '/student',
       [ApiLabel.GET_THESES]: '/subject',
       [ApiLabel.GET_THESIS]: '/subject',

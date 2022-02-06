@@ -76,8 +76,8 @@ export class ServerHttpService {
     const parameters = params?.getAll() ?? [];
     const queryParams = query?.getAll() ?? [];
     const urlWithParams = parameters.reduce((workingUrl, param) =>
-      workingUrl.replace(`:${param.name}`, param.value), url);
-    const queryTail = queryParams.map(param => `${param.name}=${param.value}`).join('&');
+      workingUrl.replace(`:${param.key}`, param.value), url);
+    const queryTail = queryParams.map(param => `${param.key}=${param.value}`).join('&');
     return isEmpty(queryTail) ? urlWithParams : `${urlWithParams}?${queryTail}`;
   }
 

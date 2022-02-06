@@ -45,12 +45,6 @@ export class ThesesApiService {
     return this.http.getApiWithLabel(Reservation, ApiLabel.GET_RESERVATION, undefined, query);
   }
 
-  public getReservationMembers(reservationId: IdType): Observable<ReservationMember[]> {
-    const query = new RequestParams();
-    query.addIfValueExists('reservationId', reservationId);
-    return this.http.getApiWithLabel(ReservationMember, ApiLabel.GET_RESERVATION_MEMBERS, undefined, query);
-  }
-
   public createThesis(thesis: Partial<Thesis>): Observable<Thesis> {
     return this.http.postApiWithLabel(Thesis, ApiLabel.CREATE_THESIS, thesis);
   }

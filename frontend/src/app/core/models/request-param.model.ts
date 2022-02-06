@@ -1,7 +1,7 @@
 import { isNil } from 'lodash-es';
 
 export interface RequestParam {
-  name: string;
+  key: string;
   value: string;
 }
 
@@ -13,9 +13,9 @@ export class RequestParams {
     return this.params;
   }
 
-  addIfValueExists(name: string, value?: boolean | number | string): RequestParams {
+  addIfValueExists(key: string, value?: boolean | number | string): RequestParams {
     if (!isNil(value)) {
-      this.params.push({ name, value: String(value) });
+      this.params.push({ key, value: String(value) });
     }
     return this;
   }

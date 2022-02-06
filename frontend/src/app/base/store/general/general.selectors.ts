@@ -7,6 +7,7 @@ import { Department } from '../../models/dto/department.model';
 import { DiplomaSession } from '../../models/dto/diploma-session.model';
 import { FieldOfStudy } from '../../models/dto/field-of-study.model';
 import { Timetable } from '../../models/dto/timetable.model';
+import { IdType } from '../../models/dto/id.model';
 
 
 export const selectGeneralState = createFeatureSelector<GeneralState>(generalFeatureName);
@@ -17,7 +18,7 @@ export const selectDiplomaSessionsStoreResource = createSelector(selectGeneralSt
 export const selectDiplomaSessionsForKey = createSelector<AppState, string, StoreResource<DiplomaSession>, DiplomaSession[] | undefined>(
   selectDiplomaSessionsStoreResource, forKeySelector
 );
-export const selectDiplomaSessionForId = createSelector<AppState, string, StoreResource<DiplomaSession>, DiplomaSession | undefined>(
+export const selectDiplomaSessionForId = createSelector<AppState, IdType, StoreResource<DiplomaSession>, DiplomaSession | undefined>(
   selectDiplomaSessionsStoreResource, forIdSelector
 );
 
@@ -25,7 +26,7 @@ export const selectDepartmentsStoreResource = createSelector(selectGeneralState,
 export const selectDepartmentsForKey = createSelector<AppState, string, StoreResource<Department>, Department[] | undefined>(
   selectDepartmentsStoreResource, forKeySelector
 );
-export const selectDepartmentForId = createSelector<AppState, string, StoreResource<Department>, Department | undefined>(
+export const selectDepartmentForId = createSelector<AppState, IdType, StoreResource<Department>, Department | undefined>(
   selectDepartmentsStoreResource, forIdSelector
 );
 
@@ -33,7 +34,7 @@ export const selectFieldsOfStudyStoreResource = createSelector(selectGeneralStat
 export const selectFieldsOfStudyForKey = createSelector<AppState, string, StoreResource<FieldOfStudy>, FieldOfStudy[] | undefined>(
   selectFieldsOfStudyStoreResource, forKeySelector
 );
-export const selectFieldOfStudyForId = createSelector<AppState, string, StoreResource<FieldOfStudy>, FieldOfStudy | undefined>(
+export const selectFieldOfStudyForId = createSelector<AppState, IdType, StoreResource<FieldOfStudy>, FieldOfStudy | undefined>(
   selectFieldsOfStudyStoreResource, forIdSelector
 );
 
@@ -41,6 +42,6 @@ export const selectTimetablesStoreResource = createSelector(selectGeneralState, 
 export const selectTimetablesForKey = createSelector<AppState, string, StoreResource<Timetable>, Timetable[] | undefined>(
   selectTimetablesStoreResource, forKeySelector
 );
-export const selectTimetableForId = createSelector<AppState, string, StoreResource<Timetable>, Timetable | undefined>(
+export const selectTimetableForId = createSelector<AppState, IdType, StoreResource<Timetable>, Timetable | undefined>(
   selectTimetablesStoreResource, forIdSelector
 );
