@@ -46,17 +46,17 @@ class LecturerSubjectController @Autowired constructor(
         lecturerSubjectService.getStudentProposedSubject(id)
 
     @Operation(summary = "Akceptacja tematu zaproponowanego przez studenta/ów")
-    @GetMapping("/student-propositions/accept/{id}")
+    @PostMapping("/student-propositions/accept", params = ["id"])
     fun acceptProposedSubject(
         principal: Principal,
-        @PathVariable id: Long): Unit =
+        @RequestParam id: Long): Unit =
         lecturerSubjectService.acceptProposedSubject(principal.userId, id)
 
     @Operation(summary = "Odrzucenie tematu zaproponowanego przez studenta/ów")
-    @GetMapping("/student-propositions/reject/{id}")
+    @PostMapping("/student-propositions/reject")
     fun rejectProposedSubject(
         principal: Principal,
-        @PathVariable id: Long): Unit =
+        @RequestParam id: Long): Unit =
         lecturerSubjectService.rejectProposedSubject(principal.userId, id)
 
     @Operation(summary = "Tematy do poprawy")

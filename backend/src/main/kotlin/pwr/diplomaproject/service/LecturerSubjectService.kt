@@ -83,10 +83,10 @@ class LecturerSubjectService @Autowired constructor(
             .let { LecturerSubjectToCorrectDetailsDtoFactory.create(it) }
 
     fun correctSubject(userId: Long, form: LecturerTopicCorrectionForm): Unit =
-        subjectRepository.getByLecturerIdAndSubjectId(lecturerId(userId), form.topicId).let {
-            it.topic = form.topic
-            it.description = form.description
-            it.studentCount = form.numberOfStudents
+        subjectRepository.getByLecturerIdAndSubjectId(lecturerId(userId), form.thesisId).let {
+            it.topic = form.changes.topic
+            it.description = form.changes.description
+            it.studentCount = form.changes.numberOfStudents
             it.status = TopicStatus.WAITING
 
             subjectRepository.save(it)

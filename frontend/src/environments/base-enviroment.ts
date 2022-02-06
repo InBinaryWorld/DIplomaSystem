@@ -14,9 +14,9 @@ export const baseEnvironment = {
       [ApiLabel.LOGIN]: '/oauth/token',
       [ApiLabel.REFRESH]: 'TODO REFRESH',
       [ApiLabel.MODIFY_TIMETABLE]: 'TODO MODIFY_TIMETABLE',
-      [ApiLabel.ACCEPT_THESIS_WITH_LECTURER]: 'TODO ACCEPT_THESIS_WITH_LECTURER',
-      [ApiLabel.CORRECT_THESIS_WITH_LECTURER]: 'TODO CORRECT_THESIS_WITH_LECTURER',
-      [ApiLabel.REJECT_THESIS_WITH_LECTURER]: 'TODO REJECT_THESIS_WITH_LECTURER',
+      [ApiLabel.ACCEPT_THESIS_WITH_LECTURER]: '/lecturer/subject/student-propositions/accept', // request param "id" (id tematu)
+      [ApiLabel.CORRECT_THESIS_WITH_LECTURER]: '/lecturer/subject/to-correct', // zakładam że body jest takie: { thesisId: number, changes: { topic: string, description: string, numberOfStudents: number}}
+      [ApiLabel.REJECT_THESIS_WITH_LECTURER]: '/lecturer/subject/student-propositions/reject', // request param "id" (id tematu)
       [ApiLabel.ABANDON_MEMBER_RESERVATION]: '/student/reservation/cancel', // request param "studentId", "reservationId"
       [ApiLabel.APPROVE_CLARIFICATION_REQUEST]: '/dean/request/correction/accept',
       [ApiLabel.APPROVE_CHANGE_REQUEST]: '/commission/request/change/accept',
