@@ -1,6 +1,6 @@
 package pwr.diplomaproject.model.form
 
 data class StudentReservationForm(
-    val subjectId: Long,
+    val thesisId: Long,
     val studentIds: List<Long>
 )

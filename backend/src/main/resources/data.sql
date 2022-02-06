@@ -74,8 +74,8 @@ values (1, 'Lorem ipsum', false, '2022-02-09', 'Lorem ipsum', 'WAITING', 1,
 -- Table: reservation
 insert into reservation (id, creation_date, status, topic_id)
 values (1, '2022-02-10', 'WAITING', 1),
-       (2, '2022-02-10', 'REGISTERED', 6),
-       (3, '2022-02-10', 'REGISTERED', 6),
+       (2, '2022-02-10', 'SUBMITTED', 6),
+       (3, '2022-02-10', 'SUBMITTED', 6),
        (4, '2022-02-10', 'REJECTED_BY_LECTURER', 5),
        (5, '2022-02-10', 'CONFIRMED', 7),
        (6, '2022-02-10', 'CONFIRMED', 8);

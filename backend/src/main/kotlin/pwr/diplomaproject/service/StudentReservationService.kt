@@ -2,8 +2,8 @@ package pwr.diplomaproject.service
 
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
-import pwr.diplomaproject.model.dto.StudentReservationDto
-import pwr.diplomaproject.model.dto.factory.StudentReservationDtoFactory
+import pwr.diplomaproject.model.dto.ReservationDto
+import pwr.diplomaproject.model.dto.factory.ReservationDtoFactory
 import pwr.diplomaproject.model.entity.GroupMember
 import pwr.diplomaproject.model.entity.Reservation
 import pwr.diplomaproject.model.entity.Student
@@ -26,12 +26,12 @@ class StudentReservationService(
     private val studentRepository: StudentRepository,
     private val topicRepository: TopicRepository
 ) {
-    fun getReservations(studentId: Long, graduationId: Long): List<StudentReservationDto> =
-        reservationRepository.findAllByStudentAndGraduation(studentId, graduationId)
-            .map { StudentReservationDtoFactory.create(it) }
+    fun getReservations(studentId: Long?, supervisorId: Long?, graduationId: Long?): List<ReservationDto> =
+        reservationRepository.findAllByStudentIdOrSupervisorIdOrGraduationId(studentId, supervisorId, graduationId)
+            .map { ReservationDtoFactory.create(it) }
 
-    fun getReservation(studentId: Long, id: Long): StudentReservationDto =
-        StudentReservationDtoFactory.create(reservationRepository.findAllByIndexAndStudent(id, studentId))
+    fun getReservationById(id: Long): ReservationDto =
+        ReservationDtoFactory.create(reservationRepository.getById(id))
 
     fun approveReservation(studentId: Long, id: Long) {
         val reservation: Reservation = reservationRepository.findAllByIndexAndStudent(id, studentId)
@@ -60,9 +60,9 @@ class StudentReservationService(
 
             val memberStatusList = reservation.groupMembers.map { it.status }
 
-            // all MemberStatus.WILLING  =>  ReservationStatus.REGISTERED
+            // all MemberStatus.WILLING  =>  ReservationStatus.SUBMITTED
             if (memberStatusList.all { it == MemberStatus.WILLING }) {
-                reservation.status = ReservationStatus.REGISTERED
+                reservation.status = ReservationStatus.SUBMITTED
             }
 
             // all MemberStatus.CONFIRMED  =>  ReservationStatus.CONFIRMED
@@ -103,13 +103,13 @@ class StudentReservationService(
     }
 
     fun makeReservation(studentId: Long, form: StudentReservationForm) {
-        val topic: Topic = topicRepository.getById(form.subjectId)
+        val topic: Topic = topicRepository.getById(form.thesisId)
         val student: Student = studentRepository.getById(studentId)
 
         val newReservation = Reservation(
             id = reservationRepository.getNextId(),
             topic = topic,
-            status = if (form.studentIds.size == 1) ReservationStatus.REGISTERED else ReservationStatus.WAITING,
+            status = if (form.studentIds.size == 1) ReservationStatus.SUBMITTED else ReservationStatus.WAITING,
             creationDate = LocalDate.now(),
         )
 

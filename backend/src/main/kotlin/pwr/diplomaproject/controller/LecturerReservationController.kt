@@ -2,10 +2,7 @@ package pwr.diplomaproject.controller
 
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import pwr.diplomaproject.model.dto.LecturerSubjectReservationDetailsDto
 import pwr.diplomaproject.model.dto.LecturerSubjectReservationDto
 import pwr.diplomaproject.service.LecturerReservationService
@@ -31,16 +28,16 @@ class LecturerReservationController @Autowired constructor(
         lecturerReservationService.getSubject(principal.userId, id)
 
     @Operation(summary = "Zatwierdzenie rezerwacji tematu")
-    @GetMapping("/accept/{id}")
+    @PostMapping("/accept", params = ["id"])
     fun acceptReservation(
         principal: Principal,
-        @PathVariable id: Long): Unit =
+        @RequestParam id: Long): Unit =
         lecturerReservationService.acceptReservation(principal.userId, id)
 
     @Operation(summary = "Odrzucenie rezerwacji tematu")
-    @GetMapping("/reject/{id}")
+    @PostMapping("/reject", params = ["id"])
     fun rejectReservation(
         principal: Principal,
-        @PathVariable id: Long): Unit =
+        @RequestParam id: Long): Unit =
         lecturerReservationService.rejectReservation(principal.userId, id)
 }

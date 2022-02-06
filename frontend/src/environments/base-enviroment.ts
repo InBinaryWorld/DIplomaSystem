@@ -17,19 +17,19 @@ export const baseEnvironment = {
       [ApiLabel.ACCEPT_THESIS_WITH_LECTURER]: 'TODO ACCEPT_THESIS_WITH_LECTURER',
       [ApiLabel.CORRECT_THESIS_WITH_LECTURER]: 'TODO CORRECT_THESIS_WITH_LECTURER',
       [ApiLabel.REJECT_THESIS_WITH_LECTURER]: 'TODO REJECT_THESIS_WITH_LECTURER',
-      [ApiLabel.ABANDON_MEMBER_RESERVATION]: 'TODO ABANDON_MEMBER_RESERVATION',
+      [ApiLabel.ABANDON_MEMBER_RESERVATION]: '/student/reservation/cancel', // request param "studentId", "reservationId"
       [ApiLabel.APPROVE_CLARIFICATION_REQUEST]: 'TODO APPROVE_CLARIFICATION_REQUEST',
       [ApiLabel.APPROVE_CHANGE_REQUEST]: 'TODO APPROVE_CHANGE_REQUEST',
       [ApiLabel.APPROVE_THESIS_WITH_COORDINATOR]: 'TODO APPROVE_THESIS_WITH_COORDINATOR',
       [ApiLabel.APPROVE_THESIS_WITH_COMMITTEE_MEMBER]: 'TODO APPROVE_THESIS_WITH_COMMITTEE_MEMBER',
-      [ApiLabel.CONFIRM_MEMBER_RESERVATION]: 'TODO CONFIRM_MEMBER_RESERVATION',
-      [ApiLabel.CONFIRM_PARTICIPATION_IN_RESERVATION]: 'TODO CONFIRM_PARTICIPATION_IN_RESERVATION',
+      [ApiLabel.CONFIRM_MEMBER_RESERVATION]: '/student/reservation/approve', // request param "studentId", "reservationId"
+      [ApiLabel.CONFIRM_PARTICIPATION_IN_RESERVATION]: '/student/reservation/approve', // request param "studentId", "reservationId"
       [ApiLabel.CREATE_CLARIFICATION_REQUEST]: 'TODO CREATE_CLARIFICATION_REQUEST',
       [ApiLabel.CREATE_CHANGE_REQUEST]: 'TODO CREATE_CHANGE_REQUEST',
       [ApiLabel.CREATE_THESIS]: 'TODO CREATE_THESIS',
-      [ApiLabel.CREATE_RESERVATION]: 'TODO CREATE_RESERVATION',
-      [ApiLabel.REJECT_RESERVATION]: 'TODO REJECT_RESERVATION',
-      [ApiLabel.ACCEPT_RESERVATION]: 'TODO ACCEPT_RESERVATION',
+      [ApiLabel.CREATE_RESERVATION]: '/student/reservation', // request param: "studentId"; body: { thesisId: number, studentIds: number[] }
+      [ApiLabel.REJECT_RESERVATION]: '/lecturer/reservation/reject', // request param: "id" (id rezerwacji)
+      [ApiLabel.ACCEPT_RESERVATION]: '/lecturer/reservation/reject', // request param: "id" (id rezerwacji)
       [ApiLabel.GET_CHANGE_REQUEST]: 'TODO GET_CHANGE_REQUEST',
       [ApiLabel.GET_CHANGE_REQUESTS]: 'TODO GET_CHANGE_REQUESTS',
       [ApiLabel.GET_CLARIFICATION_REQUEST]: 'TODO GET_CLARIFICATION_REQUEST',
@@ -42,8 +42,8 @@ export const baseEnvironment = {
       [ApiLabel.GET_EMPLOYEES]: '/employee',
       [ApiLabel.GET_FIELD_OF_STUDY]: 'TODO GET_FIELD_OF_STUDY',
       [ApiLabel.GET_FIELDS_OF_STUDY]: 'TODO GET_FIELDS_OF_STUDY',
-      [ApiLabel.GET_RESERVATION]: 'TODO GET_RESERVATION',
-      [ApiLabel.GET_RESERVATIONS]: 'TODO GET_RESERVATIONS',
+      [ApiLabel.GET_RESERVATION]: '/student/reservation',
+      [ApiLabel.GET_RESERVATIONS]: '/student/reservation',
       [ApiLabel.GET_RESERVATION_MEMBERS]: 'TODO GET_RESERVATION_MEMBERS',
       [ApiLabel.GET_STUDENT]: '/student',
       [ApiLabel.GET_STUDENTS]: '/student',
