@@ -153,7 +153,6 @@ export class StudentCreateReservationComponent extends RoleComponent implements 
     return [Role.STUDENT];
   }
 
-  // TODO: check and correct
   private preparePayloadForFormData(student: Student, thesis: Thesis, formData: any): CreateReservation {
     const initiatorStudentId: IdType = student.id;
     const extraStudentsIds: IdType[] = formData['students'];

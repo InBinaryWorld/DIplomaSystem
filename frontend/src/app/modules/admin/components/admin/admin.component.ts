@@ -10,15 +10,7 @@ import { NavItem } from '../../../shared/models/nav-item.model';
 export class AdminComponent {
 
   public navItems: NavItem[] = [
-    { path: '/admin/import', nameKey: 'Sidebar.Admin.Import' },
-    { path: '/admin/deans', nameKey: 'Sidebar.Admin.Deans' },
-    { path: '/admin/students', nameKey: 'Sidebar.Admin.Students' },
-    { path: '/admin/lecturers', nameKey: 'Sidebar.Admin.Lecturers' },
-    { path: '/admin/coordinators', nameKey: 'Sidebar.Admin.Coordinators' },
-    { path: '/admin/departments', nameKey: 'Sidebar.Admin.Departments' },
-    { path: '/admin/study-fields', nameKey: 'Sidebar.Admin.StudyFields' },
-    { path: '/admin/diploma-section', nameKey: 'Sidebar.Admin.DiplomaSection' },
-    { path: '/admin/program-committee', nameKey: 'Sidebar.Admin.ProgramCommittee' }
+    { path: '/admin/notifications', nameKey: 'Sidebar.Admin.Notifications' }
   ];
 
 }
