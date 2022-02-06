@@ -18,13 +18,14 @@ class SubjectController @Autowired constructor(
     private val lecturerSubjectService: LecturerSubjectService
 ){
 
-    @Operation(summary = "Tematy według statusu, dyplomowania i proponującego studenta")
+    @Operation(summary = "Tematy według statusu, dyplomowania, proponującego studenta lub prowadzącego")
     @GetMapping
     fun getSubjects(
         @RequestParam(required = false) status: TopicStatus?,
         @RequestParam(required = false) diplomaSessionId: Long?,
-        @RequestParam(required = false) proposedByStudentId: Long?): List<SubjectDetailsDto> =
-        subjectService.getSubjects(status, diplomaSessionId, proposedByStudentId)
+        @RequestParam(required = false) proposedByStudentId: Long?,
+        @RequestParam(required = false) supervisorId: Long?): List<SubjectDetailsDto> =
+        subjectService.getSubjects(status, diplomaSessionId, proposedByStudentId, supervisorId)
 
     @Operation(summary = "Szczegóły tematu")
     @GetMapping(params = ["id"])

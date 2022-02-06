@@ -7,7 +7,7 @@
 
     <cache alias="subjects">
         <expiry>
-            <ttl unit="seconds">10</ttl>
+            <ttl unit="seconds">5</ttl>
         </expiry>
         <resources>
             <heap unit="entries">2000</heap>

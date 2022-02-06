@@ -51,9 +51,11 @@ interface SubjectRepository : JpaRepository<Topic, Long> {
         WHERE (:status IS NULL OR t.status = :status)
         AND (:graduationId IS NULL OR t.graduation.id = :graduationId)
         AND (:studentId IS NULL OR (t.createdByStudent = true AND t.student.id = :studentId))
+        AND (:supervisorId IS NULL OR t.lecturer.id = :supervisorId)
     """)
-    fun findAllByStatusOrGraduationOrProposedStudent(
+    fun findAllByParams(
         status: TopicStatus?,
         graduationId: Long?,
-        studentId: Long?): List<Topic>
+        studentId: Long?,
+        supervisorId: Long?): List<Topic>
 }
