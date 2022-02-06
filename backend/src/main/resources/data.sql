@@ -109,4 +109,6 @@ values (1, 'ReservationCreatedByStudent',
        (2, 'ReservationResolvedByLecturer',
         'Prowadzący :LECTURER rozpatrzył rezerwację na temat ":TOPIC". Aktualny status rezerwacji: :RESERVATION_STATUS.'),
        (3, 'GroupMemberUpdatedByStudent',
-        'Student :STUDENT zaktualizował swój status członka rezerwacji tematu ":TOPIC". Aktualny status członka grupy: :GROUP_MEMBER_STATUS. Aktualny status rezerwacji: $RESERVATION_STATUS.')
+        'Student :STUDENT zaktualizował swój status członka rezerwacji tematu ":TOPIC". Aktualny status członka grupy: :GROUP_MEMBER_STATUS. Aktualny status rezerwacji: :RESERVATION_STATUS.'),
+       (4, 'SubjectProposedByStudent',
+        'Student :STUDENT złożył nową propozycję tematu: ":TOPIC".')

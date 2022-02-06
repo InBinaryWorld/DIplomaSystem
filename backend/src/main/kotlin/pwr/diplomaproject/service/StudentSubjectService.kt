@@ -22,6 +22,7 @@ class StudentSubjectService @Autowired constructor(
     private val employeeRepository: EmployeeRepository,
     private val studentRepository: StudentRepository,
     private val graduationRepository: GraduationRepository,
+    private val notificationRepository: NotificationRepository,
 ) {
     fun getAvailableSubjects(studentId: Long, graduationId: Long): List<SubjectDto> =
         topicRepository.findAllByGraduationAvailableForStudent(studentId, graduationId).map {
@@ -54,7 +55,7 @@ class StudentSubjectService @Autowired constructor(
             LocalDate.now()
         )
 
-        SubjectProposedByStudent(listOf(employee.user), newSubject, student.user).send()
+        SubjectProposedByStudent(listOf(employee.user), newSubject, student.user, notificationRepository).send()
 
         subjectRepository.save(newSubject)
     }
