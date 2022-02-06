@@ -115,4 +115,6 @@ values (1, 'ReservationCreatedByStudent',
        (5, 'SubjectPropositionDeletedByStudent',
         'Propozycja tematu ":TOPIC" została usunięta przez studenta :STUDENT.'),
        (6, 'SubjectPropositionResolvedByLecturer',
-        'Propozycja tematu ":TOPIC" została rozpatrzona :RESULT przez prowadzącego.')
+        'Propozycja tematu ":TOPIC" została rozpatrzona :RESULT przez prowadzącego.'),
+       (7, 'SubjectResolvedByCoordinator',
+        'Temat ":TOPIC" został rozpatrzony przez koordynatora. Aktualny status: :TOPIC_STATUS. Uwagi: :COORDINATOR_COMMENTS.')

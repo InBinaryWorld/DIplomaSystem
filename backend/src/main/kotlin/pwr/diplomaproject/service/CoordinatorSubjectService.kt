@@ -8,12 +8,14 @@ import pwr.diplomaproject.model.dto.factory.SubjectDtoFactory
 import pwr.diplomaproject.model.enum.TopicStatus
 import pwr.diplomaproject.model.form.CoordinatorCommentForm
 import pwr.diplomaproject.model.notification.SubjectResolvedByCoordinator
+import pwr.diplomaproject.repository.NotificationRepository
 import pwr.diplomaproject.repository.SubjectRepository
 
 @Service
 class CoordinatorSubjectService @Autowired constructor(
     private val subjectService: SubjectService,
-    private val subjectRepository: SubjectRepository
+    private val subjectRepository: SubjectRepository,
+    private val notificationRepository: NotificationRepository,
 ) {
 
     companion object {
@@ -40,7 +42,7 @@ class CoordinatorSubjectService @Autowired constructor(
         subjectRepository.getById(id).let {
             it.status = TopicStatus.APPROVED_BY_COORDINATOR
             subjectRepository.save(it)
-            SubjectResolvedByCoordinator(listOf(it.lecturer.user), it).send()
+            SubjectResolvedByCoordinator(listOf(it.lecturer.user), it, notificationRepository).send()
         }
 
     fun commentSubject(comments: CoordinatorCommentForm): Unit =
@@ -48,14 +50,14 @@ class CoordinatorSubjectService @Autowired constructor(
             it.status = TopicStatus.TO_CORRECT
             it.coordinatorComments = comments.comment
             subjectRepository.save(it)
-            SubjectResolvedByCoordinator(listOf(it.lecturer.user), it).send()
+            SubjectResolvedByCoordinator(listOf(it.lecturer.user), it, notificationRepository).send()
         }
 
     fun rejectSubject(comments: CoordinatorCommentForm): Unit =
         subjectRepository.getById(comments.thesisId).let {
             it.status = TopicStatus.REJECTED_BY_COORDINATOR
             it.coordinatorComments = comments.comment
-            SubjectResolvedByCoordinator(listOf(it.lecturer.user), it).send()
+            SubjectResolvedByCoordinator(listOf(it.lecturer.user), it, notificationRepository).send()
             subjectRepository.save(it)
         }
 }
