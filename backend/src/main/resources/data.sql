@@ -113,4 +113,6 @@ values (1, 'ReservationCreatedByStudent',
        (4, 'SubjectProposedByStudent',
         'Student :STUDENT złożył nową propozycję tematu: ":TOPIC".'),
        (5, 'SubjectPropositionDeletedByStudent',
-        'Propozycja tematu ":TOPIC" została usunięta przez studenta :STUDENT.')
+        'Propozycja tematu ":TOPIC" została usunięta przez studenta :STUDENT.'),
+       (6, 'SubjectPropositionResolvedByLecturer',
+        'Propozycja tematu ":TOPIC" została rozpatrzona :RESULT przez prowadzącego.')
