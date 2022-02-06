@@ -29,7 +29,8 @@ dependencies {
 	implementation("org.springdoc:springdoc-openapi-data-rest:1.6.0")
 	implementation("org.springdoc:springdoc-openapi-ui:1.6.0")
 	implementation("org.springdoc:springdoc-openapi-kotlin:1.6.0")
-	runtimeOnly("com.h2database:h2")
+    implementation("org.springframework.boot:spring-boot-starter-cache:2.6.3")
+    runtimeOnly("com.h2database:h2")
 	providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
