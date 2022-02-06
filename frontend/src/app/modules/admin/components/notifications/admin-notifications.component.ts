@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { BehaviorSubject, Observable, switchMap } from 'rxjs';
+import { switchMap } from 'rxjs';
 import { GeneralResourcesService } from '../../../../base/services/general-resources.service';
 import { BaseComponent } from '../../../../core/components/base-component.directive';
 import { NotificationTemplate } from '../../../../base/models/dto/notification.model';
@@ -24,9 +24,6 @@ export class AdminNotificationsComponent extends BaseComponent {
 
   notifications?: NotificationTemplate[];
 
-  isErrorVisible = false;
-
-  reloadTrigger = new BehaviorSubject<boolean>(true);
 
   constructor(private readonly formBuilder: FormBuilder,
               private readonly generalResourcesService: GeneralResourcesService,
@@ -65,18 +62,6 @@ export class AdminNotificationsComponent extends BaseComponent {
     payload.content = formData[FORM_KEYS.CONTENT];
     const actionSource = this.generalResourcesService.modifyNotification(payload);
     this.handleAction(actionSource);
-  }
-
-  private handleAction<T>(actionSource: Observable<T>): void {
-    this.addSubscription(actionSource.subscribe({
-      next: () => this.reload(),
-      error: () => this.isErrorVisible = true
-    }));
-  }
-
-  private reload(): void {
-    this.isErrorVisible = false;
-    this.reloadTrigger.next(true);
   }
 
 }

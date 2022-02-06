@@ -33,7 +33,6 @@ export class StudentCreateReservationComponent extends RoleComponent implements 
   students?: Student[];
 
   canReserve = false;
-  isErrorVisible = false;
   notUniqueStudents = false;
 
   constructor(private readonly router: Router,
@@ -62,7 +61,7 @@ export class StudentCreateReservationComponent extends RoleComponent implements 
     const payload = this.preparePayloadForFormData(this.student!, this.thesis!, formData);
     this.thesesService.createReservation(this.student!.id, payload).subscribe({
       next: (request) => this.router.navigate(['/student/reservations/details/', request.id]),
-      error: () => this.isErrorVisible = true
+      error: () => this.showError()
     });
   }
 

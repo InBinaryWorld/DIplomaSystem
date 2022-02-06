@@ -1,6 +1,6 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { BehaviorSubject, combineLatest, map, Observable, switchMap } from 'rxjs';
+import { combineLatest, map, Observable, switchMap } from 'rxjs';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Role } from '../../../../base/models/dto/role.model';
 import { RoleComponent } from '../../../../base/components/role-component.directive';
@@ -35,10 +35,6 @@ export class ReservationDetailsComponent extends RoleComponent implements OnInit
   studentMember?: ReservationMember;
   reservation?: Reservation;
   diplomaSession?: DiplomaSession;
-
-  isErrorVisible = false;
-
-  reloadTrigger = new BehaviorSubject<boolean>(true);
 
   constructor(private readonly router: Router,
               private readonly formBuilder: FormBuilder,
@@ -153,18 +149,6 @@ export class ReservationDetailsComponent extends RoleComponent implements OnInit
     const actionSource = this.thesesService.acceptReservation(this.reservation!.id);
     this.handleAction(actionSource);
 
-  }
-
-  private handleAction<T>(actionSource: Observable<T>): void {
-    this.addSubscription(actionSource.subscribe({
-      next: () => this.reload(),
-      error: () => this.isErrorVisible = true
-    }));
-  }
-
-  private reload(): void {
-    this.isErrorVisible = false;
-    this.reloadTrigger.next(true);
   }
 
 }

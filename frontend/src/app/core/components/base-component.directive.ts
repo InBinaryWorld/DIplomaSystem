@@ -5,7 +5,7 @@ import { TranslationKeys } from 'src/app/base/utils/translation-keys.utils';
 import { Cleanable } from './cleanable.directive';
 import { FormArray, FormGroup, ValidationErrors } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { distinctUntilChanged, map, Observable } from 'rxjs';
+import { BehaviorSubject, distinctUntilChanged, map, Observable } from 'rxjs';
 import { filterExists } from '../tools/filter-exists';
 
 @Directive()
@@ -14,6 +14,9 @@ export abstract class BaseComponent extends Cleanable {
   Role = Role;
   LabelBuilder = LabelBuilder;
   TranslationKeys = TranslationKeys;
+
+  isErrorVisible = false;
+  reloadTrigger = new BehaviorSubject<boolean>(true);
 
   protected constructor(protected readonly changeDetector: ChangeDetectorRef) {
     super();
@@ -45,5 +48,20 @@ export abstract class BaseComponent extends Cleanable {
     );
   };
 
+  protected handleAction<T>(actionSource: Observable<T>): void {
+    this.addSubscription(actionSource.subscribe({
+      next: () => this.reload(),
+      error: () => this.showError()
+    }));
+  }
 
+  protected showError(): void {
+    this.isErrorVisible = true;
+    this.markForCheck();
+  }
+
+  protected reload(): void {
+    this.isErrorVisible = false;
+    this.reloadTrigger.next(true);
+  }
 }

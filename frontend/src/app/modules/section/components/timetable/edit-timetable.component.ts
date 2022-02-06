@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, ValidatorFn } from '@angular/forms';
 import { UserRole } from '../../../../base/models/dto/user-role.model';
-import { BehaviorSubject, combineLatest, Observable, switchMap } from 'rxjs';
+import { combineLatest, switchMap } from 'rxjs';
 import { GeneralResourcesService } from '../../../../base/services/general-resources.service';
 import { SessionService } from '../../../../base/services/session.service';
 import { Role } from '../../../../base/models/dto/role.model';
@@ -23,10 +23,6 @@ export class EditTimetableComponent extends RoleComponent implements OnInit {
 
   userRole?: UserRole;
   timetable?: Timetable;
-
-  isErrorVisible = false;
-
-  reloadTrigger = new BehaviorSubject<boolean>(true);
 
   constructor(private readonly router: Router,
               private readonly formBuilder: FormBuilder,
@@ -92,15 +88,4 @@ export class EditTimetableComponent extends RoleComponent implements OnInit {
     this.handleAction(actionSource);
   }
 
-  private handleAction<T>(actionSource: Observable<T>): void {
-    this.addSubscription(actionSource.subscribe({
-      next: () => this.reload(),
-      error: () => this.isErrorVisible = true
-    }));
-  }
-
-  private reload(): void {
-    this.isErrorVisible = false;
-    this.reloadTrigger.next(true);
-  }
 }

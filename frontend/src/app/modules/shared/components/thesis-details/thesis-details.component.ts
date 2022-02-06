@@ -1,6 +1,6 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { BehaviorSubject, combineLatest, map, NEVER, Observable, of, switchMap } from 'rxjs';
+import { combineLatest, map, NEVER, Observable, of, switchMap } from 'rxjs';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Role } from '../../../../base/models/dto/role.model';
 import { RoleComponent } from '../../../../base/components/role-component.directive';
@@ -56,8 +56,6 @@ export class ThesisDetailsComponent extends RoleComponent implements OnInit {
   canCoordinatorConsiderThesis?: boolean;
   canCommitteeMemberConsiderThesis?: boolean;
 
-  isErrorVisible = false;
-  reloadTrigger = new BehaviorSubject<boolean>(true);
 
   constructor(private readonly router: Router,
               private readonly formBuilder: FormBuilder,
@@ -286,20 +284,8 @@ export class ThesisDetailsComponent extends RoleComponent implements OnInit {
     this.handleAction(actionSource);
   }
 
-  private handleAction<T>(actionSource: Observable<T>): void {
-    this.addSubscription(actionSource.subscribe({
-      next: () => this.reload(),
-      error: () => this.isErrorVisible = true
-    }));
-  }
-
   public reserveTopic(): void {
     this.router.navigate(['/student/reservations/create', this.thesis!.id]).then();
-  }
-
-  public reload(): void {
-    this.isErrorVisible = false;
-    this.reloadTrigger.next(true);
   }
 
   isCoordinatorCommentVisible(): boolean {

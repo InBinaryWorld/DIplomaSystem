@@ -1,6 +1,6 @@
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { BehaviorSubject, combineLatest, map, Observable, switchMap } from 'rxjs';
+import { combineLatest, map, Observable, switchMap } from 'rxjs';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Role } from '../../../../base/models/dto/role.model';
 import { RoleComponent } from '../../../../base/components/role-component.directive';
@@ -27,10 +27,7 @@ export class ChangeRequestDetailsComponent extends RoleComponent implements OnIn
   userRole?: UserRole;
   request?: ChangeRequest;
   diplomaSession?: DiplomaSession;
-  isErrorVisible = false;
-
   canProgramCommitteeConsiderRequest?: boolean;
-  reloadTrigger = new BehaviorSubject<boolean>(true);
 
   constructor(private readonly formBuilder: FormBuilder,
               private readonly activatedRoute: ActivatedRoute,
@@ -111,18 +108,6 @@ export class ChangeRequestDetailsComponent extends RoleComponent implements OnIn
   public approveRequest(): void {
     const actionSource = this.requestsService.approveChangeRequestWithCommitteeMember(this.userRole!.id, this.request!.id);
     this.handleAction(actionSource);
-  }
-
-  private handleAction<T>(actionSource: Observable<T>): void {
-    this.addSubscription(actionSource.subscribe({
-      next: () => this.reload(),
-      error: () => this.isErrorVisible = true
-    }));
-  }
-
-  public reload(): void {
-    this.isErrorVisible = false;
-    this.reloadTrigger.next(true);
   }
 
 }

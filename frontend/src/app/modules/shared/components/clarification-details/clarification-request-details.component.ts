@@ -1,6 +1,6 @@
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { BehaviorSubject, combineLatest, map, Observable, switchMap } from 'rxjs';
+import { combineLatest, map, Observable, switchMap } from 'rxjs';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Role } from '../../../../base/models/dto/role.model';
 import { ClarificationRequest } from '../../../../base/models/dto/clarification-request.model';
@@ -26,10 +26,6 @@ export class ClarificationRequestDetailsComponent extends RoleComponent implemen
   userRole?: UserRole;
   request?: ClarificationRequest;
   canDeanConsiderRequest?: boolean;
-
-  isErrorVisible = false;
-
-  private reloadTrigger = new BehaviorSubject<boolean>(true);
 
   constructor(private readonly formBuilder: FormBuilder,
               private readonly activatedRoute: ActivatedRoute,
@@ -118,16 +114,5 @@ export class ClarificationRequestDetailsComponent extends RoleComponent implemen
     this.handleAction(actionSource);
   }
 
-  private handleAction<T>(actionSource: Observable<T>): void {
-    this.addSubscription(actionSource.subscribe({
-      next: () => this.reload(),
-      error: () => this.isErrorVisible = true
-    }));
-  }
-
-  private reload(): void {
-    this.isErrorVisible = false;
-    this.reloadTrigger.next(true);
-  }
 
 }
