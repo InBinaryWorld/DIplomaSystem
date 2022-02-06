@@ -26,25 +26,25 @@
         </div>
       </fieldset>
       <div class="mb-3">
-        <label [for]="FORM_KEY.CURRENT_DESCRIPTION" class="form-label">
+        <label [for]="FORM_KEY.NEW_THESIS_TOPIC" class="form-label">
           {{ 'Form.Label.NewThesisTopic' | translate }}
         </label>
         <input type="text" class="form-control"
-               [formControlName]="FORM_KEY.CURRENT_DESCRIPTION"
-               [id]="FORM_KEY.CURRENT_DESCRIPTION"
-               [class.is-invalid]="getErrors(form, FORM_KEY.CURRENT_DESCRIPTION)">
-        <app-validation-feedback [errors]="getErrors(form, FORM_KEY.CURRENT_DESCRIPTION)"></app-validation-feedback>
+               [formControlName]="FORM_KEY.NEW_THESIS_TOPIC"
+               [id]="FORM_KEY.NEW_THESIS_TOPIC"
+               [class.is-invalid]="getErrors(form, FORM_KEY.NEW_THESIS_TOPIC)">
+        <app-validation-feedback [errors]="getErrors(form, FORM_KEY.NEW_THESIS_TOPIC)"></app-validation-feedback>
       </div>
       <div class="mb-4">
-        <label [for]="FORM_KEY.CURRENT_DESCRIPTION" class="form-label">
+        <label [for]="FORM_KEY.NEW_DESCRIPTION" class="form-label">
           {{ 'Form.Label.NewDescription' | translate }}
         </label>
         <textarea rows="5" class="form-control"
-                  [formControlName]="FORM_KEY.CURRENT_DESCRIPTION"
-                  [id]="FORM_KEY.CURRENT_DESCRIPTION"
-                  [class.is-invalid]="getErrors(form, FORM_KEY.CURRENT_DESCRIPTION)">
+                  [formControlName]="FORM_KEY.NEW_DESCRIPTION"
+                  [id]="FORM_KEY.NEW_DESCRIPTION"
+                  [class.is-invalid]="getErrors(form, FORM_KEY.NEW_DESCRIPTION)">
         </textarea>
-        <app-validation-feedback [errors]="getErrors(form,'newDescription')"></app-validation-feedback>
+        <app-validation-feedback [errors]="getErrors(form,FORM_KEY.NEW_DESCRIPTION)"></app-validation-feedback>
       </div>
       <div class="gap-2 d-flex justify-content-end">
         <button

@@ -18,6 +18,12 @@ import {
 } from '../../../../../base/models/dto/post/create-change-request.model';
 import { Employee } from '../../../../../base/models/dto/employee.model';
 
+const FORM_KEY = {
+  TOPIC: 'TOPIC',
+  DESCRIPTION: 'DESCRIPTION',
+  SUPERVISOR_ID: 'SUPERVISOR_ID'
+};
+
 @Component({
   selector: 'app-student-topic-create-clarification',
   templateUrl: './student-create-change-request.component.html',
@@ -25,7 +31,7 @@ import { Employee } from '../../../../../base/models/dto/employee.model';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class StudentCreateChangeRequestComponent extends RoleComponent implements OnInit {
-
+  FORM_KEY = FORM_KEY;
   form?: FormGroup;
 
   student?: Student;
@@ -49,21 +55,12 @@ export class StudentCreateChangeRequestComponent extends RoleComponent implement
     const payload = this.prepareRequestForFormData();
     this.requestsService.createChangeRequest(this.baseThesis!.id, payload).subscribe({
       next: (request) => this.router.navigate(['/student/change-requests/details/', request.id]),
-      error: () => this.errorVisible = true
+      error: () => this.showError()
     });
   }
 
   ngOnInit(): void {
-    this.initForms();
     this.initData();
-  }
-
-  private initForms(): void {
-    this.form = this.formBuilder.group({
-      topic: [undefined, AppValidators.topicValidator],
-      description: [undefined, AppValidators.descriptionValidator],
-      supervisorId: [undefined, Validators.required]
-    });
   }
 
   private initData(): void {
@@ -72,7 +69,7 @@ export class StudentCreateChangeRequestComponent extends RoleComponent implement
         this.baseThesis = thesis;
         this.student = student;
         this.supervisors = supervisors;
-        this.setFormData(thesis);
+        this.initForm(thesis);
       })
     );
   }
@@ -91,11 +88,11 @@ export class StudentCreateChangeRequestComponent extends RoleComponent implement
     return this.thesesService.getThesisForStudentConfirmedReservation(studentId, diplomaSessionId);
   }
 
-  private setFormData(thesis: Thesis): void {
-    this.form?.setValue({
-      topic: thesis.topic,
-      description: thesis.description,
-      supervisorId: thesis.supervisorId
+  private initForm(thesis: Thesis): void {
+    this.form = this.formBuilder.group({
+      [FORM_KEY.TOPIC]: [thesis.topic, AppValidators.topicValidator],
+      [FORM_KEY.DESCRIPTION]: [thesis.description, AppValidators.descriptionValidator],
+      [FORM_KEY.SUPERVISOR_ID]: [thesis.supervisorId, Validators.required]
     });
     this.markForCheck();
   }
@@ -107,15 +104,14 @@ export class StudentCreateChangeRequestComponent extends RoleComponent implement
   private prepareRequestForFormData(): CreateChangeRequest {
     const formData = this.form?.value;
     const newThesis = new CreateChangeRequestNewThesis();
-    newThesis.topic = formData.topi;
-    newThesis.description = formData.description;
-    newThesis.supervisorId = formData.supervisorId;
+    newThesis.topic = formData[FORM_KEY.TOPIC];
+    newThesis.description = formData[FORM_KEY.DESCRIPTION];
+    newThesis.supervisorId = formData[FORM_KEY.SUPERVISOR_ID];
     const payload = new CreateChangeRequest();
     payload.studentId = this.student!.id;
     payload.previousThesisId = this.baseThesis!.id;
     payload.newThesis = newThesis;
     return payload;
-
   }
 
 }

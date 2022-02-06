@@ -41,7 +41,7 @@ export class StudentCreateThesisComponent extends RoleComponent implements OnIni
     const payload = this.prepareCreatePayload(this.context!, formData);
     this.thesesService.createThesis(payload).subscribe({
       next: () => this.redirectOnSuccess(),
-      error: () => this.errorVisible = true
+      error: () => this.showError()
     });
   }
 

@@ -10,7 +10,6 @@ import { SessionService } from '../../../../../base/services/session.service';
 import { combineLatest, Observable, switchMap } from 'rxjs';
 import { Thesis } from '../../../../../base/models/dto/thesis.model';
 import { Role } from '../../../../../base/models/dto/role.model';
-import { isNil } from 'lodash-es';
 import { UserService } from '../../../../../base/services/user.service';
 import { Student } from '../../../../../base/models/dto/student.model';
 import { CreateClarificationRequest } from '../../../../../base/models/dto/post/create-clarification-request.model';
@@ -53,22 +52,12 @@ export class StudentCreateClarificationRequestComponent extends RoleComponent im
     const request = this.prepareRequestForFormData();
     this.requestsService.createClarificationRequest(this.thesis!.id, request).subscribe({
       next: (request) => this.router.navigate(['/student/change-requests/details/', request.id]),
-      error: () => this.errorVisible = true
+      error: () => this.showError()
     });
   }
 
   ngOnInit(): void {
-    this.initForms();
     this.initData();
-  }
-
-  private initForms(): void {
-    this.form = this.formBuilder.group({
-      currentThesisTopic: [],
-      currentDescription: [],
-      newThesisTopic: [undefined, AppValidators.topicValidator],
-      newDescription: [undefined, AppValidators.descriptionValidator]
-    });
   }
 
   private initData(): void {
@@ -76,7 +65,7 @@ export class StudentCreateClarificationRequestComponent extends RoleComponent im
       .subscribe(([student, thesis]) => {
         this.thesis = thesis;
         this.student = student;
-        this.setCurrentFormData(thesis);
+        this.initForm(thesis);
       })
     );
   }
@@ -90,15 +79,14 @@ export class StudentCreateClarificationRequestComponent extends RoleComponent im
     );
   }
 
-  private setCurrentFormData(thesis?: Thesis): void {
-    if (isNil(thesis)) {
-      this.form?.reset();
-    } else {
-      this.form?.setValue({
-        currentThesisTopic: thesis.topic,
-        currentDescription: thesis.description
-      });
-    }
+  private initForm(thesis: Thesis): void {
+
+    this.form = this.formBuilder.group({
+      [FORM_KEY.CURRENT_THESIS_TOPIC]: [thesis.topic],
+      [FORM_KEY.CURRENT_DESCRIPTION]: [thesis.description],
+      [FORM_KEY.NEW_THESIS_TOPIC]: [undefined, AppValidators.topicValidator],
+      [FORM_KEY.NEW_DESCRIPTION]: [undefined, AppValidators.descriptionValidator]
+    });
     this.markForCheck();
   }
 

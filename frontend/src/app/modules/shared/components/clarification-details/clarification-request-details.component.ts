@@ -84,7 +84,7 @@ export class ClarificationRequestDetailsComponent extends RoleComponent implemen
   }
 
   private setFormData(request: ClarificationRequest): void {
-    this.form!.setValue({
+    this.form!.patchValue({
       currentThesisTopic: request.baseThesis.topic,
       currentDescription: request.baseThesis.description,
       newThesisTopic: request.newTopic,
