@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import pwr.diplomaproject.model.dto.ChangeRequestDto
 import pwr.diplomaproject.model.dto.ClarificationRequestDto
+import pwr.diplomaproject.model.enum.RequestResult
 import pwr.diplomaproject.service.RequestService
 
 @RestController
@@ -26,8 +27,9 @@ class RequestController @Autowired constructor(
     fun getClarificationRequestsByDiplomaSessionOrStudentOrDean(
         @RequestParam(required = false) diplomaSessionId: Long?,
         @RequestParam(required = false) studentId: Long?,
-        @RequestParam(required = false) deanId: Long?): List<ClarificationRequestDto> =
-        requestService.getClarificationRequestsByGraduationOrStudentOrDean(diplomaSessionId, studentId, deanId)
+        @RequestParam(required = false) reviewedByEmployeeId: Long?,
+        @RequestParam(required = false) status: RequestResult?): List<ClarificationRequestDto> =
+        requestService.getClarificationRequestsByGraduationOrStudentOrEmployeeOrStatus(diplomaSessionId, studentId, reviewedByEmployeeId, status)
 
     @Operation(summary = "Zwraca wniosek o zmianę tematu według id")
     @GetMapping("/change", params = ["id"])
@@ -39,6 +41,7 @@ class RequestController @Autowired constructor(
     fun getChangeRequestsByDiplomaSessionOrStudentOrCommittee(
         @RequestParam(required = false) diplomaSessionId: Long?,
         @RequestParam(required = false) studentId: Long?,
-        @RequestParam(required = false) committeeId: Long?): List<ChangeRequestDto> =
-        requestService.getChangeRequestsByGraduationOrStudentOrCommittee(diplomaSessionId, studentId, committeeId)
+        @RequestParam(required = false) reviewedByEmployeeId: Long?,
+        @RequestParam(required = false) status: RequestResult?): List<ChangeRequestDto> =
+        requestService.getChangeRequestsByGraduationOrStudentOrEmployeeOrStatus(diplomaSessionId, studentId, reviewedByEmployeeId, status)
 }

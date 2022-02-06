@@ -23,7 +23,8 @@ interface TopicChangeRequestRepository : JpaRepository<TopicChangeRequest, Long>
         FROM TopicChangeRequest req
         WHERE (:graduationId IS NULL OR req.oldTopic.graduation.id = :graduationId)
         AND (:studentId IS NULL OR req.student.id = :studentId)
-        AND (:committeeId IS NULL OR req.employee.id = :committeeId)
+        AND (:employeeId IS NULL OR req.employee.id = :employeeId)
+        AND (:status IS NULL OR req.result = :status)
     """)
-    fun findAllByGraduationOrStudentOrCommittee(graduationId: Long?, studentId: Long?, committeeId: Long?): List<TopicChangeRequest>
+    fun findAllByGraduationOrStudentOrEmployeeOrStatus(graduationId: Long?, studentId: Long?, employeeId: Long?, status: RequestResult?): List<TopicChangeRequest>
 }

@@ -61,7 +61,8 @@ interface TopicCorrectionRequestRepository : JpaRepository<TopicCorrectionReques
         WHERE r.status = 'CONFIRMED' 
         AND (:graduationId IS NULL OR t.graduation.id = :graduationId)
         AND (:studentId IS NULL OR s.id = :studentId)
-        AND (:deanId IS NULL OR tcr.employee.id = :deanId)
+        AND (:employeeId IS NULL OR tcr.employee.id = :employeeId)
+        AND (:status IS NULL OR tcr.result = :status)
     """)
-    fun findAllByGraduationOrStudentOrDean(graduationId: Long?, studentId: Long?, deanId: Long?): List<Pair<TopicCorrectionRequest, Topic>>
+    fun findAllByGraduationOrStudentOrEmployeeOrStatus(graduationId: Long?, studentId: Long?, employeeId: Long?, status: RequestResult?): List<Pair<TopicCorrectionRequest, Topic>>
 }
