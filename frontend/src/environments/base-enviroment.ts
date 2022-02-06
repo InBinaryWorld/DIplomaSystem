@@ -29,7 +29,7 @@ export const baseEnvironment = {
       [ApiLabel.CREATE_THESIS]: '/subject',
       [ApiLabel.CREATE_RESERVATION]: '/student/reservation',
       [ApiLabel.REJECT_RESERVATION]: '/lecturer/reservation/reject',
-      [ApiLabel.ACCEPT_RESERVATION]: '/lecturer/reservation/reject',
+      [ApiLabel.ACCEPT_RESERVATION]: '/lecturer/reservation/accept',
       [ApiLabel.GET_CHANGE_REQUEST]: '/request/change',
       [ApiLabel.GET_CHANGE_REQUESTS]: '/request/change',
       [ApiLabel.GET_CLARIFICATION_REQUEST]: '/request/clarification',

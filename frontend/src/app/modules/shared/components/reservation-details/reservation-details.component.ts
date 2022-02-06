@@ -148,7 +148,6 @@ export class ReservationDetailsComponent extends RoleComponent implements OnInit
   acceptReservation(): void {
     const actionSource = this.thesesService.acceptReservation(this.reservation!.id);
     this.handleAction(actionSource);
-
   }
 
 }
