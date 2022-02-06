@@ -7,7 +7,7 @@ import pwr.diplomaproject.model.dto.SubjectDto
 import pwr.diplomaproject.model.dto.factory.SubjectDtoFactory
 import pwr.diplomaproject.model.enum.TopicStatus
 import pwr.diplomaproject.model.form.CoordinatorCommentForm
-import pwr.diplomaproject.model.mail.SubjectResolvedByCoordinator
+import pwr.diplomaproject.model.notification.SubjectResolvedByCoordinator
 import pwr.diplomaproject.repository.SubjectRepository
 
 @Service

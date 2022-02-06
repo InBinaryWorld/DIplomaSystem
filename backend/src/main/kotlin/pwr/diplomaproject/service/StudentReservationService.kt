@@ -11,12 +11,9 @@ import pwr.diplomaproject.model.entity.Topic
 import pwr.diplomaproject.model.enum.MemberStatus
 import pwr.diplomaproject.model.enum.ReservationStatus
 import pwr.diplomaproject.model.form.StudentReservationForm
-import pwr.diplomaproject.model.mail.GroupMemberUpdatedByStudent
-import pwr.diplomaproject.model.mail.ReservationCreatedByStudent
-import pwr.diplomaproject.repository.GroupMemberRepository
-import pwr.diplomaproject.repository.ReservationRepository
-import pwr.diplomaproject.repository.StudentRepository
-import pwr.diplomaproject.repository.TopicRepository
+import pwr.diplomaproject.model.notification.GroupMemberUpdatedByStudent
+import pwr.diplomaproject.model.notification.ReservationCreatedByStudent
+import pwr.diplomaproject.repository.*
 import java.time.LocalDate
 
 @Service
@@ -24,7 +21,8 @@ class StudentReservationService(
     private val reservationRepository: ReservationRepository,
     private val groupMemberRepository: GroupMemberRepository,
     private val studentRepository: StudentRepository,
-    private val topicRepository: TopicRepository
+    private val topicRepository: TopicRepository,
+    private val notificationRepository: NotificationRepository,
 ) {
     fun getReservations(studentId: Long?, supervisorId: Long?, graduationId: Long?): List<ReservationDto> =
         reservationRepository.findAllByStudentIdOrSupervisorIdOrGraduationId(studentId, supervisorId, graduationId)
@@ -136,6 +134,12 @@ class StudentReservationService(
             groupMemberRepository.save(newGroupMember)
         }
 
-        ReservationCreatedByStudent(listOf(topic.lecturer.user), newReservation, student.user).send()
+        ReservationCreatedByStudent(
+            listOf(topic.lecturer.user),
+            newReservation,
+            student.user,
+            newGroupMembers.size,
+            notificationRepository
+        ).send()
     }
 }

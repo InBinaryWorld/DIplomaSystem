@@ -12,7 +12,7 @@ import pwr.diplomaproject.model.enum.EmployeeType
 import pwr.diplomaproject.model.enum.TopicStatus
 import pwr.diplomaproject.model.form.LecturerNewTopicForm
 import pwr.diplomaproject.model.form.LecturerTopicCorrectionForm
-import pwr.diplomaproject.model.mail.SubjectPropositionResolvedByLecturer
+import pwr.diplomaproject.model.notification.SubjectPropositionResolvedByLecturer
 import pwr.diplomaproject.repository.EmployeeRepository
 import pwr.diplomaproject.repository.GraduationRepository
 import pwr.diplomaproject.repository.SubjectRepository

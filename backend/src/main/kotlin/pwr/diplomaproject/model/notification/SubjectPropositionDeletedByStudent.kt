@@ -1,10 +1,10 @@
-package pwr.diplomaproject.model.mail
+package pwr.diplomaproject.model.notification
 
 import pwr.diplomaproject.model.entity.Topic
 import pwr.diplomaproject.model.entity.User
 
 class SubjectPropositionDeletedByStudent(recipients: List<User>, subject: Topic, studentUser: User) :
-    Mail(
+    NotificationAlert(
         recipients,
         "Propozycja tematu \"${subject.topic}\" została usunięta przez studenta ${studentUser.fullName()}."
     )

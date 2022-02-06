@@ -101,3 +101,8 @@ values (1, 'nowy opis', 'nowy temat', '2022-02-04', 'WAITING', null, 3);
 insert into topic_change_request (id, request_date, result, employee_id, new_topic_id, old_topic_id, student_id)
 
 values (1, '2022-02-05', 'WAITING', null, 9, 8, 2);
+
+-- Table: notification
+insert into notification (id, label, content)
+values (1, 'ReservationCreatedByStudent',
+        '"Student :STUDENT złożył rezerwację na temat ":TOPIC". Liczba zgłoszonych osób: :MEMBER_COUNT."')

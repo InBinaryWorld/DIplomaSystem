@@ -1,4 +1,4 @@
-package pwr.diplomaproject.model.mail
+package pwr.diplomaproject.model.notification
 
 import pwr.diplomaproject.model.entity.TopicCorrectionRequest
 import pwr.diplomaproject.model.entity.User
@@ -8,7 +8,7 @@ class TopicCorrectionRequestCreatedByStudent(
     topicCorrectionRequest: TopicCorrectionRequest,
     studentUser: User
 ) :
-    Mail(
+    NotificationAlert(
         recipients,
         "Student ${studentUser.fullName()} złożył wniosek o doprecyzowanie tematu. Nowy temat: \"${topicCorrectionRequest.newTopic}\"."
     )

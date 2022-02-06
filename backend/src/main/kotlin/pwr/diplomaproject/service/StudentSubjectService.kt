@@ -11,8 +11,8 @@ import pwr.diplomaproject.model.entity.Topic
 import pwr.diplomaproject.model.enum.EmployeeType
 import pwr.diplomaproject.model.enum.TopicStatus
 import pwr.diplomaproject.model.form.StudentSubjectPropositionForm
-import pwr.diplomaproject.model.mail.SubjectProposedByStudent
-import pwr.diplomaproject.model.mail.SubjectPropositionDeletedByStudent
+import pwr.diplomaproject.model.notification.SubjectProposedByStudent
+import pwr.diplomaproject.model.notification.SubjectPropositionDeletedByStudent
 import pwr.diplomaproject.repository.*
 import java.time.LocalDate
 

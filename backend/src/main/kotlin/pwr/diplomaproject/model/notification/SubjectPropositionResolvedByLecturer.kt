@@ -1,11 +1,11 @@
-package pwr.diplomaproject.model.mail
+package pwr.diplomaproject.model.notification
 
 import pwr.diplomaproject.model.entity.Topic
 import pwr.diplomaproject.model.entity.User
 import pwr.diplomaproject.model.enum.TopicStatus
 
 class SubjectPropositionResolvedByLecturer(recipients: List<User>, subject: Topic) :
-    Mail(
+    NotificationAlert(
         recipients,
         "Propozycja tematu \"${subject.topic}\" została rozpatrzona ${if (subject.status == TopicStatus.REJECTED_BY_LECTURER) "negatywnie" else "pozytywnie"} przez prowadzącego."
     )

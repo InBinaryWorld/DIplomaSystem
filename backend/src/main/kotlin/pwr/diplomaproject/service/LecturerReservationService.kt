@@ -7,7 +7,7 @@ import pwr.diplomaproject.model.dto.LecturerSubjectReservationDto
 import pwr.diplomaproject.model.dto.factory.LecturerSubjectReservationDetailsDtoFactory
 import pwr.diplomaproject.model.enum.EmployeeType
 import pwr.diplomaproject.model.enum.ReservationStatus
-import pwr.diplomaproject.model.mail.ReservationResolvedByLecturer
+import pwr.diplomaproject.model.notification.ReservationResolvedByLecturer
 import pwr.diplomaproject.repository.EmployeeRepository
 import pwr.diplomaproject.repository.ReservationRepository
 import pwr.diplomaproject.repository.SubjectRepository

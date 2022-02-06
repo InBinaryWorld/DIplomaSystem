@@ -15,7 +15,7 @@ import pwr.diplomaproject.model.enum.RequestResult
 import pwr.diplomaproject.model.enum.TopicStatus
 import pwr.diplomaproject.model.form.StudentTopicChangeRequestNewTopicForm
 import pwr.diplomaproject.model.form.StudentTopicCorrectionRequestForm
-import pwr.diplomaproject.model.mail.TopicCorrectionRequestCreatedByStudent
+import pwr.diplomaproject.model.notification.TopicCorrectionRequestCreatedByStudent
 import pwr.diplomaproject.repository.*
 import java.time.LocalDate
 import javax.transaction.Transactional
@@ -59,7 +59,11 @@ class StudentRequestService @Autowired constructor(
     }
 
     @Transactional
-    fun makeTopicChangeToNewTopicRequest(studentId: Long, currentTopicId: Long, form: StudentTopicChangeRequestNewTopicForm) {
+    fun makeTopicChangeToNewTopicRequest(
+        studentId: Long,
+        currentTopicId: Long,
+        form: StudentTopicChangeRequestNewTopicForm
+    ) {
         val newSubject = Topic(
             subjectRepository.getNextId(),
             employeeRepository.getEmployeeByUserIdAndType(form.supervisorId, EmployeeType.LECTURER),
