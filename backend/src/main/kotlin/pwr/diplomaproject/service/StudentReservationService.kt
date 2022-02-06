@@ -125,6 +125,6 @@ class StudentReservationService(
             groupMemberRepository.save(newGroupMember)
         }
 
-        ReservationCreatedByStudent(listOf(topic.lecturer.user), topic, newReservation, student.user).send()
+        ReservationCreatedByStudent(listOf(topic.lecturer.user), newReservation, student.user).send()
     }
 }

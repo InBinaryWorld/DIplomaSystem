@@ -7,6 +7,7 @@ import pwr.diplomaproject.model.dto.LecturerSubjectReservationDto
 import pwr.diplomaproject.model.dto.factory.LecturerSubjectReservationDetailsDtoFactory
 import pwr.diplomaproject.model.enum.EmployeeType
 import pwr.diplomaproject.model.enum.ReservationStatus
+import pwr.diplomaproject.model.mail.ReservationResolvedByLecturer
 import pwr.diplomaproject.repository.EmployeeRepository
 import pwr.diplomaproject.repository.ReservationRepository
 import pwr.diplomaproject.repository.SubjectRepository
@@ -32,12 +33,14 @@ class LecturerReservationService @Autowired constructor(
         reservationRepository.getByIdAndLecturerId(id, lecturerId(userId)).let {
             it.status = ReservationStatus.ACCEPTED
             reservationRepository.save(it)
+            ReservationResolvedByLecturer(it.groupMembers.map { gm -> gm.student.user }, it).send()
         }
 
     fun rejectReservation(userId: Long, id: Long): Unit =
         reservationRepository.getByIdAndLecturerId(id, lecturerId(userId)).let {
             it.status = ReservationStatus.REJECTED_BY_LECTURER
             reservationRepository.save(it)
+            ReservationResolvedByLecturer(it.groupMembers.map { gm -> gm.student.user }, it).send()
         }
 
     private fun lecturerId(userId: Long) =

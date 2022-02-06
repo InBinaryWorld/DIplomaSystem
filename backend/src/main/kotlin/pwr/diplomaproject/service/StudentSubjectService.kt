@@ -55,9 +55,7 @@ class StudentSubjectService @Autowired constructor(
             LocalDate.now()
         )
 
-        SubjectProposedByStudent(
-            listOf(student.user, employee.user), newSubject, student.user
-        ).send()
+        SubjectProposedByStudent(listOf(employee.user), newSubject, student.user).send()
 
         subjectRepository.save(newSubject)
     }
