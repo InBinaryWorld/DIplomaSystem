@@ -12,6 +12,7 @@ import pwr.diplomaproject.model.enum.EmployeeType
 import pwr.diplomaproject.model.enum.TopicStatus
 import pwr.diplomaproject.model.form.StudentSubjectPropositionForm
 import pwr.diplomaproject.model.mail.SubjectProposedByStudent
+import pwr.diplomaproject.model.mail.SubjectPropositionDeletedByStudent
 import pwr.diplomaproject.repository.*
 import java.time.LocalDate
 
@@ -66,6 +67,7 @@ class StudentSubjectService @Autowired constructor(
     fun deleteProposedSubject(studentId: Long, id: Long) {
         val subject = topicRepository.findByIndexAndStudent(id, studentId)
         if (subject.status == TopicStatus.WAITING) {
+            SubjectPropositionDeletedByStudent(listOf(subject.lecturer.user), subject, subject.student!!.user).send()
             topicRepository.delete(subject)
         }
     }

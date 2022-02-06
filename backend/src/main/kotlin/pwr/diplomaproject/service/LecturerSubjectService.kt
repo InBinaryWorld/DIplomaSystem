@@ -63,7 +63,7 @@ class LecturerSubjectService @Autowired constructor(
             it.status = TopicStatus.WAITING
             subjectRepository.save(it)
             if (it.student != null)
-                SubjectPropositionResolvedByLecturer(listOf(it.student.user), it)
+                SubjectPropositionResolvedByLecturer(listOf(it.student.user), it).send()
         }
 
     fun rejectProposedSubject(userId: Long, subjectId: Long): Unit =
@@ -71,7 +71,7 @@ class LecturerSubjectService @Autowired constructor(
             it.status = TopicStatus.REJECTED_BY_LECTURER
             subjectRepository.save(it)
             if (it.student != null)
-                SubjectPropositionResolvedByLecturer(listOf(it.student.user), it)
+                SubjectPropositionResolvedByLecturer(listOf(it.student.user), it).send()
         }
 
     fun getSubjectsToCorrect(userId: Long): List<SubjectDto> =
