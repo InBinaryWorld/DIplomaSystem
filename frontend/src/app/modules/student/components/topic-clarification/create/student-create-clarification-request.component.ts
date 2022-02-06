@@ -51,7 +51,7 @@ export class StudentCreateClarificationRequestComponent extends RoleComponent im
   confirm() {
     const request = this.prepareRequestForFormData();
     this.requestsService.createClarificationRequest(this.thesis!.id, request).subscribe({
-      next: (request) => this.router.navigate(['/student/change-requests/details/', request.id]),
+      next: (request) => this.router.navigate(['/student/clarification-requests/details/', request.id]),
       error: () => this.showError()
     });
   }
