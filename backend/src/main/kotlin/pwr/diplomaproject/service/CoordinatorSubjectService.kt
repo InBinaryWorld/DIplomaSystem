@@ -7,6 +7,7 @@ import pwr.diplomaproject.model.dto.SubjectDto
 import pwr.diplomaproject.model.dto.factory.SubjectDtoFactory
 import pwr.diplomaproject.model.enum.TopicStatus
 import pwr.diplomaproject.model.form.CoordinatorCommentForm
+import pwr.diplomaproject.model.mail.SubjectResolvedByCoordinator
 import pwr.diplomaproject.repository.SubjectRepository
 
 @Service
@@ -39,6 +40,7 @@ class CoordinatorSubjectService @Autowired constructor(
         subjectRepository.getById(id).let {
             it.status = TopicStatus.ACCEPTED_BY_COORDINATOR
             subjectRepository.save(it)
+            SubjectResolvedByCoordinator(listOf(it.lecturer.user), it).send()
         }
 
     fun commentSubject(comments: CoordinatorCommentForm): Unit =
@@ -46,12 +48,14 @@ class CoordinatorSubjectService @Autowired constructor(
             it.status = TopicStatus.NEEDS_CORRECTION
             it.coordinatorComments = comments.comment
             subjectRepository.save(it)
+            SubjectResolvedByCoordinator(listOf(it.lecturer.user), it).send()
         }
 
     fun rejectSubject(comments: CoordinatorCommentForm): Unit =
         subjectRepository.getById(comments.thesisId).let {
             it.status = TopicStatus.REJECTED_BY_COORDINATOR
             it.coordinatorComments = comments.comment
+            SubjectResolvedByCoordinator(listOf(it.lecturer.user), it).send()
             subjectRepository.save(it)
         }
 }
