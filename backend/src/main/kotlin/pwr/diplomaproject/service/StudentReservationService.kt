@@ -11,6 +11,7 @@ import pwr.diplomaproject.model.entity.Topic
 import pwr.diplomaproject.model.enum.MemberStatus
 import pwr.diplomaproject.model.enum.ReservationStatus
 import pwr.diplomaproject.model.form.StudentReservationForm
+import pwr.diplomaproject.model.mail.GroupMemberUpdatedByStudent
 import pwr.diplomaproject.model.mail.ReservationCreatedByStudent
 import pwr.diplomaproject.repository.GroupMemberRepository
 import pwr.diplomaproject.repository.ReservationRepository
@@ -71,6 +72,11 @@ class StudentReservationService(
 
             groupMemberRepository.save(groupMember)
             reservationRepository.save(reservation)
+
+            GroupMemberUpdatedByStudent(
+                listOf(reservation.topic.lecturer.user) + reservation.groupMembers.map { gm -> gm.student.user },
+                groupMember
+            ).send()
         }
     }
 
@@ -88,6 +94,11 @@ class StudentReservationService(
             reservation.status = ReservationStatus.REJECTED_BY_STUDENT
             groupMemberRepository.save(groupMember)
             reservationRepository.save(reservation)
+
+            GroupMemberUpdatedByStudent(
+                listOf(reservation.topic.lecturer.user) + reservation.groupMembers.map { gm -> gm.student.user },
+                groupMember
+            ).send()
         }
     }
 
