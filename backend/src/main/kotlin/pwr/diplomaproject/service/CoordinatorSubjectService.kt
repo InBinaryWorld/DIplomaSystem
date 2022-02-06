@@ -41,16 +41,17 @@ class CoordinatorSubjectService @Autowired constructor(
             subjectRepository.save(it)
         }
 
-    fun commentSubject(id: Long, comments: CoordinatorCommentForm): Unit =
-        subjectRepository.getById(id).let {
+    fun commentSubject(comments: CoordinatorCommentForm): Unit =
+        subjectRepository.getById(comments.thesisId).let {
             it.status = TopicStatus.NEEDS_CORRECTION
-            it.coordinatorComments = comments.comments
+            it.coordinatorComments = comments.comment
             subjectRepository.save(it)
         }
 
-    fun rejectSubject(id: Long): Unit =
-        subjectRepository.getById(id).let {
+    fun rejectSubject(comments: CoordinatorCommentForm): Unit =
+        subjectRepository.getById(comments.thesisId).let {
             it.status = TopicStatus.REJECTED_BY_COORDINATOR
+            it.coordinatorComments = comments.comment
             subjectRepository.save(it)
         }
 }

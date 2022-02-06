@@ -243,7 +243,7 @@ export class ThesisDetailsComponent extends RoleComponent implements OnInit {
   correctThesisWithLecturer(): void {
     const formData = this.form!.value;
     const payload = { changes: formData, thesisId: this.thesis!.id };
-    const actionSource = this.thesesService.rejectThesisWithCoordinator(this.userRole!.id, payload);
+    const actionSource = this.thesesService.correctThesisWithLecturer(payload);
     this.handleAction(actionSource);
   }
 

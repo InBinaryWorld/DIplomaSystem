@@ -2,12 +2,10 @@ package pwr.diplomaproject.controller
 
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import pwr.diplomaproject.model.dto.SubjectDetailsDto
 import pwr.diplomaproject.model.dto.SubjectDto
+import pwr.diplomaproject.model.form.ThesisIdForm
 import pwr.diplomaproject.service.CommissionSubjectService
 
 @RestController
@@ -37,7 +35,7 @@ class CommissionSubjectController @Autowired constructor(
         commissionSubjectService.acceptSubject(id)
 
     @Operation(summary = "Odrzucenie zgłoszonego tematu")
-    @GetMapping("/reject/{id}")
-    fun rejectSubject(@PathVariable id: Long): Unit =
-        commissionSubjectService.rejectSubject(id)
+    @GetMapping("/reject")
+    fun rejectSubject(@RequestBody form: ThesisIdForm): Unit =
+        commissionSubjectService.rejectSubject(form.thesisId)
 }

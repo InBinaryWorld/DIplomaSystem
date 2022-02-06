@@ -35,14 +35,12 @@ class CoordinatorSubjectController @Autowired constructor(
         coordinatorSubjectService.acceptSubject(id)
 
     @Operation(summary = "Zgłoszenie uwag do zaproponowanego tematu")
-    @GetMapping("/comment/{id}")
-    fun commentSubject(
-        @PathVariable id: Long,
-        @RequestBody form: CoordinatorCommentForm): Unit =
-        coordinatorSubjectService.commentSubject(id, form)
+    @GetMapping("/comment")
+    fun commentSubject(@RequestBody form: CoordinatorCommentForm): Unit =
+        coordinatorSubjectService.commentSubject(form)
 
     @Operation(summary = "Odrzucenie zaproponowanego tematu")
-    @GetMapping("/reject/{id}")
-    fun rejectSubject(@PathVariable id: Long): Unit =
-        coordinatorSubjectService.rejectSubject(id)
+    @GetMapping("/reject")
+    fun rejectSubject(@RequestBody form: CoordinatorCommentForm): Unit =
+        coordinatorSubjectService.rejectSubject(form)
 }
