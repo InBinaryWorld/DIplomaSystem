@@ -1,8 +1,8 @@
 import { StudyDegree } from './study-degree.model';
 import { IdType, WithId } from './id.model';
 
-export interface FieldOfStudy extends WithId {
-  departmentId: IdType,
-  name: string,
-  degree: StudyDegree,
+export class FieldOfStudy extends WithId {
+  departmentId!: IdType;
+  name!: string;
+  degree!: StudyDegree;
 }

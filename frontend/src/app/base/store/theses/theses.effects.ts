@@ -26,13 +26,14 @@ import {
 } from './theses.selectors';
 import { ThesesStateKey } from './theses.state';
 import { ThesesApiService } from '../../services/api/theses-api.service';
+import { throttleWithSelector } from '../../../core/tools/throttle';
 
 
 @Injectable()
 export class ThesesEffects {
 
   loadThesesIfNeededAction = createEffect(() => this.actions.pipe(
-    ofType(loadThesesIfNeededAction),
+    ofType(loadThesesIfNeededAction), throttleWithSelector(({ options }) => options),
     mergeIfNil(({ key }) => this.store.select(selectThesesForKey, key)),
     map(({ options, key }) => loadThesesAction({ options, key }))
   ));
@@ -48,7 +49,7 @@ export class ThesesEffects {
   ));
 
   loadThesisForIdIfNeededAction = createEffect(() => this.actions.pipe(
-    ofType(loadThesisForIdIfNeededAction),
+    ofType(loadThesisForIdIfNeededAction), throttleWithSelector(({ id }) => id),
     mergeIfNil(({ id }) => this.store.select(selectThesisForId, id)),
     map(({ id }) => loadThesisForIdAction({ id }))
   ));
@@ -64,7 +65,7 @@ export class ThesesEffects {
   ));
 
   loadStudentReservationsIfNeededAction = createEffect(() => this.actions.pipe(
-    ofType(loadStudentReservationsIfNeededAction),
+    ofType(loadStudentReservationsIfNeededAction), throttleWithSelector(({ options }) => options),
     mergeIfNil(({ key }) => this.store.select(selectReservationsForKey, key)),
     map(({ key, options }) => loadReservationsAction({ key, options }))
   ));
@@ -81,7 +82,7 @@ export class ThesesEffects {
   ));
 
   loadReservationForIdIfNeededAction = createEffect(() => this.actions.pipe(
-    ofType(loadReservationForIdIfNeededAction),
+    ofType(loadReservationForIdIfNeededAction), throttleWithSelector(({ id }) => id),
     mergeIfNil(({ id }) => this.store.select(selectReservationForId, id)),
     map(({ id }) => loadReservationForIdAction({ id }))
   ));

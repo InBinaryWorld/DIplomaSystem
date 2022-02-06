@@ -4,21 +4,30 @@ import { LoginData } from '../../models/login-data.model';
 import { Observable } from 'rxjs';
 import { AuthData } from '../../models/auth-data.model';
 import { ApiLabel } from '../../../core/models/api-route.model';
+import { HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthApiService {
 
-  constructor(private readonly http: ServerHttpService) {
+  constructor(private readonly httpService: ServerHttpService) {
   }
 
-  login(loginData: LoginData): Observable<AuthData> {
-    return this.http.postWithLabel(ApiLabel.LOGIN, loginData);
+  login<T>(loginData: LoginData): Observable<AuthData> {
+    let headers = new HttpHeaders();
+    headers = headers.set('Authorization', 'Basic cHVibGljOg==');
+
+    let formData = new FormData();
+    formData.set('grant_type', 'password');
+    formData.set('password', loginData.password);
+    formData.set('username', loginData.username);
+
+    return this.httpService.postAuthWithLabel(AuthData, ApiLabel.LOGIN, formData, undefined, undefined, headers);
   }
 
   refreshToken(refreshToken: string): Observable<AuthData> {
-    return this.http.postWithLabel(ApiLabel.REFRESH, { refreshToken });
+    return this.httpService.postApiWithLabel(AuthData, ApiLabel.REFRESH, { refreshToken });
   }
 
 }

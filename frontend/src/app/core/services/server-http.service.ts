@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { delay, Observable, of } from 'rxjs';
+import { delay, map, Observable, of } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { isEmpty } from 'lodash-es';
 import { SettingsService } from './settings.service';
@@ -8,7 +8,9 @@ import { ApiLabel } from '../models/api-route.model';
 import { FakeData } from '../../../fakes/fake.data';
 import { tap } from 'rxjs/operators';
 import { SpinnerService } from './spinner.service';
+import { Deserialize, INewable } from 'cerialize';
 
+export type Serializable = Function | INewable<any>;
 
 @Injectable({
   providedIn: 'root'
@@ -20,44 +22,53 @@ export class ServerHttpService {
               private readonly spinnerService: SpinnerService) {
   }
 
-  private get serverUrl(): string {
+  private get baseUrl(): string {
     return this.settingsService.serverBaseUrl;
   }
 
-  doFakeRequest<T>(apiLabel: ApiLabel, query?: RequestParams): Observable<T> {
-    const time = this.settingsService.fakeApiDelay();
-    return of(FakeData.handleApiLabel(apiLabel, query)).pipe(
-      tap(() => this.spinnerService.showFor(time)),
-      delay(time)
-    );
+  private get oauthServerBaseUrl(): string {
+    return this.settingsService.authServerBaseUrl;
   }
 
-  getWithLabel<T>(apiLabel: ApiLabel, params?: RequestParams, query?: RequestParams, headers: HttpHeaders = new HttpHeaders()): Observable<T> {
+  postAuthWithLabel<T>(type: Serializable, apiLabel: ApiLabel, body: any, params?: RequestParams, query?: RequestParams, headers: HttpHeaders = new HttpHeaders()): Observable<T> {
+    return this.postWithLabel<T>(type, this.oauthServerBaseUrl, apiLabel, body, params, query, headers);
+  }
+
+  getApiWithLabel<T>(type: Serializable, apiLabel: ApiLabel, params?: RequestParams, query?: RequestParams, headers?: HttpHeaders): Observable<T> {
+    return this.getWithLabel<T>(type, this.baseUrl, apiLabel, params, query, headers);
+  }
+
+  postApiWithLabel<T>(type: Serializable, apiLabel: ApiLabel, body: any, params?: RequestParams, query?: RequestParams, headers?: HttpHeaders): Observable<T> {
+    return this.postWithLabel<T>(type, this.baseUrl, apiLabel, body, params, query, headers);
+  }
+
+  private getWithLabel<T>(type: Serializable, baseUrl: string, apiLabel: ApiLabel, params?: RequestParams, query?: RequestParams, headers?: HttpHeaders): Observable<T> {
     const urlTemplate = this.settingsService.getServerApi(apiLabel);
     if (this.settingsService.isFakeApiEnabled()) {
       return this.doFakeRequest<T>(apiLabel, query);
     }
-    return this.get<T>(urlTemplate, params, query, headers);
+    // return this.get(baseUrl, urlTemplate, params, query, headers);
+    return this.get(baseUrl, urlTemplate, params, query, headers).pipe(map(json => Deserialize(json, type)));
   }
 
-  get<T>(pathTemplate: string, params?: RequestParams, query?: RequestParams, headers: HttpHeaders = new HttpHeaders()): Observable<T> {
-    const path = this.buildPath(pathTemplate, params, query);
-    const url = this.joinPathParts(this.serverUrl, path);
-    return this.http.get<T>(url, { headers });
-  }
-
-  postWithLabel<T>(apiLabel: ApiLabel, body: any, params?: RequestParams, query?: RequestParams, headers: HttpHeaders = new HttpHeaders()): Observable<T> {
+  private postWithLabel<T>(type: Serializable, baseUrl: string, apiLabel: ApiLabel, body: any, params?: RequestParams, query?: RequestParams, headers?: HttpHeaders): Observable<T> {
     const urlTemplate = this.settingsService.getServerApi(apiLabel);
     if (this.settingsService.isFakeApiEnabled()) {
       return this.doFakeRequest<T>(apiLabel);
     }
-    return this.post<T>(urlTemplate, body, params, query, headers);
+    // return this.post(baseUrl, urlTemplate, body, params, query, headers);
+    return this.post(baseUrl, urlTemplate, body, params, query, headers).pipe(map(json => Deserialize(json, type)));
   }
 
-
-  post<T>(pathTemplate: string, body: any, params?: RequestParams, query?: RequestParams, headers: HttpHeaders = new HttpHeaders()): Observable<T> {
+  private get<T>(baseUrl: string, pathTemplate: string, params?: RequestParams, query?: RequestParams, headers: HttpHeaders = new HttpHeaders()): Observable<T> {
     const path = this.buildPath(pathTemplate, params, query);
-    const url = this.joinPathParts(this.serverUrl, path);
+    const url = this.joinPathParts(baseUrl, path);
+    return this.http.get<T>(url, { headers });
+  }
+
+  private post<T>(baseUrl: string, pathTemplate: string, body: any, params?: RequestParams, query?: RequestParams, headers: HttpHeaders = new HttpHeaders()): Observable<T> {
+    const path = this.buildPath(pathTemplate, params, query);
+    const url = this.joinPathParts(baseUrl, path);
     return this.http.post<T>(url, body, { headers });
   }
 
@@ -79,4 +90,13 @@ export class ServerHttpService {
     items.unshift(firstPart);
     return items.filter(item => !isEmpty(item)).join('/');
   }
+
+  private doFakeRequest<T>(apiLabel: ApiLabel, query?: RequestParams): Observable<T> {
+    const time = this.settingsService.fakeApiDelay();
+    return of(FakeData.handleApiLabel(apiLabel, query)).pipe(
+      tap(() => this.spinnerService.showFor(time)),
+      delay(time)
+    );
+  }
+
 }

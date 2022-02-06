@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { User } from '../../models/dto/user-ext.model';
+import { User } from '../../models/dto/user.model';
 import { IdType } from '../../models/dto/id.model';
 import { UserStateKey, UserStoreType } from './user.state';
 import { EmployeeRole } from '../../models/dto/employee-role.model';

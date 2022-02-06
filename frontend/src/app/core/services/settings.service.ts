@@ -22,7 +22,11 @@ export class SettingsService {
   }
 
   get serverBaseUrl(): string {
-    return this.serverConfig.baseUrl;
+    return this.serverConfig.base;
+  }
+
+  get authServerBaseUrl(): string {
+    return this.serverConfig.authBase;
   }
 
   getServerApi(apiLabel: ApiLabel): string {

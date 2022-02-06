@@ -26,13 +26,14 @@ import {
   selectClarificationRequestsForKey
 } from './requests.selectors';
 import { RequestsStateKey } from './requests.state';
+import { throttleWithSelector } from '../../../core/tools/throttle';
 
 
 @Injectable()
 export class RequestsEffects {
 
   loadClarificationRequestsIfNeededAction = createEffect(() => this.actions.pipe(
-    ofType(loadClarificationRequestsIfNeededAction),
+    ofType(loadClarificationRequestsIfNeededAction), throttleWithSelector(({ options }) => options),
     mergeIfNil(({ key }) => this.store.select(selectClarificationRequestsForKey, key)),
     map(({ key, options }) => loadClarificationRequestsAction({ key, options }))
   ));
@@ -48,7 +49,7 @@ export class RequestsEffects {
   ));
 
   loadClarificationRequestForIdIfNeededAction = createEffect(() => this.actions.pipe(
-    ofType(loadClarificationRequestForIdIfNeededAction),
+    ofType(loadClarificationRequestForIdIfNeededAction), throttleWithSelector(({ id }) => id),
     mergeIfNil(({ id }) => this.store.select(selectClarificationRequestForId, id)),
     map(({ id }) => loadClarificationRequestForIdAction({ id }))
   ));
@@ -64,7 +65,7 @@ export class RequestsEffects {
 
 
   loadChangeRequestsIfNeededAction = createEffect(() => this.actions.pipe(
-    ofType(loadChangeRequestsIfNeededAction),
+    ofType(loadChangeRequestsIfNeededAction), throttleWithSelector(({ options }) => options),
     mergeIfNil(({ key }) => this.store.select(selectChangeRequestsForKey, key)),
     map(({ key, options }) => loadChangeRequestsAction({ key, options }))
   ));
@@ -80,7 +81,7 @@ export class RequestsEffects {
   ));
 
   loadChangeRequestForIdIfNeededAction = createEffect(() => this.actions.pipe(
-    ofType(loadChangeRequestForIdIfNeededAction),
+    ofType(loadChangeRequestForIdIfNeededAction), throttleWithSelector(({ id }) => id),
     mergeIfNil(({ id }) => this.store.select(selectChangeRequestForId, id)),
     map(({ id }) => loadClarificationRequestForIdAction({ id }))
   ));

@@ -1,6 +1,6 @@
 import { Role } from '../app/base/models/dto/role.model';
 import { AuthData } from '../app/base/models/auth-data.model';
-import { User } from '../app/base/models/dto/user-ext.model';
+import { User } from '../app/base/models/dto/user.model';
 import { ApiLabel } from '../app/core/models/api-route.model';
 import { Dictionary } from '../app/core/models/dictionary.model';
 import { Thesis } from '../app/base/models/dto/thesis.model';
@@ -334,7 +334,7 @@ function generateAuthData(): AuthData {
   return {
     accessToken: 'accessToken',
     refreshToken: 'refreshToken',
-    expireIn: new Date().getTime() + 5 * 1000 // 5 min
+    expiresIn: new Date().getTime() + 5 * 1000 // 5 min
   };
 }
 

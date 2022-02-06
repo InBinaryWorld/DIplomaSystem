@@ -4,7 +4,7 @@ import { UserRole } from '../models/dto/user-role.model';
 import { filterNotInProgress } from '../../core/tools/filter-not-in-progress';
 import { map } from 'rxjs/operators';
 import { UserStoreService } from './store/user-store.service';
-import { User } from '../models/dto/user-ext.model';
+import { User } from '../models/dto/user.model';
 import { IdType } from '../models/dto/id.model';
 import { UserStateKey } from '../store/user/user.state';
 import { Student } from '../models/dto/student.model';

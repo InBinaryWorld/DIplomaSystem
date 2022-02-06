@@ -13,7 +13,7 @@ import {
   selectUserStateError,
   selectUserStateInProgress
 } from '../../store/user/user.selectors';
-import { User } from '../../models/dto/user-ext.model';
+import { User } from '../../models/dto/user.model';
 import {
   invalidateCurrentUserAction,
   invalidateUserDataAction,

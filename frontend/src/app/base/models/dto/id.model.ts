@@ -1,5 +1,5 @@
 export type IdType = string;
 
-export interface WithId {
-  id: IdType;
+export class WithId {
+  id!: IdType;
 }

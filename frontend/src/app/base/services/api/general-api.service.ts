@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ServerHttpService } from '../../../core/services/server-http.service';
+import { Serializable, ServerHttpService } from '../../../core/services/server-http.service';
 import { Observable } from 'rxjs';
 import { ApiLabel } from '../../../core/models/api-route.model';
 import { RequestParams } from '../../../core/models/request-param.model';
@@ -26,52 +26,52 @@ export class GeneralResourcesApiService extends BaseApiService {
   }
 
   public getTimetables(options: LoadTimetablesActionOptions): Observable<Timetable[]> {
-    return this.http.getWithLabel(ApiLabel.GET_TIMETABLES);
+    return this.http.getApiWithLabel(Timetable, ApiLabel.GET_TIMETABLES);
   }
 
   public getDiplomaSessions(options: LoadDiplomaSessionsActionOptions): Observable<DiplomaSession[]> {
     const queryParams = new RequestParams();
     queryParams.addIfValueExists('fieldOfStudyId', options.fieldOfStudyId);
     queryParams.addIfValueExists('departmentId', options.departmentId);
-    return this.http.getWithLabel(ApiLabel.GET_DIPLOMA_SESSIONS, undefined, queryParams);
+    return this.http.getApiWithLabel(DiplomaSession, ApiLabel.GET_DIPLOMA_SESSIONS, undefined, queryParams);
   }
 
   public getDepartments(options: LoadDepartmentsActionOptions): Observable<Department[]> {
-    return this.http.getWithLabel(ApiLabel.GET_DEPARTMENTS);
+    return this.http.getApiWithLabel(Department, ApiLabel.GET_DEPARTMENTS);
   }
 
   public getFieldsOfStudy(options: LoadFieldsOfStudyActionOptions): Observable<FieldOfStudy[]> {
     const query = new RequestParams();
     query.addIfValueExists('departmentId', options.departmentId);
-    return this.http.getWithLabel(ApiLabel.GET_FIELDS_OF_STUDY, undefined, query);
+    return this.http.getApiWithLabel(FieldOfStudy, ApiLabel.GET_FIELDS_OF_STUDY, undefined, query);
   }
 
   public getTimetableForId(id: IdType): Observable<Timetable> {
-    return this.getResourceForId(ApiLabel.GET_TIMETABLE, id);
+    return this.getResourceForId(Timetable, ApiLabel.GET_TIMETABLE, id);
   }
 
   public getDiplomaSessionForId(id: IdType): Observable<DiplomaSession> {
-    return this.getResourceForId(ApiLabel.GET_DIPLOMA_SESSION, id);
+    return this.getResourceForId(DiplomaSession, ApiLabel.GET_DIPLOMA_SESSION, id);
   }
 
   public getDepartmentForId(id: IdType): Observable<Department> {
-    return this.getResourceForId(ApiLabel.GET_DEPARTMENT, id);
+    return this.getResourceForId(Department, ApiLabel.GET_DEPARTMENT, id);
   }
 
   public getFieldOfStudyForId(id: IdType): Observable<FieldOfStudy> {
-    return this.getResourceForId(ApiLabel.GET_FIELD_OF_STUDY, id);
+    return this.getResourceForId(FieldOfStudy, ApiLabel.GET_FIELD_OF_STUDY, id);
   }
 
-  getResourceForId<T>(apiLabel: ApiLabel, id: IdType): Observable<T> {
+  getResourceForId<T>(type: Serializable, apiLabel: ApiLabel, id: IdType): Observable<T> {
     const query = new RequestParams();
     query.addIfValueExists('id', id);
-    return this.http.getWithLabel(apiLabel, undefined, query);
+    return this.http.getApiWithLabel(type, apiLabel, undefined, query);
   }
 
   modifyTimetable(timetableId: IdType, payload: Partial<Timetable>): Observable<DiplomaSession> {
     const query = new RequestParams();
     query.addIfValueExists('id', timetableId);
-    return this.http.postWithLabel(ApiLabel.MODIFY_TIMETABLE, payload, query);
+    return this.http.postApiWithLabel(DiplomaSession, ApiLabel.MODIFY_TIMETABLE, payload, query);
   }
 
 }

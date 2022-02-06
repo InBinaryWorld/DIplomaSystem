@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, first, map, mergeMap, switchMap } from 'rxjs/operators';
+import { catchError, first, map, mergeMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { AppState } from '../app-state.model';
@@ -28,25 +28,26 @@ import {
   selectStudentForId,
   selectStudentsForKey
 } from './user.selectors';
-import { mergeIfNil, switchIfNil } from '../../../core/tools/If-needed-only-functions';
 import { selectIsLoggedIn } from '../auth/auth.selectors';
 import { UserStateKey } from './user.state';
+import { throttleWithSelector } from '../../../core/tools/throttle';
+import { mergeIfNil } from '../../../core/tools/If-needed-only-functions';
 
 
 @Injectable()
 export class UserEffects {
 
   loadCurrentUserIfNeeded = createEffect(() => this.actions.pipe(
-    ofType(loadCurrentUserIfNeededAction),
-    switchIfNil(() => this.store.select(selectCurrentUser)),
+    ofType(loadCurrentUserIfNeededAction), throttleWithSelector(),
+    mergeIfNil(() => this.store.select(selectCurrentUser)),
     map(() => loadCurrentUserAction())
   ));
 
   loadCurrentUser = createEffect(() => this.actions.pipe(
     ofType(loadCurrentUserAction),
-    switchMap(() => this.store.select(selectIsLoggedIn).pipe(
+    mergeMap(() => this.store.select(selectIsLoggedIn).pipe(
       first(),
-      switchMap(isLoggedIn => !isLoggedIn
+      mergeMap(isLoggedIn => !isLoggedIn
         ? [loadUserFailedAction({ error: new Error('User is not logged in') })]
         : this.userService.getCurrentUser().pipe(
           map(user => loadCurrentUserSuccessAction({ user })),
@@ -56,7 +57,7 @@ export class UserEffects {
   ));
 
   loadStudentsIfNeededAction = createEffect(() => this.actions.pipe(
-    ofType(loadStudentsIfNeededAction),
+    ofType(loadStudentsIfNeededAction), throttleWithSelector(({ options }) => options),
     mergeIfNil(({ key }) => this.store.select(selectStudentsForKey, key)),
     map(({ key, options }) => loadStudentsAction({ key, options }))
   ));
@@ -72,7 +73,7 @@ export class UserEffects {
   ));
 
   loadStudentForIdIfNeededAction = createEffect(() => this.actions.pipe(
-    ofType(loadStudentForIdIfNeededAction),
+    ofType(loadStudentForIdIfNeededAction), throttleWithSelector(({ id }) => id),
     mergeIfNil(({ id }) => this.store.select(selectStudentForId, id)),
     map(({ id }) => loadStudentForIdAction({ id }))
   ));
@@ -88,7 +89,7 @@ export class UserEffects {
   ));
 
   loadEmployeesIfNeededAction = createEffect(() => this.actions.pipe(
-    ofType(loadEmployeesIfNeededAction),
+    ofType(loadEmployeesIfNeededAction), throttleWithSelector(({ options }) => options),
     mergeIfNil(({ key }) => this.store.select(selectEmployeesForKey, key)),
     map(({ key, options }) => loadEmployeesAction({ key, options }))
   ));
@@ -105,7 +106,7 @@ export class UserEffects {
   ));
 
   loadEmployeeForIdIfNeededAction = createEffect(() => this.actions.pipe(
-    ofType(loadEmployeeForIdIfNeededAction),
+    ofType(loadEmployeeForIdIfNeededAction), throttleWithSelector(({ id }) => id),
     mergeIfNil(({ id }) => this.store.select(selectEmployeeForId, id)),
     map(({ id }) => loadEmployeeForIdAction({ id }))
   ));

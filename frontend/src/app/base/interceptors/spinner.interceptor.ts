@@ -11,9 +11,8 @@ export class SpinnerInterceptor implements HttpInterceptor {
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    this.spinnerService.show();
-
-    const hideFactory = () => {
+    const spinnerFactory = () => {
+      this.spinnerService.show();
       let hidden = false;
       return () => {
         if (!hidden) {
@@ -22,10 +21,14 @@ export class SpinnerInterceptor implements HttpInterceptor {
         }
       };
     };
-    const hideAction = hideFactory();
+    const hideAction = spinnerFactory();
     return next.handle(req).pipe(
       filter(res => isNil(res.type) || res.type === HttpEventType.Response),
-      tap(hideAction, hideAction, hideAction)
+      tap({
+        next: () => hideAction(),
+        error: () => hideAction(),
+        complete: () => hideAction()
+      })
     );
   }
 }

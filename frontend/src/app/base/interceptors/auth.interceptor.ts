@@ -16,7 +16,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (!this.isAuthRequest(request)) {
+    if (this.isAuthRequest(request)) {
       return next.handle(request);
     }
 
@@ -32,7 +32,7 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   private isAuthRequest(request: HttpRequest<any>): boolean {
-    return request.url.startsWith(this.settingsService.serverConfig.baseUrl);
+    return request.url.startsWith(this.settingsService.serverConfig.authBase);
   }
 
   private handle401Error(error: HttpErrorResponse, request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {

@@ -38,6 +38,7 @@ import {
 } from './general.actions';
 import { GeneralResourcesApiService } from '../../services/api/general-api.service';
 import { GeneralResourcesStateKey } from './general.state';
+import { throttleWithSelector } from '../../../core/tools/throttle';
 
 
 @Injectable()
@@ -45,7 +46,7 @@ export class GeneralResourcesEffects {
 
 
   loadTimetablesIfNeededAction = createEffect(() => this.actions.pipe(
-    ofType(loadTimetablesIfNeededAction),
+    ofType(loadTimetablesIfNeededAction), throttleWithSelector(({ key }) => key),
     mergeIfNil(({ options, key }) => this.store.select(selectTimetablesForKey, key)),
     map(({ options, key }) => loadTimetablesAction({ options, key }))
   ));
@@ -61,7 +62,7 @@ export class GeneralResourcesEffects {
   ));
 
   loadTimetableForIdIfNeededAction = createEffect(() => this.actions.pipe(
-    ofType(loadTimetableForIdIfNeededAction),
+    ofType(loadTimetableForIdIfNeededAction), throttleWithSelector(({ id }) => id),
     mergeIfNil(({ id }) => this.store.select(selectTimetableForId, id)),
     map(({ id }) => loadTimetableForIdAction({ id }))
   ));
@@ -77,7 +78,7 @@ export class GeneralResourcesEffects {
   ));
 
   loadDiplomaSessionsIfNeededAction = createEffect(() => this.actions.pipe(
-    ofType(loadDiplomaSessionsIfNeededAction),
+    ofType(loadDiplomaSessionsIfNeededAction), throttleWithSelector(({ key }) => key),
     mergeIfNil(({ options, key }) => this.store.select(selectDiplomaSessionsForKey, key)),
     map(({ options, key }) => loadDiplomaSessionsAction({ options, key }))
   ));
@@ -93,7 +94,7 @@ export class GeneralResourcesEffects {
   ));
 
   loadDiplomaSessionForIdIfNeededAction = createEffect(() => this.actions.pipe(
-    ofType(loadDiplomaSessionForIdIfNeededAction),
+    ofType(loadDiplomaSessionForIdIfNeededAction), throttleWithSelector(({ id }) => id),
     mergeIfNil(({ id }) => this.store.select(selectDiplomaSessionForId, id)),
     map(({ id }) => loadDiplomaSessionForIdAction({ id }))
   ));
@@ -110,7 +111,7 @@ export class GeneralResourcesEffects {
 
 
   loadDepartmentsIfNeededAction = createEffect(() => this.actions.pipe(
-    ofType(loadDepartmentsIfNeededAction),
+    ofType(loadDepartmentsIfNeededAction), throttleWithSelector(({ key }) => key),
     mergeIfNil(({ options, key }) => this.store.select(selectDepartmentsForKey, key)),
     map(({ options, key }) => loadDepartmentsAction({ options, key }))
   ));
@@ -125,7 +126,7 @@ export class GeneralResourcesEffects {
   ));
 
   loadDepartmentForIdIfNeededAction = createEffect(() => this.actions.pipe(
-    ofType(loadDepartmentForIdIfNeededAction),
+    ofType(loadDepartmentForIdIfNeededAction), throttleWithSelector(({ id }) => id),
     mergeIfNil(({ id }) => this.store.select(selectDepartmentForId, id)),
     map(({ id }) => loadDepartmentForIdAction({ id }))
   ));
@@ -141,7 +142,7 @@ export class GeneralResourcesEffects {
 
 
   loadFieldsOfStudyIfNeededAction = createEffect(() => this.actions.pipe(
-    ofType(loadFieldsOfStudyIfNeededAction),
+    ofType(loadFieldsOfStudyIfNeededAction), throttleWithSelector(({ key }) => key),
     mergeIfNil(({ options, key }) => this.store.select(selectFieldsOfStudyForKey, key)),
     map(({ options, key }) => loadFieldsOfStudyAction({ options, key }))
   ));
@@ -156,7 +157,7 @@ export class GeneralResourcesEffects {
   ));
 
   loadFieldOfStudyForIdIfNeededAction = createEffect(() => this.actions.pipe(
-    ofType(loadFieldOfStudyForIdIfNeededAction),
+    ofType(loadFieldOfStudyForIdIfNeededAction), throttleWithSelector(({ id }) => id),
     mergeIfNil(({ id }) => this.store.select(selectFieldOfStudyForId, id)),
     map(({ id }) => loadFieldOfStudyForIdAction({ id }))
   ));

@@ -68,8 +68,8 @@ export class LoginComponent extends BaseComponent implements OnInit {
 
   private initForm() {
     const formValidator = [Validators.required, Validators.minLength(6), Validators.maxLength(32)];
-    this.usernameControl = new FormControl('JackJacky', formValidator);
-    this.passwordControl = new FormControl('Daniels', formValidator);
+    this.usernameControl = new FormControl('s_24242', formValidator);
+    this.passwordControl = new FormControl('password', formValidator);
     this.loginFormGroup = this.formBuilder.group({
       username: this.usernameControl,
       password: this.passwordControl
