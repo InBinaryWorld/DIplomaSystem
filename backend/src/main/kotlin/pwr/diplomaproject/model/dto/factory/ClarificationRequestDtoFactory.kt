@@ -18,7 +18,7 @@ class ClarificationRequestDtoFactory {
             subject.id,
             request.newTopic,
             request.newDescription,
-            SubjectDtoFactory.create(subject)
+            SubjectDetailsDtoFactory.create(subject)
         )
     }
 }

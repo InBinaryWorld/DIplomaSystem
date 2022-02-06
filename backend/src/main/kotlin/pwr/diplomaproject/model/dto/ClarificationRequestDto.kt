@@ -13,5 +13,5 @@ data class ClarificationRequestDto (
     val thesisId: Long,
     val newTopic: String,
     val newDescription: String,
-    val baseThesis: SubjectDto
+    val baseThesis: SubjectDetailsDto
 )
