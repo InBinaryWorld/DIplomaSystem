@@ -2,7 +2,6 @@ package pwr.diplomaproject.controller
 
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.web.bind.annotation.*
-import pwr.diplomaproject.model.dto.StudentSubjectDetailsDto
 import pwr.diplomaproject.model.dto.SubjectDto
 import pwr.diplomaproject.model.form.StudentSubjectPropositionForm
 import pwr.diplomaproject.service.StudentSubjectService
@@ -28,11 +27,6 @@ class StudentSubjectController(
         @RequestParam diplomaSessionId: Long,
     ): List<SubjectDto> =
         studentSubjectService.getProposedSubjects(studentId, diplomaSessionId)
-
-    @Operation(summary = "Szczegóły tematu")
-    @GetMapping("/{id}")
-    fun getSubject(@PathVariable id: Long): StudentSubjectDetailsDto =
-        studentSubjectService.getSubject(id)
 
     @Operation(summary = "Dodanie propozycji tematu przez studenta w podanej sesji dyplomowania")
     @PostMapping("/propose")

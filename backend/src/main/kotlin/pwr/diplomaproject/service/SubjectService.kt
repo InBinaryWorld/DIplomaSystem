@@ -18,4 +18,8 @@ class SubjectService @Autowired constructor(
 
     fun getDetails(subjectId: Long): SubjectDetailsDto =
         SubjectDetailsDtoFactory.create(subjectRepository.getById(subjectId))
+
+    fun getSubjects(status: TopicStatus?, graduationId: Long?, studentId: Long?): List<SubjectDetailsDto> =
+        subjectRepository.findAllByStatusOrGraduationOrProposedStudent(status, graduationId, studentId)
+            .map { SubjectDetailsDtoFactory.create(it) }
 }

@@ -1,10 +1,10 @@
 package pwr.diplomaproject.model.enum
 
 enum class EmployeeType {
-    ADMINISTRATOR,
-    GRADUATION_DEPARTMENT_MEMBER,
+    ADMIN,
+    DIPLOMA_SECTION_MEMBER,
     COORDINATOR,
-    PROGRAMME_COMMISSION_MEMBER,
+    PROGRAM_COMMITTEE_MEMBER,
     DEAN,
     LECTURER
 }

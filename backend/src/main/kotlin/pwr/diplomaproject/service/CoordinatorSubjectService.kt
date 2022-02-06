@@ -19,9 +19,9 @@ class CoordinatorSubjectService @Autowired constructor(
     companion object {
 
         private val VERIFIED_STATUSES = arrayOf(
-            TopicStatus.NEEDS_CORRECTION,
+            TopicStatus.TO_CORRECT,
             TopicStatus.REJECTED_BY_COORDINATOR,
-            TopicStatus.ACCEPTED_BY_COORDINATOR
+            TopicStatus.APPROVED_BY_COORDINATOR
         )
     }
 
@@ -38,14 +38,14 @@ class CoordinatorSubjectService @Autowired constructor(
 
     fun acceptSubject(id: Long): Unit =
         subjectRepository.getById(id).let {
-            it.status = TopicStatus.ACCEPTED_BY_COORDINATOR
+            it.status = TopicStatus.APPROVED_BY_COORDINATOR
             subjectRepository.save(it)
             SubjectResolvedByCoordinator(listOf(it.lecturer.user), it).send()
         }
 
     fun commentSubject(comments: CoordinatorCommentForm): Unit =
         subjectRepository.getById(comments.thesisId).let {
-            it.status = TopicStatus.NEEDS_CORRECTION
+            it.status = TopicStatus.TO_CORRECT
             it.coordinatorComments = comments.comment
             subjectRepository.save(it)
             SubjectResolvedByCoordinator(listOf(it.lecturer.user), it).send()

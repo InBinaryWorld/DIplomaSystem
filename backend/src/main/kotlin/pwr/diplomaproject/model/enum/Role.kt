@@ -13,12 +13,12 @@ enum class Role {
 
         fun convert(employeeType: EmployeeType): Role =
             when(employeeType) {
-                EmployeeType.ADMINISTRATOR -> ADMIN
+                EmployeeType.ADMIN -> ADMIN
                 EmployeeType.DEAN -> DEAN
                 EmployeeType.LECTURER -> LECTURER
                 EmployeeType.COORDINATOR -> COORDINATOR
-                EmployeeType.PROGRAMME_COMMISSION_MEMBER -> PROGRAM_COMMITTEE_MEMBER
-                EmployeeType.GRADUATION_DEPARTMENT_MEMBER -> DIPLOMA_SECTION_MEMBER
+                EmployeeType.PROGRAM_COMMITTEE_MEMBER -> PROGRAM_COMMITTEE_MEMBER
+                EmployeeType.DIPLOMA_SECTION_MEMBER -> DIPLOMA_SECTION_MEMBER
             }
     }
 }

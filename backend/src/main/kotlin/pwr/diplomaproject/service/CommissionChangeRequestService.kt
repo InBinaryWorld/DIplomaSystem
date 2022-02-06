@@ -50,7 +50,7 @@ class CommissionChangeRequestService @Autowired constructor(
             it.result = RequestResult.REJECTED
             it.employee = dean(userId)
 
-            it.newTopic.status = TopicStatus.REJECTED_BY_COMMISSION // TODO może jakoś ładniej anulować taki temat (bez usuwania)
+            it.newTopic.status = TopicStatus.REJECTED_BY_COMMITTEE // TODO może jakoś ładniej anulować taki temat (bez usuwania)
 
             subjectRepository.save(it.newTopic)
             topicChangeRequestRepository.save(it)
@@ -88,7 +88,7 @@ class CommissionChangeRequestService @Autowired constructor(
         reservationRepository.save(newSubjectReservation)
 
         // jeżeli stary temat nie był zatwierdzony to zatwierdzamy
-        newSubject.status = TopicStatus.ACCEPTED_BY_COMMISSION
+        newSubject.status = TopicStatus.APPROVED_BY_COMMITTEE
         subjectRepository.save(newSubject)
     }
 

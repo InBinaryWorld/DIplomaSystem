@@ -17,13 +17,13 @@ class CommissionSubjectService @Autowired constructor(
     companion object {
 
         private val VERIFIED_STATUSES = arrayOf(
-            TopicStatus.ACCEPTED_BY_COMMISSION,
-            TopicStatus.REJECTED_BY_COMMISSION
+            TopicStatus.APPROVED_BY_COMMITTEE,
+            TopicStatus.REJECTED_BY_COMMITTEE
         )
     }
 
     fun getSubjectsToVerify(): List<SubjectDto> =
-        subjectService.findAllByStatuses(TopicStatus.ACCEPTED_BY_COORDINATOR)
+        subjectService.findAllByStatuses(TopicStatus.APPROVED_BY_COORDINATOR)
             .map { SubjectDtoFactory.create(it) }
 
     fun getSubjectsVerified(): List<SubjectDto> =
@@ -35,13 +35,13 @@ class CommissionSubjectService @Autowired constructor(
 
     fun acceptSubject(id: Long): Unit =
         subjectRepository.getById(id).let {
-            it.status = TopicStatus.ACCEPTED_BY_COMMISSION
+            it.status = TopicStatus.APPROVED_BY_COMMITTEE
             subjectRepository.save(it)
         }
 
     fun rejectSubject(id: Long): Unit =
         subjectRepository.getById(id).let {
-            it.status = TopicStatus.REJECTED_BY_COMMISSION
+            it.status = TopicStatus.REJECTED_BY_COMMITTEE
             subjectRepository.save(it)
         }
 }

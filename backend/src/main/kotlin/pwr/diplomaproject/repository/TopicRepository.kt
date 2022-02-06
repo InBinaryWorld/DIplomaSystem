@@ -14,7 +14,7 @@ interface TopicRepository : JpaRepository<Topic, Long> {
         LEFT JOIN Reservation r ON r.topic = t
         LEFT JOIN GroupMember g ON g.reservation = r
         LEFT JOIN Student s ON g.student = s
-        WHERE t.status = 'ACCEPTED_BY_COMMISSION' and s.id <> :studentId and t.graduation.id = :graduationId
+        WHERE t.status = 'APPROVED_BY_COMMITTEE' and s.id <> :studentId and t.graduation.id = :graduationId
         GROUP BY t
         HAVING sum(case r.status when 'CONFIRMED' then 1 else 0 end) = 0
     """

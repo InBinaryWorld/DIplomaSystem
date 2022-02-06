@@ -75,7 +75,7 @@ class LecturerSubjectService @Autowired constructor(
         }
 
     fun getSubjectsToCorrect(userId: Long): List<SubjectDto> =
-        subjectRepository.findAllByLecturerIdAndStatus(lecturerId(userId), TopicStatus.NEEDS_CORRECTION)
+        subjectRepository.findAllByLecturerIdAndStatus(lecturerId(userId), TopicStatus.TO_CORRECT)
             .map { SubjectDtoFactory.create(it) }
 
     fun getSubjectToCorrect(userId: Long, subjectId: Long): LecturerSubjectToCorrectDetailsDto =

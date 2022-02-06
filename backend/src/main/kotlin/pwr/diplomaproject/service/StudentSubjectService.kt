@@ -49,7 +49,7 @@ class StudentSubjectService @Autowired constructor(
             form.topic,
             form.description,
             form.numberOfStudents,
-            TopicStatus.WAITING,
+            TopicStatus.PROPOSED_BY_STUDENT,
             null,
             true,
             LocalDate.now()
@@ -62,7 +62,7 @@ class StudentSubjectService @Autowired constructor(
 
     fun deleteProposedSubject(studentId: Long, id: Long) {
         val subject = topicRepository.findByIndexAndStudent(id, studentId)
-        if (subject.status == TopicStatus.WAITING) {
+        if (subject.status == TopicStatus.PROPOSED_BY_STUDENT) {
             SubjectPropositionDeletedByStudent(listOf(subject.lecturer.user), subject, subject.student!!.user).send()
             topicRepository.delete(subject)
         }

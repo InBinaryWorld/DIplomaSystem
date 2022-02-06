@@ -2,10 +2,12 @@ package pwr.diplomaproject.repository
 
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
+import org.springframework.stereotype.Repository
 import pwr.diplomaproject.model.dto.LecturerSubjectReservationDto
 import pwr.diplomaproject.model.entity.Topic
 import pwr.diplomaproject.model.enum.TopicStatus
 
+@Repository
 interface SubjectRepository : JpaRepository<Topic, Long> {
 
     @Query(value = "select max(t.id) + 1 from Topic t")
@@ -28,7 +30,7 @@ interface SubjectRepository : JpaRepository<Topic, Long> {
         SELECT new pwr.diplomaproject.model.dto.LecturerSubjectReservationDto(t.id, t.topic, t.studentCount, sum(case r.status when 'REGISTERED' then 1 else 0 end))
         FROM Topic t
         LEFT JOIN Reservation r ON r.topic = t
-        WHERE t.status = 'ACCEPTED_BY_COMMISSION' AND t.lecturer.id = :lecturerId
+        WHERE t.status = 'APPROVED_BY_COMMITTEE' AND t.lecturer.id = :lecturerId
         GROUP BY t
     """)
     fun getLecturerReservationDetails(lecturerId: Long): List<LecturerSubjectReservationDto>
@@ -43,4 +45,15 @@ interface SubjectRepository : JpaRepository<Topic, Long> {
         WHERE r.status = 'CONFIRMED' AND tcr.id = :requestId
     """)
     fun getByCorrectionRequestId(requestId: Long): Topic
+
+    @Query("""
+        FROM Topic t
+        WHERE (:status IS NULL OR t.status = :status)
+        AND (:graduationId IS NULL OR t.graduation.id = :graduationId)
+        AND (:studentId IS NULL OR (t.createdByStudent = true AND t.student.id = :studentId))
+    """)
+    fun findAllByStatusOrGraduationOrProposedStudent(
+        status: TopicStatus?,
+        graduationId: Long?,
+        studentId: Long?): List<Topic>
 }
