@@ -22,13 +22,13 @@ export class ThesesApiService {
     queryParams.addIfValueExists('status', options.status);
     queryParams.addIfValueExists('diplomaSessionId', options.diplomaSessionId);
     queryParams.addIfValueExists('proposedByStudentId', options.proposedByStudentId);
-    return this.http.getApiWithLabel(Thesis, ApiLabel.GET_THESES, undefined, queryParams);
+    return this.http.getApiWithLabelDeserialized(Thesis, ApiLabel.GET_THESES, undefined, queryParams);
   }
 
   public getThesisForId(id: IdType): Observable<Thesis> {
     const queryParams = new RequestParams();
     queryParams.addIfValueExists('id', id);
-    return this.http.getApiWithLabel(Thesis, ApiLabel.GET_THESIS, undefined, queryParams);
+    return this.http.getApiWithLabelDeserialized(Thesis, ApiLabel.GET_THESIS, undefined, queryParams);
   }
 
   public getStudentReservations(options: LoadReservationsActionOptions): Observable<Reservation[]> {
@@ -36,76 +36,76 @@ export class ThesesApiService {
     query.addIfValueExists('studentId', options.studentId);
     query.addIfValueExists('supervisorId', options.supervisorId);
     query.addIfValueExists('diplomaSessionId', options.diplomaSessionId);
-    return this.http.getApiWithLabel(Reservation, ApiLabel.GET_RESERVATIONS, undefined, query);
+    return this.http.getApiWithLabelDeserialized(Reservation, ApiLabel.GET_RESERVATIONS, undefined, query);
   }
 
   public getReservationForId(reservationId: IdType): Observable<Reservation> {
     const query = new RequestParams();
     query.addIfValueExists('id', reservationId);
-    return this.http.getApiWithLabel(Reservation, ApiLabel.GET_RESERVATION, undefined, query);
+    return this.http.getApiWithLabelDeserialized(Reservation, ApiLabel.GET_RESERVATION, undefined, query);
   }
 
   public createThesis(thesis: Partial<Thesis>): Observable<Thesis> {
-    return this.http.postApiWithLabel(Thesis, ApiLabel.CREATE_THESIS, thesis);
+    return this.http.postApiWithLabelSerializedDeserialized(Thesis, ApiLabel.CREATE_THESIS, thesis);
   }
 
   public confirmParticipationInReservation(memberId: IdType): Observable<ReservationMember> {
     const payload = { memberId };
-    return this.http.postApiWithLabel(ReservationMember, ApiLabel.CONFIRM_PARTICIPATION_IN_RESERVATION, payload);
+    return this.http.postApiWithLabelSerializedDeserialized(ReservationMember, ApiLabel.CONFIRM_PARTICIPATION_IN_RESERVATION, payload);
   }
 
   public confirmMemberReservation(memberId: IdType): Observable<ReservationMember> {
     const payload = { memberId };
-    return this.http.postApiWithLabel(ReservationMember, ApiLabel.CONFIRM_MEMBER_RESERVATION, payload);
+    return this.http.postApiWithLabelSerializedDeserialized(ReservationMember, ApiLabel.CONFIRM_MEMBER_RESERVATION, payload);
   }
 
   public abandonReservation(memberId: IdType): Observable<ReservationMember> {
     const payload = { memberId };
-    return this.http.postApiWithLabel(ReservationMember, ApiLabel.ABANDON_MEMBER_RESERVATION, payload);
+    return this.http.postApiWithLabelSerializedDeserialized(ReservationMember, ApiLabel.ABANDON_MEMBER_RESERVATION, payload);
   }
 
   public createReservation(payload: object): Observable<Reservation> {
-    return this.http.postApiWithLabel(Reservation, ApiLabel.CREATE_RESERVATION, payload);
+    return this.http.postApiWithLabelSerializedDeserialized(Reservation, ApiLabel.CREATE_RESERVATION, payload);
   }
 
   public rejectReservation(payload: object): Observable<Reservation> {
-    return this.http.postApiWithLabel(Reservation, ApiLabel.REJECT_RESERVATION, payload);
+    return this.http.postApiWithLabelSerializedDeserialized(Reservation, ApiLabel.REJECT_RESERVATION, payload);
   }
 
   public acceptReservation(payload: object): Observable<Reservation> {
-    return this.http.postApiWithLabel(Reservation, ApiLabel.ACCEPT_RESERVATION, payload);
+    return this.http.postApiWithLabelSerializedDeserialized(Reservation, ApiLabel.ACCEPT_RESERVATION, payload);
   }
 
   public requestForThesisCorrectionsWithCoordinator(coordinatorId: IdType, payload: object): Observable<Thesis> {
-    return this.http.postApiWithLabel(Thesis, ApiLabel.REQUEST_THESIS_CORRECTIONS, payload);
+    return this.http.postApiWithLabelSerializedDeserialized(Thesis, ApiLabel.REQUEST_THESIS_CORRECTIONS, payload);
   }
 
   public rejectThesisWithCoordinator(coordinatorId: IdType, payload: object): Observable<Thesis> {
-    return this.http.postApiWithLabel(Thesis, ApiLabel.REJECT_THESIS_WITH_COORDINATOR, payload);
+    return this.http.postApiWithLabelSerializedDeserialized(Thesis, ApiLabel.REJECT_THESIS_WITH_COORDINATOR, payload);
   }
 
   public approveThesisWithCoordinator(payload: object): Observable<Thesis> {
-    return this.http.postApiWithLabel(Thesis, ApiLabel.APPROVE_THESIS_WITH_COORDINATOR, payload);
+    return this.http.postApiWithLabelSerializedDeserialized(Thesis, ApiLabel.APPROVE_THESIS_WITH_COORDINATOR, payload);
   }
 
   public rejectThesisWithCommitteeMember(coordinatorId: IdType, payload: object): Observable<Thesis> {
-    return this.http.postApiWithLabel(Thesis, ApiLabel.REJECT_THESIS_WITH_COMMITTEE_MEMBER, payload);
+    return this.http.postApiWithLabelSerializedDeserialized(Thesis, ApiLabel.REJECT_THESIS_WITH_COMMITTEE_MEMBER, payload);
   }
 
   public approveThesisWithCommitteeMember(payload: object): Observable<Thesis> {
-    return this.http.postApiWithLabel(Thesis, ApiLabel.APPROVE_THESIS_WITH_COMMITTEE_MEMBER, payload);
+    return this.http.postApiWithLabelSerializedDeserialized(Thesis, ApiLabel.APPROVE_THESIS_WITH_COMMITTEE_MEMBER, payload);
   }
 
   public rejectThesisWithLecturer(payload: object): Observable<Thesis> {
-    return this.http.postApiWithLabel(Thesis, ApiLabel.REJECT_THESIS_WITH_LECTURER, payload);
+    return this.http.postApiWithLabelSerializedDeserialized(Thesis, ApiLabel.REJECT_THESIS_WITH_LECTURER, payload);
   }
 
   public correctThesisWithLecturer(payload: object): Observable<Thesis> {
-    return this.http.postApiWithLabel(Thesis, ApiLabel.CORRECT_THESIS_WITH_LECTURER, payload);
+    return this.http.postApiWithLabelSerializedDeserialized(Thesis, ApiLabel.CORRECT_THESIS_WITH_LECTURER, payload);
   }
 
   public acceptThesisWithLecturer(payload: object): Observable<Thesis> {
-    return this.http.postApiWithLabel(Thesis, ApiLabel.ACCEPT_THESIS_WITH_LECTURER, payload);
+    return this.http.postApiWithLabelSerializedDeserialized(Thesis, ApiLabel.ACCEPT_THESIS_WITH_LECTURER, payload);
   }
 
 }

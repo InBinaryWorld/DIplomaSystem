@@ -26,24 +26,24 @@ export class GeneralResourcesApiService extends BaseApiService {
   }
 
   public getTimetables(options: LoadTimetablesActionOptions): Observable<Timetable[]> {
-    return this.http.getApiWithLabel(Timetable, ApiLabel.GET_TIMETABLES);
+    return this.http.getApiWithLabelDeserialized<Timetable, Timetable[]>(Timetable, ApiLabel.GET_TIMETABLES);
   }
 
   public getDiplomaSessions(options: LoadDiplomaSessionsActionOptions): Observable<DiplomaSession[]> {
     const queryParams = new RequestParams();
     queryParams.addIfValueExists('fieldOfStudyId', options.fieldOfStudyId);
     queryParams.addIfValueExists('departmentId', options.departmentId);
-    return this.http.getApiWithLabel(DiplomaSession, ApiLabel.GET_DIPLOMA_SESSIONS, undefined, queryParams);
+    return this.http.getApiWithLabelDeserialized(DiplomaSession, ApiLabel.GET_DIPLOMA_SESSIONS, undefined, queryParams);
   }
 
   public getDepartments(options: LoadDepartmentsActionOptions): Observable<Department[]> {
-    return this.http.getApiWithLabel(Department, ApiLabel.GET_DEPARTMENTS);
+    return this.http.getApiWithLabelDeserialized(Department, ApiLabel.GET_DEPARTMENTS);
   }
 
   public getFieldsOfStudy(options: LoadFieldsOfStudyActionOptions): Observable<FieldOfStudy[]> {
     const query = new RequestParams();
     query.addIfValueExists('departmentId', options.departmentId);
-    return this.http.getApiWithLabel(FieldOfStudy, ApiLabel.GET_FIELDS_OF_STUDY, undefined, query);
+    return this.http.getApiWithLabelDeserialized(FieldOfStudy, ApiLabel.GET_FIELDS_OF_STUDY, undefined, query);
   }
 
   public getTimetableForId(id: IdType): Observable<Timetable> {
@@ -62,16 +62,16 @@ export class GeneralResourcesApiService extends BaseApiService {
     return this.getResourceForId(FieldOfStudy, ApiLabel.GET_FIELD_OF_STUDY, id);
   }
 
-  getResourceForId<T>(type: Serializable, apiLabel: ApiLabel, id: IdType): Observable<T> {
+  getResourceForId<T>(type: Serializable<T>, apiLabel: ApiLabel, id: IdType): Observable<T> {
     const query = new RequestParams();
     query.addIfValueExists('id', id);
-    return this.http.getApiWithLabel(type, apiLabel, undefined, query);
+    return this.http.getApiWithLabelDeserialized<T, T>(type, apiLabel, undefined, query);
   }
 
   modifyTimetable(timetableId: IdType, payload: Partial<Timetable>): Observable<DiplomaSession> {
     const query = new RequestParams();
     query.addIfValueExists('id', timetableId);
-    return this.http.postApiWithLabel(DiplomaSession, ApiLabel.MODIFY_TIMETABLE, payload, query);
+    return this.http.postApiWithLabelSerializedDeserialized(DiplomaSession, ApiLabel.MODIFY_TIMETABLE, payload, query);
   }
 
 }

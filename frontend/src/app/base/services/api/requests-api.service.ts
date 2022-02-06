@@ -28,7 +28,7 @@ export class RequestsApiService extends BaseApiService {
     queryParams.addIfValueExists('diplomaSessionId', options.diplomaSessionId);
     queryParams.addIfValueExists('studentId', options.studentId);
     queryParams.addIfValueExists('status', options.status);
-    return this.http.getApiWithLabel(ClarificationRequest, ApiLabel.GET_CLARIFICATION_REQUESTS, undefined, queryParams);
+    return this.http.getApiWithLabelDeserialized(ClarificationRequest, ApiLabel.GET_CLARIFICATION_REQUESTS, undefined, queryParams);
   }
 
   getChangeRequests(options: LoadChangeRequestsActionOptions): Observable<ChangeRequest[]> {
@@ -37,47 +37,47 @@ export class RequestsApiService extends BaseApiService {
     queryParams.addIfValueExists('diplomaSessionId', options.diplomaSessionId);
     queryParams.addIfValueExists('studentId', options.studentId);
     queryParams.addIfValueExists('status', options.status);
-    return this.http.getApiWithLabel(ChangeRequest, ApiLabel.GET_CHANGE_REQUESTS, undefined, queryParams);
+    return this.http.getApiWithLabelDeserialized(ChangeRequest, ApiLabel.GET_CHANGE_REQUESTS, undefined, queryParams);
   }
 
   getClarificationRequestForId(id: IdType): Observable<ClarificationRequest> {
     const query = new RequestParams();
     query.addIfValueExists('id', id);
-    return this.http.getApiWithLabel(ClarificationRequest, ApiLabel.GET_CLARIFICATION_REQUEST, undefined, query);
+    return this.http.getApiWithLabelDeserialized(ClarificationRequest, ApiLabel.GET_CLARIFICATION_REQUEST, undefined, query);
   }
 
   getChangeRequestForId(id: IdType): Observable<ChangeRequest> {
     const query = new RequestParams();
     query.addIfValueExists('id', id);
-    return this.http.getApiWithLabel(ChangeRequest, ApiLabel.GET_CHANGE_REQUESTS, undefined, query);
+    return this.http.getApiWithLabelDeserialized(ChangeRequest, ApiLabel.GET_CHANGE_REQUESTS, undefined, query);
   }
 
   rejectClarificationRequestWithDean(deanId: IdType, requestId: IdType): Observable<void> {
     const payload = { requestId, role: Role.DEAN, roleId: deanId };
-    return this.http.postApiWithLabel(ClarificationRequest, ApiLabel.REJECT_CLARIFICATION_REQUEST, payload);
+    return this.http.postApiWithLabelSerializedDeserialized(ClarificationRequest, ApiLabel.REJECT_CLARIFICATION_REQUEST, payload);
   }
 
   approveClarificationRequestWithDean(deanId: IdType, requestId: IdType): Observable<void> {
     const payload = { requestId, role: Role.DEAN, roleId: deanId };
-    return this.http.postApiWithLabel(ClarificationRequest, ApiLabel.APPROVE_CLARIFICATION_REQUEST, payload);
+    return this.http.postApiWithLabelSerializedDeserialized(ClarificationRequest, ApiLabel.APPROVE_CLARIFICATION_REQUEST, payload);
   }
 
   createClarificationRequest(thesisId: IdType, payload: Partial<ClarificationRequest>): Observable<ClarificationRequest> {
-    return this.http.postApiWithLabel(ClarificationRequest, ApiLabel.CREATE_CLARIFICATION_REQUEST, payload);
+    return this.http.postApiWithLabelSerializedDeserialized(ClarificationRequest, ApiLabel.CREATE_CLARIFICATION_REQUEST, payload);
   }
 
   rejectChangeRequestWithCommitteeMember(committeeMemberId: IdType, requestId: IdType): Observable<void> {
     const payload = { requestId, role: Role.PROGRAM_COMMITTEE_MEMBER, roleId: committeeMemberId };
-    return this.http.postApiWithLabel(ChangeRequest, ApiLabel.REJECT_CHANGE_REQUEST, payload);
+    return this.http.postApiWithLabelSerializedDeserialized(ChangeRequest, ApiLabel.REJECT_CHANGE_REQUEST, payload);
   }
 
   approveChangeRequestWithCommitteeMember(committeeMemberId: IdType, requestId: IdType): Observable<void> {
     const payload = { requestId, role: Role.PROGRAM_COMMITTEE_MEMBER, roleId: committeeMemberId };
-    return this.http.postApiWithLabel(ChangeRequest, ApiLabel.APPROVE_CHANGE_REQUEST, payload);
+    return this.http.postApiWithLabelSerializedDeserialized(ChangeRequest, ApiLabel.APPROVE_CHANGE_REQUEST, payload);
   }
 
   createChangeRequest(thesisId: IdType, payload: any): Observable<ChangeRequest> {
-    return this.http.postApiWithLabel(ChangeRequest, ApiLabel.CREATE_CHANGE_REQUEST, payload);
+    return this.http.postApiWithLabelSerializedDeserialized(ChangeRequest, ApiLabel.CREATE_CHANGE_REQUEST, payload);
   }
 
 }

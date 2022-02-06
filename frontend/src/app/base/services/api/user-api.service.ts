@@ -18,32 +18,32 @@ export class UserApiService {
   }
 
   getCurrentUser(): Observable<User> {
-    return this.http.getApiWithLabel(User, ApiLabel.GET_USER);
+    return this.http.getApiWithLabelDeserialized(User, ApiLabel.GET_USER);
   }
 
   getStudents(options: LoadStudentsActionOptions): Observable<Student[]> {
     const query = new RequestParams();
     query.addIfValueExists('diplomaSessionId', options.diplomaSessionId);
-    return this.http.getApiWithLabel(Student, ApiLabel.GET_STUDENTS, undefined, query);
+    return this.http.getApiWithLabelDeserialized(Student, ApiLabel.GET_STUDENTS, undefined, query);
   }
 
   getStudentForId(id: IdType): Observable<Student> {
     const query = new RequestParams();
     query.addIfValueExists('id', id);
-    return this.http.getApiWithLabel(Student, ApiLabel.GET_STUDENT, undefined, query);
+    return this.http.getApiWithLabelDeserialized(Student, ApiLabel.GET_STUDENT, undefined, query);
   }
 
   getEmployees(options: LoadEmployeesActionOptions): Observable<Employee[]> {
     const query = new RequestParams();
     query.addIfValueExists('role', options.role);
     query.addIfValueExists('diplomaSessionId', options.diplomaSessionId);
-    return this.http.getApiWithLabel(Employee, ApiLabel.GET_EMPLOYEES, undefined, query);
+    return this.http.getApiWithLabelDeserialized(Employee, ApiLabel.GET_EMPLOYEES, undefined, query);
   }
 
   getEmployeeForId(id: IdType): Observable<Employee> {
     const query = new RequestParams();
     query.addIfValueExists('id', id);
-    return this.http.getApiWithLabel(Employee, ApiLabel.GET_EMPLOYEE, undefined, query);
+    return this.http.getApiWithLabelDeserialized(Employee, ApiLabel.GET_EMPLOYEE, undefined, query);
   }
 
 

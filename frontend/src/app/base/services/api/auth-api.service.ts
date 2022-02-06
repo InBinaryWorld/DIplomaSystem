@@ -23,11 +23,13 @@ export class AuthApiService {
     formData.set('password', loginData.password);
     formData.set('username', loginData.username);
 
-    return this.httpService.postAuthWithLabel(AuthData, ApiLabel.LOGIN, formData, undefined, undefined, headers);
+    return this.httpService.postAuthWithLabelDeserialized(AuthData, ApiLabel.LOGIN, formData, undefined, undefined, headers);
   }
 
   refreshToken(refreshToken: string): Observable<AuthData> {
-    return this.httpService.postApiWithLabel(AuthData, ApiLabel.REFRESH, { refreshToken });
+    // TODO
+    throw new Error('refreshToken NOT IMPLEMENTED');
+    // return this.httpService.postApiWithLabelSerializedDeserialized(AuthData, ApiLabel.REFRESH, { refreshToken });
   }
 
 }
