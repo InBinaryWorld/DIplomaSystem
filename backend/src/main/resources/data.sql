@@ -16,7 +16,8 @@ values (1, 'Wydział Informatyki i Telekomunikacji', 'w4n');
 
 -- Table: course_of_study
 insert into course_of_study (id, name, study_type, faculty_id)
-values (1, 'Informatyka stosowana', 'BACHELOR', 1);
+values (1, 'Informatyka stosowana', 'BACHELOR', 1),
+       (2, 'Informatyka algorytmiczna', 'BACHELOR', 1);
 
 
 -- Table: employee
@@ -44,7 +45,10 @@ values
 
 -- Table: graduation
 insert into graduation (id, graduation_year, course_of_study_id)
-values (1, 2021, 1);
+values (1, 2021, 1),
+       (2, 2021, 2),
+       (3, 2022, 1),
+       (4, 2022, 2);
 
 -- Table: schedule
 insert into schedule (id, topic_change_deadline, topic_commission_approval_deadline,
