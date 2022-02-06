@@ -25,7 +25,7 @@ class DeanCorrectionRequestService @Autowired constructor(
             .map { DeanRequestDtoFactory.create(it) }
 
     fun getCorrectionRequestsConsidered(): List<RequestDto> =
-        topicCorrectionRequestRepository.findAllByResultIn(listOf(RequestResult.REJECTED, RequestResult.ACCEPTED))
+        topicCorrectionRequestRepository.findAllByResultIn(listOf(RequestResult.DISMISSED, RequestResult.APPROVED))
             .map { DeanRequestDtoFactory.create(it) }
 
     fun getCorrectionRequest(id: Long): TopicCorrectionRequestDetailsDto =
@@ -34,7 +34,7 @@ class DeanCorrectionRequestService @Autowired constructor(
     @Transactional
     fun acceptCorrectionRequest(userId: Long, id: Long): Unit =
         topicCorrectionRequestRepository.getById(id).let {
-            it.result = RequestResult.ACCEPTED
+            it.result = RequestResult.APPROVED
             it.employee = dean(userId)
 
             subjectRepository.getByCorrectionRequestId(id).let { topic ->
@@ -48,7 +48,7 @@ class DeanCorrectionRequestService @Autowired constructor(
 
     fun rejectCorrectionRequest(userId: Long, id: Long): Unit =
         topicCorrectionRequestRepository.getById(id).let {
-            it.result = RequestResult.REJECTED
+            it.result = RequestResult.DISMISSED
             it.employee = dean(userId)
             topicCorrectionRequestRepository.save(it)
         }

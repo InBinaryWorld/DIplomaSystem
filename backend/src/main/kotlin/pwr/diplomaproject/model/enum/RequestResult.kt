@@ -2,7 +2,7 @@ package pwr.diplomaproject.model.enum
 
 enum class RequestResult {
     WAITING,
-    ACCEPTED,
-    REJECTED,
+    APPROVED,
+    DISMISSED,
     CANCELED_BY_STUDENT
 }

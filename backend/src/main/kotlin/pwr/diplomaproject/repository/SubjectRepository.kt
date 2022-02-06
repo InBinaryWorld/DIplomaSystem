@@ -27,7 +27,7 @@ interface SubjectRepository : JpaRepository<Topic, Long> {
     fun getByLecturerIdAndSubjectId(lecturerId: Long, subjectId: Long): Topic
 
     @Query("""
-        SELECT new pwr.diplomaproject.model.dto.LecturerSubjectReservationDto(t.id, t.topic, t.studentCount, sum(case r.status when 'REGISTERED' then 1 else 0 end))
+        SELECT new pwr.diplomaproject.model.dto.LecturerSubjectReservationDto(t.id, t.topic, t.studentCount, sum(case r.status when 'SUBMITTED' then 1 else 0 end))
         FROM Topic t
         LEFT JOIN Reservation r ON r.topic = t
         WHERE t.status = 'APPROVED_BY_COMMITTEE' AND t.lecturer.id = :lecturerId

@@ -30,10 +30,10 @@ export const baseEnvironment = {
       [ApiLabel.CREATE_RESERVATION]: '/student/reservation', // request param: "studentId"; body: { thesisId: number, studentIds: number[] }
       [ApiLabel.REJECT_RESERVATION]: '/lecturer/reservation/reject', // request param: "id" (id rezerwacji)
       [ApiLabel.ACCEPT_RESERVATION]: '/lecturer/reservation/reject', // request param: "id" (id rezerwacji)
-      [ApiLabel.GET_CHANGE_REQUEST]: 'TODO GET_CHANGE_REQUEST',
-      [ApiLabel.GET_CHANGE_REQUESTS]: 'TODO GET_CHANGE_REQUESTS',
-      [ApiLabel.GET_CLARIFICATION_REQUEST]: 'TODO GET_CLARIFICATION_REQUEST',
-      [ApiLabel.GET_CLARIFICATION_REQUESTS]: 'TODO GET_CLARIFICATION_REQUESTS',
+      [ApiLabel.GET_CHANGE_REQUEST]: '/request/change',
+      [ApiLabel.GET_CHANGE_REQUESTS]: '/request/change',
+      [ApiLabel.GET_CLARIFICATION_REQUEST]: '/request/clarification',
+      [ApiLabel.GET_CLARIFICATION_REQUESTS]: '/request/clarification',
       [ApiLabel.GET_DEPARTMENT]: '/general/department',
       [ApiLabel.GET_DEPARTMENTS]: '/general/department',
       [ApiLabel.GET_DIPLOMA_SESSION]: '/general/diploma-session',

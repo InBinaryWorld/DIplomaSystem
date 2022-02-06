@@ -26,7 +26,7 @@ class CommissionChangeRequestService @Autowired constructor(
             .map { DeanRequestDtoFactory.create(it) }
 
     fun getChangeRequestsConsidered(): List<RequestDto> =
-        topicChangeRequestRepository.findAllByResultIn(listOf(RequestResult.REJECTED, RequestResult.ACCEPTED))
+        topicChangeRequestRepository.findAllByResultIn(listOf(RequestResult.DISMISSED, RequestResult.APPROVED))
             .map { DeanRequestDtoFactory.create(it) }
 
     fun getChangeRequest(requestId: Long): TopicChangeRequestDetailsDto =
@@ -36,7 +36,7 @@ class CommissionChangeRequestService @Autowired constructor(
     @Transactional
     fun acceptChangeRequest(userId: Long, id: Long): Unit =
         topicChangeRequestRepository.getById(id).let {
-            it.result = RequestResult.ACCEPTED
+            it.result = RequestResult.APPROVED
             it.employee = dean(userId)
 
             switchStudentSubject(it.student, it.oldTopic, it.newTopic)
@@ -47,7 +47,7 @@ class CommissionChangeRequestService @Autowired constructor(
     @Transactional
     fun rejectChangeRequest(userId: Long, id: Long): Unit =
         topicChangeRequestRepository.getById(id).let {
-            it.result = RequestResult.REJECTED
+            it.result = RequestResult.DISMISSED
             it.employee = dean(userId)
 
             it.newTopic.status = TopicStatus.REJECTED_BY_COMMITTEE // TODO może jakoś ładniej anulować taki temat (bez usuwania)
@@ -69,7 +69,7 @@ class CommissionChangeRequestService @Autowired constructor(
                 ReservationStatus.CONFIRMED,
                 LocalDate.now()))
 
-        // usuwamy studenta ze starej rezerwacji; jeżeli był to ostatni student to usuwamy rezerwację
+        // usuwamy studenta ze starej rezerwacji
         val oldGroupMember = oldSubjectReservation.groupMembers.find { it.student.id == student.id }!!
         oldSubjectReservation.groupMembers = oldSubjectReservation.groupMembers.filter { it.id != oldGroupMember.id }
         if (oldSubjectReservation.groupMembers.isEmpty())
