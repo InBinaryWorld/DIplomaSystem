@@ -56,9 +56,7 @@ class StudentSubjectService @Autowired constructor(
         )
 
         SubjectProposedByStudent(
-            listOf(
-                student.user, employee.user
-            ), newSubject
+            listOf(student.user, employee.user), newSubject, student.user
         ).send()
 
         subjectRepository.save(newSubject)

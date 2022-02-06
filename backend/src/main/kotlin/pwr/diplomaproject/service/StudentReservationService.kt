@@ -6,10 +6,12 @@ import pwr.diplomaproject.model.dto.StudentReservationDto
 import pwr.diplomaproject.model.dto.factory.StudentReservationDtoFactory
 import pwr.diplomaproject.model.entity.GroupMember
 import pwr.diplomaproject.model.entity.Reservation
+import pwr.diplomaproject.model.entity.Student
 import pwr.diplomaproject.model.entity.Topic
 import pwr.diplomaproject.model.enum.MemberStatus
 import pwr.diplomaproject.model.enum.ReservationStatus
 import pwr.diplomaproject.model.form.StudentReservationForm
+import pwr.diplomaproject.model.mail.ReservationCreatedByStudent
 import pwr.diplomaproject.repository.GroupMemberRepository
 import pwr.diplomaproject.repository.ReservationRepository
 import pwr.diplomaproject.repository.StudentRepository
@@ -90,7 +92,8 @@ class StudentReservationService(
     }
 
     fun makeReservation(studentId: Long, form: StudentReservationForm) {
-        val topic: Topic = topicRepository.findByIdOrNull(form.subjectId) ?: return
+        val topic: Topic = topicRepository.getById(form.subjectId)
+        val student: Student = studentRepository.getById(studentId)
 
         val newReservation = Reservation(
             id = reservationRepository.getNextId(),
@@ -103,15 +106,15 @@ class StudentReservationService(
 
         var nextGroupMemberId = groupMemberRepository.getNextId()
         for (suggestedStudentId in form.studentIds) {
-            val student = studentRepository.findByIdOrNull(suggestedStudentId)
-            if (student == null) {
+            val suggestedStudent = studentRepository.findByIdOrNull(suggestedStudentId)
+            if (suggestedStudent == null) {
                 return
             } else {
                 val newGroupMember = GroupMember(
                     id = nextGroupMemberId++,
                     reservation = newReservation,
-                    student = student,
-                    status = if (student.id == studentId) MemberStatus.WILLING else MemberStatus.SUGGESTED
+                    student = suggestedStudent,
+                    status = if (suggestedStudent.id == studentId) MemberStatus.WILLING else MemberStatus.SUGGESTED
                 )
                 newGroupMembers.add(newGroupMember)
             }
@@ -121,5 +124,7 @@ class StudentReservationService(
         for (newGroupMember in newGroupMembers) {
             groupMemberRepository.save(newGroupMember)
         }
+
+        ReservationCreatedByStudent(listOf(topic.lecturer.user), topic, newReservation, student.user).send()
     }
 }
