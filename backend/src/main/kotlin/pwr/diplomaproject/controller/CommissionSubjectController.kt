@@ -30,8 +30,8 @@ class CommissionSubjectController @Autowired constructor(
         commissionSubjectService.getSubject(id)
 
     @Operation(summary = "Zaakceptowanie zgłoszonego tematu")
-    @GetMapping("/accept/{id}")
-    fun acceptSubject(@PathVariable id: Long): Unit =
+    @GetMapping("/accept", params = ["id"])
+    fun acceptSubject(@RequestParam id: Long): Unit =
         commissionSubjectService.acceptSubject(id)
 
     @Operation(summary = "Odrzucenie zgłoszonego tematu")

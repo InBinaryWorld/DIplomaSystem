@@ -20,8 +20,8 @@ export const baseEnvironment = {
       [ApiLabel.ABANDON_MEMBER_RESERVATION]: '/student/reservation/cancel', // request param "studentId", "reservationId"
       [ApiLabel.APPROVE_CLARIFICATION_REQUEST]: 'TODO APPROVE_CLARIFICATION_REQUEST',
       [ApiLabel.APPROVE_CHANGE_REQUEST]: 'TODO APPROVE_CHANGE_REQUEST',
-      [ApiLabel.APPROVE_THESIS_WITH_COORDINATOR]: 'TODO APPROVE_THESIS_WITH_COORDINATOR',
-      [ApiLabel.APPROVE_THESIS_WITH_COMMITTEE_MEMBER]: 'TODO APPROVE_THESIS_WITH_COMMITTEE_MEMBER',
+      [ApiLabel.APPROVE_THESIS_WITH_COORDINATOR]: '/coordinator/subject/accept', // request param "id" (id tematu)
+      [ApiLabel.APPROVE_THESIS_WITH_COMMITTEE_MEMBER]: '/commission/subject/accept', // request param "id" (id tematu)
       [ApiLabel.CONFIRM_MEMBER_RESERVATION]: '/student/reservation/approve', // request param "studentId", "reservationId"
       [ApiLabel.CONFIRM_PARTICIPATION_IN_RESERVATION]: '/student/reservation/approve', // request param "studentId", "reservationId"
       [ApiLabel.CREATE_CLARIFICATION_REQUEST]: 'TODO CREATE_CLARIFICATION_REQUEST',

@@ -30,8 +30,8 @@ class CoordinatorSubjectController @Autowired constructor(
         coordinatorSubjectService.getSubject(id)
 
     @Operation(summary = "Zaakceptowanie zaproponowanego tematu")
-    @GetMapping("/accept/{id}")
-    fun acceptSubject(@PathVariable id: Long): Unit =
+    @GetMapping("/accept", params = ["id"])
+    fun acceptSubject(@RequestParam id: Long): Unit =
         coordinatorSubjectService.acceptSubject(id)
 
     @Operation(summary = "Zgłoszenie uwag do zaproponowanego tematu")
