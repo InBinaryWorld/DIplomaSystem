@@ -22,12 +22,12 @@ values (1, 'Informatyka stosowana', 'BACHELOR', 1);
 -- Table: employee
 insert into employee (id, title, type, faculty_id, user_id)
 values (1, 'mgr inż.', 'LECTURER', 1, 1),
-       (2, 'prof.', 'DEAN', 1, 1),
-       (3, 'prof.', 'DIPLOMA_SECTION_MEMBER', 1, 1),
-       (4, 'prof.', 'COORDINATOR', 1, 1),
-       (5, 'prof.', 'ADMIN', 1, 1),
-       (6, 'prof.', 'PROGRAM_COMMITTEE_MEMBER', 1, 1),
-       (7, 'prof.', 'LECTURER', 1, 1);
+       (2, 'prof.', 'DEAN', 1, 2),
+       (3, 'prof.', 'DIPLOMA_SECTION_MEMBER', 1, 2),
+       (4, 'prof.', 'COORDINATOR', 1, 2),
+       (5, 'prof.', 'ADMIN', 1, 2),
+       (6, 'prof.', 'PROGRAM_COMMITTEE_MEMBER', 1, 2),
+       (7, 'prof.', 'LECTURER', 1, 2);
 
 
 -- Table: student
