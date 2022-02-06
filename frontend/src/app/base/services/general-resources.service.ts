@@ -9,6 +9,7 @@ import { FieldOfStudy } from '../models/dto/field-of-study.model';
 import { LoadDiplomaSessionsActionOptions, LoadFieldsOfStudyActionOptions } from '../store/general/general.actions';
 import { GeneralResourcesApiService } from './api/general-api.service';
 import { tap } from 'rxjs/operators';
+import { NotificationTemplate } from '../models/dto/notification.model';
 
 @Injectable({
   providedIn: 'root'
@@ -54,6 +55,14 @@ export class GeneralResourcesService {
 
   getDiplomaSessionForId(id: IdType): Observable<DiplomaSession> {
     return this.generalResourcesStoreService.getDiplomaSessionForId(id);
+  }
+
+  getNotifications(): Observable<NotificationTemplate[]> {
+    return this.generalResourcesApiService.getNotifications();
+  }
+
+  modifyNotification(payload: NotificationTemplate): Observable<NotificationTemplate> {
+    return this.generalResourcesApiService.modifyNotification(payload);
   }
 
   modifyTimetable(timetableId: IdType, payload: Partial<Timetable>): Observable<DiplomaSession> {

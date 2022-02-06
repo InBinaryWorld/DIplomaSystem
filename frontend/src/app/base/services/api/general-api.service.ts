@@ -15,6 +15,7 @@ import { Timetable } from '../../models/dto/timetable.model';
 import { DiplomaSession } from '../../models/dto/diploma-session.model';
 import { Department } from '../../models/dto/department.model';
 import { FieldOfStudy } from '../../models/dto/field-of-study.model';
+import { NotificationTemplate } from '../../models/dto/notification.model';
 
 @Injectable({
   providedIn: 'root'
@@ -66,6 +67,14 @@ export class GeneralResourcesApiService extends BaseApiService {
     const query = new RequestParams();
     query.addIfValueExists('id', id);
     return this.http.getApiWithLabelDeserialized<T, T>(type, apiLabel, undefined, query);
+  }
+
+  getNotifications(): Observable<NotificationTemplate[]> {
+    return this.http.getApiWithLabelDeserialized(NotificationTemplate, ApiLabel.GET_NOTIFICATIONS);
+  }
+
+  modifyNotification(payload: NotificationTemplate): Observable<NotificationTemplate> {
+    return this.http.postApiWithLabelSerializedDeserialized(NotificationTemplate, ApiLabel.MODIFY_NOTIFICATION, payload);
   }
 
   modifyTimetable(timetableId: IdType, payload: Partial<Timetable>): Observable<DiplomaSession> {

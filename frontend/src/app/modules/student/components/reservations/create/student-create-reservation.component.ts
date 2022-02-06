@@ -123,8 +123,6 @@ export class StudentCreateReservationComponent extends RoleComponent implements 
         this.notUniqueStudents = unique.length !== allParticipants.length;
       })
     );
-
-
     this.markForCheck();
   }
 

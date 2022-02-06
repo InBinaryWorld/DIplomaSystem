@@ -3,6 +3,10 @@ import { Role } from 'src/app/base/models/dto/role.model';
 import { LabelBuilder } from 'src/app/base/utils/label-builder.utils';
 import { TranslationKeys } from 'src/app/base/utils/translation-keys.utils';
 import { Cleanable } from './cleanable.directive';
+import { FormArray, FormGroup, ValidationErrors } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { distinctUntilChanged, map, Observable } from 'rxjs';
+import { filterExists } from '../tools/filter-exists';
 
 @Directive()
 export abstract class BaseComponent extends Cleanable {
@@ -22,5 +26,24 @@ export abstract class BaseComponent extends Cleanable {
   protected detectChanges(): void {
     this.changeDetector.detectChanges();
   }
+
+  public getErrorsFromArray(form: FormArray, index: number): ValidationErrors | null {
+    const control = form!.controls[index]!;
+    return (control.dirty || control.touched) ? control.errors : null;
+  }
+
+  public getErrors(form: FormGroup, controlName: string): ValidationErrors | null {
+    const control = form!.get(controlName)!;
+    return (control.dirty || control.touched) ? control.errors : null;
+  }
+
+  protected getPathParam(route: ActivatedRoute, name: string): Observable<string> {
+    return route.paramMap.pipe(
+      map(params => params.get(name)),
+      filterExists(),
+      distinctUntilChanged()
+    );
+  };
+
 
 }

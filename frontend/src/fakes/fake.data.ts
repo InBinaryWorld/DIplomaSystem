@@ -25,6 +25,8 @@ import { ReservationMemberStatus } from '../app/base/models/dto/reservation-memb
 import { RequestParams } from '../app/core/models/request-param.model';
 import { isNotNil } from '../app/core/tools/is-not-nil';
 import { firstItem } from '../app/core/tools/first-item';
+import { NotificationTemplate } from '../app/base/models/dto/notification.model';
+import { NotificationType } from '../app/base/models/dto/notification-type.model';
 
 const userId: IdType = '1';
 
@@ -302,6 +304,23 @@ const changeRequest3: ChangeRequest = createChRequest(chRequest3Id, student, the
 
 const changeRequests: ChangeRequest[] = [changeRequest1, changeRequest2, changeRequest3];
 
+function createNotification(type: NotificationType, content: string): NotificationTemplate {
+  return { label: type, content: content };
+}
+
+const notification1 = createNotification(NotificationType.GROUP_MEMBER_UPDATED_BY_STUDENT, 'Bla Bla Bla');
+const notification2 = createNotification(NotificationType.RESERVATION_CREATED_BY_STUDENT, 'Bla Bla Bla');
+const notification3 = createNotification(NotificationType.RESERVATION_RESOLVED_BY_LECTURER, 'Bla Bla Bla');
+const notification4 = createNotification(NotificationType.SUBJECT_PROPOSED_BY_STUDENT, 'Bla Bla Bla');
+const notification6 = createNotification(NotificationType.SUBJECT_PROPOSITION_RESOLVED_BY_LECTURER, 'Bla Bla Bla');
+const notification7 = createNotification(NotificationType.SUBJECT_RESOLVED_BY_COORDINATOR, 'Bla Bla Bla');
+const notification8 = createNotification(NotificationType.TOPIC_CORRECTION_REQUEST_RESOLVED_BY_DEAN, 'Bla Bla Bla');
+const notification9 = createNotification(NotificationType.TOPIC_CORRECTION_REQUEST_CREATED_BY_STUDENT, 'Bla Bla Bla');
+
+
+const notifications: NotificationTemplate[] = [notification1, notification2, notification3,
+  notification4, notification6, notification7, notification8, notification9];
+
 
 const responseByApiKey: Dictionary<any> = {
   [ApiLabel.MODIFY_TIMETABLE]: firstItem(timetables),
@@ -323,6 +342,8 @@ const responseByApiKey: Dictionary<any> = {
   [ApiLabel.CREATE_RESERVATION]: firstItem(reservations),
   [ApiLabel.GET_USER]: user,
   [ApiLabel.GET_STUDENTS]: students,
+  [ApiLabel.GET_NOTIFICATIONS]: notifications,
+  [ApiLabel.MODIFY_NOTIFICATION]: firstItem(notifications),
   [ApiLabel.REJECT_CLARIFICATION_REQUEST]: firstItem(clarificationRequests),
   [ApiLabel.REJECT_THESIS_WITH_COMMITTEE_MEMBER]: firstItem(clarificationRequests),
   [ApiLabel.REJECT_CHANGE_REQUEST]: firstItem(changeRequests),

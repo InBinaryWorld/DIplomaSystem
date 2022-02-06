@@ -16,7 +16,11 @@ export class AppValidators {
   }
 
   public static get descriptionValidator(): ValidatorFn {
-    return AppValidators.compose(Validators.required, Validators.maxLength(1000));
+    return AppValidators.compose(Validators.required, Validators.maxLength(2000));
+  }
+
+  public static get notificationValidator(): ValidatorFn {
+    return AppValidators.compose(Validators.required, Validators.maxLength(2000));
   }
 
   public static get coordinatorComment(): ValidatorFn {

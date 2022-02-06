@@ -1,9 +1,10 @@
-import { autoserialize } from 'cerialize';
+import { autoserialize, autoserializeAs } from 'cerialize';
+import { NotificationType } from './notification-type.model';
 
-export class NotificationModel {
+export class NotificationTemplate {
 
-  @autoserialize
-  label!: string;
+  @autoserializeAs(NotificationType)
+  label!: NotificationType;
 
   @autoserialize
   content!: string;
