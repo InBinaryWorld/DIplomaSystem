@@ -16,7 +16,7 @@ export class BaseRequest extends WithId {
   studentId!: IdType;
 
   @autoserializeAs(IdTypeSerializer)
-  employeeId!: IdType;
+  employeeId?: IdType;
 
   @autoserializeAs(Student)
   student!: Student;

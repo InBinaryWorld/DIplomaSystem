@@ -12,6 +12,7 @@ import {
   LoadChangeRequestsActionOptions,
   LoadClarificationRequestsActionOptions
 } from '../store/requests/requests.actions';
+import { RequestStatus } from '../models/dto/request-status.model';
 
 @Injectable({
   providedIn: 'root'
@@ -27,8 +28,13 @@ export class RequestsService {
     return this.requestsStoreService.getChangeRequests(options, ifNeededOnly);
   }
 
-  public getChangeRequestsForCommittee(diplomaSessionId: IdType, committeeId: IdType, ifNeededOnly = true): Observable<ChangeRequest[]> {
-    const options = LoadChangeRequestsActionOptions.forCommittee(diplomaSessionId, committeeId);
+  public getChangeRequestsToReview(diplomaSessionId: IdType, ifNeededOnly = true): Observable<ChangeRequest[]> {
+    const options = LoadChangeRequestsActionOptions.forStatus(diplomaSessionId, RequestStatus.WAITING);
+    return this.requestsStoreService.getChangeRequests(options, ifNeededOnly);
+  }
+
+  public getReviewedChangeRequests(diplomaSessionId: IdType, reviewerCommitteeId: IdType, ifNeededOnly = true): Observable<ChangeRequest[]> {
+    const options = LoadChangeRequestsActionOptions.forReviewer(diplomaSessionId, reviewerCommitteeId);
     return this.requestsStoreService.getChangeRequests(options, ifNeededOnly);
   }
 
@@ -41,8 +47,13 @@ export class RequestsService {
     return this.requestsStoreService.getClarificationRequests(options, ifNeededOnly);
   }
 
-  public getClarificationRequestsForDean(diplomaSessionId: IdType, deanId: IdType, ifNeededOnly = true): Observable<ClarificationRequest[]> {
-    const options = LoadClarificationRequestsActionOptions.forDean(diplomaSessionId, deanId);
+  public getClarificationRequestsToReview(diplomaSessionId: IdType, ifNeededOnly = true): Observable<ClarificationRequest[]> {
+    const options = LoadClarificationRequestsActionOptions.forStatus(diplomaSessionId, RequestStatus.WAITING);
+    return this.requestsStoreService.getClarificationRequests(options, ifNeededOnly);
+  }
+
+  public getReviewedClarificationRequests(diplomaSessionId: IdType, reviewerDeanId: IdType, ifNeededOnly = true): Observable<ClarificationRequest[]> {
+    const options = LoadClarificationRequestsActionOptions.forReviewer(diplomaSessionId, reviewerDeanId);
     return this.requestsStoreService.getClarificationRequests(options, ifNeededOnly);
   }
 

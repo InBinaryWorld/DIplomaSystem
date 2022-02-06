@@ -24,17 +24,19 @@ export class RequestsApiService extends BaseApiService {
 
   getClarificationRequests(options: LoadClarificationRequestsActionOptions): Observable<ClarificationRequest[]> {
     const queryParams = new RequestParams();
+    queryParams.addIfValueExists('reviewedByEmployeeId', options.reviewedByEmployeeId);
     queryParams.addIfValueExists('diplomaSessionId', options.diplomaSessionId);
     queryParams.addIfValueExists('studentId', options.studentId);
-    queryParams.addIfValueExists('deanId', options.deanId);
+    queryParams.addIfValueExists('status', options.status);
     return this.http.getApiWithLabel(ClarificationRequest, ApiLabel.GET_CLARIFICATION_REQUESTS, undefined, queryParams);
   }
 
   getChangeRequests(options: LoadChangeRequestsActionOptions): Observable<ChangeRequest[]> {
     const queryParams = new RequestParams();
+    queryParams.addIfValueExists('reviewedByEmployeeId', options.reviewedByEmployeeId);
     queryParams.addIfValueExists('diplomaSessionId', options.diplomaSessionId);
     queryParams.addIfValueExists('studentId', options.studentId);
-    queryParams.addIfValueExists('committeeId', options.committeeId);
+    queryParams.addIfValueExists('status', options.status);
     return this.http.getApiWithLabel(ChangeRequest, ApiLabel.GET_CHANGE_REQUESTS, undefined, queryParams);
   }
 

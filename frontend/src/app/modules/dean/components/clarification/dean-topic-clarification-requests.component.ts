@@ -5,11 +5,8 @@ import { PermissionsService } from '../../../../base/services/permissions.servic
 import { RequestsService } from '../../../../base/services/requests.service';
 import { SessionService } from '../../../../base/services/session.service';
 import { Role } from '../../../../base/models/dto/role.model';
-import { switchMap } from 'rxjs';
-import { filterExists } from '../../../../core/tools/filter-exists';
+import { combineLatest, switchMap } from 'rxjs';
 import { RoleComponent } from '../../../../base/components/role-component.directive';
-import { partition } from 'lodash-es';
-import { RequestStatus } from '../../../../base/models/dto/request-status.model';
 
 @Component({
   selector: 'app-topic-change-requests',
@@ -40,13 +37,13 @@ export class DeanTopicClarificationRequestsComponent extends RoleComponent imple
 
   private initClarificationRequests(): void {
     this.addSubscription(
-      this.contextSource.pipe(switchMap(context =>
-          this.requestsService.getClarificationRequestsForDean(context.diplomaSession!.id, context.userRole.id)),
-        filterExists()
-      ).subscribe(requests => {
-        const parts = partition(requests, r => r.status === RequestStatus.WAITING);
-        this.requestsToConsider = parts[0];
-        this.requestsConsidered = parts[1];
+      this.contextSource.pipe(
+        switchMap(context => combineLatest([
+          this.requestsService.getClarificationRequestsToReview(context.diplomaSession!.id),
+          this.requestsService.getReviewedClarificationRequests(context.diplomaSession!.id, context.userRole.id)
+        ]))).subscribe(([toReview, reviewed]) => {
+        this.requestsToConsider = toReview;
+        this.requestsConsidered = reviewed;
         this.markForCheck();
       })
     );

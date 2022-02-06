@@ -342,119 +342,94 @@ function getQueryParam(key: string, query?: RequestParams): string | undefined {
   return query?.getAll().find(p => p.key === key)?.value;
 }
 
+function notNilFilter<T, R>(condition: (value: T) => boolean, demandedValue?: R): (value: T) => boolean {
+  return (value: T) => isNil(demandedValue) ? true : condition(value);
+}
+
+function notNilEqualFilter<T, R>(selector: (value: T) => R | undefined, demandedValue?: R): (value: T) => boolean {
+  return notNilFilter(value => selector(value) === demandedValue, demandedValue);
+}
+
 // LoadEmployeesActionOptions
 function getEmployees(query?: RequestParams): Employee[] {
-  let response = employees;
   const role = getQueryParam('role', query);
   const dsId = getQueryParam('diplomaSessionId', query);
-  if (isNotNil(role)) {
-    response = response.filter(f => f.employeeRole === role);
-  }
-  if (isNotNil(dsId)) {
-    const ds = diplomaSessions.find(d => d.id === dsId)!;
-    response = response.filter(f => f.departmentId === ds.fieldOfStudy.departmentId);
-  }
-  return response;
+
+  const ds = diplomaSessions.find(d => d.id === dsId);
+  return employees
+    .filter(notNilEqualFilter(f => f.employeeRole, role))
+    .filter(notNilEqualFilter(f => f.departmentId, ds?.fieldOfStudy.departmentId));
 }
 
 // LoadFieldsOfStudyActionOptions
 function getFieldsOfStudy(query?: RequestParams): FieldOfStudy[] {
-  let response = fieldsOfStudy;
   const departmentId = getQueryParam('departmentId', query);
-  if (isNotNil(departmentId)) {
-    response = response.filter(f => f.departmentId === departmentId);
-  }
-  return response;
+
+  return fieldsOfStudy.filter(notNilEqualFilter(f => f.departmentId, departmentId));
 }
 
 // LoadDiplomaSessionsActionOptions
 function getDiplomaSessions(query?: RequestParams): DiplomaSession[] {
-  let response = diplomaSessions;
   const departmentId = getQueryParam('departmentId', query);
   const fieldOfStudyId = getQueryParam('fieldOfStudyId', query);
-  if (isNotNil(departmentId)) {
-    response = response.filter(ds => ds.fieldOfStudy.departmentId === departmentId);
-  }
-  if (isNotNil(fieldOfStudyId)) {
-    response = response.filter(ds => ds.fieldOfStudyId === fieldOfStudyId);
-  }
-  return response;
+
+  return diplomaSessions
+    .filter(notNilEqualFilter(f => f.fieldOfStudy.departmentId, departmentId))
+    .filter(notNilEqualFilter(f => f.fieldOfStudyId, fieldOfStudyId));
 }
 
 // LoadThesesActionOptions
 function getTheses(query?: RequestParams): Thesis[] {
-  let response = theses;
   const proposedByStudentId = getQueryParam('proposedByStudentId', query);
   const diplomaSessionId = getQueryParam('diplomaSessionId', query);
   const supervisorId = getQueryParam('supervisorId', query);
   const status = getQueryParam('status', query);
-  if (isNotNil(proposedByStudentId)) {
-    response = response.filter(t => t.authorStudentId === proposedByStudentId);
-  }
-  if (isNotNil(diplomaSessionId)) {
-    response = response.filter(t => t.diplomaSessionId === diplomaSessionId);
-  }
-  if (isNotNil(supervisorId)) {
-    response = response.filter(t => t.supervisorId === supervisorId);
-  }
-  if (isNotNil(status)) {
-    response = response.filter(t => t.status === status);
-  }
-  return response;
+
+  return theses
+    .filter(notNilEqualFilter(f => f.authorStudentId, proposedByStudentId))
+    .filter(notNilEqualFilter(f => f.diplomaSessionId, diplomaSessionId))
+    .filter(notNilEqualFilter(f => f.supervisorId, supervisorId))
+    .filter(notNilEqualFilter(f => f.status, status));
 }
 
 // LoadReservationsActionOptions
 function getReservations(query?: RequestParams): Reservation[] {
-  let response = reservations;
   const studentId = getQueryParam('studentId', query);
   const supervisorId = getQueryParam('supervisorId', query);
   const diplomaSessionId = getQueryParam('diplomaSessionId', query);
-  if (isNotNil(studentId)) {
-    response = response.filter(r => r.reservationMembers.some(rm => rm.studentId === studentId));
-  }
-  if (isNotNil(diplomaSessionId)) {
-    response = response.filter(r => r.thesis.diplomaSessionId === diplomaSessionId);
-  }
-  if (isNotNil(supervisorId)) {
-    response = response.filter(r => r.thesis.supervisorId === supervisorId);
-  }
-  return response;
+
+  return reservations
+    .filter(notNilFilter(f => f.reservationMembers.some(rm => rm.studentId === studentId), studentId))
+    .filter(notNilEqualFilter(f => f.thesis.diplomaSessionId, diplomaSessionId))
+    .filter(notNilEqualFilter(f => f.thesis.supervisorId, supervisorId));
 }
 
-// LoadClarificationRequestsActionOptions
+// LoadClarificationRequestsActionOptions;
 function getClarificationRequests(query?: RequestParams): ClarificationRequest[] {
-  let response = clarificationRequests;
-  const deanId = getQueryParam('deanId', query);
+  const status = getQueryParam('status', query);
   const studentId = getQueryParam('studentId', query);
   const diplomaSessionId = getQueryParam('diplomaSessionId', query);
-  if (isNotNil(studentId)) {
-    response = response.filter(r => r.studentId === studentId);
-  }
-  if (isNotNil(diplomaSessionId)) {
-    response = response.filter(r => r.baseThesis.diplomaSessionId === diplomaSessionId);
-  }
-  if (isNotNil(deanId)) {
-    response = response.filter(r => r.employeeId === deanId);
-  }
-  return response;
+  const reviewedByEmployeeId = getQueryParam('reviewedByEmployeeId', query);
+
+  return clarificationRequests
+    .filter(notNilEqualFilter(f => f.baseThesis.diplomaSessionId, diplomaSessionId))
+    .filter(notNilEqualFilter(f => f.employeeId, reviewedByEmployeeId))
+    .filter(notNilEqualFilter(f => f.studentId, studentId))
+    .filter(notNilEqualFilter(f => f.status, status));
 }
 
 // LoadChangeRequestsActionOptions
 function getChangeRequests(query?: RequestParams): ChangeRequest[] {
-  let response = changeRequests;
+  const status = getQueryParam('status', query);
   const studentId = getQueryParam('studentId', query);
-  const committeeId = getQueryParam('diplomaSessionId', query);
   const diplomaSessionId = getQueryParam('diplomaSessionId', query);
-  if (isNotNil(studentId)) {
-    response = response.filter(r => r.studentId === studentId);
-  }
-  if (isNotNil(diplomaSessionId)) {
-    response = response.filter(r => r.newThesis.diplomaSessionId === diplomaSessionId);
-  }
-  if (isNotNil(committeeId)) {
-    response = response.filter(r => r.employeeId === committeeId);
-  }
-  return response;
+  const reviewedByEmployeeId = getQueryParam('reviewedByEmployeeId', query);
+
+  return changeRequests
+    .filter(notNilEqualFilter(f => f.newThesis.diplomaSessionId, diplomaSessionId))
+    .filter(notNilEqualFilter(f => f.employeeId, reviewedByEmployeeId))
+    .filter(notNilEqualFilter(f => f.studentId, studentId))
+    .filter(notNilEqualFilter(f => f.status, status));
 }
 
 function getForId<T extends WithId>(resource: T[], query: RequestParams): T {

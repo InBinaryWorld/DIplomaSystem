@@ -64,23 +64,13 @@ export class PermissionsService {
     return combineLatest([
       this.userService.getEmployeeForId(deanId),
       this.requestsService.getClarificationRequestForId(requestId)
-    ]).pipe(switchMap(([dean, request]) =>
-      dean.id !== request.employeeId || request.status !== RequestStatus.WAITING
-        ? of(false)
-        : this.verifyDeadlineForDiplomaSessionId(request.baseThesis.diplomaSessionId, t => t.clarificationThesis)
+    ]).pipe(switchMap(([dean, request]) => request.status !== RequestStatus.WAITING ? of(false)
+      : this.generalResourcesService.getDiplomaSessionForId(request.baseThesis.diplomaSessionId).pipe(
+        map(requestDS => dean.departmentId === requestDS.fieldOfStudy.departmentId
+          && this.verifyDeadline(requestDS.timetable, t => t.clarificationThesis))
+      )
     ));
   }
-
-  // public canDeanConsiderClarificationRequest(deanId: IdType, requestId: IdType): Observable<boolean> {
-  //   return combineLatest([
-  //     this.userService.getEmployeeForId(deanId),
-  //     this.requestsService.getClarificationRequestForId(requestId)
-  //   ]).pipe(switchMap(([dean, request]) =>
-  //     dean.id !== request.employeeId || request.status !== RequestStatus.WAITING
-  //       ? of(false)
-  //       : this.checkEmployeeAccess(dean, request.baseThesis.diplomaSessionId, t => t.clarificationThesis)
-  //   ));
-  // }
 
 
   // Committee
@@ -88,10 +78,11 @@ export class PermissionsService {
     return combineLatest([
       this.userService.getEmployeeForId(committeeId),
       this.requestsService.getChangeRequestForId(requestId)
-    ]).pipe(switchMap(([committee, request]) =>
-      committee.id !== request.employeeId || request.status !== RequestStatus.WAITING
-        ? of(false)
-        : this.verifyDeadlineForDiplomaSessionId(request.newThesis.diplomaSessionId, t => t.changingThesis)
+    ]).pipe(switchMap(([dean, request]) => request.status !== RequestStatus.WAITING ? of(false)
+      : this.generalResourcesService.getDiplomaSessionForId(request.newThesis.diplomaSessionId).pipe(
+        map(requestDS => dean.departmentId === requestDS.fieldOfStudy.departmentId
+          && this.verifyDeadline(requestDS.timetable, t => t.clarificationThesis))
+      )
     ));
   }
 

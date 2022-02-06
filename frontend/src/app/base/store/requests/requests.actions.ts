@@ -1,6 +1,7 @@
 import { createAction, props } from '@ngrx/store';
 import { RequestsStateKey, RequestType } from './requests.state';
 import { IdType } from '../../models/dto/id.model';
+import { RequestStatus } from '../../models/dto/request-status.model';
 
 export const loadClarificationRequestsAction = createAction(
   '[REQUESTS] Load clarification requests',
@@ -56,9 +57,10 @@ export const loadRequestsFailedAction = createAction(
 );
 
 export class LoadClarificationRequestsActionOptions {
+  reviewedByEmployeeId?: IdType;
   diplomaSessionId?: IdType;
   studentId?: IdType;
-  deanId?: IdType;
+  status?: RequestStatus;
 
   static forStudent(diplomaSessionId: IdType, studentId: IdType): LoadClarificationRequestsActionOptions {
     const options = new LoadClarificationRequestsActionOptions();
@@ -67,27 +69,36 @@ export class LoadClarificationRequestsActionOptions {
     return options;
   }
 
-  static forDean(diplomaSessionId: IdType, deanId: IdType): LoadClarificationRequestsActionOptions {
-    const options = new LoadClarificationRequestsActionOptions();
+  static forStatus(diplomaSessionId: IdType, status: RequestStatus): LoadChangeRequestsActionOptions {
+    const options = new LoadChangeRequestsActionOptions();
     options.diplomaSessionId = diplomaSessionId;
-    options.deanId = deanId;
+    options.status = status;
+    return options;
+  }
+
+  static forReviewer(diplomaSessionId: IdType, deanId: IdType): LoadChangeRequestsActionOptions {
+    const options = new LoadChangeRequestsActionOptions();
+    options.diplomaSessionId = diplomaSessionId;
+    options.reviewedByEmployeeId = deanId;
     return options;
   }
 
   toKey(): string {
     return [
       'LoadClarificationRequestsActionOptions',
+      'RBEI_' + this.reviewedByEmployeeId,
       'DSI_' + this.diplomaSessionId,
       'SI_' + this.studentId,
-      'DI_' + this.deanId
+      'S' + this.status
     ].join('$');
   }
 }
 
 export class LoadChangeRequestsActionOptions {
+  reviewedByEmployeeId?: IdType;
   diplomaSessionId?: IdType;
   studentId?: IdType;
-  committeeId?: IdType;
+  status?: RequestStatus;
 
   static forStudent(diplomaSessionId: IdType, studentId: IdType): LoadChangeRequestsActionOptions {
     const options = new LoadChangeRequestsActionOptions();
@@ -96,19 +107,27 @@ export class LoadChangeRequestsActionOptions {
     return options;
   }
 
-  static forCommittee(diplomaSessionId: IdType, committeeId: IdType): LoadChangeRequestsActionOptions {
+  static forStatus(diplomaSessionId: IdType, status: RequestStatus): LoadChangeRequestsActionOptions {
     const options = new LoadChangeRequestsActionOptions();
     options.diplomaSessionId = diplomaSessionId;
-    options.committeeId = committeeId;
+    options.status = status;
+    return options;
+  }
+
+  static forReviewer(diplomaSessionId: IdType, committeeId: IdType): LoadChangeRequestsActionOptions {
+    const options = new LoadChangeRequestsActionOptions();
+    options.diplomaSessionId = diplomaSessionId;
+    options.reviewedByEmployeeId = committeeId;
     return options;
   }
 
   toKey(): string {
     return [
       'LoadChangeRequestsActionOptions',
+      'RBEI_' + this.reviewedByEmployeeId,
       'DSI_' + this.diplomaSessionId,
       'SI_' + this.studentId,
-      'CI_' + this.committeeId
+      'S_' + this.status
     ].join('$');
   }
 }
