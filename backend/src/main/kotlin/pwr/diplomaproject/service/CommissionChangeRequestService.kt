@@ -2,7 +2,7 @@ package pwr.diplomaproject.service
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import pwr.diplomaproject.model.dto.DeanRequestDto
+import pwr.diplomaproject.model.dto.RequestDto
 import pwr.diplomaproject.model.dto.TopicChangeRequestDetailsDto
 import pwr.diplomaproject.model.dto.factory.DeanRequestDtoFactory
 import pwr.diplomaproject.model.dto.factory.TopicChangeRequestDetailsDtoFactory
@@ -13,7 +13,7 @@ import java.time.LocalDate
 import javax.transaction.Transactional
 
 @Service
-class DeanChangeRequestService @Autowired constructor(
+class CommissionChangeRequestService @Autowired constructor(
     private val topicChangeRequestRepository: TopicChangeRequestRepository,
     private val subjectRepository: SubjectRepository,
     private val employeeRepository: EmployeeRepository,
@@ -21,11 +21,11 @@ class DeanChangeRequestService @Autowired constructor(
     private val groupMemberRepository: GroupMemberRepository
 ) {
 
-    fun getChangeRequestsToConsider(): List<DeanRequestDto> =
+    fun getChangeRequestsToConsider(): List<RequestDto> =
         topicChangeRequestRepository.findAllByResultIn(listOf(RequestResult.WAITING))
             .map { DeanRequestDtoFactory.create(it) }
 
-    fun getChangeRequestsConsidered(): List<DeanRequestDto> =
+    fun getChangeRequestsConsidered(): List<RequestDto> =
         topicChangeRequestRepository.findAllByResultIn(listOf(RequestResult.REJECTED, RequestResult.ACCEPTED))
             .map { DeanRequestDtoFactory.create(it) }
 

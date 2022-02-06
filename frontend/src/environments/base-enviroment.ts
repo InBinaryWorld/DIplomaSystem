@@ -51,9 +51,9 @@ export const baseEnvironment = {
       [ApiLabel.GET_THESIS]: 'TODO GET_THESIS',
       [ApiLabel.GET_TIMETABLE]: 'TODO GET_TIMETABLE',
       [ApiLabel.GET_TIMETABLES]: 'TODO GET_TIMETABLES',
-      [ApiLabel.GET_USER]: 'TODO GET_USER',
-      [ApiLabel.REJECT_CLARIFICATION_REQUEST]: 'TODO REJECT_CLARIFICATION_REQUEST',
-      [ApiLabel.REJECT_CHANGE_REQUEST]: 'TODO REJECT_CHANGE_REQUEST',
+      [ApiLabel.GET_USER]: '/user',
+      [ApiLabel.REJECT_CLARIFICATION_REQUEST]: '/dean/request/correction/reject',
+      [ApiLabel.REJECT_CHANGE_REQUEST]: '/commission/request/change/reject',
       [ApiLabel.REJECT_THESIS_WITH_COORDINATOR]: '/coordinator/subject/reject',
       [ApiLabel.REJECT_THESIS_WITH_COMMITTEE_MEMBER]: '/commission/subject/reject',
       [ApiLabel.REQUEST_THESIS_CORRECTIONS]: '/coordinator/subject/comment'
