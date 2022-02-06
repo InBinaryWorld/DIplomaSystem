@@ -84,7 +84,9 @@ values (1, 'Lorem ipsum', false, '2022-02-09',
        (8, 'Lorem ipsum', true, '2022-02-04', 'Lorem ipsum', 'APPROVED_BY_COMMITTEE', 1,
         'Wniosek o zmianę tematu - stary temat', 1, 2, 1),
        (9, 'Lorem ipsum', true, '2022-02-04', 'Lorem ipsum', 'APPROVED_BY_COMMITTEE', 1,
-        'Wniosek o zmianę tematu - nowy temat', 1, 2, 1);
+        'Wniosek o zmianę tematu - nowy temat', 1, 2, 1),
+       (10, 'Lorem ipsum', true, '2022-02-04', 'Lorem ipsum', 'APPROVED_BY_COMMITTEE', 1,
+        'Można akceptować', 1, 2, 2);
 
 
 -- Table: reservation
@@ -94,7 +96,8 @@ values (1, '2022-02-10', 'WAITING', 1),
        (3, '2022-02-10', 'SUBMITTED', 6),
        (4, '2022-02-10', 'REJECTED_BY_LECTURER', 5),
        (5, '2022-02-10', 'CONFIRMED', 7),
-       (6, '2022-02-10', 'CONFIRMED', 8);
+       (6, '2022-02-10', 'CONFIRMED', 8),
+       (7, '2022-02-10', 'ACCEPTED', 10);
 
 
 -- Table: group_member
@@ -107,7 +110,8 @@ values (1, 'SUGGESTED', 1, 1),
        (6, 'WILLING', 4, 2),
        (7, 'WILLING', 4, 3),
        (8, 'CONFIRMED', 5, 3),
-       (9, 'CONFIRMED', 6, 2);
+       (9, 'CONFIRMED', 6, 2),
+       (10, 'WILLING', 7, 1);
 
 -- Table: topic_correction_request
 insert into topic_correction_request (id, new_description, new_topic, request_date, result, employee_id, student_id)

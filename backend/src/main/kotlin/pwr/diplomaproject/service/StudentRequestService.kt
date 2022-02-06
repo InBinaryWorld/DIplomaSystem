@@ -12,7 +12,6 @@ import pwr.diplomaproject.model.dto.factory.TopicChangeRequestDetailsDtoFactory
 import pwr.diplomaproject.model.entity.Topic
 import pwr.diplomaproject.model.entity.TopicChangeRequest
 import pwr.diplomaproject.model.entity.TopicCorrectionRequest
-import pwr.diplomaproject.model.enum.EmployeeType
 import pwr.diplomaproject.model.enum.RequestResult
 import pwr.diplomaproject.model.enum.TopicStatus
 import pwr.diplomaproject.model.form.StudentTopicChangeRequestNewTopicForm
@@ -69,7 +68,7 @@ class StudentRequestService @Autowired constructor(
     ): ChangeRequestDto {
         val newSubject = Topic(
             subjectRepository.getNextId(),
-            employeeRepository.getEmployeeByUserIdAndType(form.supervisorId, EmployeeType.LECTURER),
+            employeeRepository.getById(form.supervisorId),
             studentRepository.getById(studentId),
             subjectRepository.getById(currentTopicId).graduation,
             form.topic,
