@@ -11,9 +11,16 @@ import { combineLatest, Observable, switchMap } from 'rxjs';
 import { Thesis } from '../../../../../base/models/dto/thesis.model';
 import { Role } from '../../../../../base/models/dto/role.model';
 import { isNil } from 'lodash-es';
-import { IdType } from '../../../../../base/models/dto/id.model';
 import { UserService } from '../../../../../base/services/user.service';
 import { Student } from '../../../../../base/models/dto/student.model';
+import { CreateClarificationRequest } from '../../../../../base/models/dto/post/create-clarification-request.model';
+
+const FORM_KEY = {
+  CURRENT_THESIS_TOPIC: 'CURRENT_THESIS_TOPIC',
+  CURRENT_DESCRIPTION: 'CURRENT_DESCRIPTION',
+  NEW_THESIS_TOPIC: 'NEW_THESIS_TOPIC',
+  NEW_DESCRIPTION: 'NEW_DESCRIPTION'
+};
 
 @Component({
   selector: 'app-student-topic-create-clarification',
@@ -22,11 +29,10 @@ import { Student } from '../../../../../base/models/dto/student.model';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class StudentCreateClarificationRequestComponent extends RoleComponent implements OnInit {
-
+  FORM_KEY = FORM_KEY;
   request?: ClarificationRequest;
 
-  currentTopicForm?: FormGroup;
-  newTopicForm?: FormGroup;
+  form?: FormGroup;
 
   thesis?: Thesis;
   student?: Student;
@@ -44,8 +50,7 @@ export class StudentCreateClarificationRequestComponent extends RoleComponent im
   }
 
   confirm() {
-    const formData = this.newTopicForm?.value;
-    const request = this.prepareRequestForFormData(this.student!.id, this.thesis!, formData);
+    const request = this.prepareRequestForFormData();
     this.requestsService.createClarificationRequest(this.thesis!.id, request).subscribe({
       next: (request) => this.router.navigate(['/student/change-requests/details/', request.id]),
       error: () => this.errorVisible = true
@@ -58,11 +63,9 @@ export class StudentCreateClarificationRequestComponent extends RoleComponent im
   }
 
   private initForms(): void {
-    this.currentTopicForm = this.formBuilder.group({
+    this.form = this.formBuilder.group({
       currentThesisTopic: [],
-      currentDescription: []
-    });
-    this.newTopicForm = this.formBuilder.group({
+      currentDescription: [],
       newThesisTopic: [undefined, AppValidators.topicValidator],
       newDescription: [undefined, AppValidators.descriptionValidator]
     });
@@ -89,9 +92,9 @@ export class StudentCreateClarificationRequestComponent extends RoleComponent im
 
   private setCurrentFormData(thesis?: Thesis): void {
     if (isNil(thesis)) {
-      this.currentTopicForm?.reset();
+      this.form?.reset();
     } else {
-      this.currentTopicForm?.setValue({
+      this.form?.setValue({
         currentThesisTopic: thesis.topic,
         currentDescription: thesis.description
       });
@@ -103,13 +106,14 @@ export class StudentCreateClarificationRequestComponent extends RoleComponent im
     return [Role.STUDENT];
   }
 
-  private prepareRequestForFormData(studentId: IdType, thesis: Thesis, formData: any): Partial<ClarificationRequest> {
-    return {
-      studentId: studentId,
-      newTopic: formData.newThesisTopic,
-      newDescription: formData.newDescription,
-      thesisId: thesis.id
-    };
+  private prepareRequestForFormData(): CreateClarificationRequest {
+    const formData = this.form?.value;
+    const payload = new CreateClarificationRequest();
+    payload.studentId = this.student!.id;
+    payload.topicId = this.thesis!.id;
+    payload.newTopic = formData[FORM_KEY.NEW_THESIS_TOPIC];
+    payload.newDescription = formData[FORM_KEY.NEW_DESCRIPTION];
+    return payload;
   }
 
 }

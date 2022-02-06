@@ -16,6 +16,7 @@ import { IdType } from '../../../../../base/models/dto/id.model';
 import { PermissionsService } from '../../../../../base/services/permissions.service';
 import { keyBy } from 'lodash-es';
 import { isNotNil } from '../../../../../core/tools/is-not-nil';
+import { CreateReservation } from '../../../../../base/models/dto/post/create-reservation.model';
 
 @Component({
   selector: 'app-student-create-reservation',
@@ -57,9 +58,9 @@ export class StudentCreateReservationComponent extends RoleComponent implements 
   }
 
   confirm(): void {
-    const formData = this.form?.value;
+    const formData = this.form!.value;
     const payload = this.preparePayloadForFormData(this.student!, this.thesis!, formData);
-    this.thesesService.createReservation(payload).subscribe({
+    this.thesesService.createReservation(this.student!.id, payload).subscribe({
       next: (request) => this.router.navigate(['/student/reservations/details/', request.id]),
       error: () => this.isErrorVisible = true
     });
@@ -153,10 +154,13 @@ export class StudentCreateReservationComponent extends RoleComponent implements 
   }
 
   // TODO: check and correct
-  private preparePayloadForFormData(student: Student, thesis: Thesis, formData: any): object {
+  private preparePayloadForFormData(student: Student, thesis: Thesis, formData: any): CreateReservation {
     const initiatorStudentId: IdType = student.id;
     const extraStudentsIds: IdType[] = formData['students'];
-    return {};
+    const payload = new CreateReservation();
+    payload.studentIds = [...extraStudentsIds, initiatorStudentId];
+    payload.thesisId = thesis.id;
+    return payload;
   }
 
 }

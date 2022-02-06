@@ -125,27 +125,32 @@ export class ReservationDetailsComponent extends RoleComponent implements OnInit
   }
 
   public confirmParticipation(): void {
-    const actionSource = this.thesesService.confirmParticipationInReservation(this.studentMember!.id);
+    const actionSource = this.thesesService.confirmParticipationInReservation(
+      this.studentMember!.studentId, this.reservation!.id
+    );
     this.handleAction(actionSource);
   }
 
   public confirmMemberReservation(): void {
-    const actionSource = this.thesesService.confirmMemberReservationInReservation(this.studentMember!.id);
+    const actionSource = this.thesesService.confirmMemberReservationInReservation(
+      this.studentMember!.studentId, this.reservation!.id
+    );
     this.handleAction(actionSource);
   }
 
-  public abandonReservation(): void {
-    const actionSource = this.thesesService.abandonReservation(this.studentMember!.id);
+  public abandonReservationAsMember(): void {
+    const actionSource = this.thesesService.abandonReservationAsMember(
+      this.studentMember!.studentId, this.reservation!.id);
     this.handleAction(actionSource);
   }
 
   rejectReservation(): void {
-    const actionSource = this.thesesService.rejectReservation({ reservationId: this.reservation!.id });
+    const actionSource = this.thesesService.rejectReservation(this.reservation!.id);
     this.handleAction(actionSource);
   }
 
   acceptReservation(): void {
-    const actionSource = this.thesesService.acceptReservation({ reservationId: this.reservation!.id });
+    const actionSource = this.thesesService.acceptReservation(this.reservation!.id);
     this.handleAction(actionSource);
 
   }

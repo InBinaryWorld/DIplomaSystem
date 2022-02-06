@@ -48,7 +48,7 @@
         <ng-container *ngIf="userRole?.role === Role.STUDENT">
           <button type="button" class="btn btn-outline-danger"
                   [disabled]="!canAbandonReservation()"
-                  (click)="abandonReservation()">
+                  (click)="abandonReservationAsMember()">
             {{ 'Button.Abandon' | translate }}
           </button>
           <button type="button" class="btn btn-primary"

@@ -12,6 +12,11 @@ import { AppValidators } from '../../../../../base/utils/validators.utils';
 import { IdType } from '../../../../../base/models/dto/id.model';
 import { UserService } from '../../../../../base/services/user.service';
 import { Student } from '../../../../../base/models/dto/student.model';
+import {
+  CreateChangeRequest,
+  CreateChangeRequestNewThesis
+} from '../../../../../base/models/dto/post/create-change-request.model';
+import { Employee } from '../../../../../base/models/dto/employee.model';
 
 @Component({
   selector: 'app-student-topic-create-clarification',
@@ -25,7 +30,7 @@ export class StudentCreateChangeRequestComponent extends RoleComponent implement
 
   student?: Student;
   baseThesis?: Thesis;
-  supervisors?: any[];
+  supervisors?: Employee[];
 
   errorVisible = false;
 
@@ -41,9 +46,8 @@ export class StudentCreateChangeRequestComponent extends RoleComponent implement
   }
 
   confirm() {
-    const formData = this.form?.value;
-    const request = this.prepareRequestForFormData(this.student!.id, this.baseThesis!, formData);
-    this.requestsService.createChangeRequest(this.baseThesis!.id, request).subscribe({
+    const payload = this.prepareRequestForFormData();
+    this.requestsService.createChangeRequest(this.baseThesis!.id, payload).subscribe({
       next: (request) => this.router.navigate(['/student/change-requests/details/', request.id]),
       error: () => this.errorVisible = true
     });
@@ -73,7 +77,7 @@ export class StudentCreateChangeRequestComponent extends RoleComponent implement
     );
   }
 
-  private getDataSource(): Observable<[Student, Thesis, any[]]> {
+  private getDataSource(): Observable<[Student, Thesis, Employee[]]> {
     return this.contextSource.pipe(
       switchMap(context => combineLatest([
         this.userService.getStudentForId(context.userRole.id),
@@ -100,17 +104,17 @@ export class StudentCreateChangeRequestComponent extends RoleComponent implement
     return [Role.STUDENT];
   }
 
-  // TODO: check and correct
-  private prepareRequestForFormData(studentId: IdType, thesis: Thesis, formData: any): any {
-    return {
-      studentId: studentId,
-      thesisId: thesis.id,
-      newThesis: {
-        topic: formData.topic,
-        description: formData.description,
-        supervisorId: formData.supervisorId
-      } as Partial<Thesis>
-    };
+  private prepareRequestForFormData(): CreateChangeRequest {
+    const formData = this.form?.value;
+    const newThesis = new CreateChangeRequestNewThesis();
+    newThesis.topic = formData.topi;
+    newThesis.description = formData.description;
+    newThesis.supervisorId = formData.supervisorId;
+    const payload = new CreateChangeRequest();
+    payload.studentId = this.student!.id;
+    payload.previousThesisId = this.baseThesis!.id;
+    payload.newThesis = newThesis;
+    return payload;
 
   }
 

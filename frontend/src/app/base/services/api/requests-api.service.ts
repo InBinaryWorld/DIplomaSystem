@@ -12,6 +12,8 @@ import {
   LoadChangeRequestsActionOptions,
   LoadClarificationRequestsActionOptions
 } from '../../store/requests/requests.actions';
+import { CreateClarificationRequest } from '../../models/dto/post/create-clarification-request.model';
+import { CreateChangeRequest } from '../../models/dto/post/create-change-request.model';
 
 @Injectable({
   providedIn: 'root'
@@ -62,7 +64,7 @@ export class RequestsApiService extends BaseApiService {
     return this.http.postApiWithLabelSerializedDeserialized(ClarificationRequest, ApiLabel.APPROVE_CLARIFICATION_REQUEST, payload);
   }
 
-  createClarificationRequest(thesisId: IdType, payload: Partial<ClarificationRequest>): Observable<ClarificationRequest> {
+  createClarificationRequest(thesisId: IdType, payload: CreateClarificationRequest): Observable<ClarificationRequest> {
     return this.http.postApiWithLabelSerializedDeserialized(ClarificationRequest, ApiLabel.CREATE_CLARIFICATION_REQUEST, payload);
   }
 
@@ -76,7 +78,7 @@ export class RequestsApiService extends BaseApiService {
     return this.http.postApiWithLabelSerializedDeserialized(ChangeRequest, ApiLabel.APPROVE_CHANGE_REQUEST, payload);
   }
 
-  createChangeRequest(thesisId: IdType, payload: any): Observable<ChangeRequest> {
+  createChangeRequest(thesisId: IdType, payload: CreateChangeRequest): Observable<ChangeRequest> {
     return this.http.postApiWithLabelSerializedDeserialized(ChangeRequest, ApiLabel.CREATE_CHANGE_REQUEST, payload);
   }
 
