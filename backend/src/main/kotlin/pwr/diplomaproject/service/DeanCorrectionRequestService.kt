@@ -8,7 +8,9 @@ import pwr.diplomaproject.model.dto.factory.DeanRequestDtoFactory
 import pwr.diplomaproject.model.entity.Employee
 import pwr.diplomaproject.model.enum.EmployeeType
 import pwr.diplomaproject.model.enum.RequestResult
+import pwr.diplomaproject.model.notification.TopicCorrectionRequestResolvedByDean
 import pwr.diplomaproject.repository.EmployeeRepository
+import pwr.diplomaproject.repository.NotificationRepository
 import pwr.diplomaproject.repository.SubjectRepository
 import pwr.diplomaproject.repository.TopicCorrectionRequestRepository
 import javax.transaction.Transactional
@@ -17,8 +19,9 @@ import javax.transaction.Transactional
 class DeanCorrectionRequestService @Autowired constructor(
     private val topicCorrectionRequestRepository: TopicCorrectionRequestRepository,
     private val subjectRepository: SubjectRepository,
-    private val employeeRepository: EmployeeRepository
-){
+    private val employeeRepository: EmployeeRepository,
+    private val notificationRepository: NotificationRepository,
+) {
 
     fun getCorrectionRequestsToConsider(): List<RequestDto> =
         topicCorrectionRequestRepository.findAllByResultIn(listOf(RequestResult.WAITING))
@@ -44,6 +47,8 @@ class DeanCorrectionRequestService @Autowired constructor(
             }
 
             topicCorrectionRequestRepository.save(it)
+
+            TopicCorrectionRequestResolvedByDean(listOf(it.student.user), it, notificationRepository)
         }
 
     fun rejectCorrectionRequest(userId: Long, id: Long): Unit =
@@ -51,6 +56,8 @@ class DeanCorrectionRequestService @Autowired constructor(
             it.result = RequestResult.DISMISSED
             it.employee = dean(userId)
             topicCorrectionRequestRepository.save(it)
+
+            TopicCorrectionRequestResolvedByDean(listOf(it.student.user), it, notificationRepository)
         }
 
     private fun dean(userId: Long): Employee =

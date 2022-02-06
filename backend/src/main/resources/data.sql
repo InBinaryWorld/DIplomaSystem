@@ -119,4 +119,6 @@ values (1, 'GroupMemberUpdatedByStudent',
        (7, 'SubjectResolvedByCoordinator',
         'Temat ":TOPIC" został rozpatrzony przez koordynatora. Aktualny status: :TOPIC_STATUS. Uwagi: :COORDINATOR_COMMENTS.'),
        (8, 'TopicCorrectionRequestCreatedByStudent',
-        'Student :STUDENT złożył wniosek o doprecyzowanie tematu. Nowy temat: ":NEW_TOPIC".')
+        'Student :STUDENT złożył wniosek o doprecyzowanie tematu. Nowy temat: ":NEW_TOPIC".'),
+       (9, 'TopicCorrectionRequestResolvedByDean',
+        'Dziekan rozważył wniosek o doprecyzowanie tematu (nowy temat: ":NEW_TOPIC"). Decyzja: :STATUS.')
