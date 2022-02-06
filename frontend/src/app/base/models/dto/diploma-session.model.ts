@@ -9,9 +9,6 @@ export class DiplomaSession extends WithId {
   @autoserializeAs(IdTypeSerializer)
   timetableId!: IdType;
 
-  @autoserializeAs(IdTypeSerializer)
-  fieldOfStudyId!: IdType;
-
   @autoserialize
   year!: string;
 

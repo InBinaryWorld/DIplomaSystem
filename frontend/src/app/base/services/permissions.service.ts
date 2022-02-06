@@ -101,7 +101,7 @@ export class PermissionsService {
   public checkEmployeeAccess(employee: Employee, targetDiplomaSessionId: IdType, selector: DeadlineSelector): Observable<boolean> {
     return this.generalResourcesService.getDiplomaSessionForId(targetDiplomaSessionId).pipe(
       switchMap(ds => !this.verifyDeadline(ds.timetable, selector) ? of(false)
-        : this.generalResourcesService.getFieldsOfStudyForId(ds.fieldOfStudyId).pipe(
+        : this.generalResourcesService.getFieldsOfStudyForId(ds.fieldOfStudy.id).pipe(
           map(thesisFieldOfStudy => thesisFieldOfStudy.departmentId === employee.departmentId)
         )
       )

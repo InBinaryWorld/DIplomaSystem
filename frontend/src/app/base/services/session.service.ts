@@ -72,7 +72,7 @@ export class SessionService implements CleanableService {
 
   private buildContextForStudentUserRoleAndDiplomaSession(userRole: UserRole, diplomaSession: DiplomaSession): Observable<Context | undefined> {
     return this.userStoreService.getStudentForId(userRole.id).pipe(map(
-      student => student.fieldOfStudyId === diplomaSession.fieldOfStudyId
+      student => student.fieldOfStudyId === diplomaSession.fieldOfStudy.id
         ? this.buildContext(userRole, [diplomaSession]) : undefined
     ));
   }

@@ -153,7 +153,6 @@ function createDiplomaSession(id: IdType, tt: Timetable, fos: FieldOfStudy, year
     id: id,
     timetableId: tt.id,
     timetable: tt,
-    fieldOfStudyId: fos.id,
     fieldOfStudy: fos,
     year: year
   };
@@ -195,7 +194,7 @@ function createThesis(id: IdType, diplomaSession: DiplomaSession, status: Thesis
     topic: 'Predykcja zachowań ludzi podczas lockdownu',
     description: 'Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu Predykcja zachowań ludzi podczas lockdownu',
     numberOfStudents: 3,
-    authorStudentId: students.find(s => s.fieldOfStudyId === diplomaSession.fieldOfStudyId)?.id,
+    authorStudentId: students.find(s => s.fieldOfStudyId === diplomaSession.fieldOfStudy.id)?.id,
     status: status,
     reportedByStudent: false,
     submissionDate: new Date(),
@@ -227,7 +226,7 @@ function createReservationMember(resMemId: IdType, resId: IdType, student: Stude
 
 function createReservation(resId: IdType, thesis: Thesis, status: ReservationStatus): { reservation: Reservation, resMem: ReservationMember[] } {
   const ds = diplomaSessions.find(ds => ds.id === thesis.diplomaSessionId)!;
-  const stud = students.filter(s => s.fieldOfStudyId === ds.fieldOfStudyId).slice(0, thesis.numberOfStudents);
+  const stud = students.filter(s => s.fieldOfStudyId === ds.fieldOfStudy.id).slice(0, thesis.numberOfStudents);
   const resMem = stud.map((s, i) => createReservationMember(resId + i, resId, stud[i], ReservationMemberStatus.WILLING));
 
   const res = {
@@ -396,7 +395,7 @@ function getDiplomaSessions(query?: RequestParams): DiplomaSession[] {
 
   return diplomaSessions
     .filter(notNilEqualFilter(f => f.fieldOfStudy.departmentId, departmentId))
-    .filter(notNilEqualFilter(f => f.fieldOfStudyId, fieldOfStudyId));
+    .filter(notNilEqualFilter(f => f.fieldOfStudy.id, fieldOfStudyId));
 }
 
 // LoadThesesActionOptions

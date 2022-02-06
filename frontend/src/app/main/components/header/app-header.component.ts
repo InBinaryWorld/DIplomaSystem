@@ -119,7 +119,7 @@ export class AppHeaderComponent extends BaseComponent implements OnInit {
           ? this.getDiplomaSessionsForStudent(userRole.id)
           : this.getDiplomaSessionsForEmployee(userRole.id))
       ).subscribe(diplomaSessions => {
-        this.dsByFosId = groupBy(diplomaSessions, ds => ds.fieldOfStudyId);
+        this.dsByFosId = groupBy(diplomaSessions, ds => ds.fieldOfStudy.id);
         this.fieldsOfStudy = Object.values(this.dsByFosId).map(dss => firstItem(dss)!.fieldOfStudy);
         this.markForCheck();
       })
