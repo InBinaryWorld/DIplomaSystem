@@ -2,9 +2,11 @@ package pwr.diplomaproject.service
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import pwr.diplomaproject.model.dto.ChangeRequestDto
 import pwr.diplomaproject.model.dto.StudentRequestDto
 import pwr.diplomaproject.model.dto.TopicChangeRequestDetailsDto
 import pwr.diplomaproject.model.dto.TopicCorrectionRequestDetailsDto
+import pwr.diplomaproject.model.dto.factory.ChangeRequestDtoFactory
 import pwr.diplomaproject.model.dto.factory.StudentRequestDtoFactory
 import pwr.diplomaproject.model.dto.factory.TopicChangeRequestDetailsDtoFactory
 import pwr.diplomaproject.model.entity.Topic
@@ -45,7 +47,7 @@ class StudentRequestService @Autowired constructor(
     fun getTopicCorrectionRequestDetails(id: Long): TopicCorrectionRequestDetailsDto =
         topicCorrectionRequestRepository.getCorrectionRequestDetails(id)
 
-    fun makeTopicChangeToExistingTopicRequest(studentId: Long, currentTopicId: Long, newTopicId: Long) {
+    fun makeTopicChangeToExistingTopicRequest(studentId: Long, currentTopicId: Long, newTopicId: Long): ChangeRequestDto {
         val request = TopicChangeRequest(
             topicChangeRequestRepository.getNextId(),
             studentRepository.getById(studentId),
@@ -56,7 +58,7 @@ class StudentRequestService @Autowired constructor(
             LocalDate.now()
         )
 
-        topicChangeRequestRepository.save(request)
+        return ChangeRequestDtoFactory.create(topicChangeRequestRepository.save(request))
     }
 
     @Transactional
@@ -64,7 +66,7 @@ class StudentRequestService @Autowired constructor(
         studentId: Long,
         currentTopicId: Long,
         form: StudentTopicChangeRequestNewTopicForm
-    ) {
+    ): ChangeRequestDto {
         val newSubject = Topic(
             subjectRepository.getNextId(),
             employeeRepository.getEmployeeByUserIdAndType(form.supervisorId, EmployeeType.LECTURER),
@@ -91,7 +93,7 @@ class StudentRequestService @Autowired constructor(
             LocalDate.now()
         )
 
-        topicChangeRequestRepository.save(request)
+        return ChangeRequestDtoFactory.create(topicChangeRequestRepository.save(request))
     }
 
     fun makeTopicCorrectionRequest(form: StudentTopicCorrectionRequestForm) {

@@ -4,8 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import pwr.diplomaproject.model.dto.StudentSubjectDetailsDto
+import pwr.diplomaproject.model.dto.SubjectDetailsDto
 import pwr.diplomaproject.model.dto.SubjectDto
 import pwr.diplomaproject.model.dto.factory.StudentSubjectDetailsDtoFactory
+import pwr.diplomaproject.model.dto.factory.SubjectDetailsDtoFactory
 import pwr.diplomaproject.model.dto.factory.SubjectDtoFactory
 import pwr.diplomaproject.model.entity.Topic
 import pwr.diplomaproject.model.enum.TopicStatus
@@ -37,7 +39,7 @@ class StudentSubjectService @Autowired constructor(
     fun getSubject(id: Long): StudentSubjectDetailsDto =
         StudentSubjectDetailsDtoFactory.create(topicRepository.findByIdOrNull(id)!!)
 
-    fun proposeSubject(form: NewSubjectForm) {
+    fun proposeSubject(form: NewSubjectForm): SubjectDetailsDto {
         val student = studentRepository.getById(form.authorStudentId!!)
         val employee = employeeRepository.getById(form.supervisorId)
 
@@ -57,7 +59,7 @@ class StudentSubjectService @Autowired constructor(
 
         SubjectProposedByStudent(listOf(employee.user), newSubject, student.user, notificationRepository).send()
 
-        subjectRepository.save(newSubject)
+        return SubjectDetailsDtoFactory.create(subjectRepository.save(newSubject))
     }
 
     fun deleteProposedSubject(studentId: Long, id: Long) {

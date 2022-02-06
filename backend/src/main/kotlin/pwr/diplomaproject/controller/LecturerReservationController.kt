@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 import pwr.diplomaproject.model.dto.LecturerSubjectReservationDetailsDto
 import pwr.diplomaproject.model.dto.LecturerSubjectReservationDto
+import pwr.diplomaproject.model.dto.ReservationDto
 import pwr.diplomaproject.service.LecturerReservationService
 import pwr.diplomaproject.util.userId
 import java.security.Principal
@@ -31,13 +32,13 @@ class LecturerReservationController @Autowired constructor(
     @PostMapping("/accept", params = ["id"])
     fun acceptReservation(
         principal: Principal,
-        @RequestParam id: Long): Unit =
+        @RequestParam id: Long): ReservationDto =
         lecturerReservationService.acceptReservation(principal.userId, id)
 
     @Operation(summary = "Odrzucenie rezerwacji tematu")
     @PostMapping("/reject", params = ["id"])
     fun rejectReservation(
         principal: Principal,
-        @RequestParam id: Long): Unit =
+        @RequestParam id: Long): ReservationDto =
         lecturerReservationService.rejectReservation(principal.userId, id)
 }

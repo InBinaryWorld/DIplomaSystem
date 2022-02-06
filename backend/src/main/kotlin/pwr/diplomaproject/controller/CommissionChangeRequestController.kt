@@ -35,13 +35,13 @@ class CommissionChangeRequestController @Autowired constructor(
     @PostMapping("/accept")
     fun acceptChangeRequest(
         principal: Principal,
-        @RequestBody form: RequestIdForm): Unit =
+        @RequestBody form: RequestIdForm): TopicChangeRequestDetailsDto =
         commissionChangeRequestService.acceptChangeRequest(principal.userId, form.requestId)
 
     @Operation(summary = "Odrzucenie wniosku o zmianę tematu")
     @PostMapping("/reject")
     fun rejectChangeRequest(
         principal: Principal,
-        @RequestBody form: RequestIdForm): Unit =
+        @RequestBody form: RequestIdForm): TopicChangeRequestDetailsDto =
         commissionChangeRequestService.rejectChangeRequest(principal.userId, form.requestId)
 }

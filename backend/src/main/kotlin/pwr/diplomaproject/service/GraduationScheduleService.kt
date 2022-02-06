@@ -3,7 +3,9 @@ package pwr.diplomaproject.service
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import pwr.diplomaproject.model.dto.GraduationScheduleDto
+import pwr.diplomaproject.model.dto.ScheduleDto
 import pwr.diplomaproject.model.dto.factory.GraduationScheduleDtoFactory
+import pwr.diplomaproject.model.dto.factory.ScheduleDtoFactory
 import pwr.diplomaproject.model.form.GraduationScheduleUpdateForm
 import pwr.diplomaproject.repository.ScheduleRepository
 
@@ -15,7 +17,7 @@ class GraduationScheduleService @Autowired constructor(
     fun getSchedule(scheduleId: Long): GraduationScheduleDto =
         GraduationScheduleDtoFactory.create(scheduleRepository.getById(scheduleId))
 
-    fun updateSchedule(scheduleId: Long, form: GraduationScheduleUpdateForm) {
+    fun updateSchedule(scheduleId: Long, form: GraduationScheduleUpdateForm): ScheduleDto {
         val schedule = scheduleRepository.getById(scheduleId)
 
         schedule.topicRegistrationDeadline = form.submittingThesis
@@ -25,7 +27,7 @@ class GraduationScheduleService @Autowired constructor(
         schedule.topicCorrectionDeadline = form.clarificationThesis
         schedule.topicChangeDeadline = form.changingThesis
 
-        scheduleRepository.save(schedule)
+        return ScheduleDtoFactory.create(scheduleRepository.save(schedule))
     }
 
 }

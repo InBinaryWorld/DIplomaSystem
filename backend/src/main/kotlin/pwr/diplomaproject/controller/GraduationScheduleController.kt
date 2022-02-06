@@ -3,6 +3,7 @@ package pwr.diplomaproject.controller
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.web.bind.annotation.*
 import pwr.diplomaproject.model.dto.GraduationScheduleDto
+import pwr.diplomaproject.model.dto.ScheduleDto
 import pwr.diplomaproject.model.form.GraduationScheduleUpdateForm
 import pwr.diplomaproject.service.GraduationScheduleService
 
@@ -22,7 +23,7 @@ class GraduationScheduleController(
     fun updateSchedule(
         @RequestParam id: Long,
         @RequestBody form: GraduationScheduleUpdateForm
-    ): Unit =
+    ): ScheduleDto =
         graduationScheduleService.updateSchedule(id, form)
 
     /*TODO: Czy poniższe endpointy są nam potrzebne? Krzysiek mówi, że nie...

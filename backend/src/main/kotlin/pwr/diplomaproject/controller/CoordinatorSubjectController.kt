@@ -31,16 +31,16 @@ class CoordinatorSubjectController @Autowired constructor(
 
     @Operation(summary = "Zaakceptowanie zaproponowanego tematu")
     @PostMapping("/accept", params = ["id"])
-    fun acceptSubject(@RequestParam id: Long): Unit =
+    fun acceptSubject(@RequestParam id: Long): SubjectDetailsDto =
         coordinatorSubjectService.acceptSubject(id)
 
     @Operation(summary = "Zgłoszenie uwag do zaproponowanego tematu")
     @PostMapping("/comment")
-    fun commentSubject(@RequestBody form: CoordinatorCommentForm): Unit =
+    fun commentSubject(@RequestBody form: CoordinatorCommentForm): SubjectDetailsDto =
         coordinatorSubjectService.commentSubject(form)
 
     @Operation(summary = "Odrzucenie zaproponowanego tematu")
     @PostMapping("/reject")
-    fun rejectSubject(@RequestBody form: CoordinatorCommentForm): Unit =
+    fun rejectSubject(@RequestBody form: CoordinatorCommentForm): SubjectDetailsDto =
         coordinatorSubjectService.rejectSubject(form)
 }

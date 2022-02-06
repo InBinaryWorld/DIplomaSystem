@@ -31,11 +31,11 @@ class CommissionSubjectController @Autowired constructor(
 
     @Operation(summary = "Zaakceptowanie zgłoszonego tematu")
     @PostMapping("/accept", params = ["id"])
-    fun acceptSubject(@RequestParam id: Long): Unit =
+    fun acceptSubject(@RequestParam id: Long): SubjectDetailsDto =
         commissionSubjectService.acceptSubject(id)
 
     @Operation(summary = "Odrzucenie zgłoszonego tematu")
     @PostMapping("/reject")
-    fun rejectSubject(@RequestBody form: ThesisIdForm): Unit =
+    fun rejectSubject(@RequestBody form: ThesisIdForm): SubjectDetailsDto =
         commissionSubjectService.rejectSubject(form.thesisId)
 }

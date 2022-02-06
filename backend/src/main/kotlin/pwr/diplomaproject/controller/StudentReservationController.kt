@@ -33,15 +33,15 @@ class StudentReservationController(
     fun approveReservation(
         @RequestParam studentId: Long,
         @RequestParam reservationId: Long
-    ): Unit =
-        studentReservationService.approveReservation(studentId, reservationId)
+    ): ReservationDto =
+        studentReservationService.approveReservation(studentId, reservationId)!!
 
     @Operation(summary = "Odrzucenie rezerwacji")
     @PostMapping("/cancel", params = ["studentId", "reservationId"])
     fun cancelReservation(
         @RequestParam studentId: Long,
         @RequestParam reservationId: Long
-    ): Unit =
+    ): ReservationDto =
         studentReservationService.cancelReservation(studentId, reservationId)
 
     @Operation(summary = "Rezerwacja tematu (i zgłoszenie grupy)")
@@ -49,6 +49,6 @@ class StudentReservationController(
     fun makeReservation(
         @RequestParam studentId: Long,
         @RequestBody form: StudentReservationForm
-    ): Unit =
+    ): ReservationDto =
         studentReservationService.makeReservation(studentId, form)
 }

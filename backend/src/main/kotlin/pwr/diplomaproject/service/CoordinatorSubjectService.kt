@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import pwr.diplomaproject.model.dto.SubjectDetailsDto
 import pwr.diplomaproject.model.dto.SubjectDto
+import pwr.diplomaproject.model.dto.factory.SubjectDetailsDtoFactory
 import pwr.diplomaproject.model.dto.factory.SubjectDtoFactory
 import pwr.diplomaproject.model.enum.TopicStatus
 import pwr.diplomaproject.model.form.CoordinatorCommentForm
@@ -38,26 +39,29 @@ class CoordinatorSubjectService @Autowired constructor(
     fun getSubject(id: Long): SubjectDetailsDto =
         subjectService.getDetails(id)
 
-    fun acceptSubject(id: Long): Unit =
+    fun acceptSubject(id: Long): SubjectDetailsDto =
         subjectRepository.getById(id).let {
             it.status = TopicStatus.APPROVED_BY_COORDINATOR
             subjectRepository.save(it)
             SubjectResolvedByCoordinator(listOf(it.lecturer.user), it, notificationRepository).send()
+            SubjectDetailsDtoFactory.create(it)
         }
 
-    fun commentSubject(comments: CoordinatorCommentForm): Unit =
+    fun commentSubject(comments: CoordinatorCommentForm): SubjectDetailsDto =
         subjectRepository.getById(comments.thesisId).let {
             it.status = TopicStatus.TO_CORRECT
             it.coordinatorComments = comments.comment
             subjectRepository.save(it)
             SubjectResolvedByCoordinator(listOf(it.lecturer.user), it, notificationRepository).send()
+            SubjectDetailsDtoFactory.create(it)
         }
 
-    fun rejectSubject(comments: CoordinatorCommentForm): Unit =
+    fun rejectSubject(comments: CoordinatorCommentForm): SubjectDetailsDto =
         subjectRepository.getById(comments.thesisId).let {
             it.status = TopicStatus.REJECTED_BY_COORDINATOR
             it.coordinatorComments = comments.comment
             SubjectResolvedByCoordinator(listOf(it.lecturer.user), it, notificationRepository).send()
             subjectRepository.save(it)
+            SubjectDetailsDtoFactory.create(it)
         }
 }

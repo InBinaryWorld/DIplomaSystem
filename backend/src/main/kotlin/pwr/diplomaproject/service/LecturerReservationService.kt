@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import pwr.diplomaproject.model.dto.LecturerSubjectReservationDetailsDto
 import pwr.diplomaproject.model.dto.LecturerSubjectReservationDto
+import pwr.diplomaproject.model.dto.ReservationDto
 import pwr.diplomaproject.model.dto.factory.LecturerSubjectReservationDetailsDtoFactory
+import pwr.diplomaproject.model.dto.factory.ReservationDtoFactory
 import pwr.diplomaproject.model.enum.EmployeeType
 import pwr.diplomaproject.model.enum.ReservationStatus
 import pwr.diplomaproject.model.notification.ReservationResolvedByLecturer
@@ -31,7 +33,7 @@ class LecturerReservationService @Autowired constructor(
         return LecturerSubjectReservationDetailsDtoFactory.create(subject, reservations)
     }
 
-    fun acceptReservation(userId: Long, id: Long): Unit =
+    fun acceptReservation(userId: Long, id: Long): ReservationDto =
         reservationRepository.getByIdAndLecturerId(id, lecturerId(userId)).let {
             it.status = ReservationStatus.ACCEPTED
             reservationRepository.save(it)
@@ -40,9 +42,10 @@ class LecturerReservationService @Autowired constructor(
                 it,
                 notificationRepository
             ).send()
+            ReservationDtoFactory.create(it)
         }
 
-    fun rejectReservation(userId: Long, id: Long): Unit =
+    fun rejectReservation(userId: Long, id: Long): ReservationDto =
         reservationRepository.getByIdAndLecturerId(id, lecturerId(userId)).let {
             it.status = ReservationStatus.REJECTED_BY_LECTURER
             reservationRepository.save(it)
@@ -51,6 +54,7 @@ class LecturerReservationService @Autowired constructor(
                 it,
                 notificationRepository
             ).send()
+            ReservationDtoFactory.create(it)
         }
 
     private fun lecturerId(userId: Long) =

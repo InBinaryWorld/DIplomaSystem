@@ -6,6 +6,7 @@ import pwr.diplomaproject.model.dto.LecturerSubjectToCorrectDetailsDto
 import pwr.diplomaproject.model.dto.SubjectDetailsDto
 import pwr.diplomaproject.model.dto.SubjectDto
 import pwr.diplomaproject.model.dto.factory.LecturerSubjectToCorrectDetailsDtoFactory
+import pwr.diplomaproject.model.dto.factory.SubjectDetailsDtoFactory
 import pwr.diplomaproject.model.dto.factory.SubjectDtoFactory
 import pwr.diplomaproject.model.entity.Topic
 import pwr.diplomaproject.model.enum.EmployeeType
@@ -35,7 +36,7 @@ class LecturerSubjectService @Autowired constructor(
     fun getProposedSubject(subjectId: Long): SubjectDetailsDto =
         subjectService.getDetails(subjectId)
 
-    fun proposeSubject(form: NewSubjectForm) {
+    fun proposeSubject(form: NewSubjectForm): SubjectDetailsDto {
         val newSubject = Topic(
             subjectRepository.getNextId(),
             employeeRepository.getById(form.supervisorId),
@@ -50,7 +51,7 @@ class LecturerSubjectService @Autowired constructor(
             LocalDate.now()
         )
 
-        subjectRepository.save(newSubject)
+        return SubjectDetailsDtoFactory.create(subjectRepository.save(newSubject))
     }
 
     fun getStudentProposedSubjects(userId: Long): List<SubjectDto> =
@@ -60,20 +61,22 @@ class LecturerSubjectService @Autowired constructor(
     fun getStudentProposedSubject(subjectId: Long): SubjectDetailsDto =
         subjectService.getDetails(subjectId)
 
-    fun acceptProposedSubject(userId: Long, subjectId: Long): Unit =
+    fun acceptProposedSubject(userId: Long, subjectId: Long): SubjectDetailsDto =
         subjectRepository.getByLecturerIdAndSubjectId(lecturerId(userId), subjectId).let {
             it.status = TopicStatus.WAITING
             subjectRepository.save(it)
             if (it.student != null)
                 SubjectPropositionResolvedByLecturer(listOf(it.student.user), it, notificationRepository).send()
+            SubjectDetailsDtoFactory.create(it)
         }
 
-    fun rejectProposedSubject(userId: Long, subjectId: Long): Unit =
+    fun rejectProposedSubject(userId: Long, subjectId: Long): SubjectDetailsDto =
         subjectRepository.getByLecturerIdAndSubjectId(lecturerId(userId), subjectId).let {
             it.status = TopicStatus.REJECTED_BY_LECTURER
             subjectRepository.save(it)
             if (it.student != null)
                 SubjectPropositionResolvedByLecturer(listOf(it.student.user), it, notificationRepository).send()
+            SubjectDetailsDtoFactory.create(it)
         }
 
     fun getSubjectsToCorrect(userId: Long): List<SubjectDto> =
@@ -84,7 +87,7 @@ class LecturerSubjectService @Autowired constructor(
         subjectRepository.getByLecturerIdAndSubjectId(lecturerId(userId), subjectId)
             .let { LecturerSubjectToCorrectDetailsDtoFactory.create(it) }
 
-    fun correctSubject(userId: Long, form: LecturerTopicCorrectionForm): Unit =
+    fun correctSubject(userId: Long, form: LecturerTopicCorrectionForm): SubjectDetailsDto =
         subjectRepository.getByLecturerIdAndSubjectId(lecturerId(userId), form.thesisId).let {
             it.topic = form.changes.topic
             it.description = form.changes.description
@@ -92,6 +95,7 @@ class LecturerSubjectService @Autowired constructor(
             it.status = TopicStatus.WAITING
 
             subjectRepository.save(it)
+            SubjectDetailsDtoFactory.create(it)
         }
 
     private fun lecturerId(userId: Long) =

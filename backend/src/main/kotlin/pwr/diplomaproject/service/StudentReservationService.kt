@@ -1,6 +1,5 @@
 package pwr.diplomaproject.service
 
-import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import pwr.diplomaproject.model.dto.ReservationDto
 import pwr.diplomaproject.model.dto.factory.ReservationDtoFactory
@@ -31,7 +30,7 @@ class StudentReservationService(
     fun getReservationById(id: Long): ReservationDto =
         ReservationDtoFactory.create(reservationRepository.getById(id))
 
-    fun approveReservation(studentId: Long, id: Long) {
+    fun approveReservation(studentId: Long, id: Long): ReservationDto? {
         val reservation: Reservation = reservationRepository.findAllByIndexAndStudent(id, studentId)
 
         val groupMember: GroupMember? = reservation.groupMembers.firstOrNull {
@@ -43,7 +42,7 @@ class StudentReservationService(
             // SUGGESTED -> WILLING
             if (groupMember.status == MemberStatus.SUGGESTED) {
                 if (reservation.status != ReservationStatus.WAITING) {
-                    return
+                    return null
                 }
                 groupMember.status = MemberStatus.WILLING
             }
@@ -51,7 +50,7 @@ class StudentReservationService(
             // WILLING -> CONFIRMED
             else if (groupMember.status == MemberStatus.WILLING) {
                 if (reservation.status != ReservationStatus.ACCEPTED) {
-                    return
+                    return null
                 }
                 groupMember.status = MemberStatus.CONFIRMED
             }
@@ -77,9 +76,10 @@ class StudentReservationService(
                 notificationRepository
             ).send()
         }
+        return ReservationDtoFactory.create(reservation)
     }
 
-    fun cancelReservation(studentId: Long, id: Long) {
+    fun cancelReservation(studentId: Long, id: Long): ReservationDto {
         val reservation: Reservation = reservationRepository.findAllByIndexAndStudent(id, studentId)
         val groupMember: GroupMember? = reservation.groupMembers.firstOrNull {
             it.student.id == studentId
@@ -100,9 +100,10 @@ class StudentReservationService(
                 notificationRepository
             ).send()
         }
+        return ReservationDtoFactory.create(reservation)
     }
 
-    fun makeReservation(studentId: Long, form: StudentReservationForm) {
+    fun makeReservation(studentId: Long, form: StudentReservationForm): ReservationDto {
         val topic: Topic = topicRepository.getById(form.thesisId)
         val student: Student = studentRepository.getById(studentId)
 
@@ -117,21 +118,17 @@ class StudentReservationService(
 
         var nextGroupMemberId = groupMemberRepository.getNextId()
         for (suggestedStudentId in form.studentIds) {
-            val suggestedStudent = studentRepository.findByIdOrNull(suggestedStudentId)
-            if (suggestedStudent == null) {
-                return
-            } else {
-                val newGroupMember = GroupMember(
-                    id = nextGroupMemberId++,
-                    reservation = newReservation,
-                    student = suggestedStudent,
-                    status = if (suggestedStudent.id == studentId) MemberStatus.WILLING else MemberStatus.SUGGESTED
-                )
-                newGroupMembers.add(newGroupMember)
-            }
+            val suggestedStudent = studentRepository.getById(suggestedStudentId)
+            val newGroupMember = GroupMember(
+                id = nextGroupMemberId++,
+                reservation = newReservation,
+                student = suggestedStudent,
+                status = if (suggestedStudent.id == studentId) MemberStatus.WILLING else MemberStatus.SUGGESTED
+            )
+            newGroupMembers.add(newGroupMember)
         }
 
-        reservationRepository.save(newReservation)
+        val savedReservation = reservationRepository.save(newReservation)
         for (newGroupMember in newGroupMembers) {
             groupMemberRepository.save(newGroupMember)
         }
@@ -143,5 +140,7 @@ class StudentReservationService(
             newGroupMembers.size,
             notificationRepository
         ).send()
+
+        return ReservationDtoFactory.create(savedReservation)
     }
 }

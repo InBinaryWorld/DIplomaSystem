@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import pwr.diplomaproject.model.dto.SubjectDetailsDto
 import pwr.diplomaproject.model.dto.SubjectDto
+import pwr.diplomaproject.model.dto.factory.SubjectDetailsDtoFactory
 import pwr.diplomaproject.model.dto.factory.SubjectDtoFactory
 import pwr.diplomaproject.model.enum.TopicStatus
 import pwr.diplomaproject.repository.SubjectRepository
@@ -33,15 +34,17 @@ class CommissionSubjectService @Autowired constructor(
     fun getSubject(id: Long): SubjectDetailsDto =
         subjectService.getDetails(id)
 
-    fun acceptSubject(id: Long): Unit =
+    fun acceptSubject(id: Long): SubjectDetailsDto =
         subjectRepository.getById(id).let {
             it.status = TopicStatus.APPROVED_BY_COMMITTEE
             subjectRepository.save(it)
+            SubjectDetailsDtoFactory.create(it)
         }
 
-    fun rejectSubject(id: Long): Unit =
+    fun rejectSubject(id: Long): SubjectDetailsDto =
         subjectRepository.getById(id).let {
             it.status = TopicStatus.REJECTED_BY_COMMITTEE
             subjectRepository.save(it)
+            SubjectDetailsDtoFactory.create(it)
         }
 }

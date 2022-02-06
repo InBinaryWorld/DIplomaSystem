@@ -41,14 +41,14 @@ class LecturerSubjectController @Autowired constructor(
     @PostMapping("/student-propositions/accept", params = ["id"])
     fun acceptProposedSubject(
         principal: Principal,
-        @RequestParam id: Long): Unit =
+        @RequestParam id: Long): SubjectDetailsDto =
         lecturerSubjectService.acceptProposedSubject(principal.userId, id)
 
     @Operation(summary = "Odrzucenie tematu zaproponowanego przez studenta/ów")
     @PostMapping("/student-propositions/reject")
     fun rejectProposedSubject(
         principal: Principal,
-        @RequestParam id: Long): Unit =
+        @RequestParam id: Long): SubjectDetailsDto =
         lecturerSubjectService.rejectProposedSubject(principal.userId, id)
 
     @Operation(summary = "Tematy do poprawy")
@@ -67,6 +67,6 @@ class LecturerSubjectController @Autowired constructor(
     @PostMapping("/to-correct")
     fun correctSubject(
         principal: Principal,
-        @RequestBody form: LecturerTopicCorrectionForm): Unit =
+        @RequestBody form: LecturerTopicCorrectionForm): SubjectDetailsDto =
         lecturerSubjectService.correctSubject(principal.userId, form)
 }

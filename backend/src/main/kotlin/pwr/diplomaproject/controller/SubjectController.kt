@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 import pwr.diplomaproject.model.dto.SubjectDetailsDto
+import pwr.diplomaproject.model.dto.SubjectDto
 import pwr.diplomaproject.model.enum.TopicStatus
 import pwr.diplomaproject.model.form.NewSubjectForm
 import pwr.diplomaproject.service.LecturerSubjectService
@@ -34,8 +35,8 @@ class SubjectController @Autowired constructor(
 
     @Operation(summary = "Dodanie nowego tematu")
     @PostMapping
-    fun addSubject(@RequestBody form: NewSubjectForm) {
-        if (form.reportedByStudent)
+    fun addSubject(@RequestBody form: NewSubjectForm): SubjectDetailsDto {
+        return if (form.reportedByStudent)
             studentSubjectService.proposeSubject(form)
         else
             lecturerSubjectService.proposeSubject(form)

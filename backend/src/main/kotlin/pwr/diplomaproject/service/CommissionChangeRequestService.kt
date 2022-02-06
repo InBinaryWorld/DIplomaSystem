@@ -34,18 +34,18 @@ class CommissionChangeRequestService @Autowired constructor(
             .let { TopicChangeRequestDetailsDtoFactory.create(it) }
 
     @Transactional
-    fun acceptChangeRequest(userId: Long, id: Long): Unit =
+    fun acceptChangeRequest(userId: Long, id: Long): TopicChangeRequestDetailsDto =
         topicChangeRequestRepository.getById(id).let {
             it.result = RequestResult.APPROVED
             it.employee = dean(userId)
 
             switchStudentSubject(it.student, it.oldTopic, it.newTopic)
 
-            topicChangeRequestRepository.save(it)
+            TopicChangeRequestDetailsDtoFactory.create(topicChangeRequestRepository.save(it))
         }
 
     @Transactional
-    fun rejectChangeRequest(userId: Long, id: Long): Unit =
+    fun rejectChangeRequest(userId: Long, id: Long): TopicChangeRequestDetailsDto =
         topicChangeRequestRepository.getById(id).let {
             it.result = RequestResult.DISMISSED
             it.employee = dean(userId)
@@ -53,7 +53,7 @@ class CommissionChangeRequestService @Autowired constructor(
             it.newTopic.status = TopicStatus.REJECTED_BY_COMMITTEE // TODO może jakoś ładniej anulować taki temat (bez usuwania)
 
             subjectRepository.save(it.newTopic)
-            topicChangeRequestRepository.save(it)
+            TopicChangeRequestDetailsDtoFactory.create(topicChangeRequestRepository.save(it))
         }
 
     private fun switchStudentSubject(student: Student, oldSubject: Topic, newSubject: Topic) {

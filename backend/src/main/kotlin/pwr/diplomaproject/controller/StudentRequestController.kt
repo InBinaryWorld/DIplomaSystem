@@ -3,6 +3,7 @@ package pwr.diplomaproject.controller
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
+import pwr.diplomaproject.model.dto.ChangeRequestDto
 import pwr.diplomaproject.model.dto.StudentRequestDto
 import pwr.diplomaproject.model.dto.TopicChangeRequestDetailsDto
 import pwr.diplomaproject.model.dto.TopicCorrectionRequestDetailsDto
@@ -40,8 +41,8 @@ class StudentRequestController @Autowired constructor(
 
     @Operation(summary = "Złożenie wniosku o zmianę tematu")
     @PostMapping("/topic-change")
-    fun makeTopicChangeRequest(@RequestBody form: StudentTopicChangeRequestForm) {
-        if (form.thesisExists())
+    fun makeTopicChangeRequest(@RequestBody form: StudentTopicChangeRequestForm): ChangeRequestDto {
+        return if (form.thesisExists())
             studentRequestService.makeTopicChangeToExistingTopicRequest(form.studentId, form.previousThesisId, form.newThesisId!!)
         else
             studentRequestService.makeTopicChangeToNewTopicRequest(form.studentId, form.previousThesisId, form.newThesis!!)
