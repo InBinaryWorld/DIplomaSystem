@@ -6,8 +6,7 @@ import org.springframework.web.bind.annotation.*
 import pwr.diplomaproject.model.dto.StudentRequestDto
 import pwr.diplomaproject.model.dto.TopicChangeRequestDetailsDto
 import pwr.diplomaproject.model.dto.TopicCorrectionRequestDetailsDto
-import pwr.diplomaproject.model.form.StudentTopicChangeRequestExistingTopicForm
-import pwr.diplomaproject.model.form.StudentTopicChangeRequestNewTopicForm
+import pwr.diplomaproject.model.form.StudentTopicChangeRequestForm
 import pwr.diplomaproject.model.form.StudentTopicCorrectionRequestForm
 import pwr.diplomaproject.service.StudentRequestService
 import pwr.diplomaproject.util.userId
@@ -39,26 +38,19 @@ class StudentRequestController @Autowired constructor(
     fun getTopicCorrectionRequestDetails(@PathVariable id: Long): TopicCorrectionRequestDetailsDto =
         studentRequestService.getTopicCorrectionRequestDetails(id)
 
-    @Operation(summary = "Złożenie wniosku o zmianę tematu - na istniejący temat")
-    @PostMapping("/topic-change/existing")
-    fun makeTopicChangeToExistingTopicRequest(
-        @RequestParam studentId: Long,
-        @RequestBody form: StudentTopicChangeRequestExistingTopicForm): Unit =
-        studentRequestService.makeTopicChangeToExistingTopicRequest(studentId, form)
-
-    @Operation(summary = "Złożenie wniosku o zmianę tematu - na nowy temat")
-    @PostMapping("/topic-change/new")
-    fun makeTopicChangeToNewTopicRequest(
-        @RequestParam studentId: Long,
-        @RequestBody form: StudentTopicChangeRequestNewTopicForm): Unit =
-        studentRequestService.makeTopicChangeToNewTopicRequest(studentId, form)
+    @Operation(summary = "Złożenie wniosku o zmianę tematu")
+    @PostMapping("/topic-change")
+    fun makeTopicChangeRequest(@RequestBody form: StudentTopicChangeRequestForm) {
+        if (form.thesisExists())
+            studentRequestService.makeTopicChangeToNewTopicRequest(form.studentId, form.previousThesisId, form.newThesis!!)
+        else
+            studentRequestService.makeTopicChangeToExistingTopicRequest(form.studentId, form.previousThesisId, form.thesisId!!)
+    }
 
     @Operation(summary = "Złożenie wniosku o doprecyzowanie tematu")
     @PostMapping("/topic-correction")
-    fun makeTopicCorrectionRequest(
-        @RequestParam studentId: Long,
-        @RequestBody form: StudentTopicCorrectionRequestForm): Unit =
-        studentRequestService.makeTopicCorrectionRequest(studentId, form)
+    fun makeTopicCorrectionRequest(@RequestBody form: StudentTopicCorrectionRequestForm): Unit =
+        studentRequestService.makeTopicCorrectionRequest(form)
 
     @Operation(summary = "Anulowanie wniosku o zmianę tematu")
     @DeleteMapping("/topic-change/{id}")

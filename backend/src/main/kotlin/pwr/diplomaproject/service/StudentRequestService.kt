@@ -13,7 +13,6 @@ import pwr.diplomaproject.model.entity.TopicCorrectionRequest
 import pwr.diplomaproject.model.enum.EmployeeType
 import pwr.diplomaproject.model.enum.RequestResult
 import pwr.diplomaproject.model.enum.TopicStatus
-import pwr.diplomaproject.model.form.StudentTopicChangeRequestExistingTopicForm
 import pwr.diplomaproject.model.form.StudentTopicChangeRequestNewTopicForm
 import pwr.diplomaproject.model.form.StudentTopicCorrectionRequestForm
 import pwr.diplomaproject.model.mail.TopicCorrectionRequestCreatedByStudent
@@ -45,13 +44,13 @@ class StudentRequestService @Autowired constructor(
     fun getTopicCorrectionRequestDetails(id: Long): TopicCorrectionRequestDetailsDto =
         topicCorrectionRequestRepository.getCorrectionRequestDetails(id)
 
-    fun makeTopicChangeToExistingTopicRequest(studentId: Long, form: StudentTopicChangeRequestExistingTopicForm) {
+    fun makeTopicChangeToExistingTopicRequest(studentId: Long, currentTopicId: Long, newTopicId: Long) {
         val request = TopicChangeRequest(
             topicChangeRequestRepository.getNextId(),
             studentRepository.getById(studentId),
             null,
-            subjectRepository.getById(form.currentTopicId),
-            subjectRepository.getById(form.newTopicId),
+            subjectRepository.getById(currentTopicId),
+            subjectRepository.getById(newTopicId),
             RequestResult.WAITING,
             LocalDate.now()
         )
@@ -60,15 +59,15 @@ class StudentRequestService @Autowired constructor(
     }
 
     @Transactional
-    fun makeTopicChangeToNewTopicRequest(studentId: Long, form: StudentTopicChangeRequestNewTopicForm) {
+    fun makeTopicChangeToNewTopicRequest(studentId: Long, currentTopicId: Long, form: StudentTopicChangeRequestNewTopicForm) {
         val newSubject = Topic(
             subjectRepository.getNextId(),
-            employeeRepository.getEmployeeByUserIdAndType(form.newSupervisorId, EmployeeType.LECTURER),
+            employeeRepository.getEmployeeByUserIdAndType(form.supervisorId, EmployeeType.LECTURER),
             studentRepository.getById(studentId),
-            subjectRepository.getById(form.currentTopicId).graduation,
-            form.newTopic,
-            form.newDescription,
-            form.newStudentCount,
+            subjectRepository.getById(currentTopicId).graduation,
+            form.topic,
+            form.description,
+            1,
             TopicStatus.WAITING,
             null,
             true,
@@ -81,7 +80,7 @@ class StudentRequestService @Autowired constructor(
             topicChangeRequestRepository.getNextId(),
             studentRepository.getById(studentId),
             null,
-            subjectRepository.getById(form.currentTopicId),
+            subjectRepository.getById(currentTopicId),
             savedSubject,
             RequestResult.WAITING,
             LocalDate.now()
@@ -90,8 +89,8 @@ class StudentRequestService @Autowired constructor(
         topicChangeRequestRepository.save(request)
     }
 
-    fun makeTopicCorrectionRequest(studentId: Long, form: StudentTopicCorrectionRequestForm) {
-        val student = studentRepository.getById(studentId)
+    fun makeTopicCorrectionRequest(form: StudentTopicCorrectionRequestForm) {
+        val student = studentRepository.getById(form.studentId)
 
         val oldTopic = topicRepository.getById(form.topicId)
 

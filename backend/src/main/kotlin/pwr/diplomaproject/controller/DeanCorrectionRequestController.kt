@@ -32,11 +32,11 @@ class DeanCorrectionRequestController @Autowired constructor(
         deanCorrectionRequestService.getCorrectionRequest(id)
 
     @Operation(summary = "Zaakceptowanie wniosku o doprecyzowanie tematu")
-    @GetMapping("/accept/{id}")
+    @PostMapping("/accept")
     fun acceptCorrectionRequest(
         principal: Principal,
-        @PathVariable id: Long): Unit =
-        deanCorrectionRequestService.acceptCorrectionRequest(principal.userId, id)
+        @RequestBody form: RequestIdForm): Unit =
+        deanCorrectionRequestService.acceptCorrectionRequest(principal.userId, form.requestId)
 
     @Operation(summary = "Odrzucenie wniosku o doprecyzowanie tematu")
     @PostMapping("/reject")
