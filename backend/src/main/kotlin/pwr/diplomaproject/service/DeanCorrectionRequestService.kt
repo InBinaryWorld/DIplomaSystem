@@ -2,7 +2,7 @@ package pwr.diplomaproject.service
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import pwr.diplomaproject.model.dto.DeanRequestDto
+import pwr.diplomaproject.model.dto.RequestDto
 import pwr.diplomaproject.model.dto.TopicCorrectionRequestDetailsDto
 import pwr.diplomaproject.model.dto.factory.DeanRequestDtoFactory
 import pwr.diplomaproject.model.entity.Employee
@@ -20,11 +20,11 @@ class DeanCorrectionRequestService @Autowired constructor(
     private val employeeRepository: EmployeeRepository
 ){
 
-    fun getCorrectionRequestsToConsider(): List<DeanRequestDto> =
+    fun getCorrectionRequestsToConsider(): List<RequestDto> =
         topicCorrectionRequestRepository.findAllByResultIn(listOf(RequestResult.WAITING))
             .map { DeanRequestDtoFactory.create(it) }
 
-    fun getCorrectionRequestsConsidered(): List<DeanRequestDto> =
+    fun getCorrectionRequestsConsidered(): List<RequestDto> =
         topicCorrectionRequestRepository.findAllByResultIn(listOf(RequestResult.REJECTED, RequestResult.ACCEPTED))
             .map { DeanRequestDtoFactory.create(it) }
 

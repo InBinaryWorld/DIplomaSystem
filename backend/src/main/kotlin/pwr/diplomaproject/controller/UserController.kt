@@ -7,8 +7,9 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import pwr.diplomaproject.model.dto.StudentNameDto
-import pwr.diplomaproject.model.dto.UserRolesDto
+import pwr.diplomaproject.model.dto.UserDto
 import pwr.diplomaproject.service.UserService
+import pwr.diplomaproject.util.userId
 import java.security.Principal
 
 @RestController
@@ -17,10 +18,10 @@ class UserController @Autowired constructor(
     private val userService: UserService
 ) {
 
-    @Operation(summary = "Zwraca listę ról użytkownika - studentId dostępnych studentów i employeeId z typem pracownika dostępnych pracowników")
+    @Operation(summary = "Zwraca listę ról użytkownika -  i employeeId z typem pracownika dostępnych pracowników")
     @GetMapping
-    fun getUserRoles(principal: Principal): UserRolesDto =
-        userService.getUserRoles(principal.name.toLong())
+    fun getUser(principal: Principal): UserDto =
+        userService.getUser(principal.userId)
 
     @Operation(summary = "Pobranie studenta według numeru indeksu")
     @GetMapping("/student/{index}")

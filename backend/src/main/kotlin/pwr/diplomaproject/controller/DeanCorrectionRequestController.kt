@@ -2,12 +2,10 @@ package pwr.diplomaproject.controller
 
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
-import pwr.diplomaproject.model.dto.DeanRequestDto
+import org.springframework.web.bind.annotation.*
+import pwr.diplomaproject.model.dto.RequestDto
 import pwr.diplomaproject.model.dto.TopicCorrectionRequestDetailsDto
+import pwr.diplomaproject.model.form.RequestIdForm
 import pwr.diplomaproject.service.DeanCorrectionRequestService
 import pwr.diplomaproject.util.userId
 import java.security.Principal
@@ -20,12 +18,12 @@ class DeanCorrectionRequestController @Autowired constructor(
 
     @Operation(summary = "Do rozpatrzenia - wnioski o doprecyzowanie tematu")
     @GetMapping("/to-consider")
-    fun getCorrectionRequestsToConsider(): List<DeanRequestDto> =
+    fun getCorrectionRequestsToConsider(): List<RequestDto> =
         deanCorrectionRequestService.getCorrectionRequestsToConsider()
 
     @Operation(summary = "Rozpatrzone - wnioski o doprecyzowanie tematu")
     @GetMapping("/considered")
-    fun getCorrectionRequestsConsidered(): List<DeanRequestDto> =
+    fun getCorrectionRequestsConsidered(): List<RequestDto> =
         deanCorrectionRequestService.getCorrectionRequestsConsidered()
 
     @Operation(summary = "Szczegóły wniosku o doprecyzowanie tematu")
@@ -41,9 +39,9 @@ class DeanCorrectionRequestController @Autowired constructor(
         deanCorrectionRequestService.acceptCorrectionRequest(principal.userId, id)
 
     @Operation(summary = "Odrzucenie wniosku o doprecyzowanie tematu")
-    @GetMapping("/reject/{id}")
+    @PostMapping("/reject")
     fun rejectCorrectionRequest(
         principal: Principal,
-        @PathVariable id: Long): Unit =
-        deanCorrectionRequestService.rejectCorrectionRequest(principal.userId, id)
+        @RequestBody form: RequestIdForm): Unit =
+        deanCorrectionRequestService.rejectCorrectionRequest(principal.userId, form.requestId)
 }
