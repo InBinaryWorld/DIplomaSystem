@@ -2,10 +2,13 @@ package pwr.diplomaproject.service
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import pwr.diplomaproject.model.dto.StudentNameDto
+import pwr.diplomaproject.model.dto.EmployeeDto
+import pwr.diplomaproject.model.dto.StudentDto
 import pwr.diplomaproject.model.dto.UserDto
-import pwr.diplomaproject.model.dto.factory.StudentNameDtoFactory
+import pwr.diplomaproject.model.dto.factory.EmployeeDtoFactory
+import pwr.diplomaproject.model.dto.factory.StudentDtoFactory
 import pwr.diplomaproject.model.dto.factory.UserDtoFactory
+import pwr.diplomaproject.model.enum.EmployeeType
 import pwr.diplomaproject.repository.EmployeeRepository
 import pwr.diplomaproject.repository.StudentRepository
 import pwr.diplomaproject.repository.UserRepository
@@ -25,6 +28,19 @@ class UserService @Autowired constructor(
         return UserDtoFactory.create(user, students, employees)
     }
 
-    fun getStudentByIndex(index: String): StudentNameDto =
-        StudentNameDtoFactory.create(studentRepository.getStudentByIndex(index))
+    fun getStudentsByGraduationId(graduationId: Long?): List<StudentDto> =
+        studentRepository.getStudentsByGraduationId(graduationId)
+            .map { StudentDtoFactory.create(it) }
+
+    fun getStudentById(studentId: Long): StudentDto =
+        studentRepository.getById(studentId)
+            .let { StudentDtoFactory.create(it) }
+
+    fun getEmployeesByTypeOrGraduationId(type: EmployeeType?, graduationId: Long?): List<EmployeeDto> =
+        employeeRepository.getEmployeeByTypeOrGraduationId(type, graduationId)
+            .map { EmployeeDtoFactory.create(it) }
+
+    fun getEmployeeById(employeeId: Long): EmployeeDto =
+        employeeRepository.getById(employeeId)
+            .let { EmployeeDtoFactory.create(it) }
 }

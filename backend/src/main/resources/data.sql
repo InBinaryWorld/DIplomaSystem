@@ -16,7 +16,7 @@ values (1, 'Wydział Informatyki i Telekomunikacji', 'w4n');
 
 -- Table: course_of_study
 insert into course_of_study (id, name, study_type, faculty_id)
-values (1, 'Informatyka stosowana', 'ENGINEERS', 1);
+values (1, 'Informatyka stosowana', 'BACHELOR', 1);
 
 
 -- Table: employee
