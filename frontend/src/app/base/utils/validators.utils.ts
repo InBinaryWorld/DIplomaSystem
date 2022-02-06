@@ -23,8 +23,12 @@ export class AppValidators {
     return AppValidators.compose(Validators.required, Validators.maxLength(2000));
   }
 
-  public static get coordinatorComment(): ValidatorFn {
+  public static get coordinatorCommentValidator(): ValidatorFn {
     return AppValidators.compose(Validators.required, Validators.maxLength(1000));
+  }
+
+  public static get loginFieldValidator(): ValidatorFn {
+    return AppValidators.compose(Validators.required, Validators.max(16));
   }
 
   public static get deadline(): ValidatorFn {

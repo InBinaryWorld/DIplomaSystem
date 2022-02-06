@@ -201,7 +201,7 @@ export class ThesisDetailsComponent extends RoleComponent implements OnInit {
       [FORM_KEY.DESCRIPTION]: [{ value: undefined, disabled: true }],
       [FORM_KEY.COORDINATOR_COMMENT]: [
         { value: undefined, disabled: isCommentDisabled },
-        AppValidators.coordinatorComment
+        AppValidators.coordinatorCommentValidator
       ]
     };
   }

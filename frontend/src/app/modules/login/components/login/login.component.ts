@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { BaseComponent } from '../../../../core/components/base-component.directive';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { AuthStoreService } from '../../../../base/services/store/auth-store.service';
 import { LoginData } from '../../../../base/models/login-data.model';
 import { SpinnerService } from '../../../../core/services/spinner.service';
@@ -9,6 +9,8 @@ import { ContextRoutingService } from '../../../../core/services/context-routing
 import { filter, switchMap } from 'rxjs';
 import { UserStoreService } from '../../../../base/services/store/user-store.service';
 import { SessionService } from '../../../../base/services/session.service';
+import { AppValidators } from '../../../../base/utils/validators.utils';
+import { isNotNil } from '../../../../core/tools/is-not-nil';
 
 @Component({
   selector: 'app-login',
@@ -18,10 +20,8 @@ import { SessionService } from '../../../../base/services/session.service';
 })
 export class LoginComponent extends BaseComponent implements OnInit {
 
-  error: any;
-  usernameControl?: FormControl;
-  passwordControl?: FormControl;
-  loginFormGroup?: FormGroup;
+  error?: boolean;
+  form?: FormGroup;
 
   constructor(private readonly store: Store,
               private readonly formBuilder: FormBuilder,
@@ -36,7 +36,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
 
 
   login(): void {
-    const data: LoginData = this.loginFormGroup!.getRawValue();
+    const data: LoginData = this.form!.getRawValue();
     this.authStoreService.login(data);
   }
 
@@ -50,11 +50,10 @@ export class LoginComponent extends BaseComponent implements OnInit {
     this.addSubscription(
       this.authStoreService.getError()
         .subscribe(error => {
-          this.error = error;
+          this.error = isNotNil(error);
           this.changeDetector.markForCheck();
         })
     );
-
   }
 
   private handleSuccessfulLogin(): void {
@@ -67,12 +66,9 @@ export class LoginComponent extends BaseComponent implements OnInit {
   }
 
   private initForm() {
-    const formValidator = [Validators.required, Validators.minLength(6), Validators.maxLength(32)];
-    this.usernameControl = new FormControl('s_24242', formValidator);
-    this.passwordControl = new FormControl('password', formValidator);
-    this.loginFormGroup = this.formBuilder.group({
-      username: this.usernameControl,
-      password: this.passwordControl
+    this.form = this.formBuilder.group({
+      username: ['asldcpm_2', AppValidators.loginFieldValidator],
+      password: ['password', AppValidators.loginFieldValidator]
     });
   }
 
