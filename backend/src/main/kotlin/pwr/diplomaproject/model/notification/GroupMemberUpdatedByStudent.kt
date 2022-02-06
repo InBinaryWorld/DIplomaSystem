@@ -12,7 +12,7 @@ class GroupMemberUpdatedByStudent(
     NotificationAlert(
         recipients,
         constructContent(
-            notificationRepository.findByLabel("ReservationCreatedByStudent").content, mapOf(
+            notificationRepository.findByLabel("GroupMemberUpdatedByStudent").content, mapOf(
                 ":STUDENT" to groupMember.student.user.fullName(),
                 ":TOPIC" to groupMember.reservation.topic.topic,
                 ":GROUP_MEMBER_STATUS" to groupMember.status.toString(),

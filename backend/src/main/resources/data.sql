@@ -111,4 +111,6 @@ values (1, 'ReservationCreatedByStudent',
        (3, 'GroupMemberUpdatedByStudent',
         'Student :STUDENT zaktualizował swój status członka rezerwacji tematu ":TOPIC". Aktualny status członka grupy: :GROUP_MEMBER_STATUS. Aktualny status rezerwacji: :RESERVATION_STATUS.'),
        (4, 'SubjectProposedByStudent',
-        'Student :STUDENT złożył nową propozycję tematu: ":TOPIC".')
+        'Student :STUDENT złożył nową propozycję tematu: ":TOPIC".'),
+       (5, 'SubjectPropositionDeletedByStudent',
+        'Propozycja tematu ":TOPIC" została usunięta przez studenta :STUDENT.')

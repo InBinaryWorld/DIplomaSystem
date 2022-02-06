@@ -12,7 +12,7 @@ class SubjectProposedByStudent(
     NotificationAlert(
         recipients,
         constructContent(
-            notificationRepository.findByLabel("ReservationCreatedByStudent").content, mapOf(
+            notificationRepository.findByLabel("SubjectProposedByStudent").content, mapOf(
                 ":STUDENT" to studentUser.fullName(),
                 ":TOPIC" to subject.topic,
             )

@@ -2,9 +2,19 @@ package pwr.diplomaproject.model.notification
 
 import pwr.diplomaproject.model.entity.Topic
 import pwr.diplomaproject.model.entity.User
+import pwr.diplomaproject.repository.NotificationRepository
 
-class SubjectPropositionDeletedByStudent(recipients: List<User>, subject: Topic, studentUser: User) :
+class SubjectPropositionDeletedByStudent(
+    recipients: List<User>,
+    subject: Topic, studentUser: User,
+    notificationRepository: NotificationRepository
+) :
     NotificationAlert(
         recipients,
-        "Propozycja tematu \"${subject.topic}\" została usunięta przez studenta ${studentUser.fullName()}."
+        constructContent(
+            notificationRepository.findByLabel("SubjectPropositionDeletedByStudent").content, mapOf(
+                ":TOPIC" to subject.topic,
+                ":STUDENT" to studentUser.fullName(),
+            )
+        )
     )

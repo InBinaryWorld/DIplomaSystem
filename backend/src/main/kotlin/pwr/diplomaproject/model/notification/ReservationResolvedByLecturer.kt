@@ -12,7 +12,7 @@ class ReservationResolvedByLecturer(
     NotificationAlert(
         recipients,
         constructContent(
-            notificationRepository.findByLabel("NotificationAlert").content, mapOf(
+            notificationRepository.findByLabel("ReservationResolvedByLecturer").content, mapOf(
                 ":LECTURER" to reservation.topic.lecturer.fullName(),
                 ":TOPIC" to reservation.topic.topic,
                 ":RESERVATION_STATUS" to reservation.status.toString(),

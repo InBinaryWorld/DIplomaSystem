@@ -63,7 +63,12 @@ class StudentSubjectService @Autowired constructor(
     fun deleteProposedSubject(studentId: Long, id: Long) {
         val subject = topicRepository.findByIndexAndStudent(id, studentId)
         if (subject.status == TopicStatus.PROPOSED_BY_STUDENT) {
-            SubjectPropositionDeletedByStudent(listOf(subject.lecturer.user), subject, subject.student!!.user).send()
+            SubjectPropositionDeletedByStudent(
+                listOf(subject.lecturer.user),
+                subject,
+                subject.student!!.user,
+                notificationRepository
+            ).send()
             topicRepository.delete(subject)
         }
     }
