@@ -16,6 +16,7 @@ import pwr.diplomaproject.model.enum.TopicStatus
 import pwr.diplomaproject.model.form.StudentTopicChangeRequestExistingTopicForm
 import pwr.diplomaproject.model.form.StudentTopicChangeRequestNewTopicForm
 import pwr.diplomaproject.model.form.StudentTopicCorrectionRequestForm
+import pwr.diplomaproject.model.mail.TopicCorrectionRequestCreatedByStudent
 import pwr.diplomaproject.repository.*
 import java.time.LocalDate
 import javax.transaction.Transactional
@@ -23,11 +24,12 @@ import javax.transaction.Transactional
 @Service
 class StudentRequestService @Autowired constructor(
     private val topicChangeRequestRepository: TopicChangeRequestRepository,
+    private val topicRepository: TopicRepository,
     private val topicCorrectionRequestRepository: TopicCorrectionRequestRepository,
     private val studentRepository: StudentRepository,
     private val subjectRepository: SubjectRepository,
     private val employeeRepository: EmployeeRepository,
-){
+) {
 
     fun getTopicChangeRequests(studentId: Long): List<StudentRequestDto> =
         topicChangeRequestRepository.findAllByStudentId(studentId)
@@ -89,9 +91,13 @@ class StudentRequestService @Autowired constructor(
     }
 
     fun makeTopicCorrectionRequest(studentId: Long, form: StudentTopicCorrectionRequestForm) {
+        val student = studentRepository.getById(studentId)
+
+        val oldTopic = topicRepository.getById(form.topicId)
+
         val request = TopicCorrectionRequest(
             topicCorrectionRequestRepository.getNextId(),
-            studentRepository.getById(studentId),
+            student,
             null,
             RequestResult.WAITING,
             LocalDate.now(),
@@ -100,6 +106,11 @@ class StudentRequestService @Autowired constructor(
         )
 
         topicCorrectionRequestRepository.save(request)
+        TopicCorrectionRequestCreatedByStudent(
+            listOf(oldTopic.lecturer.user),
+            request,
+            student.user
+        ).send()
     }
 
     fun cancelTopicChangeRequest(userId: Long, id: Long): Unit =
