@@ -288,6 +288,14 @@ export class ThesisDetailsComponent extends RoleComponent implements OnInit {
     this.router.navigate(['/student/reservations/create', this.thesis!.id]).then();
   }
 
+  deleteProposition(): void {
+    const actionSource = this.thesesService.deleteProposition(this.thesis!.id);
+    this.addSubscription(actionSource.subscribe({
+      next: () => this.router.navigate(['/student/topic-propositions']).then(),
+      error: () => this.showError()
+    }));
+  }
+
   isCoordinatorCommentVisible(): boolean {
     return this.thesis?.status === ThesisStatus.TO_CORRECT
       || this.thesis?.status === ThesisStatus.WAITING && this.userRole?.role === Role.COORDINATOR;
@@ -304,5 +312,6 @@ export class ThesisDetailsComponent extends RoleComponent implements OnInit {
       })
     );
   }
+
 
 }

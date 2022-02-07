@@ -26,6 +26,7 @@ export const baseEnvironment = {
       [ApiLabel.CONFIRM_PARTICIPATION_IN_RESERVATION]: '/student/reservation/approve',
       [ApiLabel.CREATE_CLARIFICATION_REQUEST]: '/student/request/topic-correction',
       [ApiLabel.CREATE_CHANGE_REQUEST]: '/student/request/topic-change',
+      [ApiLabel.DELETE_THESIS_WITH_STUDENT]: '/student/subject/delete',
       [ApiLabel.CREATE_THESIS]: '/subject',
       [ApiLabel.CREATE_RESERVATION]: '/student/reservation',
       [ApiLabel.REJECT_RESERVATION]: '/lecturer/reservation/reject',

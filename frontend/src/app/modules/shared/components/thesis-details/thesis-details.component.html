@@ -53,6 +53,13 @@
           <b>{{ TranslationKeys.forThesisStatus(thesis.status) | translate }}</b>
         </h6>
         <ng-container *ngIf="userRole?.role === Role.STUDENT">
+          <ng-container
+            *ngIf="userRole?.id === thesis.authorStudentId && thesis.status === ThesisStatus.PROPOSED_BY_STUDENT">
+            <button type="button" class="btn btn-outline-danger"
+                    (click)="deleteProposition()">
+              {{ 'Button.Reject' | translate }}
+            </button>
+          </ng-container>
           <button type="button" class="btn btn-primary"
                   [disabled]="!canStudentReserve"
                   (click)="reserveTopic()">
@@ -90,6 +97,11 @@
         </ng-container>
         <ng-container *ngIf="userRole?.role === Role.LECTURER">
           <ng-container *ngIf="thesis.status ===ThesisStatus.TO_CORRECT || thesis.status ===ThesisStatus.WAITING">
+            <button type="button" class="btn btn-outline-danger"
+                    [disabled]="!canLecturerSubmit"
+                    (click)="rejectThesisWithLecturer()">
+              {{ 'Button.Reject' | translate }}
+            </button>
             <button type="button" class="btn btn-primary"
                     [disabled]="!canLecturerSubmit || form.invalid"
                     (click)="correctThesisWithLecturer()">

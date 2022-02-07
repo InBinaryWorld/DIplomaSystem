@@ -324,6 +324,7 @@ const notifications: NotificationTemplate[] = [notification1, notification2, not
 const responseByApiKey: Dictionary<any> = {
   [ApiLabel.MODIFY_TIMETABLE]: firstItem(timetables),
   [ApiLabel.ACCEPT_THESIS_WITH_LECTURER]: firstItem(theses),
+  [ApiLabel.DELETE_THESIS_WITH_STUDENT]: firstItem(theses),
   [ApiLabel.CORRECT_THESIS_WITH_LECTURER]: firstItem(theses),
   [ApiLabel.REJECT_THESIS_WITH_LECTURER]: firstItem(theses),
   [ApiLabel.ABANDON_MEMBER_RESERVATION]: firstItem(reservationMembers),

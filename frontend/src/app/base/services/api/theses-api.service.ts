@@ -131,4 +131,10 @@ export class ThesesApiService {
     return this.http.postApiWithLabelSerializedDeserialized(Thesis, ApiLabel.ACCEPT_THESIS_WITH_LECTURER, undefined, undefined, query);
   };
 
+  public deleteProposition(thesisId: IdType): Observable<Thesis> {
+    const query = new RequestParams();
+    query.addIfValueExists('id', thesisId);
+    return this.http.postApiWithLabelSerializedDeserialized(Thesis, ApiLabel.DELETE_THESIS_WITH_STUDENT, undefined, undefined, query);
+  };
+
 }

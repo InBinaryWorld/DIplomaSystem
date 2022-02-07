@@ -174,4 +174,9 @@ export class ThesesService {
       .pipe(tap(() => this.invalidateTheses()));
   }
 
+  public deleteProposition(thesisId: IdType): Observable<Thesis> {
+    return this.thesesApiService.deleteProposition(thesisId)
+      .pipe(tap(() => this.invalidateTheses()));
+  }
+
 }
