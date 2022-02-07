@@ -23,6 +23,7 @@ interface ReservationRepository : JpaRepository<Reservation, Long> {
     fun findAllBySubjectId(subjectId: Long): List<Reservation>
 
     @Query("""
+        SELECT DISTINCT r
         FROM Reservation r
         LEFT JOIN GroupMember g ON g.reservation = r
         WHERE (:studentId IS NULL OR g.student.id = :studentId)
