@@ -16,8 +16,8 @@ class ChangeRequestDtoFactory {
             StudentDtoFactory.create(request.student),
             request.oldTopic.id,
             request.newTopic.id,
-            SubjectDtoFactory.create(request.newTopic),
-            SubjectDtoFactory.create(request.oldTopic)
+            SubjectDetailsDtoFactory.create(request.newTopic),
+            SubjectDetailsDtoFactory.create(request.oldTopic)
         )
     }
 }

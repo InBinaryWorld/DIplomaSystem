@@ -12,6 +12,6 @@ data class ChangeRequestDto(
     val student: StudentDto,
     val oldThesisId: Long,
     val newThesisId: Long,
-    val newThesis: SubjectDto,
-    val previousThesis: SubjectDto
+    val newThesis: SubjectDetailsDto,
+    val previousThesis: SubjectDetailsDto
 )
