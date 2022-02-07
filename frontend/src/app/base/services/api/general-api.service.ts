@@ -77,10 +77,10 @@ export class GeneralResourcesApiService extends BaseApiService {
     return this.http.postApiWithLabelSerializedDeserialized(NotificationTemplate, ApiLabel.MODIFY_NOTIFICATION, payload);
   }
 
-  modifyTimetable(timetableId: IdType, payload: Partial<Timetable>): Observable<DiplomaSession> {
+  modifyTimetable(timetableId: IdType, payload: Timetable): Observable<Timetable> {
     const query = new RequestParams();
     query.addIfValueExists('id', timetableId);
-    return this.http.postApiWithLabelSerializedDeserialized(DiplomaSession, ApiLabel.MODIFY_TIMETABLE, payload, query);
+    return this.http.postApiWithLabelSerializedDeserialized(Timetable, ApiLabel.MODIFY_TIMETABLE, payload, undefined, query);
   }
 
 }

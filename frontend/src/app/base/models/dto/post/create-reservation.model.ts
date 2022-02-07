@@ -1,5 +1,6 @@
 import { autoserializeAs } from 'cerialize';
-import { IdType, IdTypeSerializer } from '../id.model';
+import { IdType } from '../id.model';
+import { IdTypeSerializer } from '../../../utils/serializers';
 
 export class CreateReservation {
 

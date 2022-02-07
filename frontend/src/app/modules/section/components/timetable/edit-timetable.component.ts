@@ -69,17 +69,18 @@ export class EditTimetableComponent extends RoleComponent implements OnInit {
   }
 
 
-  private getPayload(): Partial<Timetable> {
+  private getPayload(): Timetable {
     const formData = this.form!.value!;
-    return {
-      id: formData.id,
-      submittingThesis: new Date(formData.submitDeadline),
-      selectingThesis: new Date(formData.selectingDeadline),
-      approvingThesisByCoordinator: new Date(formData.approvingCoordinatorDeadline),
-      approvingThesisByCommittee: new Date(formData.approvingCommitteeDeadline),
-      clarificationThesis: new Date(formData.clarificationsDeadline),
-      changingThesis: new Date(formData.changingDeadline)
-    };
+    const timeTable = new Timetable();
+    timeTable.id = formData.id;
+
+    timeTable.submittingThesis = new Date(formData.submitDeadline);
+    timeTable.selectingThesis = new Date(formData.selectingDeadline);
+    timeTable.approvingThesisByCoordinator = new Date(formData.approvingCoordinatorDeadline);
+    timeTable.approvingThesisByCommittee = new Date(formData.approvingCommitteeDeadline);
+    timeTable.clarificationThesis = new Date(formData.clarificationsDeadline);
+    timeTable.changingThesis = new Date(formData.changingDeadline);
+    return timeTable;
   }
 
   public modify(): void {

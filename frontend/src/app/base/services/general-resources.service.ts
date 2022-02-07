@@ -65,7 +65,7 @@ export class GeneralResourcesService {
     return this.generalResourcesApiService.modifyNotification(payload);
   }
 
-  modifyTimetable(timetableId: IdType, payload: Partial<Timetable>): Observable<DiplomaSession> {
+  modifyTimetable(timetableId: IdType, payload: Timetable): Observable<Timetable> {
     return this.generalResourcesApiService.modifyTimetable(timetableId, payload).pipe(
       tap(() => {
         this.generalResourcesStoreService.invalidateStoreForKey(GeneralResourcesStateKey.TIMETABLES);

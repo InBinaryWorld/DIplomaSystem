@@ -1,5 +1,6 @@
-import { IdType, IdTypeSerializer, WithId } from './id.model';
+import { IdType, WithId } from './id.model';
 import { autoserializeAs, inheritSerialization } from 'cerialize';
+import { DateSerializer, IdTypeSerializer } from '../../utils/serializers';
 
 @inheritSerialization(WithId)
 export class Timetable extends WithId {
@@ -7,21 +8,21 @@ export class Timetable extends WithId {
   @autoserializeAs(IdTypeSerializer)
   diplomaSessionId!: IdType;
 
-  @autoserializeAs(Date)
+  @autoserializeAs(DateSerializer)
   submittingThesis!: Date;
 
-  @autoserializeAs(Date)
+  @autoserializeAs(DateSerializer)
   approvingThesisByCoordinator!: Date;
 
-  @autoserializeAs(Date)
+  @autoserializeAs(DateSerializer)
   approvingThesisByCommittee!: Date;
 
-  @autoserializeAs(Date)
+  @autoserializeAs(DateSerializer)
   selectingThesis!: Date;
 
-  @autoserializeAs(Date)
+  @autoserializeAs(DateSerializer)
   clarificationThesis!: Date;
 
-  @autoserializeAs(Date)
+  @autoserializeAs(DateSerializer)
   changingThesis!: Date;
 }

@@ -1,11 +1,8 @@
-import { autoserializeAs, ISerializable } from 'cerialize';
+import { autoserializeAs } from 'cerialize';
+import { IdTypeSerializer } from '../../utils/serializers';
 
 export type IdType = string;
 
-export const IdTypeSerializer: ISerializable = {
-  Serialize: (value: IdType) => Number(value),
-  Deserialize: (json: number) => String(json)
-};
 
 export class WithId {
 

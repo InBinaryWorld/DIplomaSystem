@@ -1,7 +1,8 @@
 import { ThesisStatus } from './topic-status.model';
-import { IdType, IdTypeSerializer, WithId } from './id.model';
+import { IdType, WithId } from './id.model';
 import { Employee } from './employee.model';
 import { autoserialize, autoserializeAs, inheritSerialization } from 'cerialize';
+import { IdTypeSerializer } from '../../utils/serializers';
 
 @inheritSerialization(WithId)
 export class Thesis extends WithId {

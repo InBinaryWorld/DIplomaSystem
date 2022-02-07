@@ -1,5 +1,6 @@
-import { IdType, IdTypeSerializer } from '../id.model';
+import { IdType } from '../id.model';
 import { autoserialize, autoserializeAs } from 'cerialize';
+import { IdTypeSerializer } from '../../../utils/serializers';
 
 export class CorrectThesisChanges {
 

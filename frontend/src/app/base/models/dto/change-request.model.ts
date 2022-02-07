@@ -1,7 +1,8 @@
 import { BaseRequest } from './base-request.model';
-import { IdType, IdTypeSerializer } from './id.model';
+import { IdType } from './id.model';
 import { Thesis } from './thesis.model';
 import { autoserializeAs, inheritSerialization } from 'cerialize';
+import { IdTypeSerializer } from '../../utils/serializers';
 
 @inheritSerialization(BaseRequest)
 export class ChangeRequest extends BaseRequest {
