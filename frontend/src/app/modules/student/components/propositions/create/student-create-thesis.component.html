@@ -4,7 +4,7 @@
   </div>
 
   <div *ngIf="form && context" class="row py-3">
-    <app-error-alert *ngIf="errorVisible"></app-error-alert>
+    <app-error-alert *ngIf="isErrorVisible"></app-error-alert>
     <form *ngIf="form" [formGroup]="form">
       <div class="mb-3">
         <label for="topic" class="form-label">{{ 'Form.Label.ThesisTopic' | translate }}</label>

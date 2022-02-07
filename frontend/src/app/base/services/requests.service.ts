@@ -86,38 +86,17 @@ export class RequestsService {
 
   public rejectChangeRequestWithCommitteeMember(committeeMemberId: IdType, requestId: IdType): Observable<void> {
     return this.requestsApiService.rejectChangeRequestWithCommitteeMember(committeeMemberId, requestId)
-      .pipe(tap(() => this.invalidateClarificationRequests()));
+      .pipe(tap(() => this.invalidateChangeRequests()));
   }
 
   public approveChangeRequestWithCommitteeMember(committeeMemberId: IdType, requestId: IdType): Observable<void> {
     return this.requestsApiService.approveChangeRequestWithCommitteeMember(committeeMemberId, requestId)
-      .pipe(tap(() => this.invalidateClarificationRequests()));
+      .pipe(tap(() => this.invalidateChangeRequests()));
   }
 
   public createChangeRequest(thesisId: IdType, request: CreateChangeRequest): Observable<ChangeRequest> {
     return this.requestsApiService.createChangeRequest(thesisId, request)
       .pipe(tap(() => this.invalidateChangeRequests()));
   }
-
-  // public getExtClarificationRequests(userRole: UserRole, studentId: IdType): Observable<ClarificationRequestExt[]> {
-  //   return this.getClarificationRequestsForRole(userRole).pipe(
-  //     switchMap(clarifications => {
-  //       if (isEmpty(clarifications)) {
-  //         return of([]);
-  //       }
-  //       const thesesIds = [...new Set(clarifications.map(c => c.thesisId))];
-  //       return combineLatest(
-  //         thesesIds.map(t => this.thesesStoreService.getThesisForId(t).pipe(filterExists()))
-  //       ).pipe(
-  //         map(theses => keyBy(theses, t => t.id)),
-  //         map(thesesById => this.prepareExtClRequests(clarifications, thesesById))
-  //       );
-  //     })
-  //   );
-  // }
-
-  // private prepareExtClRequests(clarifications: ClarificationRequest[], thesesById: Dictionary<Thesis>): ClarificationRequestExt[] {
-  //   return clarifications.map(c => ({ ...c, thesis: thesesById[c.thesisId] }));
-  // }
 
 }

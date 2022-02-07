@@ -25,8 +25,6 @@ export class StudentCreateThesisComponent extends RoleComponent implements OnIni
   supervisors?: any[];
   context?: Context;
 
-  errorVisible = false;
-
   constructor(private readonly router: Router,
               private readonly formBuilder: FormBuilder,
               private readonly userService: UserService,

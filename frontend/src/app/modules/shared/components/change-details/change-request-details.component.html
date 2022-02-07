@@ -4,6 +4,7 @@
   </div>
 
   <div *ngIf="form && request" class="row my-4">
+    <app-error-alert *ngIf="isErrorVisible"></app-error-alert>
     <form [formGroup]="form">
       <fieldset disabled>
         <div class="row my-3">

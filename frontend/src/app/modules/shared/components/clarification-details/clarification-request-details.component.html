@@ -4,6 +4,7 @@
   </div>
 
   <div *ngIf="form && request" class="row py-3">
+    <app-error-alert *ngIf="isErrorVisible" class="my-2"></app-error-alert>
     <form [formGroup]="form">
       <fieldset disabled>
         <div class="mb-3">
