@@ -105,7 +105,7 @@
             <button type="button" class="btn btn-primary"
                     [disabled]="!canLecturerSubmit || form.invalid"
                     (click)="correctThesisWithLecturer()">
-              {{ 'Button.Approve' | translate }}
+              {{ 'Button.Correct' | translate }}
             </button>
           </ng-container>
           <ng-container *ngIf="thesis.status ===ThesisStatus.PROPOSED_BY_STUDENT">
