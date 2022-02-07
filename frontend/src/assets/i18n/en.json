@@ -72,6 +72,7 @@
   "DiplomaSectionMember.ModifyTimetable.Header": "Modify Timetable",
   "Admin.Notifications.Header": "Modify Notification Content",
   "Button.Add": "Add",
+  "Button.Delete": "Delete",
   "Button.Approve": "Approve",
   "Button.Abandon": "Abandon",
   "Button.Cancel": "Cancel",

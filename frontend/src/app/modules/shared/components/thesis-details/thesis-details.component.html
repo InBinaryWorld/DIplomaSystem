@@ -57,7 +57,7 @@
             *ngIf="userRole?.id === thesis.authorStudentId && thesis.status === ThesisStatus.PROPOSED_BY_STUDENT">
             <button type="button" class="btn btn-outline-danger"
                     (click)="deleteProposition()">
-              {{ 'Button.Reject' | translate }}
+              {{ 'Button.Delete' | translate }}
             </button>
           </ng-container>
           <button type="button" class="btn btn-primary"
