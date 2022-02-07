@@ -3,8 +3,9 @@ package pwr.diplomaproject.controller
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.web.bind.annotation.*
 import pwr.diplomaproject.model.dto.SubjectDto
-import pwr.diplomaproject.model.form.StudentSubjectPropositionForm
 import pwr.diplomaproject.service.StudentSubjectService
+import pwr.diplomaproject.util.userId
+import java.security.Principal
 
 @RestController
 @RequestMapping("/student/subject")
@@ -29,10 +30,9 @@ class StudentSubjectController(
         studentSubjectService.getProposedSubjects(studentId, diplomaSessionId)
 
     @Operation(summary = "Usunięcie propozycji tematu studenta")
-    @DeleteMapping("/proposed/{id}")
+    @PostMapping("/delete", params = ["id"])
     fun deleteProposedSubject(
-        @RequestParam studentId: Long,
-        @PathVariable id: Long
-    ): Unit =
-        studentSubjectService.deleteProposedSubject(studentId, id)
+        principal: Principal,
+        @RequestParam id: Long): Unit =
+        studentSubjectService.deleteProposedSubject(principal.userId, id)
 }

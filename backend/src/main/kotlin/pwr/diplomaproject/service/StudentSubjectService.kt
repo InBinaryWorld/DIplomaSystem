@@ -62,13 +62,13 @@ class StudentSubjectService @Autowired constructor(
         return SubjectDetailsDtoFactory.create(subjectRepository.save(newSubject))
     }
 
-    fun deleteProposedSubject(studentId: Long, id: Long) {
-        val subject = topicRepository.findByIndexAndStudent(id, studentId)
-        if (subject.status == TopicStatus.PROPOSED_BY_STUDENT) {
+    fun deleteProposedSubject(userId: Long, subjectId: Long) {
+        val subject = topicRepository.getById(subjectId)
+        if (subject.status == TopicStatus.PROPOSED_BY_STUDENT && subject.student!!.user.id == userId) {
             SubjectPropositionDeletedByStudent(
                 listOf(subject.lecturer.user),
                 subject,
-                subject.student!!.user,
+                subject.student.user,
                 notificationRepository
             ).send()
             topicRepository.delete(subject)
