@@ -79,7 +79,7 @@ export class RequestsService {
       .pipe(tap(() => this.invalidateClarificationRequests()));
   }
 
-  public createClarificationRequest(thesisId: IdType, request: CreateClarificationRequest): Observable<ClarificationRequest> {
+  public createClarificationRequest(thesisId: IdType, request: CreateClarificationRequest): Observable<void> {
     return this.requestsApiService.createClarificationRequest(thesisId, request)
       .pipe(tap(() => this.invalidateClarificationRequests()));
   }

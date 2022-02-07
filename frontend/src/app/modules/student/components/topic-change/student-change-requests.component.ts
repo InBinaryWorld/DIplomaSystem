@@ -38,7 +38,8 @@ export class StudentChangeRequestsComponent extends RoleComponent implements OnI
 
   private initChangeRequests(): void {
     this.addSubscription(
-      this.contextSource.pipe(switchMap(context => this.requestsService.getChangeRequestsForStudent(context.diplomaSession!.id, context.userRole.id))
+      this.contextSource.pipe(switchMap(context =>
+        this.requestsService.getChangeRequestsForStudent(context.diplomaSession!.id, context.userRole.id))
       ).subscribe(requests => {
         this.changeRequests = requests!;
         this.markForCheck();

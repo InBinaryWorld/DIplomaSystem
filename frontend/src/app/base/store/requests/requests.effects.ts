@@ -83,7 +83,7 @@ export class RequestsEffects {
   loadChangeRequestForIdIfNeededAction = createEffect(() => this.actions.pipe(
     ofType(loadChangeRequestForIdIfNeededAction), throttleWithSelector(({ id }) => id),
     mergeIfNil(({ id }) => this.store.select(selectChangeRequestForId, id)),
-    map(({ id }) => loadClarificationRequestForIdAction({ id }))
+    map(({ id }) => loadChangeRequestForIdAction({ id }))
   ));
 
   loadChangeRequestForIdAction = createEffect(() => this.actions.pipe(

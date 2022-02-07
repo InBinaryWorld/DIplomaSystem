@@ -51,7 +51,7 @@ export class RequestsApiService extends BaseApiService {
   getChangeRequestForId(id: IdType): Observable<ChangeRequest> {
     const query = new RequestParams();
     query.addIfValueExists('id', id);
-    return this.http.getApiWithLabelDeserialized(ChangeRequest, ApiLabel.GET_CHANGE_REQUESTS, undefined, query);
+    return this.http.getApiWithLabelDeserialized(ChangeRequest, ApiLabel.GET_CHANGE_REQUEST, undefined, query);
   }
 
   rejectClarificationRequestWithDean(deanId: IdType, requestId: IdType): Observable<void> {
@@ -64,7 +64,7 @@ export class RequestsApiService extends BaseApiService {
     return this.http.postApiWithLabelSerializedDeserialized(ClarificationRequest, ApiLabel.APPROVE_CLARIFICATION_REQUEST, payload);
   }
 
-  createClarificationRequest(thesisId: IdType, payload: CreateClarificationRequest): Observable<ClarificationRequest> {
+  createClarificationRequest(thesisId: IdType, payload: CreateClarificationRequest): Observable<void> {
     return this.http.postApiWithLabelSerializedDeserialized(ClarificationRequest, ApiLabel.CREATE_CLARIFICATION_REQUEST, payload);
   }
 
