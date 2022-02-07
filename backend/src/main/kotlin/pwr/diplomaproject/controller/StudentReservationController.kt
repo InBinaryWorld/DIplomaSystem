@@ -12,22 +12,6 @@ class StudentReservationController(
     private val studentReservationService: StudentReservationService
 ) {
 
-    @Operation(summary = "Rezerwacje wg studenta, promotora lub sesji dyplomowania")
-    @GetMapping
-    fun getReservations(
-        @RequestParam(required = false) studentId: Long?,
-        @RequestParam(required = false) supervisorId: Long?,
-        @RequestParam(required = false) diplomaSessionId: Long?
-    ): List<ReservationDto> =
-        studentReservationService.getReservations(studentId, supervisorId, diplomaSessionId)
-
-    @Operation(summary = "Dane rezerwacji studenta")
-    @GetMapping(params = ["id"])
-    fun getReservation(
-        @RequestParam id: Long
-    ): ReservationDto =
-        studentReservationService.getReservationById(id)
-
     @Operation(summary = "Potwierdzenie rezerwacji przez studenta (wstępne lub ostateczne)")
     @PostMapping("/approve", params = ["studentId", "reservationId"])
     fun approveReservation(
