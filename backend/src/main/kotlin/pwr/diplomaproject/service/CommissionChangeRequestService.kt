@@ -2,8 +2,10 @@ package pwr.diplomaproject.service
 
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import pwr.diplomaproject.model.dto.ChangeRequestDto
 import pwr.diplomaproject.model.dto.RequestDto
 import pwr.diplomaproject.model.dto.TopicChangeRequestDetailsDto
+import pwr.diplomaproject.model.dto.factory.ChangeRequestDtoFactory
 import pwr.diplomaproject.model.dto.factory.DeanRequestDtoFactory
 import pwr.diplomaproject.model.dto.factory.TopicChangeRequestDetailsDtoFactory
 import pwr.diplomaproject.model.entity.*
@@ -34,18 +36,18 @@ class CommissionChangeRequestService @Autowired constructor(
             .let { TopicChangeRequestDetailsDtoFactory.create(it) }
 
     @Transactional
-    fun acceptChangeRequest(userId: Long, id: Long): TopicChangeRequestDetailsDto =
+    fun acceptChangeRequest(userId: Long, id: Long): ChangeRequestDto =
         topicChangeRequestRepository.getById(id).let {
             it.result = RequestResult.APPROVED
             it.employee = dean(userId)
 
             switchStudentSubject(it.student, it.oldTopic, it.newTopic)
 
-            TopicChangeRequestDetailsDtoFactory.create(topicChangeRequestRepository.save(it))
+            ChangeRequestDtoFactory.create(topicChangeRequestRepository.save(it))
         }
 
     @Transactional
-    fun rejectChangeRequest(userId: Long, id: Long): TopicChangeRequestDetailsDto =
+    fun rejectChangeRequest(userId: Long, id: Long): ChangeRequestDto =
         topicChangeRequestRepository.getById(id).let {
             it.result = RequestResult.DISMISSED
             it.employee = dean(userId)
@@ -53,7 +55,7 @@ class CommissionChangeRequestService @Autowired constructor(
             it.newTopic.status = TopicStatus.REJECTED_BY_COMMITTEE // TODO może jakoś ładniej anulować taki temat (bez usuwania)
 
             subjectRepository.save(it.newTopic)
-            TopicChangeRequestDetailsDtoFactory.create(topicChangeRequestRepository.save(it))
+            ChangeRequestDtoFactory.create(topicChangeRequestRepository.save(it))
         }
 
     private fun switchStudentSubject(student: Student, oldSubject: Topic, newSubject: Topic) {

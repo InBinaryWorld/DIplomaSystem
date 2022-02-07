@@ -3,6 +3,7 @@ package pwr.diplomaproject.controller
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
+import pwr.diplomaproject.model.dto.ChangeRequestDto
 import pwr.diplomaproject.model.dto.RequestDto
 import pwr.diplomaproject.model.dto.TopicChangeRequestDetailsDto
 import pwr.diplomaproject.model.form.RequestIdForm
@@ -35,13 +36,13 @@ class CommissionChangeRequestController @Autowired constructor(
     @PostMapping("/accept")
     fun acceptChangeRequest(
         principal: Principal,
-        @RequestBody form: RequestIdForm): TopicChangeRequestDetailsDto =
+        @RequestBody form: RequestIdForm): ChangeRequestDto =
         commissionChangeRequestService.acceptChangeRequest(principal.userId, form.requestId)
 
     @Operation(summary = "Odrzucenie wniosku o zmianę tematu")
     @PostMapping("/reject")
     fun rejectChangeRequest(
         principal: Principal,
-        @RequestBody form: RequestIdForm): TopicChangeRequestDetailsDto =
+        @RequestBody form: RequestIdForm): ChangeRequestDto =
         commissionChangeRequestService.rejectChangeRequest(principal.userId, form.requestId)
 }
