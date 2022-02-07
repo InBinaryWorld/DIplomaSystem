@@ -29,6 +29,9 @@ class JwtSecurityConfig : WebSecurityConfigurerAdapter() {
                 authorize("/commission/**", hasAnyRole(PROGRAM_COMMITTEE_MEMBER))
                 authorize("/graduation/**", hasAnyRole(DIPLOMA_SECTION_MEMBER))
                 authorize("/admin/**", hasAnyRole(ADMIN))
+                authorize("/swagger-ui.html", permitAll)
+                authorize("/swagger-ui/**", permitAll)
+                authorize("/v3/api-docs", permitAll)
                 authorize(anyRequest, authenticated)
             }
         }
