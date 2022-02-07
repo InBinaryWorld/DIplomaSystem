@@ -86,7 +86,9 @@ values (1, 'Lorem ipsum', false, '2022-02-09',
        (9, 'Lorem ipsum', true, '2022-02-04', 'Lorem ipsum', 'APPROVED_BY_COMMITTEE', 1,
         'Wniosek o zmianę tematu - nowy temat', 1, 2, 1),
        (10, 'Lorem ipsum', true, '2022-02-04', 'Lorem ipsum', 'APPROVED_BY_COMMITTEE', 1,
-        'Można akceptować', 1, 2, 2);
+        'Można akceptować', 1, 2, 2),
+       (11, 'Lorem ipsum', false, '2022-02-04', 'Lorem ipsum', 'APPROVED_BY_COMMITTEE', 1,
+        'Zatwierdzony', 1, null, 7);
 
 
 -- Table: reservation
