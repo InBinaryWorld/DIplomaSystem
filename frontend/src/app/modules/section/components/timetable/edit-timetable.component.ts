@@ -54,7 +54,7 @@ export class EditTimetableComponent extends RoleComponent implements OnInit {
   private initForm(timetable: Timetable): void {
     this.form = this.formBuilder.group({
       id: [timetable.id],
-      submitDeadline: this.getDateControl(timetable.selectingThesis),
+      submitDeadline: this.getDateControl(timetable.submittingThesis),
       selectingDeadline: this.getDateControl(timetable.selectingThesis),
       approvingCoordinatorDeadline: this.getDateControl(timetable.approvingThesisByCoordinator),
       approvingCommitteeDeadline: this.getDateControl(timetable.approvingThesisByCommittee),
