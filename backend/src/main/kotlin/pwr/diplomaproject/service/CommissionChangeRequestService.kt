@@ -39,7 +39,7 @@ class CommissionChangeRequestService @Autowired constructor(
     fun acceptChangeRequest(userId: Long, id: Long): ChangeRequestDto =
         topicChangeRequestRepository.getById(id).let {
             it.result = RequestResult.APPROVED
-            it.employee = dean(userId)
+            it.employee = committee(userId)
 
             switchStudentSubject(it.student, it.oldTopic, it.newTopic)
 
@@ -50,7 +50,7 @@ class CommissionChangeRequestService @Autowired constructor(
     fun rejectChangeRequest(userId: Long, id: Long): ChangeRequestDto =
         topicChangeRequestRepository.getById(id).let {
             it.result = RequestResult.DISMISSED
-            it.employee = dean(userId)
+            it.employee = committee(userId)
 
             it.newTopic.status = TopicStatus.REJECTED_BY_COMMITTEE // TODO może jakoś ładniej anulować taki temat (bez usuwania)
 
@@ -94,6 +94,6 @@ class CommissionChangeRequestService @Autowired constructor(
         subjectRepository.save(newSubject)
     }
 
-    private fun dean(userId: Long): Employee =
-        employeeRepository.getEmployeeByUserIdAndType(userId, EmployeeType.DEAN)
+    private fun committee(userId: Long): Employee =
+        employeeRepository.getEmployeeByUserIdAndType(userId, EmployeeType.PROGRAM_COMMITTEE_MEMBER)
 }
