@@ -6,6 +6,7 @@ import { BaseComponent } from '../../../../core/components/base-component.direct
 import { NotificationTemplate } from '../../../../base/models/dto/notification.model';
 import { AppValidators } from '../../../../base/utils/validators.utils';
 import { firstItem } from '../../../../core/tools/first-item';
+import { filterExists } from '../../../../core/tools/filter-exists';
 
 const FORM_KEYS = {
   TYPE: 'TYPE',
@@ -53,6 +54,13 @@ export class AdminNotificationsComponent extends BaseComponent {
       [FORM_KEYS.TYPE]: [first?.label, Validators.required],
       [FORM_KEYS.CONTENT]: [first?.content, AppValidators.notificationValidator]
     });
+
+    this.addSubscription(
+      this.form.get(FORM_KEYS.TYPE)!.valueChanges.pipe(filterExists()).subscribe(type => {
+        const notification = this.notifications?.find(n => n.label === type)!;
+        this.form?.get(FORM_KEYS.CONTENT)?.setValue(notification.content);
+      })
+    );
   }
 
   public confirmChange(): void {
