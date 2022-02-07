@@ -89,10 +89,10 @@ export class ChangeRequestDetailsComponent extends RoleComponent implements OnIn
   private initFormData(request: ChangeRequest, diplomaSession: DiplomaSession): void {
     this.form = this.formBuilder.group({
       diplomaSession: [LabelBuilder.forDiplomaSession(diplomaSession)],
-      numberOfStudents: [request.newThesis.numberOfStudents],
-      previousTopic: [request.newThesis.topic],
-      previousDescription: [request.newThesis.description],
-      previousSupervisor: [LabelBuilder.forEmployee(request.newThesis.supervisor)],
+      numberOfStudents: [request.previousThesis.numberOfStudents],
+      previousTopic: [request.previousThesis.topic],
+      previousDescription: [request.previousThesis.description],
+      previousSupervisor: [LabelBuilder.forEmployee(request.previousThesis.supervisor)],
       newTopic: [request.newThesis.topic],
       newDescription: [request.newThesis.description],
       newSupervisor: [LabelBuilder.forEmployee(request.newThesis.supervisor)]
