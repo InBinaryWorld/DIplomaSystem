@@ -18,7 +18,7 @@ const routes: Routes = [
       {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'import'
+        redirectTo: 'notifications'
       },
       {
         path: 'notifications',
