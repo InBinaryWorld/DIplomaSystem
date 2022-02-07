@@ -29,7 +29,7 @@ class JwtSecurityConfig : WebSecurityConfigurerAdapter() {
                 authorize("/commission/**", hasAnyRole(PROGRAM_COMMITTEE_MEMBER))
                 authorize("/graduation/**", hasAnyRole(DIPLOMA_SECTION_MEMBER))
                 authorize("/admin/**", hasAnyRole(ADMIN))
-                authorize("*", authenticated)
+                authorize(anyRequest, authenticated)
             }
         }
         http!!.oauth2ResourceServer { oauth2 -> oauth2.jwt() }
