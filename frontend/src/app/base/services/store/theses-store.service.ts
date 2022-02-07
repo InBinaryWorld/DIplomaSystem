@@ -89,6 +89,14 @@ export class ThesesStoreService extends CleanableStoreService {
     this.store.dispatch(action);
   }
 
+  public invalidateTheses(): void {
+    this.invalidateStoreForType(ThesesStateKey.THESES);
+  }
+
+  public invalidateReservations(): void {
+    this.invalidateStoreForType(ThesesStateKey.RESERVATIONS);
+  }
+
   public invalidateStoreForType(resourceType: ThesesStateKey): void {
     this.store.dispatch(invalidateThesesDataAction({ resourceType }));
   }

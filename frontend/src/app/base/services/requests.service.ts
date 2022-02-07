@@ -14,13 +14,15 @@ import {
 import { RequestStatus } from '../models/dto/request-status.model';
 import { CreateClarificationRequest } from '../models/dto/post/create-clarification-request.model';
 import { CreateChangeRequest } from '../models/dto/post/create-change-request.model';
+import { ThesesStoreService } from './store/theses-store.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RequestsService {
   constructor(private readonly requestsApiService: RequestsApiService,
-              private readonly requestsStoreService: RequestsStoreService) {
+              private readonly requestsStoreService: RequestsStoreService,
+              private readonly thesesStoreService: ThesesStoreService) {
   }
 
   public getChangeRequestsForStudent(diplomaSessionId: IdType, studentId: IdType, ifNeededOnly = true): Observable<ChangeRequest[]> {
@@ -91,7 +93,10 @@ export class RequestsService {
 
   public approveChangeRequestWithCommitteeMember(committeeMemberId: IdType, requestId: IdType): Observable<void> {
     return this.requestsApiService.approveChangeRequestWithCommitteeMember(committeeMemberId, requestId)
-      .pipe(tap(() => this.invalidateChangeRequests()));
+      .pipe(tap(() => {
+        this.invalidateChangeRequests();
+        this.thesesStoreService.invalidateReservations();
+      }));
   }
 
   public createChangeRequest(thesisId: IdType, request: CreateChangeRequest): Observable<ChangeRequest> {

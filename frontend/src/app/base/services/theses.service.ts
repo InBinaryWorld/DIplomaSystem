@@ -9,7 +9,6 @@ import { firstItem } from '../../core/tools/first-item';
 import { isEmpty, isNil } from 'lodash-es';
 import { LoadReservationsActionOptions, LoadThesesActionOptions } from '../store/theses/theses.actions';
 import { ThesesApiService } from './api/theses-api.service';
-import { ThesesStateKey } from '../store/theses/theses.state';
 import { IdType } from '../models/dto/id.model';
 import { ThesisStatus } from '../models/dto/topic-status.model';
 import { ReservationMember } from '../models/dto/reservation-member.model';
@@ -32,11 +31,11 @@ export class ThesesService {
   }
 
   public invalidateTheses(): void {
-    this.thesesStoreService.invalidateStoreForType(ThesesStateKey.THESES);
+    this.thesesStoreService.invalidateTheses();
   }
 
   public invalidateReservations(): void {
-    this.thesesStoreService.invalidateStoreForType(ThesesStateKey.RESERVATIONS);
+    this.thesesStoreService.invalidateReservations();
   }
 
   public getThesisForLecturerAndDiplomaSession(lecturerId: IdType, diplomaSessionId: IdType): Observable<Thesis[]> {
