@@ -28,8 +28,8 @@ export class AuthApiService {
 
   refreshToken(refreshToken: string): Observable<AuthData> {
     // TODO
-    throw new Error('refreshToken NOT IMPLEMENTED');
-    // return this.httpService.postApiWithLabelSerializedDeserialized(AuthData, ApiLabel.REFRESH, { refreshToken });
+    // return throwError(new Error('refreshToken NOT IMPLEMENTED'));
+    return this.httpService.postAuthWithLabelDeserialized<any, AuthData, AuthData>(AuthData, ApiLabel.REFRESH, { refreshToken });
   }
 
 }

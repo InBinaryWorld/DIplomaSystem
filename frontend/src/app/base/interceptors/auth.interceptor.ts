@@ -40,7 +40,6 @@ export class AuthInterceptor implements HttpInterceptor {
       first(),
       tap(inProgress => !inProgress && this.authStoreService.refresh()),
       switchMap(() => this.getAccessToken()),
-      first(),
       switchMap(token => {
         if (isNotNil(token)) {
           return next.handle(this.addTokenHeader(request, token!));

@@ -4,7 +4,7 @@ import { AppLanguage } from '../app/core/models/app-language.model';
 export const baseEnvironment = {
   fakeApi: {
     enabled: false,
-    delayTime: 1000
+    delayTime: 500
   },
   defaultLanguage: AppLanguage.POLISH,
   serverConfig: {
